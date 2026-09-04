@@ -1,38 +1,55 @@
-# 💚 zolai-ai — Zolai AI Community
+# 💚 Zolai AI — Preserving Tedim Zolai with AI
 
-**Preserving and teaching Tedim Zolai (ZVS 2018) with AI.**
+**Bilingual (Tedim Zolai ⇄ English) AI toolkit for the Zomi people.**
 
-A bilingual (Tedim Zolai ⇄ English) language toolkit for the **Zomi people**.
-We digitize, standardize, and preserve the Zolai language through high-purity
-bilingual corpora, a RAG-first knowledge brain, an open learner platform, and
-offline desktop tools.
+We digitize, standardize, and preserve the **Zolai** language under the **ZVS 2018
+orthography** — high-purity bilingual corpora → a **RAG-first knowledge brain**
+(i.e. no raw fine-tuning — existing AIs consume Zolai knowledge as context) →
+open learner platform + offline desktop app.
 
 ## Repositories
 
 | Repo | What it does |
-|------|--------------|
-| [zolai-ai/zolai-core](https://github.com/zolai-ai/zolai-core) | Python package + FastAPI + RAG knowledge brain |
-| [zolai-ai/zolai-web](https://github.com/zolai-ai/zolai-web) | Next.js + Hono + Prisma learner platform |
-| [zolai-ai/zolai-tauri](https://github.com/zolai-ai/zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
-| [zolai-ai/zolai-datasets](https://github.com/zolai-ai/zolai-datasets) | HF/Kaggle datasets, build scripts |
-| [zolai-ai/zolai-training](https://github.com/zolai-ai/zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF |
-| [zolai-ai/zolai-wiki](https://github.com/zolai-ai/zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum |
-| [zolai-ai/zolai-github](https://github.com/zolai-ai/zolai-github) | Org profile + community + issue templates |
+|------|-------------|
+| [`zolai-core`](./zolai-core) | Python package + FastAPI + **RAG Knowledge Brain** (ingest/retrieve/ngram) |
+| [`zolai-web`](./zolai-web) | Next.js + Hono + Prisma learner platform |
+| [`zolai-tauri`](./zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
+| [`zolai-datasets`](./zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
+| [`zolai-training`](./zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF export |
+| [`zolai-wiki`](./zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum, culture |
+| [`zolai-ai`](./zolai-ai) | Monorepo (source of truth, mirrors the components) |
+| `.github` | **This** org profile + community + CI |
 
-## Connect
+## How it fits together
 
 ```
-web ──REST──▶ core ──HF/Kaggle──▶ datasets
+web ──REST──▶ core ◀──RAG── wiki
 tauri ──REST/GGUF──▶ core
-wiki ──RAG──▶ core
-training ──▶ datasets + adapters ──▶ core (inference)
+datasets ──HF/Kaggle──▶ core ──inference──▶ (existing AI, as context)
+training ──▶ datasets + adapters
 ```
 
 ## Our principles
 
-- **RAG-first, no raw fine-tuning** — existing AIs consume Zolai knowledge as context.
-- **ZVS 2018** compliance across all language output & wiki data.
-- **No secrets in code** — all tokens from `.env`.
-- **Open source** — conventional commits, PRs land on `main`.
+- **RAG-first, no raw fine-tuning** — Zolai knowledge is *embedded and injected* into
+  capable general AIs, not a Zolai-only base model.
+- **ZVS 2018 compliant** everywhere — grammar, vocabulary, wiki, and all output.
+- **No secrets in code** — tokens load from `.env` only; `.env.example` is placeholders.
+- **Datasets/models on HuggingFace Hub / Kaggle**, never bloated into git.
 
-> Join us in building a thriving Zolai AI ecosystem for the Zomi people. 🇿🇲
+## Get started
+
+- Core RAG: `pip install -e .` in `zolai-core` → `python scripts/kg/smoke_test.py`
+- Web: `cd zolai-web && bun install && bun run dev`
+- Wiki: `zolai-wiki` — canonical knowledge base (1529 files).
+
+## Contribute
+
+- **Native Tedim (Zomi) speakers** — validate corpus + ZVS 2018 compliance.
+- **Linguists** — Tibeto-Burman grammar, sentence-structure, word-prediction data.
+- **ML engineers** — low-resource NLP, embeddings/RAG, fine-tuning.
+- **Web/desktop devs** — Next.js + Tauri.
+
+Conventional commits · PRs land on `main` · see `community/CONTRIBUTING.md`.
+
+> Building a thriving Zolai AI ecosystem for the Zomi people. 🇿🇲

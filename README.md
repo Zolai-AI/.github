@@ -1,22 +1,16 @@
-# zolai-github (`.github`) — org profile & community
+# `.github` — Zolai-AI org profile & community
 
-Configuration and community files for the **zolai-ai** GitHub org.
+GitHub is special-cases a repo named **`.github`**: its `profile/README.md`
+renders on the org's landing page. This is that repo.
 
 ## Contents
+- `.github/profile/README.md` — the **org profile** (shown on `Zolai-AI` org page)
+- `community/CONTRIBUTING.md` — how to contribute to the org
+- `community/SECURITY.md` — security reporting + guidelines
+- `.github/workflows/lint.yml` — org-level lint (ruff)
 
-- `.github/profile/README.md` — the org landing/profile page
-- `community/` — contributing guidance, code of conduct, security
-- `.github/workflows/` — org-level automation (optional)
-
-## Repositories
-
-| Repo | Purpose |
-|------|---------|
-| `zolai-core` | Python package + FastAPI + RAG knowledge brain |
-| `zolai-web` | Next.js + Hono + Prisma learner platform |
-| `zolai-tauri` | Offline Tauri desktop app |
-| `zolai-datasets` | HF/Kaggle datasets + build scripts |
-| `zolai-training` | Fine-tuning (LoRA/QLoRA) + GGUF export |
-| `zolai-wiki` | Knowledge base (grammar, vocabulary, curriculum) |
+## Component repos
+`zolai-core` · `zolai-web` · `zolai-tauri` · `zolai-datasets` · `zolai-training` ·
+`zolai-wiki` · `zolai-ai` (monorepo)
 
 See `community/CONTRIBUTING.md` to get involved.
