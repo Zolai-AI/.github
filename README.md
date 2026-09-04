@@ -21,3 +21,7 @@ It is not a code repo — no API, no tests, no package.
 Other repos in the org:
 
 `zolai-core` · `zolai-web` · `zolai-tauri` · `zolai-datasets` · `zolai-training` · `zolai-wiki` · `zolai-ai.github.io`
+
+## Project Brain
+
+Portable full-context overview for brainstorming: `docs/ZOLAI_AI_PROJECT_BRAIN.md`.
