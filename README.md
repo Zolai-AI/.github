@@ -9,8 +9,8 @@ renders on the [Zolai AI](https://github.com/Zolai-AI) org Overview page.
 |------|---------|
 | `profile/README.md` | Org profile (shown on org Overview) |
 | `logo.png` / `og.png` | Brand assets (original website logo) |
-| `community/CONTRIBUTING.md` | How to contribute |
-| `community/SECURITY.md` | Security policy |
+| `CONTRIBUTING.md` | How to contribute |
+| `SECURITY.md` | Security policy |
 | `.github/workflows/lint.yml` | Org-level ruff lint |
 
 ## Part of the Zolai-AI org

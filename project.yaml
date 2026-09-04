@@ -1,0 +1,71 @@
+# ──────────────────────────────────────────────
+# Zolai-AI Universal Project Identity — .github
+# ──────────────────────────────────────────────
+
+project:
+  name: .github
+  slug: github
+  display_name: Zolai AI Org (.github)
+  type: meta
+  category: organization
+  owner: peter
+
+  description: >
+    Zolai-AI organization meta-repo — org profile landing page,
+    community health files (SECURITY, CONTRIBUTING, CODE_OF_CONDUCT,
+    SUPPORT, FUNDING), and reusable GitHub Actions workflows shared
+    across all Zolai repos.
+
+version:
+  current: 2.0.0
+  channel: stable
+  release_name: org-meta
+  build_number: 1
+
+lifecycle:
+  stage: production
+  status: active
+  started: 2026-09-04
+  updated: 2026-09-04
+
+team:
+  lead: peter
+  members:
+    - name: peter
+      role: maintainer
+      contact: peterlianpi
+
+repository:
+  url: https://github.com/Zolai-AI/.github.git
+  branch: main
+  provider: github
+  visibility: public
+
+stack:
+  languages:
+    - yaml
+    - markdown
+  frameworks: []
+  databases: []
+  infrastructure:
+    - github-actions
+  package_manager: none
+  runtime: none
+
+ai:
+  assistant: opencode
+  context_dir: context/
+  entry_point: AGENTS.md
+  rules: []
+
+_pcore:
+  version: 2
+  initialized: 2026-09-04T00:00:00Z
+  last_orchestration: null
+  orchestration_count: 0
+  version_history: []
+  lifecycle_transitions:
+    - stage: production
+      status: active
+      date: 2026-09-04
+      note: Org profile + seven-file context initialized.

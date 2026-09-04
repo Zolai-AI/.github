@@ -6,7 +6,7 @@ Its `profile/README.md` renders on the org Overview page. This is not a code rep
 ## Contents
 - `profile/README.md` — org profile (landing page on GitHub)
 - `logo.png` / `og.png` — brand assets (original website logo)
-- `community/` — CONTRIBUTING.md, SECURITY.md
+- `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`, `FUNDING.yml` — community health
 - `.github/workflows/lint.yml` — org-level lint (ruff)
 
 ## Role in the org
