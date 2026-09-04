@@ -13,13 +13,13 @@ open learner platform + offline desktop app.
 
 | Repo | What it does |
 |------|-------------|
-| [`zolai-core`](./zolai-core) | Python package + FastAPI + **RAG Knowledge Brain** (ingest/retrieve/ngram) |
-| [`zolai-web`](./zolai-web) | Next.js + Hono + Prisma learner platform |
-| [`zolai-tauri`](./zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
-| [`zolai-datasets`](./zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
-| [`zolai-training`](./zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF export |
-| [`zolai-wiki`](./zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum, culture |
-| [`zolai-ai`](./zolai-ai) | Monorepo (source of truth, mirrors the components) |
+| [`zolai-core`](https://github.com/Zolai-AI/zolai-core) | Python package + FastAPI + **RAG Knowledge Brain** (ingest/retrieve/ngram) |
+| [`zolai-web`](https://github.com/Zolai-AI/zolai-web) | Next.js + Hono + Prisma learner platform |
+| [`zolai-tauri`](https://github.com/Zolai-AI/zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
+| [`zolai-datasets`](https://github.com/Zolai-AI/zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
+| [`zolai-training`](https://github.com/Zolai-AI/zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF export |
+| [`zolai-wiki`](https://github.com/Zolai-AI/zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum, culture |
+| [`zolai-ai`](https://github.com/Zolai-AI/zolai-ai) | Monorepo (source of truth, mirrors the components) |
 | `.github` | **This** org profile + community + CI |
 
 ## How it fits together
