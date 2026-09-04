@@ -12,3 +12,6 @@ artifacts/
 .venv/
 *.jsonl
 !kaggle_dataset/*.json
+
+# Orchestra session-claims runtime artifact
+.pcore-claims/
