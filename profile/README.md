@@ -1,5 +1,5 @@
 # 💚 Zolai AI — Preserving Tedim Zolai with AI
-<p align="center"><img src="../logo.png" alt="Zolai AI" width="120"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Zolai-AI/.github/main/logo.png" alt="Zolai AI" width="120"></p>
 
 
 **Bilingual (Tedim Zolai ⇄ English) AI toolkit for the Zomi people.**
