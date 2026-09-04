@@ -1,7 +1,10 @@
-# AI Workflow Rules — .github
+# Zolai-AI — AI Workflow Rules
 
 ## Guardrails
-- Do NOT modify `profile/README.md` without testing rendering on GitHub
-- Do NOT change logo without verifying byte-identical match
-- Do NOT add application code — this is a profile repo only
-- Branch: `main` only, no feature branches needed
+- Scope work to ONE repo; read that repo's `AGENTS.md` + `context/` + README (not the whole tree).
+- Do not glob across `**/` from the workspace root.
+- Never commit secrets; never `add -f` past push protection.
+- Enforce ZVS 2018 orthography; do not "correct" to non-ZVS forms.
+- Run the repo's test/verify step before reporting done.
+- Push to `Zolai-AI/*` only; no force-push.
+- RAG-first — do not raw fine-tune the assistant.

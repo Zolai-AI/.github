@@ -1,12 +1,13 @@
-# Architecture — .github
+# Zolai-AI — Architecture
 
-## Structure
-- `profile/README.md` — org profile (renders on GitHub org Overview)
-- `logo.png` / `og.png` — brand assets (original website logo, byte-identical)
-- `community/` — CONTRIBUTING.md, SECURITY.md
-- `.github/workflows/lint.yml` — org-level ruff lint
+## Runtime flow
+`zolai-wiki` (knowledge) → `zolai-core` (RAG retrieval + n-gram prediction) →
+consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF).
 
-## Invariants
-- `profile/README.md` MUST exist at root-level `profile/` (GitHub special-cases this path)
-- Logo MUST be byte-identical to `website/zolai-project/public/logo.png`
-- No application code, no data, no tests
+`zolai-datasets` (corpora) → `zolai-training` (LoRA/QLoRA → GGUF) → offline desktop.
+
+## Boundaries / invariants
+- RAG/embeddings-first; **no raw fine-tuning** for the main assistant.
+- ZVS 2018 orthography, SOV, ergative `in` enforced across all text output.
+- Secrets live in `.env` only; never committed (push protection active).
+- Heavy data stays git-ignored (`data/`, `node_modules/`, `.venv/`).

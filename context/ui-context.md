@@ -1,4 +1,7 @@
-# UI Context — .github
+# Zolai-AI — UI Context
 
-No UI components. The `profile/README.md` renders as GitHub-flavored Markdown
-on the org Overview page. Brand theme is applied via badge images.
+- **Brand root:** `zolai-ai.github.io/` (Pages landing, HTTP 200).
+- **Web app:** `zolai-web` (Next.js) — learner platform.
+- **Desktop:** `zolai-tauri` — local dashboard `/dashboard/analytics`.
+- **Theme:** design tokens via CSS custom properties; `prefers-reduced-motion` respect;
+  brand logo `logo.png` byte-identical across all surfaces.
