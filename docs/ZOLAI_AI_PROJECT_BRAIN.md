@@ -23,15 +23,16 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
 | Owner | Peter Lianpi (`peterlianpi`) |
 | Version | **2.0.0** (all repos) |
 | Licensing | MIT |
-| Pages site | https://zolai-ai.github.io/ (live, HTTP 200) |
+| Pages site | https://zolai.space/ (live) + https://zolai-ai.github.io/ |
+| MCP server | https://mcp.zolai.space/mcp (live, 8 tools) |
 | Philosophy | **RAG / embeddings-first — NO raw fine-tuning** for the assistant |
 | Language ground truth | ZVS 2018 orthography · **SOV** word order · ergative **`in`** |
-| Repos | 8 under the org |
+| Repos | 10 under the org |
 | Backlog C (prediction API) | ✅ done — 38 tests green |
 
 ---
 
-## 3. Ecosystem — 8 repos
+## 3. Ecosystem — 10 repos
 
 ```
                     ┌───────────────  Zolai-AI Org  ───────────────────────┐
@@ -42,6 +43,8 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
   CONSUMERS         │  zolai-web       learner platform (Next.js+Hono+Prisma) │
                     │  zolai-tauri     offline desktop (Tauri2+Ollama+GGUF)   │
   TRAINING          │  zolai-training  LoRA/QLoRA → GGUF export               │
+  MCP / AI          │  zolai-mcp-server  MCP server for ChatGPT/Gemini/Claude  │
+  LANDING           │  zolai-landing     React+Vite+Three.js for zolai.space   │
   ORG LAYER         │  .github         profile + community + workflows        │
                     │  zolai-ai.github.io  landing page                       │
                     └─────────────────────────────────────────────────────────┘
@@ -55,6 +58,8 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
 | `zolai-datasets` | Corpora & datasets | Python, JSON/JSONL | `data/` (6.3GB) |
 | `zolai-training` | Fine-tuning + GGUF | PyTorch/PEFT/TRL | `kaggle_dataset/`, `notebooks/` |
 | `zolai-wiki` | Knowledge base | Markdown (ZVS 2018) | grammar, vocab, curriculum |
+| `zolai-mcp-server` | MCP server | TypeScript, EdgeFastMCP, Cloudflare Workers | 8 tools (docs + dictionary + bible), auth |
+| `zolai-landing` | Org landing | React 19, Vite, Three.js, Tailwind v4 | Three.js brain, live GitHub stats |
 | `.github` | Org meta-repo | YAML/Markdown | profile, community, `project.yaml` |
 | `zolai-ai.github.io` | Landing page | HTML/CSS | animated landing |
 
@@ -93,7 +98,7 @@ augments text generation for language-aware suggestions.
 
 ## 6. Current status (verified)
 
-- ✅ Org migration complete (8 repos, all clean on `main`, LICENSE everywhere)
+- ✅ Org migration complete (10 repos, all clean on `main`, LICENSE everywhere)
 - ✅ Org profile renders; community health **87%**; Pages site live
 - ✅ Backlog C — Prediction lookup API done (`/predictions/*`), 38 tests green
 - ✅ Workspace aligned to P-Core pattern; full seven-file context in root + `.github`
@@ -105,9 +110,11 @@ augments text generation for language-aware suggestions.
 
 | Item | Description | Status |
 |------|-------------|--------|
-| **Backlog E** | **Zolai RAG assistant** — `POST /assistant/chat`: retrieve top-k → format context + `zolai_system_prompt.txt` → call LLM backend (OpenRouter free / local GGUF / hybrid) → answer. Wire into `tools.py`; TestClient tests; optional CLI. | Not started |
-| **Backlog D** | Dataset export — `zolai-datasets` → **HuggingFace Hub** + **Kaggle** | Not started |
-| Owner-only | Upload org avatar, pin 6 repos, resolve org billing | UI only |
+| **Backlog D** | Dataset export — `zolai-datasets` → **HuggingFace Hub** + **Kaggle** | ✅ done |
+| **Backlog E** | **Zolai RAG assistant** — retrieve top-k → context → LLM → answer | ✅ done |
+| **MCP auth + tools** | Bearer auth (ZOLAI_MCP_TOKEN) + dictionary/bible proxy tools | ✅ done — v1.2.0 |
+| **Bible search API** | `/bible/search` endpoint in zolai-core for MCP proxy | ✅ done |
+| Owner-only | Upload org avatar, pin repos, org billing | UI only |
 
 ---
 
@@ -137,6 +144,12 @@ Use these to drive discussion with the chat LLM:
 - **Delete local monorepo, distribute data** → freed ~14GB; component repos own their data.
 - **Keep `.github` as separate meta-repo** → GitHub requires a repo named `.github` for org profile.
 - **Version 2.0.0** aligned across all repos for coherent release identity.
+
+## 9b. Recent decisions (2026-09-05)
+
+- **Hybrid MCP proxy → zolai-core** for dictionary/bible tools — avoids 31MB JSONL fetch on Cloudflare Workers edge; zolai-core already has FastAPI + SQLite FTS5.
+- **Bearer auth via ZOLAI_MCP_TOKEN** — optional env var; if unset, open access; if set, requires `Authorization: Bearer <token>`.
+- **10 repos final** — added `zolai-mcp-server` (MCP for AI assistants) and `zolai-landing` (React+Vite+Three.js at zolai.space).
 
 ---
 
