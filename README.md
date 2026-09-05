@@ -20,7 +20,7 @@ It is not a code repo — no API, no tests, no package.
 
 Other repos in the org:
 
-`zolai-core` · `zolai-web` · `zolai-tauri` · `zolai-datasets` · `zolai-training` · `zolai-wiki` · `zolai-ai.github.io`
+`zolai-core` · `zolai-web` · `zolai-tauri` · `zolai-datasets` · `zolai-training` · `zolai-wiki` · `zolai-ai.github.io` · `zolai-mcp-server` · `zolai-landing`
 
 ## Project Brain
 

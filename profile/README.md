@@ -14,6 +14,8 @@ open learner platform + offline desktop app.
 | Repo | What it does |
 |------|-------------|
 | [`zolai-core`](https://github.com/Zolai-AI/zolai-core) | Python package + FastAPI + **RAG Knowledge Brain** (ingest/retrieve/ngram) |
+| [`zolai-mcp-server`](https://github.com/Zolai-AI/zolai-mcp-server) | MCP server for ChatGPT/Gemini/Claude — EdgeFastMCP on Cloudflare Workers |
+| [`zolai-landing`](https://github.com/Zolai-AI/zolai-landing) | Org landing page — React + Vite + Three.js at zolai.space |
 | [`zolai-web`](https://github.com/Zolai-AI/zolai-web) | Next.js + Hono + Prisma learner platform |
 | [`zolai-tauri`](https://github.com/Zolai-AI/zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
 | [`zolai-datasets`](https://github.com/Zolai-AI/zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
