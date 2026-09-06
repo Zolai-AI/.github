@@ -1,6 +1,16 @@
-# 💚 Zolai AI — Preserving Tedim Zolai with AI
-<p align="center"><img src="https://raw.githubusercontent.com/Zolai-AI/.github/main/logo.png" alt="Zolai AI" width="120"></p>
+<div align="center">
 
+# 💚 Zolai AI — Preserving Tedim Zolai with AI
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Zolai-AI/.github/main/logo.png" alt="Zolai AI" width="120">
+</p>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![ZVS 2018](https://img.shields.io/badge/ZVS-2018-green.svg)](https://github.com/Zolai-AI/zolai-wiki)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-Datasets-yellow.svg)](https://huggingface.co/Zolai-AI)
+[![Kaggle](https://img.shields.io/badge/Kaggle-8%20Datasets-blue.svg)](https://kaggle.com/datasets?search=zolai)
+[![Discord](https://img.shields.io/badge/Discord-Community-7289da.svg)](https://github.com/Zolai-AI/.github/discussions)
 
 **Bilingual (Tedim Zolai ⇄ English) AI toolkit for the Zomi people.**
 
@@ -9,7 +19,11 @@ orthography** — high-purity bilingual corpora → a **RAG-first knowledge brai
 (i.e. no raw fine-tuning — existing AIs consume Zolai knowledge as context) →
 open learner platform + offline desktop app.
 
-## Data at a Glance
+</div>
+
+---
+
+## 📊 Data at a Glance
 
 | Category | Count | Source |
 |----------|-------|--------|
@@ -27,24 +41,28 @@ open learner platform + offline desktop app.
 
 **Full data credits:** See [`data/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/data/CREDITS.md)
 
-## Why We Use the Bible
+## 📖 Why We Use the Bible
 
 The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai — with 31,102 parallel verses across multiple Chin language versions (Tedim, Hakha, Falam, Paite). We use it as a *language learning corpus*, not for religious purposes.
 
-## Published Datasets
+## 🚀 Published Datasets
 
 ### HuggingFace
-- [`Zolai-AI/zolai-datasets`](https://huggingface.co/datasets/Zolai-AI/zolai-datasets) — Org datasets
-- [`peterpausianlian/zolai-knowledge-vectors`](https://huggingface.co/datasets/peterpausianlian/zolai-knowledge-vectors) — Sentence embeddings for RAG
-- [`peterpausianlian/zolai-qwen2.5-3b-lora`](https://huggingface.co/peterpausianlian/zolai-qwen2.5-3b-lora) — LoRA adapter
+| Dataset | Description |
+|---------|-------------|
+| [`Zolai-AI/zolai-datasets`](https://huggingface.co/datasets/Zolai-AI/zolai-datasets) | Org datasets |
+| [`peterpausianlian/zolai-knowledge-vectors`](https://huggingface.co/datasets/peterpausianlian/zolai-knowledge-vectors) | Sentence embeddings for RAG |
+| [`peterpausianlian/zolai-qwen2.5-3b-lora`](https://huggingface.co/peterpausianlian/zolai-qwen2.5-3b-lora) | LoRA adapter |
 
 ### Kaggle (8 datasets)
-- [`zolai-llm-training-dataset`](https://kaggle.com/datasets/peterpausianlian/zolai-llm-training-dataset) — 94MB LLM training
-- [`zolai-tedim-cleaned-master`](https://kaggle.com/datasets/peterpausianlian/zolai-tedim-cleaned-master) — 120MB cleaned corpus
-- [`bible-datasets`](https://kaggle.com/datasets/peterpausianlian/bible-datasets) — 72MB Bible USX format
-- And 5 more datasets (see Kaggle profile)
+| Dataset | Size | Description |
+|---------|------|-------------|
+| [`zolai-llm-training-dataset`](https://kaggle.com/datasets/peterpausianlian/zolai-llm-training-dataset) | 94MB | LLM training data |
+| [`zolai-tedim-cleaned-master`](https://kaggle.com/datasets/peterpausianlian/zolai-tedim-cleaned-master) | 120MB | Cleaned corpus |
+| [`bible-datasets`](https://kaggle.com/datasets/peterpausianlian/bible-datasets) | 72MB | Bible USX format |
+| And 5 more datasets | — | See Kaggle profile |
 
-## Repositories
+## 🏗️ Repositories
 
 | Repo | What it does |
 |------|-------------|
@@ -59,7 +77,7 @@ The Bible is our **primary training corpus** because it is the **only complete, 
 | [`zolai-ai`](https://github.com/Zolai-AI/zolai-ai) | Monorepo workspace (source of truth) |
 | `.github` | **This** org profile + community + CI |
 
-## How it fits together
+## 🔄 How It Fits Together
 
 ```
 web ──REST──▶ core ◀──RAG── wiki
@@ -68,7 +86,7 @@ datasets ──HF/Kaggle──▶ core ──inference──▶ (existing AI, as
 training ──▶ datasets + adapters
 ```
 
-## Our principles
+## 🎯 Our Principles
 
 - **RAG-first, no raw fine-tuning** — Zolai knowledge is *embedded and injected* into
   capable general AIs, not a Zolai-only base model.
@@ -76,19 +94,33 @@ training ──▶ datasets + adapters
 - **No secrets in code** — tokens load from `.env` only; `.env.example` is placeholders.
 - **Datasets/models on HuggingFace Hub / Kaggle**, never bloated into git.
 
-## Get started
+## 🚀 Get Started
 
-- Core RAG: `pip install -e .` in `zolai-core` → `python scripts/kg/smoke_test.py`
-- Web: `cd zolai-web && bun install && bun run dev`
-- Wiki: `zolai-wiki` — canonical knowledge base (1529 files).
+| Component | Command |
+|-----------|---------|
+| Core RAG | `pip install -e .` in `zolai-core` → `python scripts/kg/smoke_test.py` |
+| Web | `cd zolai-web && bun install && bun run dev` |
+| Wiki | `zolai-wiki` — canonical knowledge base (1529 files) |
 
-## Contribute
+## 🤝 Contribute
 
-- **Native Tedim (Zomi) speakers** — validate corpus + ZVS 2018 compliance.
-- **Linguists** — Tibeto-Burman grammar, sentence-structure, word-prediction data.
-- **ML engineers** — low-resource NLP, embeddings/RAG, fine-tuning.
-- **Web/desktop devs** — Next.js + Tauri.
+We need:
 
-Conventional commits · PRs land on `main` · see `community/CONTRIBUTING.md`.
+| Role | What you do |
+|------|-------------|
+| **Native Zomi Speakers** | Validate corpus + ZVS 2018 compliance |
+| **Linguists** | Tibeto-Burman grammar, sentence-structure, word-prediction data |
+| **ML Engineers** | Low-resource NLP, embeddings/RAG, fine-tuning |
+| **Web/Desktop Devs** | Next.js + Tauri |
 
-> Building a thriving Zolai AI ecosystem for the Zomi people. 🇿🇲
+**Conventional commits** · PRs land on `main` · see [`CONTRIBUTING.md`](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING.md)
+
+---
+
+<div align="center">
+
+**Lungdam!** 🙏 (Thank you!)
+
+Building a thriving Zolai AI ecosystem for the Zomi people. 🇿🇲
+
+</div>
