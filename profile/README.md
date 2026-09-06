@@ -9,6 +9,41 @@ orthography** — high-purity bilingual corpora → a **RAG-first knowledge brai
 (i.e. no raw fine-tuning — existing AIs consume Zolai knowledge as context) →
 open learner platform + offline desktop app.
 
+## Data at a Glance
+
+| Category | Count | Source |
+|----------|-------|--------|
+| Dictionary ZO→EN | 93,931 entries | ZomiLanguage/dictionary |
+| Dictionary EN→ZO | 112,220 entries | ZomiLanguage/dictionary |
+| Bible parallel verses | 31,102 (EN↔ZO) | dalsuum/bible-master |
+| Vocabulary | 98,976 words | Merged from all sources |
+| Proverbs & wisdom | 7,736 entries | Bible extraction |
+| Conversational data | 8,913 entries | paumkim corpus |
+| Cross-language comparisons | 90,255 | Tedim/Hakha/Falam/Paite |
+| Grammar patterns | 1,188 patterns | Bible + references |
+| Phrases | 5,000 pairs | Bible + dictionary |
+| Reference materials | 23 files (6.5MB) | Grammar, literature, genealogy |
+| Clean corpus | 208MB (3M+ sentences) | paumkim/zomi-dataset |
+
+**Full data credits:** See [`data/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/data/CREDITS.md)
+
+## Why We Use the Bible
+
+The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai — with 31,102 parallel verses across multiple Chin language versions (Tedim, Hakha, Falam, Paite). We use it as a *language learning corpus*, not for religious purposes.
+
+## Published Datasets
+
+### HuggingFace
+- [`Zolai-AI/zolai-datasets`](https://huggingface.co/datasets/Zolai-AI/zolai-datasets) — Org datasets
+- [`peterpausianlian/zolai-knowledge-vectors`](https://huggingface.co/datasets/peterpausianlian/zolai-knowledge-vectors) — Sentence embeddings for RAG
+- [`peterpausianlian/zolai-qwen2.5-3b-lora`](https://huggingface.co/peterpausianlian/zolai-qwen2.5-3b-lora) — LoRA adapter
+
+### Kaggle (8 datasets)
+- [`zolai-llm-training-dataset`](https://kaggle.com/datasets/peterpausianlian/zolai-llm-training-dataset) — 94MB LLM training
+- [`zolai-tedim-cleaned-master`](https://kaggle.com/datasets/peterpausianlian/zolai-tedim-cleaned-master) — 120MB cleaned corpus
+- [`bible-datasets`](https://kaggle.com/datasets/peterpausianlian/bible-datasets) — 72MB Bible USX format
+- And 5 more datasets (see Kaggle profile)
+
 ## Repositories
 
 | Repo | What it does |
@@ -21,7 +56,7 @@ open learner platform + offline desktop app.
 | [`zolai-datasets`](https://github.com/Zolai-AI/zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
 | [`zolai-training`](https://github.com/Zolai-AI/zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF export |
 | [`zolai-wiki`](https://github.com/Zolai-AI/zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum, culture |
-| [`zolai-ai`](https://github.com/Zolai-AI/zolai-ai) | Monorepo (source of truth, mirrors the components) |
+| [`zolai-ai`](https://github.com/Zolai-AI/zolai-ai) | Monorepo workspace (source of truth) |
 | `.github` | **This** org profile + community + CI |
 
 ## How it fits together
