@@ -179,7 +179,7 @@ Target: + Automated benchmarks
 1. Read CONTRIBUTING.md
 2. Set up development environment
 3. Pick a `good first issue`
-4. Join community Discord
+4. Join community GitHub Discussions
 5. Attend monthly meeting
 
 ### For Zomi Speakers
@@ -212,7 +212,7 @@ Target: + Automated benchmarks
 ### Communication
 - **GitHub Issues:** Bug reports, features
 - **GitHub Discussions:** Questions, ideas
-- **Discord:** Real-time chat
+- **GitHub Discussions:** Questions, ideas, real-time chat
 - **Community Meetings:** Monthly
 
 ---
