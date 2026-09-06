@@ -214,7 +214,7 @@ We thank security researchers who help us improve security. With permission, we'
 ## 📞 Contact
 
 - **General questions:** GitHub Discussions
-- **Real-time chat:** Discord
+- **GitHub Discussions:** Questions, ideas, real-time chat
 
 ## 📝 Changelog
 

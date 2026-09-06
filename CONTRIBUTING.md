@@ -291,8 +291,8 @@ zolai-ai/
 ### Communication Channels
 - **GitHub Issues**: Bug reports, feature requests
 - **GitHub Discussions**: Questions, ideas, general chat
-- **Discord**: Real-time chat (link in README)
-- **Community Meetings**: Monthly (link in Discord)
+- **GitHub Discussions**: Questions, ideas, real-time chat
+- **Community Meetings**: Monthly (link in GitHub Discussions)
 
 ### Recognition
 - All contributors credited in README
@@ -320,7 +320,7 @@ zolai-ai/
 ## ❓ Questions?
 
 - Open a GitHub Discussion
-- Join our Discord
+- Join our GitHub Discussions
 - Attend community meetings
 - Read the FAQ in wiki
 
