@@ -187,8 +187,8 @@ All Zolai text MUST follow ZVS 2018 orthography:
   "chapter": "1",
   "verse": "1",
   "ref": "GEN 1:1",
-  "zo_tdb77": "Pasian in vantung leh lebung a piangsak hi.",
-  "zo_tedim2010": "Pasian in vantung leh lebung a piangsak hi.",
+  "zo_tdb77": "Pasian in vantung leh leitung a piangsak hi.",
+  "zo_tedim2010": "Pasian in vantung leh leitung a piangsak hi.",
   "en_kJV": "In the beginning God created the heaven and the earth."
 }
 ```
