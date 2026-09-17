@@ -42,3 +42,6 @@ test-results/
 # Logs
 logs/
 tmp/
+
+# VS Code workspace file (local IDE config)
+zolai-ai.code-workspace
