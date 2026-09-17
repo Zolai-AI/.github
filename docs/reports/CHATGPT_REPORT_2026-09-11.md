@@ -64,12 +64,12 @@ JSONL files (2.68GB, source of truth)
 | Table | Rows | Size | Purpose |
 |-------|------|------|---------|
 | dictionary | 84,490 | ~11MB | Zolai → English master dictionary |
-| bible_verses | 31,102 | ~8MB | EN/ZO parallel Bible verses |
-| grammar_patterns | 5,482 | ~2MB | Sentence structure patterns |
-| phrases | 5,000 | ~1MB | Multi-word expressions |
-| vocab | 94,458 | ~12MB | Vocabulary index with frequency |
+| bible_verses | 31,649 | ~8MB | EN/ZO parallel Bible verses |
+| grammar_patterns | 5,560 | ~2MB | Sentence structure patterns |
+| phrases | 10,722 | ~1MB | Multi-word expressions |
+| vocab | 104,906 | ~12MB | Vocabulary index with frequency |
 | translations | 58,694 | ~5MB | EN↔ZO translation pairs |
-| word_usage | 7,384 | ~2MB | Per-book word usage profiles |
+| word_usage | 269,903 | ~2MB | Per-book word usage profiles |
 | provenance | 227 | <1MB | File tracking manifest |
 
 ### Query Performance
@@ -184,7 +184,7 @@ python -m zolai.data.sync --from sqlite:///zolai.db --to "$ZOLAI_PG_URL"
 ### P3 — Data Quality (3/3 DONE)
 1. ✅ RAG integration tests (14 tests)
 2. ✅ Data deduplication (13 tests)
-3. ✅ Grammar v1→v2 migration (4,271→5,482 patterns)
+3. ✅ Grammar v1→v2 migration (4,271→5,560 patterns)
 
 ### P4 — API & Documentation (2/2 DONE)
 1. ✅ API health check (already existed)
@@ -217,12 +217,12 @@ python -m zolai.data.sync --from sqlite:///zolai.db --to "$ZOLAI_PG_URL"
 |---------|------|---------|--------|
 | Dictionary ZO→EN | 11MB | 84,490 | ZomiLanguage/dictionary |
 | Dictionary EN→ZO | 56MB | 64,025 | ZomiLanguage/dictionary |
-| Bible parallel corpus | 16MB | 31,102 | dalsuum/bible-master |
-| Grammar patterns | 2MB | 5,482 | Paumkim + generated |
-| Phrases | 1MB | 5,000 | Bible-derived |
-| Vocabulary index | 3MB | 94,458 | Combined sources |
+| Bible parallel corpus | 16MB | 31,649 | dalsuum/bible-master |
+| Grammar patterns | 2MB | 5,560 | Paumkim + generated |
+| Phrases | 1MB | 10,722 | Bible-derived |
+| Vocabulary index | 3MB | 104,906 | Combined sources |
 | Translation pairs | 19MB | 58,694 | Bible + corpus |
-| Word usage profiles | 2MB | 7,384 | Bible context analysis |
+| Word usage profiles | 2MB | 269,903 | Bible context analysis |
 | Provenance | <1MB | 227 files | Generated |
 
 ### Training Data

@@ -53,9 +53,9 @@ Comparison of claimed database statistics from previous reports against actual c
 | `syllable_data` | 189,563 | Syllable segmentation for all dict words |
 | `proverbs` | 8,203 | Original proverbs table |
 | `word_collocations` | 5,000 | Word pair frequencies |
-| `phrases` | 5,000 | Multi-word expressions |
-| `grammar_patterns` | 5,547 | Original grammar patterns |
-| `training_exercises` | 81,805 | Grammar exercises |
+| `phrases` | 10,722 | Multi-word expressions |
+| `grammar_patterns` | 5,560 | Original grammar patterns |
+| `training_exercises` | 82,159 | Grammar exercises |
 | `data_audit_log` | 24,762 | Audit trail |
 | `provenance` | 255 | Source file tracking |
 

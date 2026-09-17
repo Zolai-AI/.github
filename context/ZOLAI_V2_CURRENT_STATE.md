@@ -33,11 +33,11 @@
 |------|---------|------|--------|
 | dict_zo_en_master_v1.jsonl | 84,490 | 11MB | ✅ Canonical |
 | dict_canonical_clean.jsonl | 64,025 | 56MB | ✅ Canonical |
-| parallel_corpus_v1.jsonl | 31,102 | 16MB | ✅ Canonical |
-| vocab_index_full.jsonl | 94,458 | 17MB | ✅ Canonical |
+| parallel_corpus_v1.jsonl | 31,649 | 16MB | ✅ Canonical |
+| vocab_index_full.jsonl | 104,906 | 17MB | ✅ Canonical |
 | translation_pairs_v1.jsonl | 58,694 | 20MB | ✅ Canonical |
 | word_alignments_v1.jsonl | 385,120 | 54MB | ✅ Canonical |
-| phrases_v1.jsonl | 5,000 | 2.3MB | ✅ Canonical |
+| phrases_v1.jsonl | 10,722 | 2.3MB | ✅ Canonical |
 | grammar_patterns_v1.jsonl | 4,271 | 1.0MB | ✅ Canonical |
 | grammar_patterns_v2.jsonl | 5,560 | 1.3MB | ✅ Canonical (superset of v1) |
 
@@ -45,7 +45,7 @@
 
 | File | Records | Size | Status |
 |------|---------|------|--------|
-| word_usage_profiles.jsonl | 7,384 | 18MB | ✅ Generated |
+| word_usage_profiles.jsonl | 269,903 | 18MB | ✅ Generated |
 | phrase_context_map.jsonl | 45,597 | 35MB | ✅ Generated |
 | per_chapter_analysis.jsonl | 1,153 | 680KB | ✅ Generated |
 | per_book_analysis.jsonl | 65 | 56KB | ✅ Generated |

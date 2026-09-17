@@ -233,7 +233,7 @@ INSTRUCTIONS:
 | gemini-3-flash | 1/12 correct | Best for `Na ne hiam?` verification |
 | gemini-3-pro-plus | 0/12 correct | Better for formal/complex sentences |
 
-**Key Finding:** Free models struggle with Zolai accuracy. Always anchor to your 31,102-verse Bible corpus + 84,490-verified dictionary.
+**Key Finding:** Free models struggle with Zolai accuracy. Always anchor to your 31,649-verse Bible corpus + 84,490-verified dictionary.
 
 ## Common Workflows
 

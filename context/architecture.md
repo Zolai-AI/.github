@@ -99,7 +99,7 @@ third-party dataset repositories as sources.
 
 | Category | Source | Size | Entries |
 |----------|--------|------|---------|
-| Bible | Tedim Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | 31,102 parallel verses | 31,102 |
+| Bible | Tedim Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | 31,649 parallel verses | 31,649 |
 | Dictionary (ZO→EN) | Our cleaned master dictionary | 11MB | 84,490 |
 | Dictionary (EN→ZO) | Our cleaned master dictionary | 56MB | 64,025 |
 | Dictionary (Trilingual) | Our processed trilingual dictionary | 6.7MB | 7,841 |
@@ -107,7 +107,7 @@ third-party dataset repositories as sources.
 | Corpus | Web-scraped Zolai corpus, cleaned | 686MB | 3M+ sentences |
 | Reference | Local reference PDFs | 6.5MB | 23 files |
 | Context Analysis | Our processing | 53MB | 54,376 |
-| Exercises | Our generation | 37MB | 81,805 |
+| Exercises | Our generation | 37MB | 82,159 |
 
 ## Dictionary Cleaning
 - **Zolai-only dictionaries**: All dictionaries cleaned of Hakha/Falam intrusions
@@ -119,7 +119,7 @@ third-party dataset repositories as sources.
 
 The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai:
 
-- **31,102 parallel verses** (EN↔ZO) — no other source comes close
+- **31,649 parallel verses** (EN↔ZO) — no other source comes close
 - **Complete text** — all 66 books, covering all registers (narrative, poetry, dialogue, law)
 - **Multiple versions** — TDB77, Tedim2010, Hakha, Falam, Paite
 - **Community-validated** — decades of translation work by native speakers
@@ -230,7 +230,7 @@ User input (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
     1. Dictionary lookup (84,490 words)
-    2. Bible verse search (31,102 verses)
+    2. Bible verse search (31,649 verses)
     3. Phrase matching (10,722 phrases)
     4. Grammar pattern check (5,560 patterns)
     5. Context-aware translation (269,903 records)

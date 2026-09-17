@@ -45,9 +45,9 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 | **Grammar Checking** | SOV validation, negation patterns, question formation | grammar_patterns table (5,560) |
 | **Context-Aware Translation** | Per-book/meaning-shift detection, idiom detection | word_usage table (269,903) |
 | **Vocabulary Quiz** | 8 quiz types (bible, phrases, reverse, frequency) | vocabulary table (104,906) |
-| **Sentence Analysis** | Word-by-word breakdown with interlinear glossing | bible_verses table (31,102) |
-| **Progressive Learning** | 8 CEFR levels (A1-C2) with spaced repetition | training_exercises table (81,805) |
-| **Bible Study Engine** | Verse-by-verse analysis with morphological breakdown | bible_verses table (31,102) |
+| **Sentence Analysis** | Word-by-word breakdown with interlinear glossing | bible_verses table (31,649) |
+| **Progressive Learning** | 8 CEFR levels (A1-C2) with spaced repetition | training_exercises table (82,159) |
+| **Bible Study Engine** | Verse-by-verse analysis with morphological breakdown | bible_verses table (31,649) |
 | **Paragraph Analysis** | Style profiling, paraphrase, multi-style generation | Reference materials |
 | **Training Data Generation** | Grammar-aware synthesis from Bible templates | Bible + grammar_patterns |
 | **Proficiency Testing** | 232 questions across 6 CEFR levels | All tables |
@@ -65,7 +65,7 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 
 **Why Bible:** The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai:
 
-- **31,102 parallel verses** (EN↔ZO) — no other source comes close
+- **31,649 parallel verses** (EN↔ZO) — no other source comes close
 - **Complete text** — all 66 books, covering all registers (narrative, poetry, dialogue, law)
 - **Multiple versions** — TDB77, Tedim2010, Hakha, Falam, Paite
 - **Community-validated** — decades of translation work by native speakers

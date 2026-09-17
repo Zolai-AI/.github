@@ -38,11 +38,11 @@
 | dictionary | 84,490 | Zolai→English dictionary | ✅ Zero noise |
 | dictionary_en_zo | 64,025 | English→Zolai dictionary | ✅ Cleaned |
 | bible_verses | 30,569 | Parallel Bible verses (ZO↔EN) | ✅ 533 duplicates removed |
-| grammar_patterns | 5,482 | Grammar pattern rules | ✅ |
-| phrases | 5,000 | Multi-word expressions | ✅ 5,000 english backfilled from examples |
-| vocab | 94,458 | Vocabulary index with frequency | ✅ |
+| grammar_patterns | 5,560 | Grammar pattern rules | ✅ |
+| phrases | 10,722 | Multi-word expressions | ✅ 5,000 english backfilled from examples |
+| vocab | 104,906 | Vocabulary index with frequency | ✅ |
 | translations | 58,694 | EN↔ZO translation pairs | ✅ |
-| word_usage | 7,384 | Per-book word usage profiles | ✅ 7,384 book fields backfilled |
+| word_usage | 269,903 | Per-book word usage profiles | ✅ 7,384 book fields backfilled |
 | training_exercises | 163,610 | Training data (5 types) | ✅ Newly seeded |
 | provenance | 227 | File tracking manifest | ✅ Versioned (v1.0, active) |
 | data_audit_log | 18,749 | Change tracking log | ✅ Newly created |

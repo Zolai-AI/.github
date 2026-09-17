@@ -159,7 +159,7 @@ Copy this entire document into ChatGPT custom instructions for accurate Zolai tr
 
 | Source | Size | Purpose |
 |--------|------|---------|
-| Bible corpus | 31,102 verses | Ground truth for definitions |
+| Bible corpus | 31,649 verses | Ground truth for definitions |
 | Dictionary (ZO→EN) | 84,490 entries | Zolai→English translations |
 | Dictionary (EN→ZO) | 64,025 entries | English→Zolai translations |
 | Vocabulary | 104,906 words | High-frequency words |

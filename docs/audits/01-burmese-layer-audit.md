@@ -98,10 +98,10 @@ The Zolai-AI ecosystem consists of 10 independent repos with a shared `/data/` d
 
 | File | Lines | Size | Content | Burmese |
 |------|-------|------|---------|---------|
-| `parallel_corpus_v1.jsonl` | 31,102 | 16MB | ZO↔EN parallel verses | ❌ |
+| `parallel_corpus_v1.jsonl` | 31,649 | 16MB | ZO↔EN parallel verses | ❌ |
 | `translation_pairs_v1.jsonl` | 58,694 | 21MB | EN↔ZO pairs | ❌ |
 | `word_alignments_v1.jsonl` | 385,120 | 54MB | ZO↔EN word alignments | ❌ |
-| `phrases_v1.jsonl` | 5,000 | 2.3MB | ZO phrases | ❌ |
+| `phrases_v1.jsonl` | 10,722 | 2.3MB | ZO phrases | ❌ |
 | `grammar_patterns_v2.jsonl` | 5,560 | 1.3MB | Grammar patterns | ❌ |
 
 ### Corpus (892MB)
@@ -128,9 +128,9 @@ The Zolai-AI ecosystem consists of 10 independent repos with a shared `/data/` d
 |---------|-------|-----------|---------|
 | Dictionary (ZO→EN) | 84,490 | ZO→EN | Verified |
 | Dictionary (EN→ZO) | 64,025 | EN→ZO | Verified |
-| Bible verses | 31,102 | ZO↔EN | Trusted |
+| Bible verses | 31,649 | ZO↔EN | Trusted |
 | Word alignments | 385,120 | ZO↔EN | Generated |
-| Phrases | 5,000 | ZO only | Verified |
+| Phrases | 10,722 | ZO only | Verified |
 | Vocabulary | 20,929 | ZO only | Verified |
 | Training exercises | 140,499 | ZO↔EN | Generated |
 | Translation pairs | 58,694 | ZO↔EN | Generated |
@@ -163,7 +163,7 @@ The only Burmese content found is in the raw dalsuum dictionary metadata:
 
 | Resource | Count | Direction | Format |
 |----------|-------|-----------|--------|
-| Parallel corpus | 31,102 | ZO↔EN | JSONL |
+| Parallel corpus | 31,649 | ZO↔EN | JSONL |
 | Translation pairs | 58,694 | ZO↔EN | JSONL |
 | Combined pairs | 40MB | ZO↔EN | JSONL |
 | Word alignments | 385,120 | ZO↔EN | JSONL |

@@ -5,11 +5,11 @@
 | Metric | Value |
 |--------|-------|
 | Dictionary entries | 84,490 |
-| Bible verses | 31,102 |
+| Bible verses | 31,649 |
 | Dictionary corrections | 22 |
-| Verified phrases | 5,000 |
+| Verified phrases | 10,722 |
 | Sentence patterns | 1,501 |
-| Verified vocabulary | 94,458 |
+| Verified vocabulary | 104,906 |
 | Translation accuracy | 10/10 ✅ |
 
 ## Critical Grammar Rules

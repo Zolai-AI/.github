@@ -105,7 +105,7 @@
     "total_size": "12GB",
     "categories": {
       "dictionary": {"size": "1.4GB", "files": 7, "records": 219067},
-      "bible": {"size": "1.3GB", "verses": 31102},
+      "bible": {"size": "1.3GB", "verses": 31649},
       "corpus": {"size": "892MB", "sentences": "~3M"},
       "knowledge": {"size": "4.4GB", "records": 517917},
       "training": {"size": "21MB", "records": 15579},

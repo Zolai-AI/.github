@@ -61,7 +61,7 @@ into our own cleaned, ZVS-2018-aligned relational database (`data/zolai.db`, SQL
 ## Bible as Primary Corpus
 
 The Bible is our **primary training corpus** — the only complete, trusted EN/ZO parallel
-corpus for Tedim Zolai (31,102 parallel verses across TDB77, Tedim2010, Hakha, Falam, Paite).
+corpus for Tedim Zolai (31,649 parallel verses across TDB77, Tedim2010, Hakha, Falam, Paite).
 We use it as a *language learning corpus*, not for religious purposes.
 
 ## Research & Documentation

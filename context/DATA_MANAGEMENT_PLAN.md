@@ -25,7 +25,7 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 |------|------|---------|---------|
 | `data/corpus/corpus_unified_v1.jsonl` | 717MB | 2,973,157 lines | Raw monolingual Zolai text |
 | `data/parallel/zo_en_pairs_combined_v1.jsonl` | 39MB | 105,511 | EN↔ZO translation pairs (all sources) |
-| `data/bible/parallel_corpus_v1.jsonl` | 16MB | 31,102 | Bible verses (TD77 + Tedim2010 + KJV) |
+| `data/bible/parallel_corpus_v1.jsonl` | 16MB | 31,649 | Bible verses (TD77 + Tedim2010 + KJV) |
 | `data/bible/word_alignments_v1.jsonl` | 52MB | 385,120 | Word-level ZO↔EN alignments |
 | `data/bible/translation_pairs_v1.jsonl` | 20MB | 58,694 | Bible translation pairs |
 | `data/bible/vocab_index_full.jsonl` | 3.8MB | 20,929 | Zolai vocabulary with frequency |
@@ -59,7 +59,7 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 |------|------|---------|---------|
 | `data/bible/grammar_patterns_v2.jsonl` | 1.1MB | 5,560 | Grammar patterns |
 | `data/bible/grammar_patterns_text.jsonl` | 184KB | 1,188 | Grammar patterns (text format) |
-| `data/bible/phrases_v1.jsonl` | 2.3MB | 5,000 | Multi-word phrases |
+| `data/bible/phrases_v1.jsonl` | 2.3MB | 10,722 | Multi-word phrases |
 | `data/bible/word_collocations.jsonl` | 424KB | 5,000 | Word co-occurrences |
 | `data/bible/particle_database_v1.jsonl` | 8KB | 27 | Particles |
 | `data/bible/verb_database_v1.jsonl` | 8KB | 20 | Verbs |
@@ -79,7 +79,7 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 
 | File | Size | Records | Purpose |
 |------|------|---------|---------|
-| `data/bible/context/word_usage_profiles.jsonl` | 18MB | 7,384 | Per-book word usage |
+| `data/bible/context/word_usage_profiles.jsonl` | 18MB | 269,903 | Per-book word usage |
 | `data/bible/context/phrase_context_map.jsonl` | 34MB | 45,597 | Phrase contexts |
 | `data/bible/context/per_chapter_analysis.jsonl` | 664KB | 1,153 | Per-chapter analysis |
 | `data/bible/context/topic_clusters.jsonl` | 144KB | 12 | Topic clusters |

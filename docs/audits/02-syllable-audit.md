@@ -225,7 +225,7 @@ The eval framework has:
 
 ## 3. Database Assets Available for Syllable Training
 
-### 3.1 Parallel Corpus (31,102 verses)
+### 3.1 Parallel Corpus (31,649 verses)
 
 | Field | Content | Use for Syllables |
 |-------|---------|-------------------|
@@ -251,14 +251,14 @@ The eval framework has:
 | `english` | Translation | Meaning context |
 | `pos` | Part of speech | Morphological features |
 
-### 3.4 Grammar Patterns (5,547 patterns)
+### 3.4 Grammar Patterns (5,560 patterns)
 
 | Field | Content | Use for Syllables |
 |-------|---------|-------------------|
 | `pattern` | Sentence pattern | Structural context |
 | `category` | Pattern type | Morphological class |
 
-### 3.5 Vocabulary Index (94,458 entries)
+### 3.5 Vocabulary Index (104,906 entries)
 
 | Field | Content | Use for Syllables |
 |-------|---------|-------------------|

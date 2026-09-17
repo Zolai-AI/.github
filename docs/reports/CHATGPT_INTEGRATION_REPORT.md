@@ -22,7 +22,7 @@ zolai-ai/                          # Workspace root (10 repos)
 | Asset | Size | Description |
 |-------|------|-------------|
 | `data/zolai.db` | 2285.9 MB | SQLite DB (99 tables, 3.3M rows) |
-| `data/bible/parallel_corpus_v1.jsonl` | 16 MB | 31,102 EN↔ZO Bible verses |
+| `data/bible/parallel_corpus_v1.jsonl` | 16 MB | 31,649 EN↔ZO Bible verses |
 | `data/dictionary/dict_zo_en_master_v1.jsonl` | 11 MB | 84,490 ZO→EN entries |
 | `data/dictionary/dict_en_zo_canonical.jsonl` | 56 MB | 64,025 EN→ZO entries |
 | `data/syllable/corpus.jsonl` | 24 MB | 189K words with syllables |
@@ -142,11 +142,11 @@ pos.tag("Pasian in vantung a piangsak hi")
 | Translation (ensemble) | 3-model | 5K words/s | 92%+ |
 
 ## Data Quality
-- **Bible corpus**: 31,102 verse pairs, ZVS 2018 validated
+- **Bible corpus**: 31,649 verse pairs, ZVS 2018 validated
 - **Dictionary**: 84,490 ZO→EN, 64,025 EN→ZO, source-tracked
 - **Syllables**: 189,563 words segmented, 1,830 unique syllables
 - **Gold dataset**: 10K expert-verified syllable boundaries
-- **Proverbs**: 7,736 entries with categories
+- **Proverbs**: 8,203 entries with categories
 
 ## Integration Checklist
 - [x] MCP server deployed and live

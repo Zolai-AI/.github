@@ -49,7 +49,7 @@ banner() {
   clear
   echo -e "${C}╔══════════════════════════════════════════════════════════╗${NC}"
   echo -e "${C}║${NC}  ${M}ZOLAI LANGUAGE LEARNING${NC} — Learn from Bible Data       ${C}║${NC}"
-  echo -e "${C}║${NC}  ${B}23,383 Words • 8 Levels • 31,102 Sentences • AI Help  ${C}║${NC}"
+  echo -e "${C}║${NC}  ${B}104,906 Words • 8 Levels • 31,649 Verses • AI Help  ${C}║${NC}"
   echo -e "${C}║${NC}  ${B}ZVS 2018 • SOV • Ergative 'in' • 'hiam' = question  ${C}║${NC}"
   echo -e "${C}╚══════════════════════════════════════════════════════════╝${NC}"
   echo ""

@@ -299,7 +299,7 @@ None detected.
 |----------|-------|------------|--------------|
 | Dictionary (processed) | 7 JSONL | 77MB | 219,067 |
 | Dictionary (SQLite) | 4 DBs | 134MB | 494,853 |
-| Bible | 10+ JSONL | 1.3GB | 31,102 verses |
+| Bible | 10+ JSONL | 1.3GB | 31,649 verses |
 | Corpus | 1 JSONL | 892MB | ~3M sentences |
 | Knowledge | 2 JSONL | 4.4GB | 713,231 |
 | Training | 4 JSONL | 21MB | 15,579 |
@@ -332,7 +332,7 @@ None detected.
 
 **Bible (parallel_corpus_v1.jsonl):**
 - Schema: `{book, book_name, chapter, verse, ref, zo_tdb77, zo_tedim2010, en_kJV}`
-- 31,102 verses
+- 31,649 verses
 - Multiple Zolai versions + English
 - Quality: HIGH — well-structured
 
@@ -383,8 +383,8 @@ NOT MEASURED — REQUIRES TOOLING:
 |------|----------|---------|--------|
 | Dictionary (ZO→EN) | 84,490 words | MEDIUM | Multiple sources |
 | Dictionary (EN→ZO) | 64,025 entries | MEDIUM | Multiple sources |
-| Bible parallel | 31,102 verses | HIGH | TDB77, Tedim2010 |
-| Grammar patterns | 5,482 patterns | HIGH | Bible extraction |
+| Bible parallel | 31,649 verses | HIGH | TDB77, Tedim2010 |
+| Grammar patterns | 5,560 patterns | HIGH | Bible extraction |
 | Vocabulary index | 2,975 words | HIGH | Bible frequency |
 | Phrases | 30,433 entries | MEDIUM | Bible + dictionary |
 | Idioms | 72 expressions | MEDIUM | Bible + articles |
@@ -412,7 +412,7 @@ NOT MEASURED — REQUIRES TOOLING:
 
 | Metric | Value |
 |--------|-------|
-| Verses | 31,102 |
+| Verses | 31,649 |
 | Books | 66 |
 | Zolai versions | TDB77, Tedim2010 |
 | English version | KJV |
