@@ -63,7 +63,7 @@ Every action classified by: **Impact × Urgency × Strategic Importance × Effor
 - **What:** Archive grammar_patterns_v1, old menus, Glosbe errors, stale docs
 - **Why:** Reduce confusion, improve maintainability
 - **Effort:** 16 hours
-- **Done when:** 72 tables → 55-60, clear canonical set
+- **Done when:** 99 tables → 55-60, clear canonical set
 - **Owner:** Founder
 
 ---

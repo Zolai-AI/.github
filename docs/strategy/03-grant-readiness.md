@@ -22,7 +22,7 @@ source: "01-strategic-audit.md"
 | Area | Status | Evidence | Gap | Priority |
 |------|:------:|----------|-----|:--------:|
 | Problem definition | ✅ Ready | Clear problem: Zolai language excluded from digital world | None | — |
-| Evidence base | ⚠️ Almost | 3.1M rows, 98.49% syllable accuracy, 466+ tests | Need evaluation data | High |
+| Evidence base | ⚠️ Almost | 3.3M rows, 98.49% syllable accuracy, 466+ tests | Need evaluation data | High |
 | Innovation | ✅ Ready | RAG-first approach, Foundation Engine, MCP integration | None | — |
 | Feasibility | ⚠️ Almost | Strong tech foundation, solo founder | Need team/partners | High |
 | Team | ❌ Missing | Solo founder, no advisors, no collaborators | Critical gap | Critical |

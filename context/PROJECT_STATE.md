@@ -49,7 +49,7 @@
   - `docs/GRANT_READINESS.md` — Grant gap analysis + budget template
 
 ### Overall Assessment: 4.5/10
-- Strong technical foundation (3.1M rows, 72 tables, 466+ tests)
+- Strong technical foundation (3.3M rows, 99 tables, 466+ tests)
 - Weak organizational infrastructure (no community, no funding, no governance)
 - Critical gaps: evaluation, community engagement, grant readiness
 

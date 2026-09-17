@@ -108,7 +108,7 @@
 
 **Verdict:** NO REGRESSION. The 1,207 figure in the V2 prompt appears to reference an older or different count. The actual data shows 4,271→5,482 patterns, which is GROWTH, not loss.
 
-**Note:** The DATA_MANAGEMENT_PLAN.md (line 60) says v2 has 4,205 — this is slightly stale (actual: 5,482). Minor documentation drift.
+**Note:** The DATA_MANAGEMENT_PLAN.md (line 60) says v2 has 4,205 — this is stale (actual: 5,560). Minor documentation drift.
 
 ---
 
@@ -362,7 +362,7 @@ A full 32-section strategic, technical, research, impact, and business audit was
 
 | Area | Score | Key Finding |
 |------|:-----:|-------------|
-| Data Assets | 8/10 | 3.1M rows, 72 tables, verified syllable data |
+| Data Assets | 8/10 | 3.3M rows, 99 tables, verified syllable data |
 | Code Quality | 7/10 | 466+ tests, but some broken |
 | NLP Pipeline | 6/10 | Syllable excellent, POS/morphology basic |
 | Documentation | 5/10 | Rich but scattered |

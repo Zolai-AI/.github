@@ -34,7 +34,7 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
                     │       CANONICAL DATA STORE          │
                     │       data/zolai.db (SQLite)        │
                     ├─────────────────────────────────────┤
-                    │ 72 tables, ~1.2GB, ~3.1M rows      │
+                    │ 99 tables, ~2.3GB, ~3.3M rows      │
                     │ WAL mode + busy_timeout=30000       │
                     └──────────────┬──────────────────────┘
                                    │
@@ -48,8 +48,8 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
 
 ## Database (SQLite, WAL Mode) — Canonical Data Store
 
-**Path:** `data/zolai.db` (~1.2GB)
-**Tables:** 72 tables, ~3.1M total rows
+**Path:** `data/zolai.db` (~2.3GB)
+**Tables:** 99 tables, ~3.3M total rows
 **Access:** WAL mode + busy_timeout=30000 for concurrent multi-process
 **Access pattern:** zolai-core uses `config.paths.data / "zolai.db"` → shared workspace DB
 
@@ -60,25 +60,23 @@ canonical tables are the primary source of truth; `*_import` tables are intermed
 ### Table Summary
 | Table | Rows | Purpose |
 |-------|------|---------|
-| dictionary | 103,303 | Zolai→English (master, enriched from 6 sources) |
-| dictionary_en_zo | 113,750 | English→Zolai + Burmese monolingual |
-| bible_verses | 62,751 | Parallel EN/ZO/MY verses |
-| grammar_patterns | 5,547 | Sentence patterns + SOV/tense/negation |
-| phrases | 5,000 | Multi-word expressions |
-| vocab | 94,458 | Vocabulary index with frequency |
-| translations | 212,754 | EN↔ZO + EN→MY sentence pairs |
-| word_usage | 60,365 | Per-book word profiles + co-occurring words |
-| training_exercises | 81,805 | 5 types: negation, question, pronoun, error, conditional |
-| bible_context | 1,228 | Per-book/chapter/topic analysis |
+| dictionary | 84,490 | Zolai→English (master, enriched from 6 sources) |
+| dictionary_en_zo | 64,025 | English→Zolai + Burmese monolingual |
+| bible_verses | 31,649 | Parallel EN/ZO/MY verses |
+| grammar_patterns | 5,560 | Sentence patterns + SOV/tense/negation |
+| phrases | 10,722 | Multi-word expressions |
+| vocabulary | 104,906 | Vocabulary index with frequency |
+| translations | 207,623 | EN↔ZO + EN→MY sentence pairs |
+| word_usage | 269,903 | Per-book word profiles + co-occurring words |
+| training_exercises | 82,159 | 5 types: negation, question, pronoun, error, conditional |
 | word_alignments | 385,120 | Word-level ZO↔EN alignment |
 | word_collocations | 5,000 | Word pair frequencies |
-| proverbs | 7,736 | Proverbs with source/category |
-| syllable_data | 189,554 | Syllable segmentation for all words |
-| articles | 6,371 | Reference articles |
+| proverbs | 8,203 | Proverbs with source/category |
+| syllable_data | 189,563 | Syllable segmentation for all words |
+| articles | 15,649 | Reference articles |
 | wiki_lessons | 1,688 | Wiki-driven lessons |
 | zolai_songs | 1,032 | Zolai songs catalogue |
-| provenance | 255 | Source file tracking (SHA256, row count, version) |
-| data_audit_log | 24,762 | Every change tracked (who, why, when, old→new) |
+| data_audit_log | 30,745 | Every change tracked (who, why, when, old→new) |
 
 ### Enhanced Tables
 | Table | Rows | Purpose |
@@ -102,8 +100,8 @@ third-party dataset repositories as sources.
 | Category | Source | Size | Entries |
 |----------|--------|------|---------|
 | Bible | Tedim Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | 31,102 parallel verses | 31,102 |
-| Dictionary (ZO→EN) | Our cleaned master dictionary | 11MB | 93,931 |
-| Dictionary (EN→ZO) | Our cleaned master dictionary | 56MB | 112,220 |
+| Dictionary (ZO→EN) | Our cleaned master dictionary | 11MB | 84,490 |
+| Dictionary (EN→ZO) | Our cleaned master dictionary | 56MB | 64,025 |
 | Dictionary (Trilingual) | Our processed trilingual dictionary | 6.7MB | 7,841 |
 | Bible Supplement | Our processing | 708KB | 4,073 |
 | Corpus | Web-scraped Zolai corpus, cleaned | 686MB | 3M+ sentences |
@@ -231,12 +229,12 @@ Bang hang pai na hiam?    Why do you go?
 User input (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
-    1. Dictionary lookup (103,303 words)
+    1. Dictionary lookup (84,490 words)
     2. Bible verse search (31,102 verses)
-    3. Phrase matching (5,000 phrases)
-    4. Grammar pattern check (5,482 patterns)
-    5. Context-aware translation (7,384 records)
-    6. Word attestation (20,929 words)
+    3. Phrase matching (10,722 phrases)
+    4. Grammar pattern check (5,560 patterns)
+    5. Context-aware translation (269,903 records)
+    6. Word attestation (104,906 words)
     ↓
 pcore-brain API (task: "zolai"):
     - System prompt includes ZVS 2018 rules
@@ -297,12 +295,12 @@ pcore-brain API (task: "zolai"):
 User question (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
-    1. Dictionary lookup (dictionary table — 103,303 words)
-    2. Bible verse search (bible_verses table — 31,102 verses)
-    3. Phrase matching (phrases table — 5,000 phrases)
-    4. Grammar pattern check (grammar_patterns table — 5,482 patterns)
-    5. Context-aware translation (word_usage table — 7,384 records)
-    6. Word attestation (vocab table — 20,929 words)
+    1. Dictionary lookup (dictionary table — 84,490 words)
+    2. Bible verse search (bible_verses table — 31,649 verses)
+    3. Phrase matching (phrases table — 10,722 phrases)
+    4. Grammar pattern check (grammar_patterns table — 5,560 patterns)
+    5. Context-aware translation (word_usage table — 269,903 records)
+    6. Word attestation (vocabulary table — 104,906 words)
     ↓
 pcore-brain API (task: "zolai"):
     - System prompt includes ZVS 2018 rules

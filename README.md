@@ -56,17 +56,17 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 
 ## Data
 
-All data lives in `data/zolai.db` (SQLite WAL, ~1.2GB, 72 tables, ~3.1M rows).
+All data lives in `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows).
 
 | Table | Rows | Purpose |
 |-------|------|---------|
-| `dictionary` (ZO→EN) | 103,303 | Zolai→English (master, cleaned) |
-| `dictionary_en_zo` (EN→ZO) | 113,750 | English→Zolai + Burmese |
-| `bible_verses` | 62,751 | Parallel EN/ZO/MY verses |
-| `translations` | 212,754 | EN↔ZO + EN→MY sentence pairs |
-| `syllable_data` | 189,554 | Syllable segmentation |
-| `vocab` | 94,458 | Vocabulary index with frequency |
-| `training_exercises` | 81,805 | 5 exercise types |
+| `dictionary` (ZO→EN) | 84,490 | Zolai→English (master, cleaned) |
+| `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai + Burmese |
+| `bible_verses` | 31,649 | Parallel EN/ZO/MY verses |
+| `translations` | 207,623 | EN↔ZO + EN→MY sentence pairs |
+| `syllable_data` | 189,563 | Syllable segmentation |
+| `vocabulary` | 104,906 | Vocabulary index with frequency |
+| `training_exercises` | 82,159 | 5 exercise types |
 | `word_alignments` | 385,120 | Word-level ZO↔EN alignment |
 
 See [`zolai-datasets/data/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/data/CREDITS.md) for full attribution.

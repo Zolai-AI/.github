@@ -102,7 +102,7 @@ zolai-ai/
 ```
 
 **What it does:**
-- Analyzes all 93,931 dictionary entries
+- Analyzes all 84,490 dictionary entries
 - Identifies ZVS 2018 violations (ram→gam, bawipa→topa)
 - Flags definition errors
 - Generates audit report in `data/audit_logs/`
@@ -233,7 +233,7 @@ INSTRUCTIONS:
 | gemini-3-flash | 1/12 correct | Best for `Na ne hiam?` verification |
 | gemini-3-pro-plus | 0/12 correct | Better for formal/complex sentences |
 
-**Key Finding:** Free models struggle with Zolai accuracy. Always anchor to your 31,102-verse Bible corpus + 93,931-verified dictionary.
+**Key Finding:** Free models struggle with Zolai accuracy. Always anchor to your 31,102-verse Bible corpus + 84,490-verified dictionary.
 
 ## Common Workflows
 

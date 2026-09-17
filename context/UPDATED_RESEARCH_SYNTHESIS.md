@@ -26,5 +26,5 @@
 
 - We credit the source materials (Bible translations, TongDot/TongSan dictionaries, web-scraped corpus)
   used to build the Zolai learning system; see `data/CREDITS.md` for full attribution.
-- Canonical data store: `data/zolai.db` (SQLite WAL, ~1.2GB, 72 tables, ~3.1M rows)
+- Canonical data store: `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows)
 - All reads from DB, not JSONL files

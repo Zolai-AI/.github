@@ -58,13 +58,13 @@ sections: 32
 
 ### What Zolai AI Is Today
 
-Zolai AI is a **solo-founder, early-stage language technology initiative** with 10 repositories, a 1.2GB SQLite database with 72 tables and ~3.1M rows, and a growing Python NLP toolkit. Two services are live: a landing page (zolai.space) and an MCP server (mcp.zolai.space). The project has strong technical foundations but significant gaps in organizational infrastructure, community engagement, and sustainability planning.
+Zolai AI is a **solo-founder, early-stage language technology initiative** with 10 repositories, a 2.3GB SQLite database with 99 tables and ~3.3M rows, and a growing Python NLP toolkit. Two services are live: a landing page (zolai.space) and an MCP server (mcp.zolai.space). The project has strong technical foundations but significant gaps in organizational infrastructure, community engagement, and sustainability planning.
 
 ### Scorecard
 
 | Area | Score (1-10) | Evidence |
 |------|:---:|----------|
-| Data Assets | **8** | 3.1M rows, 72 tables, cleaned dictionaries, verified syllable data |
+| Data Assets | **8** | 3.3M rows, 99 tables, cleaned dictionaries, verified syllable data |
 | Code Quality | **7** | 466+ tests, ruff linting, conventional commits, but some broken tests |
 | NLP Pipeline | **6** | Syllable segmentation excellent (98.49%), POS/morphology basic, no production NER/embeddings |
 | Documentation | **5** | Rich context files exist but not integrated into standard project docs |
@@ -123,7 +123,7 @@ The technology is advancing faster than the organizational, community, and susta
 
 | Item | Instances | Recommendation |
 |------|-----------|----------------|
-| Grammar patterns | v1 (4,271) + v2 (5,482) | Archive v1, keep v2 as canonical |
+| Grammar patterns | v1 (4,271) + v2 (5,560) | Archive v1, keep v2 as canonical |
 | Menu systems | menu.sh + menu_v2.sh | Deprecate v1 |
 | Context docs | MASTER_PLAN + DATA_MANAGEMENT + progress-tracker | Consolidate into single source |
 | Training data | seed_data + generated + pipeline_output | Consolidate, deduplicate |
@@ -142,7 +142,7 @@ DATA SOURCES (Bible, Dictionary, Corpus, Reference PDFs, Songs, Proverbs)
         │
 INTEGRATION SCRIPTS (48+ Python scripts in zolai-datasets)
         │
-CANONICAL DATA STORE (data/zolai.db — SQLite WAL, 72 tables, 3.1M rows)
+CANONICAL DATA STORE (data/zolai.db — SQLite WAL, 99 tables, 3.3M rows)
         │
 ┌───────┼───────────────┐
 │       │               │
@@ -184,9 +184,9 @@ Server  Server  Page
 |--------|-------|
 | Engine | SQLite WAL mode |
 | Path | `data/zolai.db` |
-| Size | ~1.2GB |
-| Tables | 72 |
-| Total Rows | ~3.1M |
+| Size | ~2.3GB |
+| Tables | 99 |
+| Total Rows | ~3.3M |
 | Constraints | 27 |
 | Indexes | 50+ |
 | Access Pattern | Multi-process with busy_timeout=30000 |
@@ -197,18 +197,18 @@ Server  Server  Page
 
 | Table | Rows | Purpose | Quality |
 |-------|------|---------|---------|
-| dictionary | 103,303 | Zolai→English master | Expert Verified |
-| dictionary_en_zo | 113,750 | English→Zolai | Expert Verified |
-| bible_verses | 62,751 | Parallel EN/ZO/MY verses | Verified |
-| grammar_patterns | 5,547 | Sentence patterns | Reviewed |
-| phrases | 5,000 | Multi-word expressions | Cleaned |
-| vocab | 94,458 | Vocabulary index with frequency | Cleaned |
-| translations | 212,754 | EN↔ZO + EN→MY sentence pairs | Verified |
-| word_usage | 60,365 | Per-book word profiles | Reviewed |
-| training_exercises | 81,805 | 5 exercise types | Generated |
-| syllable_data | 189,554 | Syllable segmentation | Verified |
+| dictionary | 84,490 | Zolai→English master | Expert Verified |
+| dictionary_en_zo | 64,025 | English→Zolai | Expert Verified |
+| bible_verses | 31,649 | Parallel EN/ZO/MY verses | Verified |
+| grammar_patterns | 5,560 | Sentence patterns | Reviewed |
+| phrases | 10,722 | Multi-word expressions | Cleaned |
+| vocabulary | 104,906 | Vocabulary index with frequency | Cleaned |
+| translations | 207,623 | EN↔ZO + EN→MY sentence pairs | Verified |
+| word_usage | 269,903 | Per-book word profiles | Reviewed |
+| training_exercises | 82,159 | 5 exercise types | Generated |
+| syllable_data | 189,563 | Syllable segmentation | Verified |
 | word_alignments | 385,120 | Word-level ZO↔EN alignment | Verified |
-| proverbs | 7,736 | Proverbs with source/category | Reviewed |
+| proverbs | 8,203 | Proverbs with source/category | Reviewed |
 | data_audit_log | 24,762 | Change audit trail | System |
 
 #### Enhanced/Derived Tables
@@ -243,14 +243,14 @@ Server  Server  Page
 
 | Data Type | Quality Level | Coverage | Issues |
 |-----------|:------------:|----------|--------|
-| Dictionary (ZO→EN) | Expert Verified | 103,303 entries | None significant |
-| Dictionary (EN→ZO) | Expert Verified | 113,750 entries | None significant |
-| Bible Verses | Verified | 62,751 parallel | None |
-| Grammar Patterns | Reviewed | 5,547 patterns | v1/v2 duplication |
-| Syllable Data | Verified | 189,554 entries | 98.49% accuracy |
+| Dictionary (ZO→EN) | Expert Verified | 84,490 entries | None significant |
+| Dictionary (EN→ZO) | Expert Verified | 64,025 entries | None significant |
+| Bible Verses | Verified | 31,649 parallel | None |
+| Grammar Patterns | Reviewed | 5,560 patterns | v1/v2 duplication |
+| Syllable Data | Verified | 189,563 entries | 98.49% accuracy |
 | Word Alignments | Verified | 385,120 pairs | None |
-| Translations | Verified | 212,754 pairs | None |
-| Training Exercises | Generated | 81,805 exercises | Needs validation |
+| Translations | Verified | 207,623 pairs | None |
+| Training Exercises | Generated | 82,159 exercises | Needs validation |
 | Evaluation Data | Minimal | 33 smoke + 499 refs | CRITICAL GAP |
 
 ### 4.4 Data Governance Status
@@ -274,7 +274,7 @@ Server  Server  Page
 |-----------|:------:|:-------:|-------|
 | Unicode Normalization | ✅ Complete | Excellent | All Zolai characters supported |
 | Tokenization | ✅ Complete | Good | Word-level + SentencePiece |
-| Syllable Segmentation | ✅ Complete | 98.49% | 189,554 words, CRF + rule-based |
+| Syllable Segmentation | ✅ Complete | 98.49% | 189,563 words, CRF + rule-based |
 | Word Segmentation | ✅ Complete | Good | Dictionary-based |
 | Sentence Segmentation | ✅ Complete | Good | Rule-based |
 | Morphology | ✅ Complete | Good | Agglutinative analysis, 65 roots |
@@ -406,7 +406,7 @@ Server  Server  Page
 1. **RAG-first approach** — dictionary + Bible + grammar integration (most projects skip RAG)
 2. **Desktop + offline** — Tauri app for areas with limited connectivity
 3. **MCP server** — integration with ChatGPT/Gemini/Claude (unique in space)
-4. **Comprehensive database** — 3.1M rows, 72 tables (larger than most comparable projects)
+4. **Comprehensive database** — 3.3M rows, 99 tables (larger than most comparable projects)
 5. **Bilingual focus** — Zolai↔English with Burmese support
 6. **Foundation Engine** — evidence-based verification with human review (unique)
 
@@ -423,9 +423,9 @@ Server  Server  Page
 ## 8. SWOT Analysis
 
 ### Strengths (Internal, Demonstrated)
-1. **Strong technical foundation** — 10 repositories, 3.1M rows, 72 tables, 466+ tests
+1. **Strong technical foundation** — 10 repositories, 3.3M rows, 99 tables, 466+ tests
 2. **Excellent syllable segmentation** — 98.49% accuracy, CRF + rule-based
-3. **Comprehensive data** — dictionary (103K+), Bible (62K verses), grammar (5.5K patterns)
+3. **Comprehensive data** — dictionary (84K+ ZO→EN, 64K+ EN→ZO), Bible (31K verses), grammar (5.5K patterns)
 4. **ZVS 2018 compliance** — orthography enforcement across all output
 5. **Foundation Engine** — evidence-based verification with human review
 6. **Live deployments** — MCP server, landing page working
@@ -638,7 +638,7 @@ Server  Server  Page
 | # | Objective | Specific | Measurable | Achievable | Relevant | Time-bound | Baseline | Target | Risk |
 |---|-----------|----------|------------|------------|----------|------------|----------|--------|------|
 | D1 | Complete data quality dashboard | Dashboard showing quality metrics | Operational, 95%+ uptime | Data exists, metrics calculable | Data governance | 3 months | No monitoring | Operational dashboard | Low |
-| D2 | Archive import/duplicate tables | Clean database of staging tables | Reduce 72→50-60 tables | Tables identified | Reduce complexity | 2 months | 72 tables | 50-60 clean tables | Low |
+| D2 | Archive import/duplicate tables | Clean database of staging tables | Reduce 99→55-60 tables | Tables identified | Reduce complexity | 2 months | 99 tables | 55-60 clean tables | Low |
 
 ### Education Objectives
 
@@ -668,7 +668,7 @@ Server  Server  Page
 ```
 INPUTS                    ACTIVITIES                OUTPUTS                 OUTCOMES                 IMPACT
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Language data (3.1M rows) → Data cleaning/verification → Verified databases     → High-quality NLP tools  → Zolai speakers access
+Language data (3.3M rows) → Data cleaning/verification → Verified databases     → High-quality NLP tools  → Zolai speakers access
 NLP toolkit (466+ tests)  → NLP research/benchmarking  → Research papers        → Academic credibility     information in Zolai
 Community engagement      → Curriculum development     → Learning apps          → Improved literacy       → More Zolai digital
 Grant funding             → Partnership building       → Open-source tools      → Community adoption       resources
@@ -1386,7 +1386,7 @@ Research partnerships     → Publication                → Evaluation benchmar
 
 ### A. What is Zolai AI today?
 
-A **solo-founder language technology initiative** with strong technical foundations (10 repos, 3.1M rows, 466+ tests) but weak organizational infrastructure. Two services live, no community, no funding, no evaluation framework.
+A **solo-founder language technology initiative** with strong technical foundations (10 repos, 3.3M rows, 466+ tests) but weak organizational infrastructure. Two services live, no community, no funding, no evaluation framework.
 
 ### B. What should Zolai AI become?
 
@@ -1395,8 +1395,8 @@ A **community-driven language technology organization** that builds practical NL
 ### C. What is the strongest evidence we already have?
 
 1. **98.49% syllable segmentation accuracy** — validated, reproducible
-2. **103K+ dictionary entries** — cleaned, verified
-3. **62K parallel Bible verses** — unique corpus
+2. **84K+ dictionary entries** — cleaned, verified
+3. **31K parallel Bible verses** — unique corpus
 4. **466+ passing tests** — code quality demonstrated
 5. **Live MCP server** — working integration with AI assistants
 

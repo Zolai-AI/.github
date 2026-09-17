@@ -2,7 +2,7 @@
 
 ## Principles
 - We credit the source materials used to build the Zolai learning system. Source corpora (Bible translations, dictionaries, web-scraped Zolai corpus) are processed into our own cleaned, ZVS-2018-aligned `data/zolai.db`.
-- Canonical data store: `data/zolai.db` (SQLite WAL, ~1.2GB, 72 tables, ~3.1M rows)
+- Canonical data store: `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows)
 - All reads from DB, not JSONL files
 
 ## Data Flow
@@ -20,8 +20,8 @@ INTEGRATION SCRIPTS:
   - build_comprehensive_vocab.py
 
 CANONICAL DATA STORE:
-  - data/zolai.db (SQLite WAL, ~1.2GB)
-  - 72 tables, ~3.1M rows
+  - data/zolai.db (SQLite WAL, ~2.3GB)
+  - 99 tables, ~3.3M rows
   - WAL mode + busy_timeout=30000
 
 CONSUMERS:
@@ -34,27 +34,26 @@ CONSUMERS:
 
 | Table | Rows | Purpose |
 |-------|------|---------|
-| dictionary | 103,303 | Zolai→English |
-| dictionary_en_zo | 113,750 | English→Zolai |
-| bible_verses | 62,751 | Parallel EN/ZO/MY |
-| grammar_patterns | 5,547 | Sentence patterns |
-| phrases | 5,000 | Multi-word expressions |
-| vocab | 94,458 | Vocabulary index |
-| translations | 212,754 | EN↔ZO + EN→MY sentence pairs |
-| word_usage | 60,365 | Per-book word profiles |
-| training_exercises | 81,805 | Training data |
-| syllable_data | 189,554 | Syllable segmentation |
+| dictionary | 84,490 | Zolai→English |
+| dictionary_en_zo | 64,025 | English→Zolai |
+| bible_verses | 31,649 | Parallel EN/ZO/MY |
+| grammar_patterns | 5,560 | Sentence patterns |
+| phrases | 10,722 | Multi-word expressions |
+| vocabulary | 104,906 | Vocabulary index |
+| translations | 207,623 | EN↔ZO + EN→MY sentence pairs |
+| word_usage | 269,903 | Per-book word profiles |
+| training_exercises | 82,159 | Training data |
+| syllable_data | 189,563 | Syllable segmentation |
 | word_alignments | 385,120 | Word-level alignment |
-| proverbs | 7,736 | Proverbs |
-| bible_context | 1,228 | Book/chapter analysis |
+| proverbs | 8,203 | Proverbs |
 
 ## Data Sources
 
 | Category | Source | Size | Entries |
 |----------|--------|------|---------|
 | Bible | TDB77, Tedim2010, Hakha, Falam, Paite (31,102 parallel verses) | 31,102 | 31,102 |
-| Dictionary (ZO→EN) | Web-scraped TongSan dictionary, cleaned | 11MB | 93,931 |
-| Dictionary (EN→ZO) | Web-scraped TongSan dictionary, cleaned | 56MB | 112,220 |
+| Dictionary (ZO→EN) | Web-scraped TongSan dictionary, cleaned | 11MB | 84,490 |
+| Dictionary (EN→ZO) | Web-scraped TongSan dictionary, cleaned | 56MB | 64,025 |
 | Dictionary (Trilingual) | Web-scraped TongSan dictionary, cleaned | 6.7MB | 7,841 |
 | Bible Supplement | Our processing | 708KB | 4,073 |
 | Corpus | Web-scraped Zolai corpus, cleaned | 686MB | 3M+ sentences |
@@ -68,12 +67,12 @@ CONSUMERS:
 User question (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
-    1. Dictionary lookup (103,303 words)
+    1. Dictionary lookup (84,490 words)
     2. Bible verse search (31,102 verses)
-    3. Phrase matching (5,000 phrases)
-    4. Grammar pattern check (5,482 patterns)
-    5. Context-aware translation (7,384 records)
-    6. Word attestation (20,929 words)
+    3. Phrase matching (10,722 phrases)
+    4. Grammar pattern check (5,560 patterns)
+    5. Context-aware translation (269,903 records)
+    6. Word attestation (104,906 words)
     ↓
 pcore-brain API (task: "zolai"):
     - System prompt includes ZVS 2018 rules

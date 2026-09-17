@@ -36,8 +36,8 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 
 | File | Size | Records | Purpose |
 |------|------|---------|---------|
-| `data/dictionary/processed/dict_canonical_clean.jsonl` | 56MB | 112,220 | EN→ZO dictionary (canonical) |
-| `data/dictionary/processed/dict_zo_en_master_v1.jsonl` | 11MB | 93,931 | ZO→EN dictionary (canonical) |
+| `data/dictionary/processed/dict_canonical_clean.jsonl` | 56MB | 64,025 | EN→ZO dictionary (canonical) |
+| `data/dictionary/processed/dict_zo_en_master_v1.jsonl` | 11MB | 84,490 | ZO→EN dictionary (canonical) |
 | `data/dictionary/processed/dict_dalsuum_merged.jsonl` | 6.7MB | 7,841 | Trilingual dictionary (ZO-EN-MY) |
 | `data/dictionary/processed/dict_bible_supplement_v1.jsonl` | 204KB | 1,908 | Bible-derived supplement |
 | `data/dictionary/processed/dict_bible_learned_v1.jsonl` | 552KB | 2,683 | Bible-learned entries |
@@ -95,7 +95,7 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 | `data/bible/version_comparison_v1.jsonl` | 56KB | 66 | Version comparisons |
 
 ### Raw online downloads
-Referenced by internal build scripts. The canonical `data/zolai.db` (72 tables / ~3.1M rows, built from Bible corpus, TongDot/TongSan dictionaries, and web-scraped Zolai corpus) and our own Kaggle/HuggingFace datasets are the primary, stronger, cleaned, ZVS-2018-aligned data source.
+Referenced by internal build scripts. The canonical `data/zolai.db` (99 tables / ~3.3M rows, built from Bible corpus, TongDot/TongSan dictionaries, and web-scraped Zolai corpus) and our own Kaggle/HuggingFace datasets are the primary, stronger, cleaned, ZVS-2018-aligned data source.
 
 ## Data Rules
 

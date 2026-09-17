@@ -1271,12 +1271,12 @@ The 2018 Zokam Standard Version (ZVS) prioritizes:
 User question (Zolai or English)
     ↓
 zolai-core RAG pipeline:
-    1. Dictionary lookup (dict_zo_en_master_v1.jsonl — 93,931 words)
-    2. Bible verse search (parallel_corpus_v1.jsonl — 31,102 verses)
-    3. Phrase matching (phrases_v1.jsonl — 5,000 phrases)
-    4. Grammar pattern check (grammar_patterns_v2.jsonl — 5,482 patterns)
-    5. Context-aware translation (word_usage_profiles.jsonl — 7,384 records)
-    6. Word attestation (vocab_index_full.jsonl — 20,929 words)
+    1. Dictionary lookup (dictionary table — 84,490 words)
+    2. Bible verse search (bible_verses table — 31,649 verses)
+    3. Phrase matching (phrases table — 10,722 phrases)
+    4. Grammar pattern check (grammar_patterns table — 5,560 patterns)
+    5. Context-aware translation (word_usage table — 269,903 records)
+    6. Word attestation (vocabulary table — 104,906 words)
     ↓
 pcore-brain API (task: "zolai"):
     - System prompt includes ZVS 2018 rules
@@ -1407,16 +1407,15 @@ Pasian in vantung leh leitung a piangsak hi.
 
 | Source | Entries | Size | Purpose |
 |--------|---------|------|---------|
-| `vocab_index_full.jsonl` | 20,929 | — | Word frequency + examples |
-| `grammar_patterns_v2.jsonl` | 5,482 | — | Grammar patterns |
-| `parallel_corpus_v1.jsonl` | 31,102 | 16MB | Bible verses |
-| `phrases_v1.jsonl` | 5,000 | — | Multi-word phrases |
-| `word_alignments_v1.jsonl` | 385,120 | — | Word alignments |
-| `dict_zo_en_master_v1.jsonl` | 93,931 | 11MB | ZO→EN dictionary |
-| `dict_canonical_clean.jsonl` | 112,220 | 56MB | EN→ZO dictionary |
-| `negation_exercises.jsonl` | 26,061 | — | Negation patterns |
-| `question_exercises.jsonl` | 24,738 | — | Question patterns |
-| `pronoun_exercises.jsonl` | 21,735 | — | Pronoun patterns |
+| `vocabulary` (table) | 104,906 | — | Word frequency + examples |
+| `grammar_patterns` (table) | 5,560 | — | Grammar patterns |
+| `bible_verses` (table) | 31,649 | — | Bible verses |
+| `phrases` (table) | 10,722 | — | Multi-word phrases |
+| `word_alignments` (table) | 385,120 | — | Word alignments |
+| `dictionary` (table, ZO→EN) | 84,490 | — | ZO→EN dictionary |
+| `dictionary_en_zo` (table, EN→ZO) | 64,025 | — | EN→ZO dictionary |
+| `word_usage` (table) | 269,903 | — | Word usage profiles |
+| `translations` (table) | 207,623 | — | Translation pairs |
 
 ---
 

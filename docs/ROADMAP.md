@@ -18,7 +18,7 @@ source: "docs/strategy/01-strategic-audit.md"
 
 | Area | Score | Status |
 |------|:-----:|--------|
-| Data Assets | 8/10 | Strong — 3.1M rows, 72 tables |
+| Data Assets | 8/10 | Strong — 3.3M rows, 99 tables |
 | Code Quality | 7/10 | Good — 466+ tests, ruff linting |
 | NLP Pipeline | 6/10 | Basic — syllable excellent, others incomplete |
 | Documentation | 5/10 | Scattered — rich context files, not integrated |
@@ -126,7 +126,7 @@ source: "docs/strategy/01-strategic-audit.md"
 ## Success Metrics
 
 ### Data Quality
-- Dictionary coverage: 103K → 150K+ entries
+- Dictionary coverage: 84K → 150K+ entries
 - Evaluation cases: 33 → 500+
 - Verified entries: 0 → 50,000+
 

@@ -13,7 +13,7 @@ through community-owned, culturally grounded AI tools.
 
 | Category | Tools | Status |
 |----------|-------|:------:|
-| **Language Data** | Dictionary (103K+), Bible corpus (62K verses), Grammar (5.5K patterns) | ✅ |
+| **Language Data** | Dictionary (84K+ ZO→EN, 64K+ EN→ZO), Bible corpus (31K verses), Grammar (5.5K patterns) | ✅ |
 | **NLP Pipeline** | Syllable segmentation (98.49%), POS tagging, morphology, translation | ✅ |
 | **Applications** | Web learner platform, Desktop app, MCP server for AI assistants | 🔄 |
 | **Education** | Vocabulary learning, progressive curriculum, proficiency testing | 🔄 |
@@ -24,18 +24,18 @@ through community-owned, culturally grounded AI tools.
 We credit the **source materials** used to build the Zolai learning system. Source corpora
 (Bible translations, TongDot/TongSan dictionaries, web-scraped Zolai corpus) are processed
 into our own cleaned, ZVS-2018-aligned relational database (`data/zolai.db`, SQLite WAL,
-72 tables / ~1.2GB / ~3.1M rows). See `zolai-datasets/data/CREDITS.md` for attribution.
+99 tables / ~2.3GB / ~3.3M rows). See `zolai-datasets/data/CREDITS.md` for attribution.
 
 ### Key Resources
 
 | Resource | Entries | Purpose |
 |----------|---------|---------|
-| `dictionary` (ZO→EN) | 103,303 | Cleaned master Zolai→English |
-| `dictionary_en_zo` (EN→ZO) | 113,750 | English→Zolai + Burmese monolingual |
-| `bible_verses` | 62,751 | Parallel EN/ZO/MY verses |
-| `translations` | 212,754 | EN↔ZO + EN→MY sentence pairs |
-| `syllable_data` | 189,554 | Syllable segmentation |
-| `training_exercises` | 81,805 | 5 exercise types |
+| `dictionary` (ZO→EN) | 84,490 | Cleaned master Zolai→English |
+| `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai + Burmese monolingual |
+| `bible_verses` | 31,649 | Parallel EN/ZO/MY verses |
+| `translations` | 207,623 | EN↔ZO + EN→MY sentence pairs |
+| `syllable_data` | 189,563 | Syllable segmentation |
+| `training_exercises` | 82,159 | 5 exercise types |
 
 ## Live URLs
 

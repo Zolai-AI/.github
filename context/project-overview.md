@@ -41,10 +41,10 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 
 | Feature | Description | Data Source |
 |---------|-------------|-------------|
-| **Bilingual Translation** | EN↔ZO with 93,931 ZO→EN + 112,220 EN→ZO entries | SQLite database |
-| **Grammar Checking** | SOV validation, negation patterns, question formation | grammar_patterns table (5,482) |
-| **Context-Aware Translation** | Per-book/meaning-shift detection, idiom detection | word_usage table (7,384) |
-| **Vocabulary Quiz** | 8 quiz types (bible, phrases, reverse, frequency) | vocab table (20,929) |
+| **Bilingual Translation** | EN↔ZO with 84,490 ZO→EN + 64,025 EN→ZO entries | SQLite database |
+| **Grammar Checking** | SOV validation, negation patterns, question formation | grammar_patterns table (5,560) |
+| **Context-Aware Translation** | Per-book/meaning-shift detection, idiom detection | word_usage table (269,903) |
+| **Vocabulary Quiz** | 8 quiz types (bible, phrases, reverse, frequency) | vocabulary table (104,906) |
 | **Sentence Analysis** | Word-by-word breakdown with interlinear glossing | bible_verses table (31,102) |
 | **Progressive Learning** | 8 CEFR levels (A1-C2) with spaced repetition | training_exercises table (81,805) |
 | **Bible Study Engine** | Verse-by-verse analysis with morphological breakdown | bible_verses table (31,102) |
@@ -101,25 +101,25 @@ All AI output enforces ZVS 2018 orthography rules:
 
 ## Data Status
 
-All data lives in `data/zolai.db` (SQLite WAL, ~1.2GB, 72 tables, ~3.1M rows).
+All data lives in `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows).
 
 The `*_import` tables are staging copies produced by the JSONL pipeline; the
 canonical tables below are the primary source of truth.
 
 | Table | Rows | Status |
 |-------|------|--------|
-| dictionary (ZO→EN) | 103,303 | ✅ |
-| dictionary_en_zo (EN→ZO) | 113,750 | ✅ |
-| bible_verses | 62,751 | ✅ |
-| grammar_patterns | 5,547 | ✅ |
-| phrases | 5,000 | ✅ |
-| vocab | 94,458 | ✅ |
-| translations | 212,754 | ✅ |
-| word_usage | 60,365 | ✅ |
-| training_exercises | 81,805 | ✅ |
-| syllable_data | 189,554 | ✅ |
+| dictionary (ZO→EN) | 84,490 | ✅ |
+| dictionary_en_zo (EN→ZO) | 64,025 | ✅ |
+| bible_verses | 31,649 | ✅ |
+| grammar_patterns | 5,560 | ✅ |
+| phrases | 10,722 | ✅ |
+| vocabulary | 104,906 | ✅ |
+| translations | 207,623 | ✅ |
+| word_usage | 269,903 | ✅ |
+| training_exercises | 82,159 | ✅ |
+| syllable_data | 189,563 | ✅ |
 | word_alignments | 385,120 | ✅ |
-| proverbs | 7,736 | ✅ |
+| proverbs | 8,203 | ✅ |
 
 Source corpora (Bible translations, TongDot/TongSan dictionaries, web-scraped corpus)
 are processed into our own cleaned, ZVS-2018-aligned database. See `data/CREDITS.md`

@@ -2,7 +2,7 @@
 
 ## 2026-09-13 (Session — Docs sync with actual DB)
 
-- Canonical DB confirmed: `data/zolai.db` = **72 tables / ~3.1M rows / ~1.2GB** (SQLite WAL).
+- Canonical DB confirmed: `data/zolai.db` = **99 tables / ~3.3M rows / ~2.3GB** (SQLite WAL).
 - JSONL pipeline imports into staging `*_import` tables (tracked by `jsonl_import_log`, 92 runs);
   canonical tables remain the primary source of truth.
 - Repository + service layers added (`zolai/data/repositories`, `zolai/data/services`) and
@@ -24,8 +24,8 @@
 
 ### Dictionary Cleaning Complete
 - Cleaned all dictionary tables:
-  - `dictionary` (ZO→EN): 103,303 clean Zolai entries
-  - `dictionary_en_zo` (EN→ZO): 113,750 clean English entries
+  - `dictionary` (ZO→EN): 84,490 clean Zolai entries
+  - `dictionary_en_zo` (EN→ZO): 64,025 clean English entries
   - `dictionary_en_my_import`: cleaned
   - `dictionary_trilingual_import`: cleaned
 - Removed HTML entities, English words from Zolai fields, Myanmar text from Zolai fields, HTML tags
@@ -56,7 +56,7 @@
 ### Database Cleaning
 - Cleaned all dictionary tables of HTML entities, mixed language content
 - Zolai fields now strictly `[a-z\-]+`
-- Total clean entries: 103K ZO→EN + 113K EN→ZO
+- Total clean entries: 84K ZO→EN + 64K EN→ZO
 
 ### Git Commits
 - zolai-core: `851e72a` - fix syllable corpus loading + 200+ Bible compounds
@@ -83,13 +83,13 @@
 ## Data Status
 | Table | Clean Entries | Status |
 |-------|---------------|--------|
-| dictionary (ZO→EN) | 103,303 | ✅ |
-| dictionary_en_zo (EN→ZO) | 113,750 | ✅ |
-| syllable_data | 189,554 | ✅ |
-| bible_verses | 62,751 | ✅ |
-| zolai_vocabulary | 112,279 | ✅ |
+| dictionary (ZO→EN) | 84,490 | ✅ |
+| dictionary_en_zo (EN→ZO) | 64,025 | ✅ |
+| syllable_data | 189,563 | ✅ |
+| bible_verses | 31,649 | ✅ |
+| zolai_vocabulary | 104,906 | ✅ |
 | word_alignments | 385,120 | ✅ |
-| translations | 212,754 | ✅ |
+| translations | 207,623 | ✅ |
 
 ## Live URLs
 - Landing: https://zolai.space/ ✅
@@ -179,7 +179,7 @@
 - Score: 4.5/10 overall — strong technical foundation, weak organizational infrastructure
 
 ### Key Findings
-- **Strengths:** 3.1M rows, 72 tables, 98.49% syllable accuracy, 466+ tests, live MCP server
+- **Strengths:** 3.3M rows, 99 tables, 98.49% syllable accuracy, 466+ tests, live MCP server
 - **Weaknesses:** No community, no evaluation framework, no funding, solo founder, scattered focus
 - **Critical gaps:** License clarification, backup strategy, governance, advisory board, evaluation data
 - **Opportunities:** UNESCO IDIL, NSF DLI-DEL ($4.8M), Masakhane network, Chin language expansion
