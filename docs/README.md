@@ -1,24 +1,47 @@
-# Zolai-AI Org Docs (Index)
+---
+title: "Zolai-AI Documentation"
+description: "Org-level documentation index"
+created: 2026-09-04
+last_updated: 2026-09-18
+---
 
-| Doc | Purpose |
-|-----|---------|
-| [ZOLAI_AI_PROJECT_BRAIN.md](ZOLAI_AI_PROJECT_BRAIN.md) | ⭐ Full project context for brainstorming |
-| [ECOSYSTEM_AUDIT.md](ECOSYSTEM_AUDIT.md) | 🔍 Full ecosystem audit (2026-09-04) — repos, data, CI, gaps, target architecture |
-| [ZOLAI_GITHUB_ORG_PLAN.md](ZOLAI_GITHUB_ORG_PLAN.md) | Org layout & migration plan |
-| [INFRASTRUCTURE.md](INFRASTRUCTURE.md) | Infrastructure / deployment overview |
-| [org/](org/) | Org profile setup assets & drafts |
+# Zolai-AI Documentation
 
-## Repos (10 total)
+> Org-level documentation for the Zolai-AI GitHub organization.
 
-| Repo | Type | Deploy |
-|------|------|--------|
-| `zolai-core` | Python toolkit + RAG | PyPI / Docker |
-| `zolai-web` | Next.js learner platform | Vercel |
-| `zolai-tauri` | Tauri 2 desktop app | Binary releases |
-| `zolai-datasets` | Build scripts + publishing | HF/Kaggle |
-| `zolai-training` | LoRA/QLoRA + GGUF | HF Hub |
-| `zolai-wiki` | Knowledge base (1545 MD) | Static |
-| `zolai-ai.github.io` | GitHub Pages landing | CF Pages |
-| `.github` | Org profile + community | GitHub native |
-| `zolai-mcp-server` | MCP server for AI assistants | Cloudflare Workers |
-| `zolai-landing` | Org landing page (zolai.space) | Cloudflare Workers |
+---
+
+## Org Documentation
+
+| Document | Description |
+|----------|-------------|
+| [AI Tools & Attribution](AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain and attribution policy |
+| [Org Profile Setup](org/GITHUB_ORG_PROFILE_SETUP.md) | How to set up org profile |
+
+## Workspace Documentation
+
+Full project documentation lives in the workspace root:
+
+| Document | Location |
+|----------|----------|
+| Strategic Audit | [`docs/strategy/01-strategic-audit.md`](../../docs/strategy/01-strategic-audit.md) |
+| Strategic Roadmap | [`docs/strategy/02-strategic-roadmap.md`](../../docs/strategy/02-strategic-roadmap.md) |
+| Grant Readiness | [`docs/strategy/03-grant-readiness.md`](../../docs/strategy/03-grant-readiness.md) |
+| Documentation Index | [`docs/README.md`](../../docs/README.md) |
+
+## Repo Scaffolds
+
+Templates for new repos in the organization:
+
+| Repo | Scaffold |
+|------|----------|
+| zolai-core | [`org/scaffolds/zolai-core/`](org/scaffolds/zolai-core/) |
+| zolai-datasets | [`org/scaffolds/zolai-datasets/`](org/scaffolds/zolai-datasets/) |
+| zolai-tauri | [`org/scaffolds/zolai-tauri/`](org/scaffolds/zolai-tauri/) |
+| zolai-training | [`org/scaffolds/zolai-training/`](org/scaffolds/zolai-training/) |
+| zolai-web | [`org/scaffolds/zolai-web/`](org/scaffolds/zolai-web/) |
+| zolai-wiki | [`org/scaffolds/zolai-wiki/`](org/scaffolds/zolai-wiki/) |
+
+---
+
+*Last updated: 2026-09-18*

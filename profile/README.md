@@ -1,126 +1,118 @@
-<div align="center">
+<p align="center"><img src="https://avatars.githubusercontent.com/u/271958086" alt="Zolai-AI" width="120"></p>
 
-# 💚 Zolai AI — Preserving Tedim Zolai with AI
+# Zolai-AI
+
+**Building language technology for the Zomi people.**
+
+Zolai AI is an open-source initiative to preserve and teach Tedim Zolai (ZVS 2018)
+through community-owned, culturally grounded AI tools.
+
+---
+
+## What We Build
+
+| Category | Tools | Status |
+|----------|-------|:------:|
+| **Language Data** | Dictionary (103K+), Bible corpus (62K verses), Grammar (5.5K patterns) | ✅ |
+| **NLP Pipeline** | Syllable segmentation (98.49%), POS tagging, morphology, translation | ✅ |
+| **Applications** | Web learner platform, Desktop app, MCP server for AI assistants | 🔄 |
+| **Education** | Vocabulary learning, progressive curriculum, proficiency testing | 🔄 |
+| **Research** | Low-resource NLP, evaluation benchmarks, community validation | 🔄 |
+
+## Data
+
+We credit the **source materials** used to build the Zolai learning system. Source corpora
+(Bible translations, TongDot/TongSan dictionaries, web-scraped Zolai corpus) are processed
+into our own cleaned, ZVS-2018-aligned relational database (`data/zolai.db`, SQLite WAL,
+72 tables / ~1.2GB / ~3.1M rows). See `zolai-datasets/data/CREDITS.md` for attribution.
+
+### Key Resources
+
+| Resource | Entries | Purpose |
+|----------|---------|---------|
+| `dictionary` (ZO→EN) | 103,303 | Cleaned master Zolai→English |
+| `dictionary_en_zo` (EN→ZO) | 113,750 | English→Zolai + Burmese monolingual |
+| `bible_verses` | 62,751 | Parallel EN/ZO/MY verses |
+| `translations` | 212,754 | EN↔ZO + EN→MY sentence pairs |
+| `syllable_data` | 189,554 | Syllable segmentation |
+| `training_exercises` | 81,805 | 5 exercise types |
+
+## Live URLs
+
+| Service | URL |
+|---------|-----|
+| Landing | https://zolai.space/ |
+| MCP Server | https://mcp.zolai.space/mcp |
+| Documentation | https://github.com/Zolai-AI/.github/tree/main/docs |
+
+## Repos
+
+| Repo | Purpose | Status |
+|------|---------|:------:|
+| `zolai-core` | Python toolkit + RAG Knowledge Brain | ✅ Active |
+| `zolai-web` | Learner platform (Next.js + Hono + Prisma) | ✅ Active |
+| `zolai-tauri` | Offline desktop app (Tauri 2) | 🔄 Early |
+| `zolai-datasets` | Bilingual corpora & datasets (HF/Kaggle) | ✅ Active |
+| `zolai-training` | LoRA/QLoRA fine-tuning + GGUF export | 🔄 Early |
+| `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | ✅ Active |
+| `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude | ✅ Live |
+| `zolai-landing` | Org landing page for zolai.space | ✅ Live |
+
+## Bible as Primary Corpus
+
+The Bible is our **primary training corpus** — the only complete, trusted EN/ZO parallel
+corpus for Tedim Zolai (31,102 parallel verses across TDB77, Tedim2010, Hakha, Falam, Paite).
+We use it as a *language learning corpus*, not for religious purposes.
+
+## Research & Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Strategic Audit](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/01-strategic-audit.md) | Full 32-section ecosystem audit |
+| [Strategic Roadmap](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/02-strategic-roadmap.md) | Prioritized action plan |
+| [Grant Readiness](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/03-grant-readiness.md) | Grant gap analysis |
+| [AI Tools & Attribution](https://github.com/Zolai-AI/.github/blob/main/docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
+
+## How We Work
+
+### Open Source
+All code is MIT-licensed. All data is credited. Contributions welcome.
+
+### Community-Driven
+We center Zomi speakers as stakeholders, not just data sources.
+
+### AI-Assisted Development
+We use AI tools (OpenCode, P-Core Orchestra) to accelerate development.
+See [AI Tools & Attribution](https://github.com/Zolai-AI/.github/blob/main/docs/AI_TOOLS_AND_ATTRIBUTION.md) for details.
+
+### ZVS 2018 Compliant
+All Zolai text follows ZVS 2018 orthography standards.
+
+## Get Involved
+
+| Role | How to Help |
+|------|-------------|
+| **Zomi Speaker** | Validate translations, test tools, contribute cultural knowledge |
+| **Linguist** | Grammar analysis, dialect documentation, morphological study |
+| **ML Engineer** | NLP pipelines, evaluation benchmarks, model training |
+| **Developer** | Web/desktop/mobile apps, API development, infrastructure |
+| **Educator** | Curriculum development, exercise creation, pedagogical grammar |
+
+See [CONTRIBUTING.md](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING.md) for details.
+
+## Contact
+
+- **GitHub Issues** — Bug reports, feature requests
+- **GitHub Discussions** — Questions, ideas, community chat
+- **Email** — peterpausianlian2020@gmail.com
+
+---
+
+**Lungdam!** (Thank you!) 🙏
+
+---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Zolai-AI/.github/main/logo.png" alt="Zolai AI" width="120">
+  <i>Built with ❤️ for the Zomi people</i><br>
+  <sub>AI-assisted development by Peter Pau Sian Lian (@peterlianpi) using OpenCode free models
 </p>
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![ZVS 2018](https://img.shields.io/badge/ZVS-2018-green.svg)](https://github.com/Zolai-AI/zolai-wiki)
-[![HuggingFace](https://img.shields.io/badge/HuggingFace-Datasets-yellow.svg)](https://huggingface.co/Zolai-AI)
-[![Kaggle](https://img.shields.io/badge/Kaggle-8%20Datasets-blue.svg)](https://kaggle.com/datasets?search=zolai)
-[![Discord](https://img.shields.io/badge/Discord-Community-7289da.svg)](https://github.com/Zolai-AI/.github/discussions)
-
-**Bilingual (Tedim Zolai ⇄ English) AI toolkit for the Zomi people.**
-
-We digitize, standardize, and preserve the **Zolai** language under the **ZVS 2018
-orthography** — high-purity bilingual corpora → a **RAG-first knowledge brain**
-(i.e. no raw fine-tuning — existing AIs consume Zolai knowledge as context) →
-open learner platform + offline desktop app.
-
-</div>
-
----
-
-## 📊 Data at a Glance
-
-| Category | Count | Source |
-|----------|-------|--------|
-| Dictionary ZO→EN | 93,931 entries | /dictionary |
-| Dictionary EN→ZO | 112,220 entries | /dictionary |
-| Bible parallel verses | 31,102 (EN↔ZO) | /bible-master |
-| Vocabulary | 98,976 words | Merged from all sources |
-| Proverbs & wisdom | 7,736 entries | Bible extraction |
-| Conversational data | 8,913 entries |  corpus |
-| Cross-language comparisons | 90,255 | Tedim/Hakha/Falam/Paite |
-| Grammar patterns | 1,188 patterns | Bible + references |
-| Phrases | 5,000 pairs | Bible + dictionary |
-| Reference materials | 23 files (6.5MB) | Grammar, literature, genealogy |
-| Clean corpus | 208MB (3M+ sentences) | /zomi-dataset |
-
-**Full data credits:** See [`data/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/data/CREDITS.md)
-
-## 📖 Why We Use the Bible
-
-The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai — with 31,102 parallel verses across multiple Chin language versions (Tedim, Hakha, Falam, Paite). We use it as a *language learning corpus*, not for religious purposes.
-
-## 🚀 Published Datasets
-
-### HuggingFace
-| Dataset | Description |
-|---------|-------------|
-| [`Zolai-AI/zolai-datasets`](https://huggingface.co/datasets/Zolai-AI/zolai-datasets) | Org datasets |
-| [`peterpausianlian/zolai-knowledge-vectors`](https://huggingface.co/datasets/peterpausianlian/zolai-knowledge-vectors) | Sentence embeddings for RAG |
-| [`peterpausianlian/zolai-qwen2.5-3b-lora`](https://huggingface.co/peterpausianlian/zolai-qwen2.5-3b-lora) | LoRA adapter |
-
-### Kaggle (8 datasets)
-| Dataset | Size | Description |
-|---------|------|-------------|
-| [`zolai-llm-training-dataset`](https://kaggle.com/datasets/peterpausianlian/zolai-llm-training-dataset) | 94MB | LLM training data |
-| [`zolai-tedim-cleaned-master`](https://kaggle.com/datasets/peterpausianlian/zolai-tedim-cleaned-master) | 120MB | Cleaned corpus |
-| [`bible-datasets`](https://kaggle.com/datasets/peterpausianlian/bible-datasets) | 72MB | Bible USX format |
-| And 5 more datasets | — | See Kaggle profile |
-
-## 🏗️ Repositories
-
-| Repo | What it does |
-|------|-------------|
-| [`zolai-core`](https://github.com/Zolai-AI/zolai-core) | Python package + FastAPI + **RAG Knowledge Brain** (ingest/retrieve/ngram) |
-| [`zolai-mcp-server`](https://github.com/Zolai-AI/zolai-mcp-server) | MCP server for ChatGPT/Gemini/Claude — EdgeFastMCP on Cloudflare Workers |
-| [`zolai-landing`](https://github.com/Zolai-AI/zolai-landing) | Org landing page — React + Vite + Three.js at zolai.space |
-| [`zolai-web`](https://github.com/Zolai-AI/zolai-web) | Next.js + Hono + Prisma learner platform |
-| [`zolai-tauri`](https://github.com/Zolai-AI/zolai-tauri) | Offline Tauri desktop app (bundled server + GGUF) |
-| [`zolai-datasets`](https://github.com/Zolai-AI/zolai-datasets) | Bilingual corpora, dataset build scripts, HF/Kaggle pointers |
-| [`zolai-training`](https://github.com/Zolai-AI/zolai-training) | LoRA/QLoRA fine-tuning, adapter merge + GGUF export |
-| [`zolai-wiki`](https://github.com/Zolai-AI/zolai-wiki) | Knowledge base: grammar, vocabulary, curriculum, culture |
-| [`zolai-ai`](https://github.com/Zolai-AI/zolai-ai) | Monorepo workspace (source of truth) |
-| `.github` | **This** org profile + community + CI |
-
-## 🔄 How It Fits Together
-
-```
-web ──REST──▶ core ◀──RAG── wiki
-tauri ──REST/GGUF──▶ core
-datasets ──HF/Kaggle──▶ core ──inference──▶ (existing AI, as context)
-training ──▶ datasets + adapters
-```
-
-## 🎯 Our Principles
-
-- **RAG-first, no raw fine-tuning** — Zolai knowledge is *embedded and injected* into
-  capable general AIs, not a Zolai-only base model.
-- **ZVS 2018 compliant** everywhere — grammar, vocabulary, wiki, and all output.
-- **No secrets in code** — tokens load from `.env` only; `.env.example` is placeholders.
-- **Datasets/models on HuggingFace Hub / Kaggle**, never bloated into git.
-
-## 🚀 Get Started
-
-| Component | Command |
-|-----------|---------|
-| Core RAG | `pip install -e .` in `zolai-core` → `python scripts/kg/smoke_test.py` |
-| Web | `cd zolai-web && bun install && bun run dev` |
-| Wiki | `zolai-wiki` — canonical knowledge base (1529 files) |
-
-## 🤝 Contribute
-
-We need:
-
-| Role | What you do |
-|------|-------------|
-| **Native Zomi Speakers** | Validate corpus + ZVS 2018 compliance |
-| **Linguists** | Tibeto-Burman grammar, sentence-structure, word-prediction data |
-| **ML Engineers** | Low-resource NLP, embeddings/RAG, fine-tuning |
-| **Web/Desktop Devs** | Next.js + Tauri |
-
-**Conventional commits** · PRs land on `main` · see [`CONTRIBUTING.md`](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING.md)
-
----
-
-<div align="center">
-
-**Lungdam!** 🙏 (Thank you!)
-
-Building a thriving Zolai AI ecosystem for the Zomi people. 🇿🇲
-
-</div>

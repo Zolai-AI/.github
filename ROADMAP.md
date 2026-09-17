@@ -1,227 +1,165 @@
+---
+title: "Zolai-AI Roadmap"
+description: "Strategic roadmap aligned with comprehensive ecosystem audit"
+created: 2026-09-07
+last_updated: 2026-09-18
+maintainer: "Peter Pau Sian Lian (@peterlianpi)"
+source: "docs/strategy/01-strategic-audit.md"
+---
+
 # Zolai-AI Roadmap
 
-**Last Updated:** 2026-09-07  
-**Vision:** Empower the Zomi people with community-owned, culturally grounded AI tools that preserve and revitalize Tedim Zolai.
+> Prioritized action plan aligned with the comprehensive strategic audit.
+> See [`docs/strategy/01-strategic-audit.md`](docs/strategy/01-strategic-audit.md) for full audit.
 
 ---
 
-## 🎯 Current Priorities (Q3 2026)
+## Current Assessment: 4.5/10
 
-### P0 — Critical (Must Do)
-
-| # | Task | Status | Owner | ETA |
-|---|------|--------|-------|-----|
-| 1 | Data quality pipeline (8-feature scoring) | ✅ Done | @peterlianpi | Complete |
-| 2 | Community annotation platform (Argilla) | 🔄 In Progress | @peterlianpi | Sep 2026 |
-| 3 | Synthetic data generation pipeline | 🔄 In Progress | @peterlianpi | Sep 2026 |
-| 4 | Custom Zolai tokenizer (SentencePiece) | ⏳ Pending | — | Oct 2026 |
-| 5 | Evaluation benchmark suite | ⏳ Pending | — | Oct 2026 |
-
-### P1 — Important (Should Do)
-
-| # | Task | Status | Owner | ETA |
-|---|------|--------|-------|-----|
-| 6 | Deploy Argilla annotation server | ⏳ Pending | — | Sep 2026 |
-| 7 | Integrate LLM API for synthetic data | ⏳ Pending | — | Oct 2026 |
-| 8 | Build mobile learning app MVP | ⏳ Pending | — | Nov 2026 |
-| 9 | Community consultation on governance | ⏳ Pending | — | Oct 2026 |
-| 10 | Update HuggingFace datasets | ⏳ Pending | — | Sep 2026 |
-
-### P2 — Nice to Have (Could Do)
-
-| # | Task | Status | Owner | ETA |
-|---|------|--------|-------|-----|
-| 11 | ASR/TTS prototype | ⏳ Pending | — | Q4 2026 |
-| 12 | Continual pretraining pipeline | ⏳ Pending | — | Q4 2026 |
-| 13 | Offline courseware (PWA) | ⏳ Pending | — | Q1 2027 |
-| 14 | Community governance committee | ⏳ Pending | — | Q1 2027 |
+| Area | Score | Status |
+|------|:-----:|--------|
+| Data Assets | 8/10 | Strong — 3.1M rows, 72 tables |
+| Code Quality | 7/10 | Good — 466+ tests, ruff linting |
+| NLP Pipeline | 6/10 | Basic — syllable excellent, others incomplete |
+| Documentation | 5/10 | Scattered — rich context files, not integrated |
+| Community | 4/10 | Weak — no active contributors |
+| Evaluation | 3/10 | Minimal — 33 smoke tests only |
+| Business | 2/10 | None — no revenue, no plan |
+| Grants | 3/10 | Not ready — major gaps |
+| Research | 4/10 | Nascent — questions articulated, no publications |
 
 ---
 
-## 🗓️ Timeline
+## NOW (Week 1-4) — Critical Foundation
 
-### Phase 1: Foundation (Now — Sep 2026)
-- [x] Data quality scoring pipeline
-- [x] Synthetic data generator
-- [x] Community annotation setup
-- [x] Data governance framework
-- [x] NLP tools guide
-- [ ] Deploy Argilla server
-- [ ] Generate 10K synthetic pairs
-- [ ] Custom tokenizer training
+| # | Task | Why | Effort | Status |
+|---|------|-----|:------:|:------:|
+| 1 | Fix broken tests (test_prediction_api, test_word_attestation) | Blocks CI, signals quality | 8h | ⏳ |
+| 2 | Set up automated backup for data/ | Data loss risk | 8h | ⏳ |
+| 3 | Audit and document licenses for all data sources | Legal risk, grant requirement | 16h | ⏳ |
+| 4 | Create 100+ evaluation test cases | Can't improve what you can't measure | 24h | ⏳ |
+| 5 | Archive duplicate/stale data | Reduce confusion | 16h | ⏳ |
 
-### Phase 2: Training (Oct — Nov 2026)
-- [ ] Fine-tune Qwen2.5-3B on Zolai
-- [ ] Build evaluation benchmarks
-- [ ] Community validation round 1
-- [ ] Publish models to HuggingFace
-- [ ] Mobile app MVP
+## NEXT (Month 2-3) — Governance & Community
 
-### Phase 3: Deployment (Dec 2026 — Jan 2027)
-- [ ] Web platform integration
-- [ ] Desktop app update
-- [ ] MCP server enhancement
-- [ ] Community training workshops
-- [ ] Offline capability
+| # | Task | Why | Effort | Status |
+|---|------|-----|:------:|:------:|
+| 6 | Create governance document + identify 3-5 advisors | Grant requirement, credibility | 16h | ⏳ |
+| 7 | Join Masakhane community | Network, collaboration | 8h | ⏳ |
+| 8 | Interview 5 Zomi speakers | Validate assumptions | 16h | ⏳ |
+| 9 | Design evaluation benchmark | Research credibility | 24h | ⏳ |
+| 10 | Create unified documentation site | Discoverability | 16h | ⏳ |
 
-### Phase 4: Scale (Feb — Apr 2027)
-- [ ] ASR/TTS integration
-- [ ] Advanced learning features
-- [ ] Multi-dialect support
-- [ ] Research publications
-- [ ] Community governance
+## LATER (Month 4-12) — Research & Applications
 
----
+| # | Task | Why | Effort | Status |
+|---|------|-----|:------:|:------:|
+| 11 | Write workshop paper (AmericasNLP/LowResNLP) | Academic credibility | 40h | ⏳ |
+| 12 | Launch vocabulary learning app v1 | Community benefit | 60h | ⏳ |
+| 13 | Create A1-A2 curriculum | Education foundation | 80h | ⏳ |
+| 14 | Submit 2-3 grant applications | Sustainability | 120h | ⏳ |
+| 15 | Deploy desktop app v1 (Tauri) | Offline access | 60h | ⏳ |
 
-## 📊 Success Metrics
+## DEFER — Blocked or Low Priority
 
-### Data Quality
-- **Dictionary coverage:** 94% → 98%+
-- **Corpus size:** 31K → 100K+ verses
-- **Vocabulary:** 98K → 150K+ words
-- **Quality score:** 0.47 → 0.60+
+| Activity | Blocked By | Revisit When |
+|----------|-----------|--------------|
+| Mobile app | Web + desktop not complete | Month 12+ |
+| Speech technology (ASR/TTS) | Text pipeline not proven | Year 2+ |
+| Custom LLM training | Data foundation not solid | Year 2+ |
+| n8n automation | No running instance | Month 12+ |
+| Knowledge graph | Database not stable | Month 12+ |
+| Chin language expansion | Zolai model not validated | Year 2+ |
 
-### Model Performance
-- **Translation BLEU:** Baseline → +20%
-- **NER F1:** 0.75 → 0.85+
-- **Perplexity:** <5.0 on held-out test
-- **Human eval:** 80%+ native speaker approval
+## DO NOT DO
 
-### Community Impact
-- **Active contributors:** 5 → 25+
-- **Annotations:** 0 → 10K+ validated pairs
-- **Learning users:** 0 → 100+ beta testers
-- **GitHub stars:** Current → 2x growth
-
-### Deployment
-- **Mobile app:** MVP → Production
-- **Offline:** No → Full PWA support
-- **API uptime:** 99%+
-- **Response time:** <200ms
+- Premature model training
+- Expanding repos beyond 10
+- Building for imagined users (validate first)
+- Ignoring evaluation
+- Excessive architecture (43 submodules, many stubs)
 
 ---
 
-## 🛠️ Technical Roadmap
+## Phase Timeline
 
-### Data Pipeline
-```
-Current: Bible + Dictionary + Reference
-Target: + Synthetic + Community + Web + Audio
-```
+### Phase 1: Foundation (Months 1-2)
+- [x] Repository audit complete
+- [x] Database audit complete
+- [ ] Fix broken tests
+- [ ] Backup strategy
+- [ ] License audit
+- [ ] Governance structure
 
-### Model Training
-```
-Current: RAG (no fine-tuning)
-Target: + LoRA fine-tuning on Qwen2.5
-       + Custom tokenizer
-       + Continual pretraining
-```
+### Phase 2: Data Quality (Months 2-4)
+- [ ] Archive import/duplicate tables
+- [ ] Data quality dashboard
+- [ ] 100+ evaluation test cases
+- [ ] Community validation pipeline
 
-### Deployment
-```
-Current: Web (Next.js) + Desktop (Tauri)
-Target: + Mobile (React Native)
-       + Offline (PWA)
-       + MCP (AI assistants)
-```
+### Phase 3: NLP Foundation (Months 4-8)
+- [ ] Evaluation benchmark suite
+- [ ] POS tagging integration
+- [ ] End-to-end RAG validation
+- [ ] Community corrections flowing
 
-### Evaluation
-```
-Current: Manual testing
-Target: + Automated benchmarks
-       + Community evaluation
-       + Cultural knowledge tests
-```
-
----
-
-## 🤝 Community Milestones
-
-### Q3 2026
-- [ ] 10+ active contributors
-- [ ] 1K+ annotations
-- [ ] First community meeting
-- [ ] Governance committee formed
-
-### Q4 2026
-- [ ] 25+ contributors
-- [ ] 5K+ annotations
-- [ ] Mobile app beta
+### Phase 4: Applications (Months 8-14)
+- [ ] Vocabulary learning app v1
+- [ ] A1-A2 curriculum
+- [ ] Desktop app v1
 - [ ] Research paper submitted
 
-### Q1 2027
-- [ ] 50+ contributors
-- [ ] 10K+ annotations
-- [ ] Production deployment
-- [ ] Community ownership model
+### Phase 5: Research (Months 10-18)
+- [ ] Workshop paper published
+- [ ] Evaluation benchmarks published
+- [ ] Research partnerships established
+- [ ] Conference presentation
+
+### Phase 6: Ecosystem (Months 18-36)
+- [ ] Other Chin languages supported
+- [ ] Active contributor community
+- [ ] Sustainable funding
+- [ ] Scaling education programs
 
 ---
 
-## 📚 Research Integration
+## Success Metrics
 
-### Papers to Implement
-1. **SynthLLM** (LREC 2026) — Synthetic data generation
-2. **mTIG** (ACL 2026) — Grammar-controlled generation
-3. **BYOL** (Microsoft, 2026) — Low-resource toolkit
-4. **Kakugo** (2026) — <$50 SLM training
+### Data Quality
+- Dictionary coverage: 103K → 150K+ entries
+- Evaluation cases: 33 → 500+
+- Verified entries: 0 → 50,000+
 
-### Tools to Adopt
-1. **Unsloth** — 2-5x faster LoRA
-2. **SentencePiece** — Custom tokenizers
-3. **Argilla** — Community annotation
-4. **vLLM** — High-throughput inference
+### Community
+- Active contributors: 0 → 25+
+- Community corrections: 0 → 500+
+- Learning app users: 0 → 500+
 
----
+### Research
+- Published papers: 0 → 3+
+- Evaluation benchmarks: 0 → 3
+- Research partnerships: 0 → 2+
 
-## 🎓 Learning Path
-
-### For New Contributors
-1. Read CONTRIBUTING.md
-2. Set up development environment
-3. Pick a `good first issue`
-4. Join community GitHub Discussions
-5. Attend monthly meeting
-
-### For Zomi Speakers
-1. Join annotation platform
-2. Validate translations
-3. Contribute cultural knowledge
-4. Test learning tools
-5. Provide feedback
-
-### For ML Engineers
-1. Review data quality pipeline
-2. Help with model training
-3. Improve evaluation metrics
-4. Optimize inference
-5. Publish findings
+### Funding
+- Grant applications: 0 → 3+
+- Funding secured: $0 → $100K+
+- Revenue: $0 → sustainable
 
 ---
 
-## 📞 Contact & Governance
+## Documents
 
-### Maintainers
-- **@peterlianpi** — Project lead, core developer
-
-### Governance
-- Community-driven decisions
-- Monthly steering meetings
-- Public roadmap updates
-- Transparent decision-making
-
-### Communication
-- **GitHub Issues:** Bug reports, features
-- **GitHub Discussions:** Questions, ideas
-- **GitHub Discussions:** Questions, ideas, real-time chat
-- **Community Meetings:** Monthly
+| Document | Description |
+|----------|-------------|
+| [Strategic Audit](docs/strategy/01-strategic-audit.md) | Full 32-section audit |
+| [Strategic Roadmap](docs/strategy/02-strategic-roadmap.md) | Detailed action plan |
+| [Grant Readiness](docs/strategy/03-grant-readiness.md) | Grant gap analysis |
+| [AI Tools & Attribution](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain docs |
 
 ---
 
-## 🔄 Updates
-
-This roadmap is updated monthly. Check back for the latest priorities.
-
-**Next review:** 2026-10-07  
+**Last review:** 2026-09-18
+**Next review:** 2026-10-18
 **Feedback:** Open a GitHub Discussion or issue
 
 ---
