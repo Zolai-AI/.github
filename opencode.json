@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "watcher": {
+    "ignore": [
+      "data/**",
+      "zolai-ai/**",
+      "node_modules/**",
+      ".venv/**",
+      ".next/**",
+      "target/**",
+      "__pycache__/**",
+      "*.jsonl",
+      "logs/**",
+      "tmp/**",
+      "artifacts/**",
+      "notebooks/**",
+      "kaggle_dataset/**",
+      "playwright-report/**",
+      "test-results/**",
+      "dist/**",
+      "build/**"
+    ]
+  }
+}

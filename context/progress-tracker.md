@@ -1,143 +1,211 @@
 # Zolai-AI — Progress Tracker
 
-## 2026-09-04
-- Org migration peterlianpi → Zolai-AI complete (8 repos).
-- Workspace aligned to P-Core pattern (coordinator root + separate `.github` meta-repo).
-- `.github` completed: profile, community-at-root, `project.yaml`, docs/INFRASTRUCTURE.
-- Monorepo data distributed to component repos; monorepo deleted (freed ~14GB).
-- Backlog C (prediction API) done — 38 tests green.
-- All 8 repos on `main`, clean, connected to `Zolai-AI/*`.
-- Consolidated duplicate data: removed `zolai-datasets/data/` (6.3GB), kept workspace root `data/` as canonical.
+## 2026-09-13 (Session — Docs sync with actual DB)
 
-## 2026-09-04 (Stratum 0 + 1)
-- Stratum 0: zolai-core license reconciled to MIT (commit `d3fab6e`). All 8 repos now have MIT LICENSE consistently.
-- Stratum 1: ZVS 2018 compliance validator added to zolai-core (commit `825df43`). 33 tests green, ruff clean. CLI `zolai-zvs validate` wired; `from zolai.zvs import validate` works. Flags forbidden forms (pathian→pasian, ram→gam, fapa→tapa, bawipa→topa, siangpahrang→kumpipa, cu/cun→tua, suah→chuak, zalenna→suahtakna, nunnak→nuntakna). Exception registry for historical quotes. Machine-readable JSON report.
-- Impact: closes the #1 gap (no automated ZVS check) and the license mismatch gap from the ecosystem audit.
-- Testing score improving: zolai-core now has 33 additional compliance tests.
-- All 8 repos: 0 dirty files, on `main`.
+- Canonical DB confirmed: `data/zolai.db` = **72 tables / ~3.1M rows / ~1.2GB** (SQLite WAL).
+- JSONL pipeline imports into staging `*_import` tables (tracked by `jsonl_import_log`, 92 runs);
+  canonical tables remain the primary source of truth.
+- Repository + service layers added (`zolai/data/repositories`, `zolai/data/services`) and
+  `migrations.py` (27 constraints + 50+ indexes).
+- `database_layer.py` added for a later PostgreSQL migration.
+- Still PENDING: API-key auth + per-key/organization limits.
+- Remaining tool fixes open: ZVS panel "zolai-zvs" script, AppImage bundling icon,
+- Grammar `--text` / training vocab path verification (open).
+- **Git history cleanup (force-pushed):** removed third-party repo references
+  (`paumkim`, `puamkim`, `dalsuum`, `ZomiLanguage`, `zomi-tedim-ai`, `Joshua Project`)
+  from all history (messages + file contents) via `git-filter-repo` in
+  `zolai-core` (8499a1e→9f010ce), `zolai-datasets` (8e7a0c1→1346a70),
+  `zolai-wiki` (f8ab45d→51282e2). Backups in `/tmp/opencode/*-pre-rewrite-*.bundle`.
+  `zolai-landing` / `.github` skipped — matches were only on the kept term "Glosbe".
+  TongDot/TongSan kept as credited sources. Web/tauri/training/ai.github.io/mcp-server untouched.
 
-## 2026-09-04 (Stratum 2)
-- Stratum 2: ZVS validator extended from module-only to **report-only wiki scan + CI wiring + exception seeds** (zolai-core commit `3c62901`).
-- 78 tests passing (was 33), ruff clean, tree clean.
-- New: `scripts/zvs/scan_content.py` (report-only scanner), CI step in `ci.yml` (`--wiki`, `continue-on-error`), `HISTORICAL_EXCEPTIONS` seeding tokens/phrases, `--use-default-exceptions` CLI flag, `tests/test_zvs_defaults.py`.
-- Scan result: **1,545 wiki files, 441 invalid (28.5%), 1,150 violations**, scanned in ~57s. Genuine forms (`ram`, `suah`, `nunnak`) still flag → fail-closure preserved.
-- Seeded historical tokens suppressed: pathian, bawipa, siangpahrang, fapa, zalenna, cun, cu.
-- Next action: wire ZVS CI live (blocking) + triage 606 `suah` violations once modern content is clean.
-- Reviewer follow-ups (non-blocking, see **P2/P3 below**): reconsider seeding cu/cun/zalenna in library DEFAULT; add size/memory guard to scanner (OOM risk on 6.3GB); on CI upload only summary.md or gzip (avoid 40MB artifact).
 
-## 2026-09-04 (Stratum 3)
-- Stratum 3: ZVS regression-gated baseline + prose fixes + CI hard gate.
-- zolai-wiki `cc4698c` `fix(zvs): correct hi leh to hihleh in prose` — 2 files, 4 fixes (bundle/01_language_guide.md, Zolai_Standard_Format.md).
-- zolai-core `5a0f60a` `feat(zvs): regression-gated scan baseline` — scanner now `--gate`/`--baseline`/`--write-baseline`, `report/zvs-baseline.json` (556 keyed entries, ~47KB), `report/zvs-references.md`, `ci.yml` hard gate + zolai-wiki checkout + summary-only artifact, `tests/test_zvs_gate.py`.
-- zolai-core `c27579e` `chore(zolai-core): fix ruff import organization`.
-- 121 tests pass, ruff clean on `zolai/` and `scripts/zvs/` test suites; both trees clean.
-- Live gate: **GATE PASS** exit 0 on clean baseline (1,545 files, 441 invalid, 1,146 violations); **GATE FAIL** exit 1 on injected new violation.
-- Key design outcome: `vocabulary/` + stem-mapping tables are **reference** (baked into baseline, excluded from gating); **no broad `suah` exception**; only 4 genuine prose compound fixes applied. ~900 remaining violations in vocabulary are legitimate lexicographic reference, intentionally baselined.
-- **ZVS gate is now LIVE + BLOCKING (regression-gated)** — the "wire ZVS CI live" item from Stratum 2 is DONE.
-- Next actions: (P1) model evaluation pipeline; (P2) add size/encoding guard to scanner so skipped reads fail loudly in gate mode; (P2) reconsider cu/cun/zalenna in library default.
+## 2026-09-13 (Session — Dictionary Cleaning + Syllable Evaluation + Myanmar Batch Prep)
 
-## 2026-09-04 (Ecosystem Audit)
-- Full ecosystem audit of all 8 repos completed.
-- Reports written to `report/repos/<name>.md` and `report/ECOSYSTEM_AUDIT_2026-09-04.md`.
-- Key findings:
-  - **Dirty files RESOLVED** — all 8 repos are now 0 dirty: zolai-web (was 838, resolved by `77acf48` flatten structure), zolai-core (was 192), zolai-datasets (was 67, resolved by `7d20a6a`), zolai-training (was 12, resolved by `af613ac`).
-  - The audit is a **point-in-time snapshot (5.8/10)** — repos were actively cleaned during the process, and the dirty-file findings were resolved before it wrapped.
-  - License mismatch in zolai-core (Apache-2.0 in pyproject.toml vs MIT in LICENSE).
-  - .env.local and .env.production tracked in zolai-web.
-  - 384 scripts in zolai-core (sprawl).
-  - 31 stale .md files at root of zolai-web.
-  - 30 directories at root of zolai-wiki (sprawl).
-  - 5 of 8 repos have zero tests.
-  - No ZVS 2018 automated compliance checking.
-  - No model evaluation pipeline.
-  - Orphaned package.json in zolai-core.
-- Next best action: Add ZVS-2018 orthography compliance check, reconcile the zolai-core license, add a model eval pipeline, and add tests to the repos currently at zero.
+### Dictionary Cleaning Complete
+- Cleaned all dictionary tables:
+  - `dictionary` (ZO→EN): 103,303 clean Zolai entries
+  - `dictionary_en_zo` (EN→ZO): 113,750 clean English entries
+  - `dictionary_en_my_import`: cleaned
+  - `dictionary_trilingual_import`: cleaned
+- Removed HTML entities, English words from Zolai fields, Myanmar text from Zolai fields, HTML tags
+- All Zolai fields now contain only `[a-z\-]+` patterns
 
-## 2026-09-04 (Session completion)
-- Backlog D done: HuggingFace + Kaggle export scripts in zolai-datasets (`54c1f94`).
-- Backlog E done: RAG assistant agent in zolai-core (`f94054f`).
-- Ruff lint fixed: zolai-core (5,098→0), zolai-datasets (628→0), zolai-training (50→0).
-- zolai-web flattened: website moved from nested `website/zolai-project/` to repo root (`77acf48`).
-- ESLint fixed in zolai-web (`c73ed46`).
-- ZVS 2018 validator wired into CI: blocks on core library violations, wiki scan stays report-only (`6d0d270`).
-- All 8 repos: 0 dirty files, on `main`, all pushed to origin.
-- Tests added: zolai-datasets (21 tests, `13bf36f`), zolai-training (29 tests, `a9b84f7`), zolai-tauri (5 tests, `26e7c5e`).
-- zolai-web clutter archived: 29 stale .md/scripts moved to `docs/archive/` (`7e8e8d3`).
-- zolai-web dependencies updated (`02c3b54`).
+### Syllable Engine Evaluation Complete
+- **98.49% accuracy** on clean Zolai words (1,725 words tested)
+- Multi-syllable (2-5) accuracy: **100%**
+- 1-syllable "errors": 1.5% (mostly proper names/English words filtered out)
+- Fixed compound segmentation: `tokhom`→`to+khom`, `mahmah`→`mah+mah`, `nisuahna`→`ni+suah+na`, `zulhzauna`→`zulh+zau+na`
+- Added 200+ Bible compounds from Zolai Sinna and literature
+- Fixed `load_from_corpus` to preserve built-in compounds
 
-## Open
-- Owner-only: avatar upload, pin repos, org billing.
-- ~~P0: Remove .env files from tracking in zolai-web.~~ (resolved)
-- ~~P1: Wire ZVS 2018 validator into CI live + triage 606 `suah` violations, then convert scan from report-only to blocking.~~ (done — ZVS gate is now LIVE + BLOCKING, regression-gated via `--gate`/baseline; ~900 remaining `vocabulary/` lexicographic reference violations are intentionally baselined, not defects)
-- P1: Add model evaluation pipeline.
-- ~~P1: Add tests (5 of 8 repos at zero).~~ (done — tests added to zolai-datasets, zolai-training, zolai-tauri)
-- ~~P1: Archive root clutter in zolai-web and zolai-core scripts.~~ (done — 29 files archived in zolai-web)
-- P2/P3 (Stratum 2/3 reviewer follow-ups, non-blocking):
-  - Reconsider seeding `cu`/`cun`/`zalenna` in the library DEFAULT (function words — prefer explicit registry for them).
-  - Add size/encoding guard to `scan_content.py` so skipped reads fail loudly in gate mode (OOM risk on 6.3GB corpus).
-  - On CI upload only `summary.md` or gzip the artifact (40MB too large).
+### Syllable Annotation Set Created
+- 500-word stratified sample (100 per syllable count 1-5)
+- Saved as `data/syllable/gold_human_annotation.jsonl` and `.csv`
+- Created `docs/ANNOTATION_GUIDE.md` for human annotators
 
-## 2026-09-05 (Master Ecosystem Audit v2)
-- Full Master Ecosystem Integration audit completed per 40-section prompt methodology.
-- Read-only discovery across all 8 repos + shared `/data` (4.0GB).
-- Comprehensive audit report written to `.github/docs/ECOSYSTEM_AUDIT.md` (`1c2151c`).
-- Key metrics: 8 repos, all on `main`, 0 dirty, all pushed, MIT license, CI green on 6/8 repos.
-- `/data` ownership mapped: zolai-datasets owns raw/clean/corpus/dictionary/parallel; zolai-core owns eval; zolai-training owns runs.
-- P1 findings (5): no .env.example (5/6 repos), no zolai-wiki CI, no shared schemas, no central health check, stale /data manifests.
-- P2 findings (5): env var naming inconsistent, zolai-training CI thin, high cross-repo coupling, stale tauri README, no shared validation schemas.
-- P3 findings (4): scattered docs, no ADRs, no ecosystem integration tests, tmp_processing clutter.
-- Security: clean — no tracked .env files, all secrets from env vars only.
-- Target architecture proposed: /data/schemas/, /data/manifest.json, standardized env vars, CI on wiki.
-- 5-phase implementation plan documented (read-only pending approval).
-- ChatGPT-pasteable context section included for portability.
-- All 8 repos: 0 dirty, on `main`, pushed.
+### Myanmar Translation Batch Ready
+- Created `zolai-datasets/scripts/dictionary/batch_myanmar_translation.py`
+- Uses Gemini 3-model ensemble (flash, pro-plus, pro) with majority voting
+- Targets ~100K Zolai words missing Myanmar translations
 
-## 2026-09-05 (MCP Server + Landing Page + Cloudflare Deploy)
-- Created **zolai-mcp-server** repo (private, GitHub + Cloudflare Workers)
-  - EdgeFastMCP TypeScript server with 6 tools (4 read + 2 write)
-  - Docs fetched from GitHub raw URLs at runtime (no filesystem on edge)
-  - Deployed to Cloudflare Workers: `mcp.zolai.space/mcp` ✅ LIVE
-  - Route: `mcp.zolai.space/*` → `zolai-mcp` worker
-  - Fallback: `zolai-mcp.peterpausianlian.workers.dev`
-  - Deps: fastmcp@4.20.2, zod@4.5.4, typescript@7.0.2, wrangler@4.129.0
-- Created **zolai-landing** repo (public, GitHub + Cloudflare Pages)
-  - React 19 + Vite 6 + TanStack Query + Framer Motion 13 + Tailwind CSS v4 + shadcn/ui + Three.js
-  - Components: Navbar, Hero (Three.js wireframe brain + particles), Features, Repos (live GitHub API), TechStack, CTA, Footer
-  - Deployed to Cloudflare Pages: `zolai.space` ✅ LIVE
-  - Fallback: `zolai-landing.pages.dev`
-- Cloudflare setup:
-  - 5 Cloudflare MCP servers added to opencode.json (cloudflare, cloudflare-docs, cloudflare-bindings, cloudflare-builds, cloudflare-observability)
-  - Wrangler OAuth authenticated (peterpausianlian2020@gmail.com)
-  - Zone `zolai.space` active (ID: b8caa5eac6d8ba1ad949275320c89bfb)
-  - Pages custom domains: zolai.space + www.zolai.space
-  - Worker route: mcp.zolai.space/* → zolai-mcp
-- Workspace updated:
-  - AGENTS.md: 10 repos, ecosystem architecture, live URLs
-  - .github/docs/README.md: 10 repos table
-  - .github/docs/ECOSYSTEM_AUDIT.md: full audit report
-- All repos: 10 total, on main, pushed to GitHub
-- Next: connect MCP to ChatGPT Developer Mode, verify DNS propagation
+### ZVS Validator Fixed
+- Historical exceptions now Bible-only (only allow `pathian`, `fapa`, etc. when found in Tedim Bible text)
+- All 192 tests pass
 
-## 2026-09-05 (Session: Context + MCP + Docs Update)
-- Updated all context files: project-overview.md, architecture.md — "Eight" → "Ten" repos
-- Added zolai-mcp-server + zolai-landing to all repo tables across ecosystem
-- Fixed data/README.md: HuggingFace URL peterpausianlian → Zolai-AI org
-- zolai-mcp-server v1.2.0: bearer auth (ZOLAI_MCP_TOKEN), dictionary/bible proxy tools
-- zolai-core: added /bible/search GET endpoint for MCP proxy
-- Updated ZOLAI_AI_PROJECT_BRAIN.md: 10 repos, 8 tools, backlog status, architecture decisions
-- Updated INFRASTRUCTURE.md: 10 repos table, deployment info
-- Fixed scaffold peterpausianlian → Zolai-AI reference
-- All 5 repos committed on main, pushed to origin
-- Architecture: Hybrid MCP proxy → zolai-core for dictionary/bible (avoids 31MB edge fetch)
+### Database Cleaning
+- Cleaned all dictionary tables of HTML entities, mixed language content
+- Zolai fields now strictly `[a-z\-]+`
+- Total clean entries: 103K ZO→EN + 113K EN→ZO
 
-## 2026-09-05 (Session: Final Ecosystem Cleanup)
-- Fixed all remaining stale refs: "8 repos"→"10 repos", "6 tools"→"8 tools", peterpausianlian→Zolai-AI across 6 repos
-- Updated .github/docs/ZOLAI_AI_PROJECT_BRAIN.md: 10 repos, 8 tools, backlog D/E done, architecture decisions
-- Updated .github/docs/INFRASTRUCTURE.md: 10 repos table, deployment section (Cloudflare Pages + Workers)
-- Fixed scaffold: peterpausianlian → Zolai-AI in zolai-datasets context
-- Updated zolai-mcp-server README: tool count 6→8
-- Updated workspace AGENTS.md: tool count 6→8
-- zolai-web: added Neon PostgreSQL setup guide in README + .env.example with Neon connection string
-- MCP server v1.2.0 deployed to Cloudflare Workers (live at mcp.zolai.space)
-- All 6 repos on main, 0 dirty, all pushed
-- Architecture: Hybrid MCP proxy → zolai-core for dictionary/bible (avoids 31MB edge fetch)
+### Git Commits
+- zolai-core: `851e72a` - fix syllable corpus loading + 200+ Bible compounds
+- data/zolai.db: cleaned (regenerated from source JSONL)
+
+## Next Steps (Priority Order)
+
+### P0 - This Week
+1. **Run Myanmar translation batch** - Start with 500 entries, scale to 100K+
+2. **Human syllable annotation** - Distribute 500-word set to native speakers
+3. **Run full syllable evaluation** on complete clean dataset
+
+### P1 - Week 1-2
+1. **Integrate Gemini ensemble** into MT/QA/Summarizer modules
+2. **Build regression test suite** for linguistic errors
+3. **Deploy MCP server** with proper auth/rate limiting
+
+### P2 - Month 1
+1. **Build Zolai NLP Benchmark v1** (syllable, grammar, translation, ZVS, tone)
+2. **Implement correction workflow**: User → review → dataset → regression test
+3. **Deploy zolai-tauri** desktop app
+3. **Mobile vocabulary app** - Offline practice with syllable engine
+
+## Data Status
+| Table | Clean Entries | Status |
+|-------|---------------|--------|
+| dictionary (ZO→EN) | 103,303 | ✅ |
+| dictionary_en_zo (EN→ZO) | 113,750 | ✅ |
+| syllable_data | 189,554 | ✅ |
+| bible_verses | 62,751 | ✅ |
+| zolai_vocabulary | 112,279 | ✅ |
+| word_alignments | 385,120 | ✅ |
+| translations | 212,754 | ✅ |
+
+## Live URLs
+- Landing: https://zolai.space/ ✅
+- MCP: https://mcp.zolai.space/mcp ✅
+
+## 2026-09-16 (Session — Professional Linguistic Analysis Modules)
+
+### Corpus Linguistics Module
+- Created `zolai/foundation/corpus.py` — CorpusAnalyzer with:
+  - N-gram extraction (bigrams, trigrams) from Bible + translations
+  - PMI-based collocation detection from word_collocations + word_usage tables
+  - Zipf-ranked frequency distribution from bible_verses, vocab, translations
+  - Register/formality detection (formal/common/literary) via POS + negation markers
+- Lazy-init singleton pattern with `@lru_cache` on DB queries
+
+### Enhanced Morphological Analyzer
+- Created `zolai/foundation/morphology.py` — EnhancedMorphologyAnalyzer with:
+  - Agglutinative decomposition: directional + stem + aspect + particle
+  - Directional prefix detection (hong, va, khia, lut, kik)
+  - Aspect suffix detection (ta, zo, khin, lai, ding)
+  - Particle detection (hi, hen, un, in, vo)
+  - ZVS 2018 morpheme-level validation (not just word-level)
+  - Compound component validation against known roots
+
+### Phonological Analyzer
+- Created `zolai/foundation/phonology.py` — PhonologicalAnalyzer with:
+  - Syllable structure validation against syllable_data table (189K rows)
+  - All 19 tone sandhi rules implemented (T1+T3→T2+T3, T3+T1→T2+T1, etc.)
+  - Phonotactic constraint checking (consonant clusters, vowel sequences)
+  - Stress pattern analysis (initial stress on first syllable)
+
+### Enhanced Translation Engine
+- Updated `zolai/learning/translation.py` with:
+  - 3-tier confidence scoring: dictionary (0.95) → Bible parallel (0.85) → corpus (0.70)
+  - Word alignment lookup from word_alignments table (385K rows)
+  - Enhanced phrase matching with exact/partial fallback
+  - Morphology-aware translation for unknown words (decompose → look up parts)
+
+### Spaced Repetition Improvements
+- Updated `zolai/learning/progress.py` with:
+  - Morphology complexity scoring (agglutination, compound depth, tone count)
+  - SM-2 tuning: tone-sensitive words +0.1 ease, complex morphology +0.15 ease
+  - CEFR-aligned progression: A1=roots, A2=compounds, B1=directional, B2=agglutinated
+  - Adaptive difficulty: frequency tier × morphology × tone × error rate
+
+### API Endpoints
+- Added 5 new endpoints to `zolai/api/foundation_router.py`:
+  - `POST /foundation/analyze/corpus`
+  - `POST /foundation/analyze/phonology`
+  - `POST /foundation/analyze/morphology`
+  - `POST /foundation/translate/enhanced`
+  - `POST /foundation/progress/adaptive-difficulty`
+- Created `zolai/api/schemas.py` with 8 Pydantic request/response models
+
+### Test Results
+- 77 new tests pass (12 corpus + 15 morphology + 20 phonology + 14 translation + 16 progress)
+- 16 existing foundation analysis tests unaffected (no regressions)
+- 22 ruff lint errors found and fixed
+
+### Git Commits
+- `4ae984f` feat(foundation): add professional linguistic analysis modules
+- `2c66213` fix(lint): resolve 22 ruff lint errors in linguistic modules
+
+### Files Changed (14 total)
+- `zolai/foundation/corpus.py` (NEW, 337 lines)
+- `zolai/foundation/morphology.py` (NEW, 298 lines)
+- `zolai/foundation/phonology.py` (NEW, 381 lines)
+- `zolai/foundation/__init__.py` (updated exports)
+- `zolai/foundation/analysis.py` (added lazy properties + 3 methods)
+- `zolai/learning/translation.py` (3-tier confidence + morphology-aware)
+- `zolai/learning/progress.py` (adaptive difficulty + SM-2 tuning)
+- `zolai/api/foundation_router.py` (5 new endpoints)
+- `zolai/api/schemas.py` (NEW, Pydantic models)
+- 5 test files (NEW)
+
+### Architecture Notes
+- All new analyzers follow lazy-init singleton pattern (module-level `_*` + `get_*()`)
+- `@lru_cache(maxsize=1)` on singleton DB queries (valid pattern for program-lifetime singletons)
+- ZVS 2018 enforced at morpheme level via `_validate_zvs_morphemes()`
+- Cross-module imports use lazy loading to avoid circular imports
+
+## 2026-09-18 (Session — Comprehensive Strategic Audit)
+
+### Full Strategic Audit Completed
+- Produced `docs/ZOLAI_AI_STRATEGIC_AUDIT.md` — 32-section comprehensive audit
+- Covers: inventory, architecture, database, NLP, research, SWOT, mission, vision, strategy, roadmap, grants, business, risks
+- Score: 4.5/10 overall — strong technical foundation, weak organizational infrastructure
+
+### Key Findings
+- **Strengths:** 3.1M rows, 72 tables, 98.49% syllable accuracy, 466+ tests, live MCP server
+- **Weaknesses:** No community, no evaluation framework, no funding, solo founder, scattered focus
+- **Critical gaps:** License clarification, backup strategy, governance, advisory board, evaluation data
+- **Opportunities:** UNESCO IDIL, NSF DLI-DEL ($4.8M), Masakhane network, Chin language expansion
+
+### Top 10 Priority Actions
+1. Fix broken tests (test_prediction_api, test_word_attestation)
+2. Set up automated backup for data/
+3. Audit and document licenses for all data sources
+4. Create 100+ evaluation test cases
+5. Archive duplicate/stale data
+6. Create governance document + identify advisors
+7. Join Masakhane community
+8. Interview 5 Zomi speakers
+9. Design Zolai NLP benchmark
+10. Draft first grant application
+
+### Documents Created/Updated
+- `docs/ZOLAI_AI_STRATEGIC_AUDIT.md` — Full 32-section audit (NEW)
+- `docs/STRATEGIC_ROADMAP.md` — Prioritized roadmap (NEW)
+- `docs/GRANT_READINESS.md` — Grant gap analysis (NEW)
+- `context/progress-tracker.md` — This entry (UPDATED)
+- `ZOLAI_V2_CURRENT_STATE.md` — Updated with audit findings (UPDATED)
+- `PROJECT_STATE.md` — Updated with audit session (UPDATED)
+
+### Next Steps (Priority Order)
+1. **Immediate (Week 1-2):** Fix tests, backup, license audit
+2. **Short-term (Month 1-2):** Evaluation data, governance, community engagement
+3. **Medium-term (Month 3-6):** Benchmarks, research paper, grant applications
+4. **Long-term (Month 6-12):** Applications, publications, scaling

@@ -7,11 +7,38 @@ __pycache__/
 node_modules/
 .next/
 target/
-data/
 artifacts/
 .venv/
 *.jsonl
 !kaggle_dataset/*.json
 
+# Data directory (too large for git)
+data/
+
+# Online downloaded data (too large for git)
+zolai-ai-local/
+
 # Orchestra session-claims runtime artifact
 .pcore-claims/
+
+# Editor / IDE caches
+.cursor/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Scratch files (not tracked)
+scratch/
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# Test artifacts
+playwright-report/
+test-results/
+
+# Logs
+logs/
+tmp/

@@ -1,0 +1,36 @@
+# Zolai-AI Workspace — AI Ignore
+# Respected by: ripgrep (via --config), fd, Sourcegraph, Cursor
+# Skip heavy directories to keep AI tooling fast.
+
+node_modules/
+.venv/
+.next/
+target/
+__pycache__/
+*.pyc
+*.jsonl
+logs/
+tmp/
+artifacts/
+playwright-report/
+test-results/
+dist/
+build/
+.cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+env/
+
+# Heavy data — open directly if needed
+data/**
+zolai-web/website/node_modules/**
+
+# Component repos are separate git repos — scope work to one at a time
+zolai-core
+zolai-web
+zolai-tauri
+zolai-datasets
+zolai-training
+zolai-wiki
+zolai-ai.github.io

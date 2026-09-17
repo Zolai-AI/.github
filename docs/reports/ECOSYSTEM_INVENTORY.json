@@ -1,0 +1,129 @@
+{
+  "audit_date": "2026-09-10",
+  "repos": [
+    {
+      "name": "zolai-core",
+      "purpose": "Python toolkit + RAG + API",
+      "status": "ACTIVE",
+      "language": "Python",
+      "size": "56MB",
+      "files": 679,
+      "tests": 19,
+      "ci": true,
+      "deployment": "manual"
+    },
+    {
+      "name": "zolai-web",
+      "purpose": "Learner platform",
+      "status": "ACTIVE",
+      "language": "TypeScript/Next.js",
+      "size": "47MB",
+      "files": 952,
+      "tests": 24,
+      "ci": true,
+      "deployment": "vps"
+    },
+    {
+      "name": "zolai-wiki",
+      "purpose": "Knowledge base",
+      "status": "ACTIVE",
+      "language": "Markdown",
+      "size": "70MB",
+      "files": 1654,
+      "tests": 0,
+      "ci": false,
+      "deployment": "none"
+    },
+    {
+      "name": "zolai-datasets",
+      "purpose": "Data processing scripts",
+      "status": "ACTIVE",
+      "language": "Python",
+      "size": "8.7MB",
+      "files": 183,
+      "tests": 3,
+      "ci": true,
+      "deployment": "none"
+    },
+    {
+      "name": "zolai-mcp-server",
+      "purpose": "MCP server (Cloudflare)",
+      "status": "ACTIVE",
+      "language": "TypeScript",
+      "size": "348MB",
+      "files": 10,
+      "tests": 0,
+      "ci": false,
+      "deployment": "cloudflare-workers"
+    },
+    {
+      "name": "zolai-landing",
+      "purpose": "Org landing page",
+      "status": "ACTIVE",
+      "language": "TypeScript/React",
+      "size": "656MB",
+      "files": 32,
+      "tests": 0,
+      "ci": false,
+      "deployment": "cloudflare-pages"
+    },
+    {
+      "name": "zolai-tauri",
+      "purpose": "Desktop app",
+      "status": "PARTIAL",
+      "language": "Rust/TypeScript",
+      "size": "1.1MB",
+      "files": 31,
+      "tests": 2,
+      "ci": true,
+      "deployment": "none"
+    },
+    {
+      "name": "zolai-training",
+      "purpose": "Fine-tuning",
+      "status": "PARTIAL",
+      "language": "Python",
+      "size": "2.4MB",
+      "files": 44,
+      "tests": 1,
+      "ci": true,
+      "deployment": "none"
+    },
+    {
+      "name": "zolai-ai.github.io",
+      "purpose": "GitHub Pages",
+      "status": "ACTIVE",
+      "language": "HTML",
+      "size": "1.3MB",
+      "files": 14,
+      "tests": 0,
+      "ci": false,
+      "deployment": "github-pages"
+    }
+  ],
+  "data": {
+    "total_size": "12GB",
+    "categories": {
+      "dictionary": {"size": "1.4GB", "files": 7, "records": 219067},
+      "bible": {"size": "1.3GB", "verses": 31102},
+      "corpus": {"size": "892MB", "sentences": "~3M"},
+      "knowledge": {"size": "4.4GB", "records": 517917},
+      "training": {"size": "21MB", "records": 15579},
+      "parallel": {"size": "39MB", "pairs": 105511}
+    }
+  },
+  "databases": {
+    "sqlite": [
+      {"name": "master_unified_dictionary.db", "size": "114MB", "entries": 160394, "translations": 308355},
+      {"name": "zolai_dictionary_legacy.db", "size": "17MB", "tables": 11, "total_records": 104000},
+      {"name": "zomidictionary_app.db", "size": "2.8MB", "records": 24132},
+      {"name": "zvs_master_dictionary.db", "size": "56KB", "entries": 0}
+    ],
+    "postgresql": {
+      "provider": "Neon",
+      "models": 66,
+      "tables": "Users, Sessions, WikiEntry, BibleVerse, VocabWord, Lessons, Contributions, etc."
+    }
+  },
+  "maturity_score": 2.1
+}
