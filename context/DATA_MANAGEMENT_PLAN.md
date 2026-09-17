@@ -57,7 +57,7 @@ Audited 2026-09-08. All paths relative to workspace root `zolai-ai/`.
 
 | File | Size | Records | Purpose |
 |------|------|---------|---------|
-| `data/bible/grammar_patterns_v2.jsonl` | 1.1MB | 4,205 | Grammar patterns |
+| `data/bible/grammar_patterns_v2.jsonl` | 1.1MB | 5,560 | Grammar patterns |
 | `data/bible/grammar_patterns_text.jsonl` | 184KB | 1,188 | Grammar patterns (text format) |
 | `data/bible/phrases_v1.jsonl` | 2.3MB | 5,000 | Multi-word phrases |
 | `data/bible/word_collocations.jsonl` | 424KB | 5,000 | Word co-occurrences |

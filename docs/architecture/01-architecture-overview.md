@@ -17,8 +17,8 @@ This document defines the high-level architecture and the specific 5-step data p
 flowchart TD
     subgraph data_sources["Data Sources"]
         direction LR
-        ds1[( "Bible Parallel (31K Pairs)" )]
-        ds2[( "Dictionary (21K Entries)" )]
+        ds1[( "Bible Parallel (31K Verses)" )]
+        ds2[( "Dictionary (148K Entries)" )]
         ds3[( "Tongsan News Articles" )]
     end
 

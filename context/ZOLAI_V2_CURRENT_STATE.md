@@ -31,15 +31,15 @@
 
 | File | Records | Size | Status |
 |------|---------|------|--------|
-| dict_zo_en_master_v1.jsonl | 93,931 | 11MB | ✅ Canonical |
-| dict_canonical_clean.jsonl | 112,220 | 56MB | ✅ Canonical |
+| dict_zo_en_master_v1.jsonl | 84,490 | 11MB | ✅ Canonical |
+| dict_canonical_clean.jsonl | 64,025 | 56MB | ✅ Canonical |
 | parallel_corpus_v1.jsonl | 31,102 | 16MB | ✅ Canonical |
 | vocab_index_full.jsonl | 94,458 | 17MB | ✅ Canonical |
 | translation_pairs_v1.jsonl | 58,694 | 20MB | ✅ Canonical |
 | word_alignments_v1.jsonl | 385,120 | 54MB | ✅ Canonical |
 | phrases_v1.jsonl | 5,000 | 2.3MB | ✅ Canonical |
 | grammar_patterns_v1.jsonl | 4,271 | 1.0MB | ✅ Canonical |
-| grammar_patterns_v2.jsonl | 5,482 | 1.3MB | ✅ Canonical (superset of v1) |
+| grammar_patterns_v2.jsonl | 5,560 | 1.3MB | ✅ Canonical (superset of v1) |
 
 ### Tier 2: Context Analysis (Bible-derived)
 
@@ -104,9 +104,9 @@
 
 **Actual state:**
 - `grammar_patterns_v1.jsonl`: **4,271 patterns** (original Bible extraction)
-- `grammar_patterns_v2.jsonl`: **5,482 patterns** (superset, adds zomidaily patterns)
+- `grammar_patterns_v2.jsonl`: **5,560 patterns** (superset, adds zomidaily patterns)
 
-**Verdict:** NO REGRESSION. The 1,207 figure in the V2 prompt appears to reference an older or different count. The actual data shows 4,271→5,482 patterns, which is GROWTH, not loss.
+**Verdict:** NO REGRESSION. The 1,207 figure in the V2 prompt appears to reference an older or different count. The actual data shows 4,271→5,560 patterns, which is GROWTH, not loss.
 
 **Note:** The DATA_MANAGEMENT_PLAN.md (line 60) says v2 has 4,205 — this is stale (actual: 5,560). Minor documentation drift.
 
@@ -168,7 +168,7 @@
 ### Important (P1)
 3. **RAG contract naming** — Class is `ZolaiRAG` but module is `rag_contract`. Import test fails (`from zolai.knowledge.rag_contract import RAGContract`). Documentation may reference wrong class name.
 4. **.github CONTRIBUTING.md** — 1 dirty file, uncommitted change.
-5. **DATA_MANAGEMENT_PLAN.md** — grammar_patterns_v2 count says 4,205, actual is 5,482. Minor doc drift.
+5. **DATA_MANAGEMENT_PLAN.md** — grammar_patterns_v2 count says 4,205, actual is 5,560. Minor doc drift.
 
 ### Minor (P2)
 6. **Glosbe downloads** — All files are HTML error pages (bad downloads, noted in progress-tracker).
@@ -204,7 +204,7 @@
 
 | Item | Instances | Notes |
 |------|-----------|-------|
-| Grammar patterns | v1 (4,271) + v2 (5,482) | v2 is superset, v1 could be archived |
+| Grammar patterns | v1 (4,271) + v2 (5,560) | v2 is superset, v1 could be archived |
 | Bible study scripts | 10+ overlapping scripts | bible_engine.py is the consolidation target |
 | Dictionary files | 7+ files in processed/ | Some overlap (bible_combined vs bible_learned) |
 | Menu systems | menu.sh + menu_v2.sh | v2 is the replacement |

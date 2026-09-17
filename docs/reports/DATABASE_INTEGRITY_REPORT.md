@@ -1,15 +1,15 @@
 # Zolai Database — Full Integrity Report
-**Generated:** 2026-09-12 18:29
-**Database:** 277.9 MB
+**Generated:** 2026-09-12 18:29 (updated 2026-09-18 with canonical stats)
+**Database:** 2285.9 MB (canonical: data/zolai.db)
 
 ## 1. Language Coverage (ZO / EN / MY)
 
 | Table | Zolai | English | Myanmar | Total |
 |-------|-------|---------|---------|-------|
-| dictionary | 93,931 (100%) | 93,931 (100%) | 6,097 (6.5%) | 93,931 |
-| bible_verses | 29,689 (97.1%) | 29,151 (95.4%) | 28,785 (94.2%) | 30,569 |
-| dictionary_en_zo | — | 129,853 (100%) | 2 (0.0%) | 129,853 |
-| translations | — | — | — | 212,754 |
+| dictionary | 84,490 (100%) | 84,490 (100%) | — | 84,490 |
+| bible_verses | 31,649 (100%) | 31,649 (100%) | — | 31,649 |
+| dictionary_en_zo | — | 64,025 (100%) | — | 64,025 |
+| translations | — | — | — | 207,623 |
 | word_alignments | — | — | — | 385,120 |
 
 **⚠️ CRITICAL GAPS:**
@@ -75,17 +75,17 @@
 
 | Data | Status |
 |------|--------|
-| Dictionary (ZO→EN) | ✅ 93,931 entries |
-| Dictionary (EN→ZO) | ✅ 129,853 entries |
-| Bible verses | ✅ 30,569 verses |
+| Dictionary (ZO→EN) | ✅ 84,490 entries |
+| Dictionary (EN→ZO) | ✅ 64,025 entries |
+| Bible verses | ✅ 31,649 verses |
 | Word alignments | ✅ 385,120 alignments |
-| Translations | ✅ 212,754 pairs |
-| Phrases | ✅ 5,000 phrases |
-| Grammar patterns | ✅ 5,547 patterns |
-| Vocabulary | ✅ 94,458 words |
-| Training exercises | ✅ 81,805 exercises |
-| Proverbs | ✅ 7,736 proverbs |
-| Word usage | ✅ 60,365 profiles |
+| Translations | ✅ 207,623 pairs |
+| Phrases | ✅ 10,722 phrases |
+| Grammar patterns | ✅ 5,560 patterns |
+| Vocabulary | ✅ 104,906 words |
+| Training exercises | ✅ 82,159 exercises |
+| Proverbs | ✅ 8,203 proverbs |
+| Word usage | ✅ 269,903 profiles |
 | Word collocations | ✅ 5,000 pairs |
 | Bible context | ✅ 1,228 analyses |
 | Audit findings | ✅ 713 findings |
@@ -103,5 +103,5 @@
 5. **Wrong examples**: Fix entries where English field contains JSON artifacts or Bible verse references instead of translations
 
 ### P2 — Nice to have
-6. **Archive JSONL files**: DB is 278MB vs JSONL's ~4.7GB — archive old JSONL to save space
+6. **Archive JSONL files**: DB is 2285.9MB vs JSONL's ~4.7GB — archive old JSONL to save space
 7. **Duplicate entries**: Some Zolai words appear multiple times — deduplicate with priority rules

@@ -21,10 +21,10 @@ zolai-ai/                          # Workspace root (10 repos)
 ## Data Assets (All in `/data`, gitignored)
 | Asset | Size | Description |
 |-------|------|-------------|
-| `data/zolai.db` | 462 MB | SQLite DB (28 tables, 1.3M rows) |
+| `data/zolai.db` | 2285.9 MB | SQLite DB (99 tables, 3.3M rows) |
 | `data/bible/parallel_corpus_v1.jsonl` | 16 MB | 31,102 EN↔ZO Bible verses |
-| `data/dictionary/dict_zo_en_master_v1.jsonl` | 11 MB | 93,931 ZO→EN entries |
-| `data/dictionary/dict_en_zo_canonical.jsonl` | 56 MB | 112,220 EN→ZO entries |
+| `data/dictionary/dict_zo_en_master_v1.jsonl` | 11 MB | 84,490 ZO→EN entries |
+| `data/dictionary/dict_en_zo_canonical.jsonl` | 56 MB | 64,025 EN→ZO entries |
 | `data/syllable/corpus.jsonl` | 24 MB | 189K words with syllables |
 | `data/syllable/gold.jsonl` | 3 MB | 10K gold standard syllable entries |
 
@@ -143,8 +143,8 @@ pos.tag("Pasian in vantung a piangsak hi")
 
 ## Data Quality
 - **Bible corpus**: 31,102 verse pairs, ZVS 2018 validated
-- **Dictionary**: 93,931 ZO→EN, 112,220 EN→ZO, source-tracked
-- **Syllables**: 189,554 words segmented, 1,830 unique syllables
+- **Dictionary**: 84,490 ZO→EN, 64,025 EN→ZO, source-tracked
+- **Syllables**: 189,563 words segmented, 1,830 unique syllables
 - **Gold dataset**: 10K expert-verified syllable boundaries
 - **Proverbs**: 7,736 entries with categories
 

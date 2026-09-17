@@ -63,7 +63,7 @@ JSONL files (2.68GB, source of truth)
 
 | Table | Rows | Size | Purpose |
 |-------|------|------|---------|
-| dictionary | 93,931 | ~25MB | Zolai → English master dictionary |
+| dictionary | 84,490 | ~11MB | Zolai → English master dictionary |
 | bible_verses | 31,102 | ~8MB | EN/ZO parallel Bible verses |
 | grammar_patterns | 5,482 | ~2MB | Sentence structure patterns |
 | phrases | 5,000 | ~1MB | Multi-word expressions |
@@ -215,8 +215,8 @@ python -m zolai.data.sync --from sqlite:///zolai.db --to "$ZOLAI_PG_URL"
 ### Core Data
 | Dataset | Size | Records | Source |
 |---------|------|---------|--------|
-| Dictionary ZO→EN | 11MB | 93,931 | ZomiLanguage/dictionary |
-| Dictionary EN→ZO | 56MB | 112,220 | ZomiLanguage/dictionary |
+| Dictionary ZO→EN | 11MB | 84,490 | ZomiLanguage/dictionary |
+| Dictionary EN→ZO | 56MB | 64,025 | ZomiLanguage/dictionary |
 | Bible parallel corpus | 16MB | 31,102 | dalsuum/bible-master |
 | Grammar patterns | 2MB | 5,482 | Paumkim + generated |
 | Phrases | 1MB | 5,000 | Bible-derived |

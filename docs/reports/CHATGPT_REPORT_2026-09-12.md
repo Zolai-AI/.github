@@ -35,8 +35,8 @@
 
 | Table | Rows | Description | Noise Fixed |
 |-------|------|-------------|-------------|
-| dictionary | 93,931 | Zolai→English dictionary | ✅ Zero noise |
-| dictionary_en_zo | 112,220 | English→Zolai dictionary | ✅ 5,832 translations_clean backfilled |
+| dictionary | 84,490 | Zolai→English dictionary | ✅ Zero noise |
+| dictionary_en_zo | 64,025 | English→Zolai dictionary | ✅ Cleaned |
 | bible_verses | 30,569 | Parallel Bible verses (ZO↔EN) | ✅ 533 duplicates removed |
 | grammar_patterns | 5,482 | Grammar pattern rules | ✅ |
 | phrases | 5,000 | Multi-word expressions | ✅ 5,000 english backfilled from examples |
@@ -263,7 +263,7 @@ Backup, CookieConsent, UserPreferences, AgentMemory, AgentLearnLog, InboundEmail
 Zolai-AI: 10-repo workspace for Tedim Zolai language preservation.
 
 Database (zolai-core): 15 SQLAlchemy tables, 590K rows in SQLite (data/zolai.db)
-- dictionary (93K ZO→EN), dictionary_en_zo (112K EN→ZO), bible_verses (30K parallel)
+- dictionary (84K ZO→EN), dictionary_en_zo (64K EN→ZO), bible_verses (31K parallel)
 - grammar_patterns (5K), phrases (5K), vocab (94K), translations (58K)
 - word_usage (7K), training_exercises (163K), provenance (227), data_audit_log (18K)
 - 4 empty tables ready: bible_context, word_alignments, word_collocations, proverbs

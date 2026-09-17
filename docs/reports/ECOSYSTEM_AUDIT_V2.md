@@ -58,7 +58,7 @@ The Zolai-AI ecosystem consists of **9 repositories** + a shared `/data` directo
 | knowledge/ | 4.4GB | knowledge_vectors.jsonl (embeddings) |
 | online/ | 901MB | Downloaded external datasets |
 | training/ | 21MB | Generated sentences, seed data |
-| parallel/ | 39MB | 105K EN↔ZO pairs |
+| parallel/ | 39MB | 207K EN↔ZO pairs |
 | raw/ | 91MB | Zomidaily articles, Tedim Labu |
 | reference/ | 6.5MB | PDFs, grammar, literature |
 | **Total** | **12GB** | |
@@ -320,13 +320,13 @@ None detected.
 
 **Dictionary (dict_zo_en_master_v1.jsonl):**
 - Schema: `{zolai, english[], source, english_clean}`
-- 93,931 entries
+- 84,490 entries
 - First record has control character: `"\\u0013 embed coreldraw"` — malformed!
 - Quality: MEDIUM — some entries have noise
 
 **Dictionary (dict_canonical_clean.jsonl):**
 - Schema: `{headword, translations[], pos[], explanations[], sources[], category, translations_clean}`
-- 112,220 entries
+- 64,025 entries
 - Different schema from master — inconsistent
 - Quality: MEDIUM
 
@@ -381,8 +381,8 @@ NOT MEASURED — REQUIRES TOOLING:
 
 | Area | Coverage | Quality | Source |
 |------|----------|---------|--------|
-| Dictionary (ZO→EN) | 93,931 words | MEDIUM | Multiple sources |
-| Dictionary (EN→ZO) | 112,220 entries | MEDIUM | Multiple sources |
+| Dictionary (ZO→EN) | 84,490 words | MEDIUM | Multiple sources |
+| Dictionary (EN→ZO) | 64,025 entries | MEDIUM | Multiple sources |
 | Bible parallel | 31,102 verses | HIGH | TDB77, Tedim2010 |
 | Grammar patterns | 5,482 patterns | HIGH | Bible extraction |
 | Vocabulary index | 2,975 words | HIGH | Bible frequency |
@@ -424,9 +424,9 @@ NOT MEASURED — REQUIRES TOOLING:
 | Capability | Supported | Evidence |
 |-----------|-----------|----------|
 | Sentence-by-sentence learning | ✅ | verse-level alignment |
-| Phrase extraction | ✅ | phrases_v1.jsonl (30K) |
-| Grammar learning | ✅ | grammar_patterns_v2.jsonl (5.4K) |
-| Vocabulary learning | ✅ | vocab files (2.9K) |
+| Phrase extraction | ✅ | phrases table (10,722) |
+| Grammar learning | ✅ | grammar_patterns table (5,560) |
+| Vocabulary learning | ✅ | vocabulary table (104,906) |
 | Sentence pattern analysis | ✅ | sentence_patterns_complete.md |
 | EN→ZO translation | ✅ | parallel corpus |
 | ZO→EN translation | ✅ | parallel corpus |

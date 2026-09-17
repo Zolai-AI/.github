@@ -35,17 +35,17 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
 | Pages site | https://zolai-ai.github.io/ (live, HTTP 200) |
 | Philosophy | **RAG / embeddings-first — NO raw fine-tuning** for the assistant |
 | Language ground truth | ZVS 2018 orthography · **SOV** word order · ergative **`in`** |
-| Repos | 8 under the org |
+| Repos | 10 under the org |
 | Backlog C (prediction API) | ✅ done — 38 tests green |
 
 ---
 
-## 3. Ecosystem — 8 repos
+## 3. Ecosystem — 10 repos
 
 ```
                     ┌───────────────  Zolai-AI Org  ───────────────────────┐
   KNOWLEDGE & DATA  │  zolai-wiki      grammar · vocab · curriculum · culture │
-                    │  zolai-datasets  corpora · dictionaries · models (6.3GB)│
+                    │  zolai-datasets  corpora · dictionaries · models (2.3GB)│
   REASONING (core)  │  zolai-core      Python toolkit + RAG Knowledge Brain   │
                     │                  FastAPI · embeddings · n-gram prediction│
   CONSUMERS         │  zolai-web       learner platform (Next.js+Hono+Prisma) │
@@ -61,7 +61,7 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
 | `zolai-core` | Python toolkit + RAG Knowledge Brain | Python, FastAPI, numpy, sentence-transformers | `zolai/`, tests, scripts |
 | `zolai-web` | Learner platform | Next.js, Hono, Prisma, Tailwind | `website/` (3.4GB) |
 | `zolai-tauri` | Offline desktop | Rust (Tauri 2), TS | `src-tauri/`, bundled GGUF |
-| `zolai-datasets` | Corpora & datasets | Python, JSON/JSONL | `data/` (6.3GB) |
+| `zolai-datasets` | Corpora & datasets | Python, JSON/JSONL | `data/` (2.3GB) |
 | `zolai-training` | Fine-tuning + GGUF | PyTorch/PEFT/TRL | `kaggle_dataset/`, `notebooks/` |
 | `zolai-wiki` | Knowledge base | Markdown (ZVS 2018) | grammar, vocab, curriculum |
 | `.github` | Org meta-repo | YAML/Markdown | profile, community, `project.yaml` |
@@ -102,7 +102,7 @@ augments text generation for language-aware suggestions.
 
 ## 6. Current status (verified)
 
-- ✅ Org migration complete (8 repos, all clean on `main`, LICENSE everywhere)
+- ✅ Org migration complete (10 repos, all clean on `main`, LICENSE everywhere)
 - ✅ Org profile renders; community health **87%**; Pages site live
 - ✅ Backlog C — Prediction lookup API done (`/predictions/*`), 38 tests green
 - ✅ Workspace aligned to P-Core pattern; full seven-file context in root + `.github`

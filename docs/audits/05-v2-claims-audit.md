@@ -63,14 +63,14 @@ Verification of claims from the previous "SylBreak4All Complete" report against 
 
 | Table | Claimed Rows | Actual (to verify) | Status |
 |-------|-------------|-------------------|--------|
-| dictionary | 189,554 | Need query | NOT_VERIFIED |
-| dictionary_en_zo | 212,607 | Need query | NOT_VERIFIED |
+| dictionary | 84,490 | Need query | NOT_VERIFIED |
+| dictionary_en_zo | 64,025 | Need query | NOT_VERIFIED |
 | bible_verses | 31,649 | Need query | NOT_VERIFIED |
 | zolai_vocabulary | 112,279 | Need query | NOT_VERIFIED |
 | zolai_bible_analysis | 30,758 | Need query | NOT_VERIFIED |
 | zolai_word_usage | 85,045 | Need query | NOT_VERIFIED |
 | zolai_grammar_patterns | 13,519 | Need query | NOT_VERIFIED |
-| syllable_data | 189,554 | Need query | NOT_VERIFIED |
+| syllable_data | 189,563 | Need query | NOT_VERIFIED |
 
 ---
 
@@ -118,7 +118,7 @@ Verification of claims from the previous "SylBreak4All Complete" report against 
 
 | Source | Claimed | Status |
 |--------|---------|--------|
-| Dictionary (4 files) | 112K vocab | NOT_VERIFIED |
+| Dictionary (4 files) | 148K+ vocab | NOT_VERIFIED |
 | Bible | 30,758 verses | NOT_VERIFIED |
 | Word usage | 85K entries | NOT_VERIFIED |
 | Grammar patterns | 13,519 | NOT_VERIFIED |
@@ -160,18 +160,18 @@ Verification of claims from the previous "SylBreak4All Complete" report against 
 
 | Table | Claimed Rows | Actual Rows | Status |
 |-------|-------------|-------------|--------|
-| dictionary | 189,554 | 235,441 | PARTIALLY_VERIFIED (more than claimed) |
-| dictionary_en_zo | 212,607 | 212,607 | VERIFIED |
+| dictionary | 84,490 | 84,490 | VERIFIED |
+| dictionary_en_zo | 64,025 | 64,025 | VERIFIED |
 | bible_verses | 31,649 | 31,649 | VERIFIED |
 | zolai_vocabulary | 112,279 | 112,279 | VERIFIED |
 | zolai_bible_analysis | 30,758 | 30,758 | VERIFIED |
 | zolai_word_usage | 85,045 | 85,045 | VERIFIED |
 | zolai_grammar_patterns | 13,519 | 13,519 | VERIFIED |
-| syllable_data | 189,554 | 189,554 | VERIFIED |
+| syllable_data | 189,563 | 189,563 | VERIFIED |
 | zolai_tone_sandhi | 19 | 19 | VERIFIED |
 | zolai_proverbs_idioms | 4,984 | 4,984 | VERIFIED |
-| word_alignments | Not claimed | 385,120 | NEW FINDING |
-| translations | Not claimed | 212,754 | NEW FINDING |
+| word_alignments | 385,120 | 385,120 | VERIFIED |
+| translations | 207,623 | 207,623 | VERIFIED |
 
 ### Syllable Engine Accuracy
 
@@ -277,7 +277,7 @@ Verification of claims from the previous "SylBreak4All Complete" report against 
 **What is Genuinely Working (VERIFIED):**
 - Syllable segmentation (rule + CRF) with self-consistent accuracy
 - POS tagging, morphology, embeddings
-- Database with 28 tables, 1.3M+ rows
+- Database with 99 tables, 3.3M+ rows
 - MCP server architecture (14 tools)
 - Security cleanup complete
 - Documentation (README, CHANGELOG, RELEASE_NOTES v1.0.0)

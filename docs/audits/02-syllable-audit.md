@@ -243,7 +243,7 @@ The eval framework has:
 | `confidence` | 0.5–0.9 | Quality filtering |
 | `book` | Bible book | Register features |
 
-### 3.3 Dictionary (189,554 ZO→EN + 129,853 EN→ZO)
+### 3.3 Dictionary (84,490 ZO→EN + 64,025 EN→ZO)
 
 | Field | Content | Use for Syllables |
 |-------|---------|-------------------|
@@ -384,7 +384,7 @@ zolai-core/zolai/syllable/
 | Risk | Severity | Mitigation |
 |------|----------|------------|
 | Breaking existing tests | HIGH | Syllable engine is additive, no existing code changes |
-| Performance on 1.24M row DB | LOW | Syllable segmentation is O(n) per word |
+| Performance on 3.3M row DB | LOW | Syllable segmentation is O(n) per word |
 | Cross-repo dependency | MEDIUM | Engine lives in zolai-core, consumed by zolai-datasets |
 
 ---

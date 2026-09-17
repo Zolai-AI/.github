@@ -16,9 +16,9 @@ Comparison of claimed database statistics from previous reports against actual c
 
 | Metric | Previous Report | Current Actual | Difference |
 |--------|-----------------|----------------|------------|
-| Database file | `data/zolai.db` | `data/zolai.db` (462 MB) | Same file |
-| Total tables | 28 | 28 | Same |
-| Total rows | ~1.14M | ~1.26M | +120K (+10.5%) |
+| Database file | `data/zolai.db` | `data/zolai.db` (2285.9 MB) | Same file |
+| Total tables | 28 | 99 | +71 (expanded) |
+| Total rows | ~1.14M | ~3.3M | +2.16M (+189%) |
 
 ## Table-by-Table Reconciliation
 
@@ -26,8 +26,8 @@ Comparison of claimed database statistics from previous reports against actual c
 
 | Table | Previous Count | Current Count | Delta | Notes |
 |-------|---------------|---------------|-------|-------|
-| `dictionary` | 189,554 | 235,441 | +45,887 | Expanded from additional sources |
-| `dictionary_en_zo` | 212,607 | 212,607 | 0 | Stable |
+| `dictionary` | 189,554 | 84,490 | -105,064 | Cleaned to canonical ZO→EN only |
+| `dictionary_en_zo` | 212,607 | 64,025 | -148,582 | Cleaned to canonical EN→ZO only |
 | `vocab` | 94,458 | 94,458 | 0 | Stable |
 
 ### Bible & Alignment Tables
@@ -50,8 +50,8 @@ Comparison of claimed database statistics from previous reports against actual c
 | `zolai_tone_sandhi` | 19 | Tone sandhi rules |
 | `zolai_proverbs_idioms` | 4,984 | Proverbs from Bible + wiki |
 | `zolai_word_usage` | 85,045 | Per-book word frequency |
-| `syllable_data` | 189,554 | Syllable segmentation for all dict words |
-| `proverbs` | 7,736 | Original proverbs table |
+| `syllable_data` | 189,563 | Syllable segmentation for all dict words |
+| `proverbs` | 8,203 | Original proverbs table |
 | `word_collocations` | 5,000 | Word pair frequencies |
 | `phrases` | 5,000 | Multi-word expressions |
 | `grammar_patterns` | 5,547 | Original grammar patterns |
@@ -83,14 +83,14 @@ Comparison of claimed database statistics from previous reports against actual c
 ### Stable Counts (No Change)
 | Table | Count | Notes |
 |-------|-------|-------|
-| `dictionary_en_zo` | 212,607 | No new EN→ZO sources added |
+| `dictionary_en_zo` | 64,025 | Cleaned to canonical EN→ZO only |
 | `bible_verses` | 31,649 | Same Bible corpus |
 | `vocab` | 94,458 | Same vocabulary index |
 
 ## Database Size
 | Metric | Value |
 |--------|-------|
-| File size | 462 MB |
+| File size | 2285.9 MB |
 | Page size | 4096 bytes |
 | WAL mode | Enabled |
 | Journal mode | WAL |
@@ -135,7 +135,7 @@ Comparison of claimed database statistics from previous reports against actual c
 | `integrate_dalsuum.py` | 2026-09-07 | Added 7,841 trilingual entries |
 | `build_comprehensive_vocab.py` | 2026-09-07 | Merged vocab sources (98,976) |
 | `extract_corpus_vocab.py` | 2026-09-07 | Corpus vocab (533K) |
-| `import_raw_dictionaries.py` | 2026-09-13 | Raw dict import (235K ZO→EN, 212K EN→ZO) |
+| `import_raw_dictionaries.py` | 2026-09-13 | Raw dict import, later cleaned to canonical counts |
 | `extract_all_to_db_v3.py` | 2026-09-13 | Comprehensive extraction |
 
 ## Recommendations

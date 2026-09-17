@@ -8,15 +8,15 @@
 |------------|---------------|-------------------|-----------|------------------------|------------|
 | Users | PostgreSQL (zolai-web) | — | — | PostgreSQL | HIGH |
 | Sessions | PostgreSQL (zolai-web) | — | — | PostgreSQL | HIGH |
-| Dictionary (ZO→EN) | dict_zo_en_master_v1.jsonl (93K) | dict_canonical_clean.jsonl (112K), SQLite DBs | Schema inconsistency | SQLite (master_unified) | HIGH |
-| Dictionary (EN→ZO) | dict_canonical_clean.jsonl (112K) | dict_zo_en_master_v1.jsonl (93K) | Different schemas | SQLite (master_unified) | HIGH |
-| Bible verses | parallel_corpus_v1.jsonl (31K) | — | — | JSONL | HIGH |
-| Grammar patterns | grammar_patterns_v2.jsonl (5.4K) | — | — | JSONL | HIGH |
-| Vocabulary | ALL_WORDS_WITH_FREQUENCY.jsonl (2.9K) | — | — | JSONL | HIGH |
-| Phrases | phrases_v1.jsonl (30K) | — | — | JSONL | HIGH |
+| Dictionary (ZO→EN) | SQLite `dictionary` table (84,490) | — | — | SQLite (data/zolai.db) | HIGH |
+| Dictionary (EN→ZO) | SQLite `dictionary_en_zo` table (64,025) | — | — | SQLite (data/zolai.db) | HIGH |
+| Bible verses | SQLite `bible_verses` table (31,649) | — | — | SQLite (data/zolai.db) | HIGH |
+| Grammar patterns | SQLite `grammar_patterns` table (5,560) | — | — | SQLite (data/zolai.db) | HIGH |
+| Vocabulary | SQLite `vocabulary` table (104,906) | — | — | SQLite (data/zolai.db) | HIGH |
+| Phrases | SQLite `phrases` table (10,722) | — | — | SQLite (data/zolai.db) | HIGH |
 | Embeddings | knowledge_vectors.jsonl (517K, 4.4GB) | — | — | Vector DB (future) | HIGH |
 | Training data | training_corpus_qwen3.jsonl (9.3K) | — | — | JSONL | HIGH |
-| Parallel pairs | zo_en_pairs_combined_v1.jsonl (105K) | — | — | JSONL | HIGH |
+| Parallel pairs | SQLite `translations` table (207,623) | — | — | SQLite (data/zolai.db) | HIGH |
 | Wiki content | zolai-wiki/*.md (1,654 files) | — | — | Markdown | HIGH |
 | User feedback | NOT EXISTS | — | — | PostgreSQL (future) | HIGH |
 | Corrections | NOT EXISTS | — | — | PostgreSQL (future) | HIGH |
@@ -61,7 +61,7 @@ PostgreSQL (user data, feedback)
 
 | Conflict | Resolution |
 |----------|------------|
-| Dictionary schema mismatch | Use SQLite master_unified as canonical |
+| Dictionary schema mismatch | Use SQLite data/zolai.db as canonical |
 | Bible version differences | Use parallel_corpus_v1.jsonl (multi-version) |
 | Training script overlap | Consolidate to zolai-datasets/scripts/training/ |
 | master_source empty file | Delete zolai-datasets/data/master_source_v1.jsonl |

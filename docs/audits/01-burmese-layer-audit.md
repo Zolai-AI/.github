@@ -86,10 +86,10 @@ The Zolai-AI ecosystem consists of 10 independent repos with a shared `/data/` d
 
 | File | Lines | Size | Content | Burmese |
 |------|-------|------|---------|---------|
-| `dict_zo_en_master_v1.jsonl` | 93,931 | 36MB | ZO→EN | ❌ |
-| `dict_canonical_clean.jsonl` | 112,220 | 58MB | EN→ZO | ❌ |
+| `dict_zo_en_master_v1.jsonl` | 84,490 | 11MB | ZO→EN | ❌ |
+| `dict_canonical_clean.jsonl` | 64,025 | 56MB | EN→ZO | ❌ |
 | `dict_verified_master.jsonl` | — | 16MB | Verified entries | ❌ |
-| `dict_zo_en_verified_v1.jsonl` | 93,931 | 19MB | Verified ZO→EN | ❌ |
+| `dict_zo_en_verified_v1.jsonl` | 84,490 | 19MB | Verified ZO→EN | ❌ |
 | `dict_dalsuum_merged.jsonl` | 7,841 | 7MB | Trilingual merge | ⚠️ Stripped |
 | `dict_bible_combined_v1.jsonl` | — | 721KB | Bible-derived | ❌ |
 | `dict_corrections.jsonl` | 22 | — | Corrections | ❌ |
@@ -102,7 +102,7 @@ The Zolai-AI ecosystem consists of 10 independent repos with a shared `/data/` d
 | `translation_pairs_v1.jsonl` | 58,694 | 21MB | EN↔ZO pairs | ❌ |
 | `word_alignments_v1.jsonl` | 385,120 | 54MB | ZO↔EN word alignments | ❌ |
 | `phrases_v1.jsonl` | 5,000 | 2.3MB | ZO phrases | ❌ |
-| `grammar_patterns_v2.jsonl` | 4,205 | 1.3MB | Grammar patterns | ❌ |
+| `grammar_patterns_v2.jsonl` | 5,560 | 1.3MB | Grammar patterns | ❌ |
 
 ### Corpus (892MB)
 
@@ -126,8 +126,8 @@ The Zolai-AI ecosystem consists of 10 independent repos with a shared `/data/` d
 
 | Dataset | Count | Direction | Quality |
 |---------|-------|-----------|---------|
-| Dictionary (ZO→EN) | 93,931 | ZO→EN | Verified |
-| Dictionary (EN→ZO) | 112,220 | EN→ZO | Verified |
+| Dictionary (ZO→EN) | 84,490 | ZO→EN | Verified |
+| Dictionary (EN→ZO) | 64,025 | EN→ZO | Verified |
 | Bible verses | 31,102 | ZO↔EN | Trusted |
 | Word alignments | 385,120 | ZO↔EN | Generated |
 | Phrases | 5,000 | ZO only | Verified |
@@ -167,8 +167,8 @@ The only Burmese content found is in the raw dalsuum dictionary metadata:
 | Translation pairs | 58,694 | ZO↔EN | JSONL |
 | Combined pairs | 40MB | ZO↔EN | JSONL |
 | Word alignments | 385,120 | ZO↔EN | JSONL |
-| Dictionary (ZO→EN) | 93,931 | ZO→EN | JSONL |
-| Dictionary (EN→ZO) | 112,220 | EN→ZO | JSONL |
+| Dictionary (ZO→EN) | 84,490 | ZO→EN | JSONL |
+| Dictionary (EN→ZO) | 64,025 | EN→ZO | JSONL |
 
 ---
 

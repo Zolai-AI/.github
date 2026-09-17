@@ -4,7 +4,7 @@
 ## Quick Stats
 | Metric | Value |
 |--------|-------|
-| Dictionary entries | 93,931 |
+| Dictionary entries | 84,490 |
 | Bible verses | 31,102 |
 | Dictionary corrections | 22 |
 | Verified phrases | 5,000 |
