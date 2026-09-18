@@ -1,4 +1,4 @@
-<p align="center"><img src="[https://avatars.githubusercontent.com/u/271958086](https://avatars.githubusercontent.com/u/324700055?s=400&u=d543083e81eb710dd047f69a6515d5314879ac9b&v=4)" alt="Zolai-AI" width="120"></p>
+<p align="center"><img src="https://avatars.githubusercontent.com/u/324700055?s=400&u=d543083e81eb710dd047f69a6515d5314879ac9b&v=4" alt="Zolai-AI" width="120"></p>
 
 # Zolai-AI
 
