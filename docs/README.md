@@ -17,6 +17,9 @@ last_updated: 2026-09-18
 | [Strategic Audit](strategy/01-strategic-audit.md) | Full 32-section audit | ✅ Current |
 | [Strategic Roadmap](strategy/02-strategic-roadmap.md) | Prioritized action plan | ✅ Current |
 | [Grant Readiness](strategy/03-grant-readiness.md) | Grant gap analysis | ✅ Current |
+| [**Master OKR System**](strategy/04-okr-system.md) | 7 pillars, annual + quarterly OKRs | ✅ Current |
+| [**90-Day OKR**](strategy/05-90-day-okr.md) | Immediate objectives (Sep-Dec 2026) | ✅ Current |
+| [**Master Dashboard**](strategy/14-master-dashboard.md) | Top KRs, risks, decisions | ✅ Current |
 | [Roadmap](ROADMAP.md) | Top-level prioritized roadmap | ✅ Current |
 
 ---
@@ -29,10 +32,23 @@ docs/
 ├── ROADMAP.md                   ← Top-level prioritized roadmap
 ├── AI_TOOLS_AND_ATTRIBUTION.md  ← AI toolchain transparency
 ├── INFRASTRUCTURE.md            ← Org infrastructure overview
-├── strategy/                    ← Strategic planning & governance
+├── strategy/                    ← Strategic planning & OKR system
+│   ├── README.md                ← Strategy document index
 │   ├── 01-strategic-audit.md    ← Full 32-section audit
 │   ├── 02-strategic-roadmap.md  ← Prioritized actions (NOW/NEXT/LATER)
-│   └── 03-grant-readiness.md   ← Grant gaps + budget template
+│   ├── 03-grant-readiness.md   ← Grant gaps + budget template
+│   ├── 04-okr-system.md        ← Master OKR (7 pillars, annual/quarterly)
+│   ├── 05-90-day-okr.md        ← Immediate 90-day objectives
+│   ├── 06-founder-okr.md       ← Founder personal OKR
+│   ├── 07-weekly-mentoring.md  ← Weekly mentoring system
+│   ├── 08-25-percent-arrangement.md ← ⚠️ Needs human decision
+│   ├── 09-review-templates.md  ← Weekly/monthly/quarterly templates
+│   ├── 10-whitepaper-alignment.md ← White paper → OKRs
+│   ├── 11-grant-alignment.md   ← Grant requirements → OKRs
+│   ├── 12-business-alignment.md ← Business experiments → OKRs
+│   ├── 13-community-impact.md  ← Community impact framework
+│   ├── 14-master-dashboard.md  ← Top KRs, risks, decisions
+│   └── 15-execution-plan.md    ← THIS WEEK/MONTH/QUARTER/YEAR
 ├── architecture/                ← Technical architecture
 │   ├── 01-architecture-overview.md
 │   ├── 02-project-brain.md
@@ -72,6 +88,18 @@ docs/
 | [Strategic Audit](strategy/01-strategic-audit.md) | Comprehensive 32-section audit covering architecture, data, NLP, research, SWOT, mission, vision, grants, business, risks | 73KB |
 | [Strategic Roadmap](strategy/02-strategic-roadmap.md) | Prioritized actions with NOW/NEXT/LATER/DEFER/DO NOT DO classification | 7KB |
 | [Grant Readiness](strategy/03-grant-readiness.md) | Grant gap analysis, budget template, application checklist, contact strategy | 11KB |
+| [**Master OKR System**](strategy/04-okr-system.md) | 7 strategic pillars, annual OKRs, quarterly OKRs, scoring, prioritization framework | 12KB |
+| [**90-Day OKR**](strategy/05-90-day-okr.md) | 6 immediate objectives with baselines, targets, owners, evidence, risks (Sep-Dec 2026) | 8KB |
+| [**Founder OKR**](strategy/06-founder-okr.md) | 7 skill areas for Peter — research, writing, grants, business, product, communication, technical | 9KB |
+| [**Weekly Mentoring**](strategy/07-weekly-mentoring.md) | Meeting structure with Shwe Yee — 6×10-min segments, role boundaries, decision framework | 7KB |
+| [**25% Arrangement**](strategy/08-25-percent-arrangement.md) | ⚠️ UNDEFINED — 13 questions, requires human decision | 5KB |
+| [**Review Templates**](strategy/09-review-templates.md) | Weekly, monthly, quarterly review templates | 8KB |
+| [**White Paper Alignment**](strategy/10-whitepaper-alignment.md) | White paper sections mapped to OKRs with timeline | 4KB |
+| [**Grant Alignment**](strategy/11-grant-alignment.md) | Grant requirements mapped to OKRs (NSF, UNESCO, NatGeo, Microsoft) | 4KB |
+| [**Business Alignment**](strategy/12-business-alignment.md) | Business model canvas, revenue streams, mission alignment | 5KB |
+| [**Community Impact**](strategy/13-community-impact.md) | CARE principles, 5 impact dimensions, monthly/quarterly reporting | 6KB |
+| [**Master Dashboard**](strategy/14-master-dashboard.md) | Top 5 Objectives, Top 10 KRs, Top 10 Initiatives, Top 10 Risks, Top 10 Decisions | 6KB |
+| [**Execution Plan**](strategy/15-execution-plan.md) | THIS WEEK/MONTH/QUARTER/YEAR + NOT NOW list | 6KB |
 | [Roadmap](ROADMAP.md) | Top-level prioritized roadmap with current assessment | 5KB |
 
 ## Architecture
