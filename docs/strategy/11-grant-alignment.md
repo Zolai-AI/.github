@@ -11,6 +11,8 @@ status: current
 
 **Purpose:** Show how each grant requirement maps to specific OKRs, so every grant preparation activity advances strategic goals.
 
+> **2026-09-18:** Program rows are internal planning aids. Eligibility/deadlines are **`researching`** until verified on official funder pages — see [`../grants/opportunities.md`](../grants/opportunities.md).
+
 ---
 
 ## Grant Requirements → OKR Mapping

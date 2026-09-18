@@ -30,6 +30,12 @@ zolai-ai-local/
 # Scratch files (not tracked)
 scratch/
 
+# Private governance (commercial negotiations, sensitive partner notes)
+docs/private/
+
+# Local prompt packs (not tracked)
+docs/prompts/
+
 # Build artifacts
 dist/
 build/

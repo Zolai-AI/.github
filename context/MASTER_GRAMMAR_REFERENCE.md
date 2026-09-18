@@ -116,7 +116,9 @@ Zolai has a **phonemic tone** system with 4 tones:
 
 ## 3. Word Order
 
-### Simple Sentences: Object First (OSV)
+### Simple transitive pattern (object before verb)
+
+> **Label note (Architecture v2):** Org ground truth in `AGENTS.md` / mission docs is **SOV**. An older heading here said “OSV.” Keep examples for teaching; treat the OSV vs SOV naming conflict as **UNDER REVIEW** with a linguist — prefer **SOV** in org strategy docs until resolved.
 
 In simple transitive sentences, the **object comes first**, followed by the agreement marker, then the verb.
 
