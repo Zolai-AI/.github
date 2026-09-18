@@ -1,5 +1,5 @@
 ---
-title: "OKR evidence note — KR2.1 / KR4.3"
+title: "OKR evidence note — KR2.1 / grants / literature / KR2.3"
 created: 2026-09-18
 status: CONFIRMED
 ---
@@ -16,8 +16,23 @@ python -m pytest tests/ -k "prediction_api or word_attestation" -q
 
 **Result:** `28 passed, 987 deselected` (2026-09-18).  
 
-Prior roadmap claimed these as broken; current tree passes this filter. Keep monitoring full suite / CI. Status for this KR: **mitigated / re-check full `pytest` later**.
+Prior roadmap claimed these as broken; current tree passes this filter. Keep monitoring full suite / CI. Status: **mitigated / re-check full `pytest` later**.
 
-## Grant evidence (KR4.3-related)
+## Grant evidence
 
-NSF DLI-DEL NSF 22-615 official page verified — see `docs/grants/opportunities.md` verification log. Not eligible without U.S. institutional applicant.
+| Program | Result |
+|---------|--------|
+| NSF DLI-DEL NSF 22-615 | Official page verified — U.S. org applicant required; see `docs/grants/opportunities.md` |
+| UNESCO IDIL 2022–2032 | Official IDIL site verified — decade / donor–partnership modalities, **not** an open individual research solicitation |
+
+## Literature evidence (KR1.1)
+
+| Citation | Result |
+|----------|--------|
+| FineWeb2 | VERIFIED — https://arxiv.org/abs/2506.20920 |
+| HPLT v2 | VERIFIED — https://arxiv.org/abs/2503.10267 |
+| Masakhane playbook (exact legacy title) | PARTIAL — related community guidelines / BoF materials |
+
+## KR2.3 — License audit
+
+Checklist started: `docs/governance/license-audit-checklist.md`. CREDITS.md not found at expected `zolai-datasets/data/CREDITS.md` path.

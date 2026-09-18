@@ -1,5 +1,24 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-09-18 (Session — OKR evidence after docs OS close-out)
+
+- Documentation Architecture **v2.4 COMPLETE**; Master Restructuring Prompt closed.
+- Orchestra: CLI start/stop fixed; Task still lacks `orchestra-*` → conductor fallback + **anti-stop** (no Done/Next menus mid-goal).
+- Grant: NSF DLI-DEL 22-615 verified (needs U.S. partner). UNESCO IDIL verified as decade/partnership track (not open PI RFP).
+- Literature: FineWeb2 (arXiv:2506.20920) + HPLT v2 (arXiv:2503.10267) **VERIFIED**; Masakhane playbook **PARTIAL**.
+- KR2.1: `pytest -k "prediction_api or word_attestation"` → 28 passed in `zolai-core`.
+- KR2.3: started [`docs/governance/license-audit-checklist.md`](../docs/governance/license-audit-checklist.md) — CREDITS path missing under datasets/data.
+- Evidence notes: `docs/reports/OKR_EVIDENCE_2026-09-18.md` (+ this session updates in grants/literature).
+
+### Next (auto-continue candidates)
+
+1. Locate/create CREDITS + fill license inventory rows  
+2. Verify NatGeo / Microsoft LINGUA official pages or mark NOT FOUND  
+3. Annotate FineWeb2 + HPLT reading notes in `docs/research/papers/`  
+4. Full `pytest` smoke in zolai-core for CI confidence  
+
+---
+
 ## 2026-09-13 (Session — Docs sync with actual DB)
 
 - Canonical DB confirmed: `data/zolai.db` = **99 tables / ~3.3M rows / ~2.3GB** (SQLite WAL).
