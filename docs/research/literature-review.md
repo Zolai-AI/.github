@@ -52,12 +52,22 @@ Copied from `context/RESEARCH_SYNTHESIS.md` References. Each row needs DOI/URL b
 
 **Action (KR1.1 / KR1.5):** Continue verifying UNKNOWN rows; move VERIFIED entries into reading notes under `papers/` when annotated.
 
-## Verified reading queue (ready for notes)
+## Verified reading queue
 
-| ID | Cite | Why relevant to Zolai |
-|----|------|------------------------|
-| FineWeb2 | arXiv:2506.20920 | Multilingual data-cleaning / filtering pipeline patterns |
-| HPLT v2 | arXiv:2503.10267 | Large multilingual corpus construction + release practices |
+| ID | Cite | Notes status | Why relevant to Zolai |
+|----|------|--------------|------------------------|
+| FineWeb2 | arXiv:2506.20920 | **ANNOTATED** [`papers/fineweb2.md`](papers/fineweb2.md) | Per-language filtering, dedup, rebalance |
+| HPLT v2 | arXiv:2503.10267 | **ANNOTATED** [`papers/hplt-v2.md`](papers/hplt-v2.md) | Pipeline documentation + mono/parallel release practice |
+
+## Peer / program references (not papers; CONFIRMED URLs)
+
+| Ref | URL | Use |
+|-----|-----|-----|
+| Masakhane | https://www.masakhane.io/ | Community annotation model |
+| AmericasNLP 2026 | https://americasnlp.org/2026_workshop.html | Eval / workshop target |
+| CARE Principles | https://www.gida-global.org/careprinciples | Data governance framing |
+| Te Hiku Kaitiakitanga | https://github.com/TeHikuMedia/Kaitiakitanga-License | Sovereignty license pattern |
+| Peer synthesis | [`peer-language-communities.md`](peer-language-communities.md) | Comparative table |
 
 ## What we will NOT do
 

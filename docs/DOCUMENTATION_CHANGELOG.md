@@ -7,6 +7,36 @@ last_updated: 2026-09-18
 
 # Documentation Changelog
 
+## 2026-09-18
+
+- CI/ops: org lint scope; datasets manifests; web monitor CF/landing; core ruff ignores
+- Docs: whitepaper §2 VERIFIED-only; profile license honesty; benchmarks v0; remaining-gaps sync
+
+
+## 2026-09-18 — Peer research + license/grants verification
+
+| Field | Value |
+|-------|-------|
+| Version | Research peers + license + grants verification (post Docs OS) |
+| What changed | Peer communities doc; CREDITS license inventory; NatGeo/LINGUA official checks; FineWeb2/HPLT annotated notes; annotation brief; remaining-gaps recommendations; OKR evidence + progress-tracker; RAG `zo`→`zolai` + related test fixes |
+| Why | Auto-continue research queue after Docs OS v2.4; evidence-first grant/literature honesty |
+| Source | Peer research + CREDITS paths + arXiv API + NGS/MSR official pages |
+| Reviewer | Pending (Founder + Advisor) |
+
+---
+
+## 2026-09-18 — Peer research + KR2.1 green
+
+| Field | Value |
+|-------|-------|
+| Version | Research peers + license + grants + KR2.1 close |
+| What changed | Peer communities; CREDITS inventory; NatGeo/LINGUA checks; FineWeb2/HPLT notes; annotation brief; AmericasNLP outline; path aliases; zolai-core test suite green (1010 passed) |
+| Why | Auto-continue research queue + OKR KR2.1 |
+| Source | Official grant pages + arXiv + CREDITS + full pytest |
+| Reviewer | Pending (Founder + Advisor) |
+
+---
+
 ## 2026-09-18 — Documentation Architecture v2.4 (OS close-out)
 
 | Field | Value |
@@ -46,6 +76,17 @@ last_updated: 2026-09-18
 ## 2026-09-18 — Documentation Architecture v2 · Batch 2
 
 | Field | Value |
+|-------|-------|
+| Version | Research peers + license + grants verification (post Docs OS) |
+| What changed | Peer communities doc; CREDITS license inventory; NatGeo/LINGUA official checks; FineWeb2/HPLT annotated notes; annotation brief; remaining-gaps recommendations; OKR evidence + progress-tracker refresh |
+| Why | Auto-continue research queue after Docs OS v2.4; evidence-first grant/literature honesty |
+| Source | Peer research + CREDITS paths + arXiv API + NGS/MSR official pages |
+| Reviewer | Pending (Founder + Advisor) |
+
+---
+
+## 2026-09-18 — Documentation Architecture v2.1 (Batch 2)
+
 |-------|-------|
 | Version | Documentation Architecture v2.1 (Batch 2) |
 | What changed | Profile README sync (mission/vision/advisor/status honesty); architecture `status.md` + SOV fix; database entry; roadmap OKR columns; model-routing doc; SoT/context updates |

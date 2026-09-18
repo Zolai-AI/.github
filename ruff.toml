@@ -1,0 +1,25 @@
+# Org profile repo — lint only tracked utility scripts
+# Nested product repos (zolai-core, etc.) have their own CI.
+
+exclude = [
+  "zolai-*/**",
+  "zolai-ai.github.io/**",
+  "data/**",
+  "zolai-ai-local/**",
+  ".venv/**",
+  "node_modules/**",
+]
+
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+ignore = [
+  "EXE001",  # shebang bit not always set in CI checkout
+  "E501",    # long data literals in utility scripts
+]
+
+[lint.per-file-ignores]
+"scripts/build_zomidaily_expanded_dict.py" = ["E501"]
+"scripts/build_frequency_dict.py" = ["E501"]

@@ -32,9 +32,11 @@ Label uncertain information **UNKNOWN** / **UNDER REVIEW**.
 |----------|------|--------|
 | Research agenda | [`agenda.md`](agenda.md) | UNDER REVIEW |
 | Research questions | [`questions.md`](questions.md) | UNDER REVIEW |
-| Literature review | [`literature-review.md`](literature-review.md) | UNDER REVIEW — citations UNKNOWN until verified |
+| Literature review | [`literature-review.md`](literature-review.md) | UNDER REVIEW — FineWeb2/HPLT verified |
 | Research gaps | [`gaps.md`](gaps.md) | UNDER REVIEW |
-| Papers reviewed | [`papers/`](papers/) | PLANNED log |
+| Peer language communities | [`peer-language-communities.md`](peer-language-communities.md) | UNDER REVIEW — active refs 2026-09-18 |
+| AmericasNLP 2026 outline | [`americasnlp-2026-outline.md`](americasnlp-2026-outline.md) | DRAFT — confirm CFP fit |
+| Papers reviewed | [`papers/`](papers/) | FineWeb2 + HPLT annotated |
 | Benchmarks | [`benchmarks.md`](benchmarks.md) | PLANNED (KR3.2) |
 | Methodology | [`methodology.md`](methodology.md) | PLANNED (KR1.4) |
 
