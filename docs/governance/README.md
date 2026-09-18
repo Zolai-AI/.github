@@ -15,6 +15,7 @@ Canonical home for roles, data rules, and documentation authority.
 | [source-of-truth.md](source-of-truth.md) | Domain → canonical path matrix | CONFIRMED |
 | [contributors.md](contributors.md) | Role taxonomy | CONFIRMED |
 | [data-governance.md](data-governance.md) | Ownership, provenance, licensing | UNDER REVIEW |
+| [license-audit-checklist.md](license-audit-checklist.md) | KR2.3 source license inventory | UNDER REVIEW |
 | [public-vs-private.md](public-vs-private.md) | What may be published | CONFIRMED |
 
 **Related (legacy / detailed):**

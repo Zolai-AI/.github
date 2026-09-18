@@ -35,22 +35,29 @@ These are **project themes**, not verified paper findings:
 
 ## Claimed citations pending verification
 
-Copied from `context/RESEARCH_SYNTHESIS.md` References. Each row is **UNKNOWN** until a DOI/URL/PDF is attached.
+Copied from `context/RESEARCH_SYNTHESIS.md` References. Each row needs DOI/URL before grant/white-paper citation.
 
-| # | Claimed citation string | Verification |
-|---|-------------------------|--------------|
-| 1 | ACL 2025: "Building Better: Avoiding Pitfalls in Developing Language Resources" | UNKNOWN |
-| 2 | LaTeLL 2026: "Low-Resource, High-Impact: Building Corpora…" | UNKNOWN |
-| 3 | LREC 2026: "SynthLLM: …" | UNKNOWN |
-| 4 | ComputEL 2026: "Revitalising Endangered Languages…" | UNKNOWN |
-| 5 | AmericasNLP 2026: "IndigiEval: …" | UNKNOWN |
-| 6 | FineWeb2: "One Pipeline to Scale Them All" (HuggingFace) | UNKNOWN |
-| 7 | DCAD-2000: "Data Cleaning as Anomaly Detection" (NeurIPS 2025) | UNKNOWN |
-| 8 | HPLT v2: "Expanded Massive Multilingual Dataset" | UNKNOWN |
-| 9 | Masakhane Playbook: "Open Data Collection Playbook for African Languages" | UNKNOWN |
-| 10 | NüshuRescue: "Reviving Endangered Languages with AI" (COLING 2025) | UNKNOWN |
+| # | Claimed citation string | Verification | Primary URL |
+|---|-------------------------|--------------|-------------|
+| 1 | ACL 2025: "Building Better: Avoiding Pitfalls in Developing Language Resources" | UNKNOWN | — |
+| 2 | LaTeLL 2026: "Low-Resource, High-Impact: Building Corpora…" | UNKNOWN | — |
+| 3 | LREC 2026: "SynthLLM: …" | UNKNOWN | — |
+| 4 | ComputEL 2026: "Revitalising Endangered Languages…" | UNKNOWN | — |
+| 5 | AmericasNLP 2026: "IndigiEval: …" | UNKNOWN | — |
+| 6 | FineWeb2: "One Pipeline to Scale Them All" (HuggingFace) | **VERIFIED** (2026-09-18) | https://arxiv.org/abs/2506.20920 · dataset https://huggingface.co/datasets/HuggingFaceFW/fineweb-2 |
+| 7 | DCAD-2000: "Data Cleaning as Anomaly Detection" (NeurIPS 2025) | UNKNOWN | — |
+| 8 | HPLT v2: "Expanded Massive Multilingual Dataset" | **VERIFIED** (2026-09-18) — real title: *An Expanded Massive Multilingual Dataset for High-Performance Language Technologies (HPLT)* | https://arxiv.org/abs/2503.10267 · ACL https://aclanthology.org/2025.acl-long.854/ · data https://hplt-project.org/datasets/v2.0 |
+| 9 | Masakhane Playbook: "Open Data Collection Playbook for African Languages" | **PARTIAL** (2026-09-18) — community playbook materials exist; exact title string not matched as a single formal pub | https://www.masakhane.io/ · guidelines https://github.com/masakhane-io/masakhane-community/blob/master/dataset-creation-guidelines.md · related BoF PDF https://seyyaw.github.io/files/AfricaNLP_BoF.pdf |
+| 10 | NüshuRescue: "Reviving Endangered Languages with AI" (COLING 2025) | UNKNOWN | — |
 
-**Action (KR1.1 / KR1.5):** For each row, find the real paper (or mark NOT FOUND), add notes, then move verified entries to `papers/`.
+**Action (KR1.1 / KR1.5):** Continue verifying UNKNOWN rows; move VERIFIED entries into reading notes under `papers/` when annotated.
+
+## Verified reading queue (ready for notes)
+
+| ID | Cite | Why relevant to Zolai |
+|----|------|------------------------|
+| FineWeb2 | arXiv:2506.20920 | Multilingual data-cleaning / filtering pipeline patterns |
+| HPLT v2 | arXiv:2503.10267 | Large multilingual corpus construction + release practices |
 
 ## What we will NOT do
 
