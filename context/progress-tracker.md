@@ -209,3 +209,28 @@
 2. **Short-term (Month 1-2):** Evaluation data, governance, community engagement
 3. **Medium-term (Month 3-6):** Benchmarks, research paper, grant applications
 4. **Long-term (Month 6-12):** Applications, publications, scaling
+
+## 2026-09-18 (Session — Learning Engine: Search, Grammar, Polysemy, Streak, API)
+
+### Learning Engine Features Completed
+- **Enhanced online search** — bilingual ZO↔EN with context-aware ranking and fuzzy matching
+- **Grammar validation** — ZVS 2018 orthography enforcement on all user input (real-time)
+- **Polysemy disambiguation** — per-book frequency scoring for multi-meaning words (word_usage table)
+- **Streak tracking** — daily/weekly learning streaks with SM-2 spaced repetition
+- **Error categorization** — grammar, vocabulary, tone, and spelling errors tracked separately
+- **54 new tests** across learning engine modules (all passing)
+
+### Bug Fixes
+- **`translation.py`**: Fixed column name `frequency` → `total_freq` (matching live DB schema); replaced bare `except Exception` with `except sqlite3.OperationalError`
+- **`database.py`**: Reflected live DB schema to avoid stale cached metadata (`match_phrase` now uses fresh `MetaData()`)
+
+### API Endpoints
+- 9 new endpoints added to `zolai/api/` for learning engine features (search, grammar, streak, errors)
+
+### Files Changed
+- `zolai/learning/translation.py` — 3-tier confidence, polysemy disambiguation, fixed column names
+- `zolai/data/database.py` — fresh MetaData reflection for phrases table
+- `zolai/learning/online_search.py` — enhanced bilingual search with context ranking
+- `zolai/learning/grammar_editor.py` — ZVS 2018 real-time validation
+- `zolai/learning/progress.py` — streak tracking + error categorization
+- 5 test files (NEW) — 54 tests total
