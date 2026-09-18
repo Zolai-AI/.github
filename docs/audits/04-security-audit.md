@@ -15,9 +15,9 @@ category: audit
 
 | File | Status | Secrets Found |
 |------|--------|---------------|
-| `.env` | ❌ Tracked | `OPENROUTER_API_KEY=sk-or-v1-REDACTED` |
-| `zolai-core/.env` | ❌ Tracked | `HF_TOKEN=hf_TOKEN_REDACTED` |
-| `zolai-core/config/env/.env` | ❌ Tracked | `HF_TOKEN=hf_TOKEN_REDACTED` |
+| `.env` | ❌ Tracked | `OPENROUTER_API_KEY=sk-or-v1-***REDACTED***` |
+| `zolai-core/.env` | ❌ Tracked | `HF_TOKEN=hf_***REDACTED***` |
+| `zolai-core/config/env/.env` | ❌ Tracked | `HF_TOKEN=hf_***REDACTED***` |
 | `zolai-web/.env.local` | ❌ Tracked | `DATABASE_URL` (Neon prod), `GROQ_API_KEY`, 3× `GEMINI_API_KEY`, `NVIDIA_API_KEY`, `OPENROUTER_API_KEY`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_API_KEY` (JWT), `SMTP_USER` |
 | `zolai-web/.env.production` | ❌ Tracked | `DATABASE_URL` (prod), 3× `GEMINI_API_KEY`, `GROQ_API_KEY`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_API_KEY` |
 
