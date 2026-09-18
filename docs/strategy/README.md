@@ -35,6 +35,12 @@ last_updated: 2026-09-18
 |----------|-------------|
 | [09-review-templates.md](09-review-templates.md) | Weekly, monthly, quarterly review templates |
 
+## White Paper
+
+| Document | Description |
+|----------|-------------|
+| [whitepaper.md](whitepaper.md) | **Technical White Paper** — RAG-first bilingual AI for low-resource language preservation |
+
 ## Alignment Maps
 
 | Document | Description |
