@@ -3,11 +3,13 @@ title: "Zolai AI: RAG-First Bilingual AI for Low-Resource Language Preservation"
 subtitle: "A Technical White Paper for the Tedim Zolai Language"
 author: "Peter Pau Sian Lian"
 created: 2026-09-18
-status: draft
+status: UNDER REVIEW
 version: 0.1
 ---
 
 # Zolai AI: RAG-First Bilingual AI for Low-Resource Language Preservation
+
+> **Status: UNDER REVIEW (Architecture v2).** Syllable accuracy figures (e.g. 98.49%) and some capability claims are **not re-verified** in this pass — see [`../architecture/status.md`](../architecture/status.md) and [`../audits/05-v2-claims-audit.md`](../audits/05-v2-claims-audit.md). Align mission language with [`mission-vision.md`](mission-vision.md). Do not cite unverified literature from `docs/research/literature-review.md` until DOI/URL confirmed.
 
 ## Abstract
 

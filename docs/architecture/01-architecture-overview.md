@@ -2,14 +2,18 @@
 title: "Zolai AI: System Architecture & Data Pipeline"
 description: "System architecture, data flow, and technology stack"
 created: 2026-09-04
-last_updated: 2026-09-04
-status: current
+last_updated: 2026-09-18
+status: UNDER REVIEW
 category: architecture
 ---
 
 # Zolai AI: System Architecture & Data Pipeline
 
-This document defines the high-level architecture and the specific 5-step data pipeline for the Zolai (Tedim Chin) AI system.
+> **Status (2026-09-18):** This file mixes **historical / Experimental** pipeline design with
+> live ecosystem pieces. For honest component labels see [`status.md`](status.md).
+> Linguistic ground truth: **ZVS 2018 · SOV · ergative `in`**.
+
+This document describes architecture and a 5-step data pipeline for the Zolai (Tedim) AI system.
 
 ## 1. System Flowchart
 
@@ -75,7 +79,7 @@ flowchart TD
 
 ### Step 2: Normalization & Prompt Generation
 - **Normalization**: Enforces **Zolai Standard** rules (e.g., `na ding` -> `nading`, `uh hi` -> `uh hi`).
-- **Prompting**: Wraps broken data in a structured prompt that forces the LLM to apply **Ergative-Absolutive alignment** and **OSV word order**.
+- **Prompting**: Wraps broken data in a structured prompt that forces the LLM to apply **Ergative-Absolutive alignment** and **SOV word order** (ZVS / project ground truth; older OSV wording was incorrect).
 
 ### Step 3: LLM Correction (Agentic Workflow)
 - **Execution**: Sends prompts to Gemini, OpenAI, or OpenRouter.
@@ -84,7 +88,7 @@ flowchart TD
 ### Step 4: Semantic Scoring & Self-Correction
 - **Scoring**: Uses `all-MiniLM-L6-v2` to calculate cosine similarity between the original English intent and the LLM's **Back-Translated English**.
 - **Threshold**: Scores below **0.85** are flagged.
-- **Agent Loop**: (Planned) Using LangGraph to automatically re-prompt the LLM if the score is low.
+- **Agent Loop**: **Planned** — LangGraph re-prompt if score is low (not assumed production).
 
 ### Step 5: Human-in-the-Loop Review
 - **Tool**: A CLI menu for native speakers to review, edit, and approve the final JSONL entries.

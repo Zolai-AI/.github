@@ -99,10 +99,10 @@ status: current
 | KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter + Shwe Yee | Interview transcripts | High — outreach required |
 | KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter + Shwe Yee | Business model canvas | Low |
 | KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter + Shwe Yee | Financial document | Medium — assumptions needed |
-| KR6.4: Assess 25% arrangement (if applicable) | Undefined | Assessment complete | Peter + Shwe Yee | Legal/ethical review | High — requires legal advice |
+| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or documented “none” | Peter + Shwe Yee | Legal/ethical review | High — requires legal advice |
 | KR6.5: Identify 3 potential partners (academic/community) | 0 partners | 3 identified, 1 contacted | Peter | Partner research document | Medium |
 
-**Success Criteria:** Business model validated, financial projections exist, 25% arrangement assessed.
+**Success Criteria:** Business model validated, financial projections exist, undefined commercial arrangement assessed (private).
 
 ---
 
@@ -143,7 +143,7 @@ status: current
 - [ ] 5 gold datasets created
 - [ ] White paper draft complete
 - [ ] 1 grant application drafted
-- [ ] 25% arrangement assessed
+- [ ] Undefined commercial arrangement assessed (private / stub)
 - [ ] 90-day retrospective complete
 
 ---
@@ -157,7 +157,7 @@ status: current
 | Burnout (solo founder) | High | Critical | Enforce 20-25 hr/week cap, take breaks |
 | Data quality issues found | Medium | Medium | Automated CI gates, regular audits |
 | Advisor availability | Medium | Medium | Set clear expectations, async communication |
-| 25% arrangement creates conflict | Low | High | Document early, get legal advice |
+| Undefined commercial arrangement creates conflict | Low | High | Document early (private), get legal advice |
 
 ---
 

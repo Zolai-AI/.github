@@ -22,10 +22,10 @@ source: "01-strategic-audit.md"
 | Area | Status | Evidence | Gap | Priority |
 |------|:------:|----------|-----|:--------:|
 | Problem definition | ✅ Ready | Clear problem: Zolai language excluded from digital world | None | — |
-| Evidence base | ⚠️ Almost | 3.3M rows, 98.49% syllable accuracy, 466+ tests | Need evaluation data | High |
+| Evidence base | ⚠️ Almost | 3.3M rows, claimed 98.49% syllable accuracy (**UNDER REVIEW**), 466+ tests | Need evaluation data | High |
 | Innovation | ✅ Ready | RAG-first approach, Foundation Engine, MCP integration | None | — |
 | Feasibility | ⚠️ Almost | Strong tech foundation, solo founder | Need team/partners | High |
-| Team | ❌ Missing | Solo founder, no advisors, no collaborators | Critical gap | Critical |
+| Team | ⚠️ Partial | Founder + active strategic advisor (Shwe Yee); still solo engineering | Need collaborators / partners | Critical |
 | Community need | ⚠️ Almost | Zomi speakers lack digital tools | Need community validation | High |
 | Community participation | ❌ Missing | No active contributors, no community engagement | Critical gap | Critical |
 | Methodology | ⚠️ Almost | Good NLP pipeline, limited evaluation | Need evaluation framework | High |
@@ -48,7 +48,7 @@ source: "01-strategic-audit.md"
 
 | # | Requirement | Current State | What's Needed | Effort | Deadline |
 |---|------------|:-------------:|---------------|:------:|:--------:|
-| 1 | **Team composition** | Solo founder | Add 2-3 advisors (linguist, NLP, community) | 16h outreach | Month 2 |
+| 1 | **Team composition** | Founder + advisor | Add linguist/NLP/community collaborators; formalize advisory | 16h outreach | Month 2 |
 | 2 | **Evaluation framework** | 33 smoke tests | 100+ evaluation cases, benchmark methodology | 40h | Month 3 |
 | 3 | **Budget justification** | None | Detailed budget with line-item justification | 16h | Month 3 |
 | 4 | **Community validation** | None | Evidence of community need/participation | 24h | Month 3 |

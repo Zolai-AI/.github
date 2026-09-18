@@ -72,7 +72,7 @@ status: current
 | 5 | Community disengagement | High | High | Start small, build trust gradually | Peter |
 | 6 | Data quality issues | Medium | Medium | Automated CI gates, regular audits | Peter |
 | 7 | Advisor unavailability | Medium | Medium | Set clear expectations, async comms | Peter |
-| 8 | 25% arrangement conflict | Low | High | Document early, get legal advice | Peter |
+| 8 | Undefined commercial arrangement (private) | Low | High | Clarify privately; legal advice; no public % terms | Peter |
 | 9 | Technical debt accumulation | Medium | Medium | Regular refactoring sprints | Peter |
 | 10 | Competing projects/apps | Low | Medium | Focus on unique value proposition | Peter |
 
@@ -82,7 +82,7 @@ status: current
 
 | # | Decision | Options | Deadline | Impact |
 |---|----------|---------|:--------:|:------:|
-| 1 | 25% arrangement | Formalize / Dissolve / Document | Month 1 | High |
+| 1 | Undefined commercial arrangement | Formalize / Dissolve / Document “none” (private) | Month 1 | High |
 | 2 | Organizational entity | Nonprofit / Fiscal sponsor / None | Month 2 | High |
 | 3 | U.S. academic partner | Identify + approach | Month 3 | High |
 | 4 | Annotation platform | Argilla / Label Studio / Custom | Month 2 | Medium |

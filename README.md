@@ -9,15 +9,25 @@ license: MIT
 
 # Zolai-AI
 
-**Building language technology for the Zomi people.**
+**Tedim Zolai language technology & AI research**
 
-Zolai AI is an open-source initiative to preserve and teach Tedim Zolai (ZVS 2018)
-through community-owned, culturally grounded AI tools.
+Zolai AI builds trustworthy language data, knowledge infrastructure, NLP tools, literacy
+resources, and community-oriented applications for Tedim Zolai (ZVS 2018). Specialized model
+training is later-stage when the foundation is reliable.
 
 ## Mission
 
-Create practical language technology that helps Zomi speakers access information,
-learn languages, and participate in the digital world.
+Create practical, evidence-based language technology and knowledge infrastructure
+that help Tedim Zolai (ZVS 2018) speakers and learners access information, learn
+language, and participate digitally — grounded in verified data and responsible use.
+
+## Vision
+
+A durable Zomi language-technology ecosystem: community-informed tools, open research,
+measurable literacy impact, and sustainable operations.
+
+> Data, evaluation, research, and community impact first; specialized model training
+> follows when the foundation is reliable.
 
 ## Repositories
 
@@ -75,11 +85,17 @@ See [`zolai-datasets/data/CREDITS.md`](https://github.com/Zolai-AI/zolai-dataset
 
 | Document | Location | Description |
 |----------|----------|-------------|
-| Strategic Audit | [`docs/strategy/01-strategic-audit.md`](docs/strategy/01-strategic-audit.md) | Full 32-section ecosystem audit |
-| Strategic Roadmap | [`docs/strategy/02-strategic-roadmap.md`](docs/strategy/02-strategic-roadmap.md) | Prioritized action plan |
-| Grant Readiness | [`docs/strategy/03-grant-readiness.md`](docs/strategy/03-grant-readiness.md) | Grant gap analysis + budget |
-| AI Tools & Attribution | [`docs/AI_TOOLS_AND_ATTRIBUTION.md`](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
+| Project context | [`docs/context/project-context.md`](docs/context/project-context.md) | Canonical context for agents & contributors |
+| Mission & Vision | [`docs/strategy/mission-vision.md`](docs/strategy/mission-vision.md) | Identity and strategic pillars |
+| Source of Truth | [`docs/governance/source-of-truth.md`](docs/governance/source-of-truth.md) | Canonical doc owners by domain |
+| Architecture status | [`docs/architecture/status.md`](docs/architecture/status.md) | Implemented / Experimental / Planned |
+| Research | [`docs/research/`](docs/research/) | Agenda, gaps, literature (verify citations) |
+| Grants | [`docs/grants/`](docs/grants/) | Strategy + opportunity tracker (`researching`) |
+| Strategic Audit | [`docs/strategy/01-strategic-audit.md`](docs/strategy/01-strategic-audit.md) | Full ecosystem audit |
+| OKRs | [`docs/strategy/okr.md`](docs/strategy/okr.md) | Annual + 90-day OKR entry |
+| Advisors | [`docs/strategy/advisors-and-mentors.md`](docs/strategy/advisors-and-mentors.md) | Advisor roles (non-ownership) |
 | Documentation Index | [`docs/README.md`](docs/README.md) | Master documentation index |
+| AI Tools & Attribution | [`docs/AI_TOOLS_AND_ATTRIBUTION.md`](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
 
 ## AI-Assisted Development
 

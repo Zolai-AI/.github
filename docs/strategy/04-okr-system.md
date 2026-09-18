@@ -31,11 +31,15 @@ MISSION (why we exist)
 
 ## Mission
 
-**Preserve & teach Tedim Zolai (ZVS 2018) with a RAG-first bilingual AI toolkit for the Zomi people.**
+Canonical: [`mission-vision.md`](mission-vision.md).
+
+**Working summary:** Create practical, evidence-based language technology and knowledge infrastructure that help Tedim Zolai (ZVS 2018) speakers and learners access information, learn language, and participate digitally.
 
 ## Vision
 
-**Empower the Zomi people with community-owned, culturally grounded AI tools that preserve and revitalize Tedim Zolai through ethical data practices, indigenous knowledge systems, and accessible technology.**
+Canonical: [`mission-vision.md`](mission-vision.md).
+
+**Working summary:** A durable Zomi language-technology ecosystem — community-informed tools, open research, measurable literacy impact, and sustainable operations.
 
 ---
 
@@ -64,7 +68,7 @@ MISSION (why we exist)
 | KR1.2: Achieve 90%+ accuracy on Zolai NLP benchmark (syllable, grammar, translation) | No benchmark | 90%+ on 5 tasks | Month 6 | Published benchmark results |
 | KR1.3: Submit 1 workshop paper (AmericasNLP/LowResNLP) | 0 papers | 1 submission | Month 9 | Submission confirmation |
 | KR1.4: Join Masakhane + 1 other NLP community | 0 communities | 2 communities | Month 2 | Active membership evidence |
-| KR1.5: Establish advisory board (3+ members) | 0 advisors | 3+ advisors | Month 3 | Signed advisory agreements |
+| KR1.5: Establish advisory board (3+ members) | 1 active mentor/advisor (Shwe Yee); 0 formal board | 3+ formal advisors/board | Month 3 | Signed advisory agreements |
 
 ### Objective 2: Build Community Trust and Engagement
 **Strategic Pillar:** Community & Literacy + Sustainability & Governance
@@ -252,7 +256,7 @@ Every KR must pass:
 | "Model training" in KAGGLE_SETUP vs "no raw fine-tuning" in architecture | **RESOLVED:** Fine-tuning deferred. RAG-first approach maintained. |
 | "10 repos" vs "consolidate to 4-5" in audit | **RESOLVED:** Keep 10 repos but focus active work on 4-5 core repos |
 | "PostgreSQL migration" in progress-tracker vs SQLite canonical | **RESOLVED:** SQLite remains canonical. PostgreSQL deferred until scale requires it |
-| "25% arrangement" mentioned in user prompt | **FLAGGED:** Requires formal documentation (see 08-25-percent-arrangement.md) |
+| Undefined commercial arrangement (private) | **FLAGGED:** Pending clarification — public stub only ([08-25-percent-arrangement.md](08-25-percent-arrangement.md)); details not for public/grant materials |
 
 ---
 

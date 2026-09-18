@@ -4,9 +4,10 @@ description: "Full 32-section strategic, technical, research, impact, and busine
 author: "OpenCode orchestra conductor"
 created: 2026-09-18
 last_updated: 2026-09-18
-status: current
+status: UNDER REVIEW
 scope: full-ecosystem
 sections: 32
+note: "Architecture v2 — syllable % and NLP ✅ rows may overclaim; see docs/architecture/status.md and docs/audits/05-v2-claims-audit.md"
 ---
 
 # Zolai AI — Comprehensive Strategic, Technical, Research, Impact & Business Audit
@@ -942,7 +943,7 @@ Research partnerships     → Publication                → Evaluation benchmar
 | Evidence base | ⚠️ Almost Ready | Need evaluation data | High |
 | Innovation | ✅ Ready | None | — |
 | Feasibility | ⚠️ Almost Ready | Need team/partners | High |
-| Team | ❌ Missing | Solo founder, no advisors | Critical |
+| Team | ⚠️ Partial | Founder + strategic advisor (Shwe Yee); still need collaborators / board | Critical |
 | Community need | ⚠️ Almost Ready | Need community validation | High |
 | Community participation | ❌ Missing | No active contributors | Critical |
 | Methodology | ⚠️ Almost Ready | Need evaluation framework | High |

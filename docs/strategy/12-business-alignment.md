@@ -54,7 +54,7 @@ status: current
 | KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter + Shwe Yee | Interview transcripts | O5: KR5.1 (community) |
 | KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter + Shwe Yee | Business model canvas | O6: KR6.2 |
 | KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter + Shwe Yee | Financial document | O4: KR4.2 (grants) |
-| KR6.4: Assess 25% arrangement | Undefined | Assessment complete | Peter + Shwe Yee | Legal review | — (08-25-percent) |
+| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or “none” | Peter + Shwe Yee | Private governance + stub | — ([08 stub](08-25-percent-arrangement.md)) |
 | KR6.5: Identify 3 potential partners | 0 partners | 3 identified | Peter | Partner research | O4: KR4.4 (grants) |
 
 ---
@@ -88,15 +88,11 @@ status: current
 
 ---
 
-## 25% Arrangement Impact
+## Undefined Commercial Arrangement
 
-If the 25% arrangement is a commercial arrangement:
-- Must be documented before any revenue is generated
-- Must be disclosed to funders (grant applications)
-- Must not compromise open-source commitment
-- Must not create conflicts with community benefit
-
-See [08-25-percent-arrangement.md](08-25-percent-arrangement.md) for details.
+Any informal commercial discussion remains **undefined** until formally agreed.  
+Public stub only: [08-25-percent-arrangement.md](08-25-percent-arrangement.md).  
+Do not put terms in grants, README, website, or white paper.
 
 ---
 

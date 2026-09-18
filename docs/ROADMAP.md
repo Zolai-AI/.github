@@ -1,16 +1,19 @@
 ---
 title: "Zolai-AI Roadmap"
-description: "Strategic roadmap aligned with comprehensive ecosystem audit"
+description: "Strategic roadmap aligned with OKRs and ecosystem audit"
 created: 2026-09-07
 last_updated: 2026-09-18
 maintainer: "Peter Pau Sian Lian (@peterlianpi)"
-source: "docs/strategy/01-strategic-audit.md"
+source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
 ---
 
 # Zolai-AI Roadmap
 
-> Prioritized action plan aligned with the comprehensive strategic audit.
-> See [`docs/strategy/01-strategic-audit.md`](docs/strategy/01-strategic-audit.md) for full audit.
+> Horizons: **Immediate 0–30d** · **Near-term 31–90d** · **Medium 3–12m** · **Long-term 1–3y**  
+> Canonical OKRs: [`strategy/okr.md`](strategy/okr.md) · Execution: [`strategy/15-execution-plan.md`](strategy/15-execution-plan.md)  
+> Full audit: [`strategy/01-strategic-audit.md`](strategy/01-strategic-audit.md)
+
+Every major item should link: OKR · owner · dependency · evidence · repo · docs · status.
 
 ---
 
@@ -18,37 +21,37 @@ source: "docs/strategy/01-strategic-audit.md"
 
 | Area | Score | Status |
 |------|:-----:|--------|
-| Data Assets | 8/10 | Strong — 3.3M rows, 99 tables |
+| Data Assets | 8/10 | Strong — ~3.3M rows, ~99 tables (verify via audit/DB) |
 | Code Quality | 7/10 | Good — 466+ tests, ruff linting |
-| NLP Pipeline | 6/10 | Basic — syllable excellent, others incomplete |
-| Documentation | 5/10 | Scattered — rich context files, not integrated |
-| Community | 4/10 | Weak — no active contributors |
-| Evaluation | 3/10 | Minimal — 33 smoke tests only |
-| Business | 2/10 | None — no revenue, no plan |
+| NLP Pipeline | 6/10 | Syllable strong; others Experimental / incomplete |
+| Documentation | 6/10 | Architecture v2 canonical paths added 2026-09-18 |
+| Community | 4/10 | Weak — limited active contributors |
+| Evaluation | 3/10 | Minimal — expand per KR3.* |
+| Business | 2/10 | Hypotheses only |
 | Grants | 3/10 | Not ready — major gaps |
-| Research | 4/10 | Nascent — questions articulated, no publications |
+| Research | 4/10 | Nascent — scaffold in `docs/research/` |
 
 ---
 
-## NOW (Week 1-4) — Critical Foundation
+## NOW (Week 1-4) — Critical Foundation · Immediate 0–30d
 
-| # | Task | Why | Effort | Status |
-|---|------|-----|:------:|:------:|
-| 1 | Fix broken tests (test_prediction_api, test_word_attestation) | Blocks CI, signals quality | 8h | ⏳ |
-| 2 | Set up automated backup for data/ | Data loss risk | 8h | ⏳ |
-| 3 | Audit and document licenses for all data sources | Legal risk, grant requirement | 16h | ⏳ |
-| 4 | Create 100+ evaluation test cases | Can't improve what you can't measure | 24h | ⏳ |
-| 5 | Archive duplicate/stale data | Reduce confusion | 16h | ⏳ |
+| # | Task | OKR | Owner | Why | Effort | Status |
+|---|------|-----|-------|-----|:------:|:------:|
+| 1 | Fix broken tests | KR2.1 | Peter | Blocks CI | 8h | ⏳ |
+| 2 | Automated backup for data/ | KR2.2 | Peter | Data loss risk | 8h | ⏳ |
+| 3 | License audit all sources | KR2.3 | Peter | Legal / grants | 16h | ⏳ |
+| 4 | Create 100+ evaluation cases | KR3.1 | Peter | Measurement | 24h | ⏳ |
+| 5 | Archive duplicate/stale data (backup first) | KR2.4 | Peter | Reduce confusion | 16h | ⏳ |
 
-## NEXT (Month 2-3) — Governance & Community
+## NEXT (Month 2-3) — Near-term 31–90d
 
-| # | Task | Why | Effort | Status |
-|---|------|-----|:------:|:------:|
-| 6 | Create governance document + identify 3-5 advisors | Grant requirement, credibility | 16h | ⏳ |
-| 7 | Join Masakhane community | Network, collaboration | 8h | ⏳ |
-| 8 | Interview 5 Zomi speakers | Validate assumptions | 16h | ⏳ |
-| 9 | Design evaluation benchmark | Research credibility | 24h | ⏳ |
-| 10 | Create unified documentation site | Discoverability | 16h | ⏳ |
+| # | Task | OKR | Owner | Why | Effort | Status |
+|---|------|-----|-------|-----|:------:|:------:|
+| 6 | Governance + advisor clarity | KR5.2 / DEC-002 | Peter | Grants, credibility | 16h | 🔄 docs v2 started |
+| 7 | Join Masakhane | KR1.2 | Peter | Network | 8h | ⏳ |
+| 8 | Interview 5 Zomi speakers | KR5.1 | Peter | Validate assumptions | 16h | ⏳ |
+| 9 | Design evaluation benchmark | KR3.2 | Peter | Research credibility | 24h | ⏳ |
+| 10 | Unified documentation (Architecture v2) | — | Peter | Discoverability | 16h | 🔄 in progress |
 
 ## LATER (Month 4-12) — Research & Applications
 
@@ -151,10 +154,16 @@ source: "docs/strategy/01-strategic-audit.md"
 
 | Document | Description |
 |----------|-------------|
-| [Strategic Audit](docs/strategy/01-strategic-audit.md) | Full 32-section audit |
-| [Strategic Roadmap](docs/strategy/02-strategic-roadmap.md) | Detailed action plan |
-| [Grant Readiness](docs/strategy/03-grant-readiness.md) | Grant gap analysis |
-| [AI Tools & Attribution](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain docs |
+| [OKR entry](strategy/okr.md) | Annual + 90-day OKRs |
+| [Mission & vision](strategy/mission-vision.md) | Identity / pillars |
+| [Gap register](strategy/gap-register.md) | Prioritized gaps |
+| [Architecture status](architecture/status.md) | Feature status labels |
+| [Database docs](database/README.md) | DB audit pointers |
+| [Strategic Audit](strategy/01-strategic-audit.md) | Full audit |
+| [Strategic Roadmap detail](strategy/02-strategic-roadmap.md) | Detailed action plan |
+| [Grant Readiness](strategy/03-grant-readiness.md) | Grant gaps |
+| [Project context](context/project-context.md) | Agent context |
+| [Model routing](context/model-routing.md) | Best model per agent role |
 
 ---
 

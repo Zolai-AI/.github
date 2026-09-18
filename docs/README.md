@@ -10,17 +10,31 @@ last_updated: 2026-09-18
 
 ---
 
-## Quick Links
+## Quick Links (Architecture v2)
 
 | Document | Purpose | Status |
 |----------|---------|:------:|
-| [Strategic Audit](strategy/01-strategic-audit.md) | Full 32-section audit | ✅ Current |
-| [Strategic Roadmap](strategy/02-strategic-roadmap.md) | Prioritized action plan | ✅ Current |
-| [Grant Readiness](strategy/03-grant-readiness.md) | Grant gap analysis | ✅ Current |
-| [**Master OKR System**](strategy/04-okr-system.md) | 7 pillars, annual + quarterly OKRs | ✅ Current |
-| [**90-Day OKR**](strategy/05-90-day-okr.md) | Immediate objectives (Sep-Dec 2026) | ✅ Current |
-| [**Master Dashboard**](strategy/14-master-dashboard.md) | Top KRs, risks, decisions | ✅ Current |
-| [Roadmap](ROADMAP.md) | Top-level prioritized roadmap | ✅ Current |
+| [Project context (agents)](context/project-context.md) | Canonical AI/contributor context | ✅ |
+| [Mission & Vision](strategy/mission-vision.md) | Identity, pillars | ✅ |
+| [Source of Truth](governance/source-of-truth.md) | Domain → canonical path | ✅ |
+| [OKR entry](strategy/okr.md) | → master + 90-day OKRs | ✅ |
+| [Decisions](strategy/decisions.md) | Decision register | ✅ |
+| [Gap register](strategy/gap-register.md) | Cross-cutting gaps | ✅ |
+| [Advisors](strategy/advisors-and-mentors.md) | Advisor roles | ✅ |
+| [Roadmap](ROADMAP.md) | Top-level roadmap | ✅ |
+| [Architecture status](architecture/status.md) | Implemented / Experimental / … labels | ✅ |
+| [Database docs](database/README.md) | Audit pointers, consolidation rule | ✅ |
+| [Model routing](context/model-routing.md) | Best Cursor model per agent role | ✅ |
+| [Doc changelog](DOCUMENTATION_CHANGELOG.md) | Architecture v2 history | ✅ |
+
+### Detailed strategy (preserved)
+
+| Document | Purpose | Status |
+|----------|---------|:------:|
+| [Strategic Audit](strategy/01-strategic-audit.md) | Full audit | ✅ |
+| [Master OKR](strategy/04-okr-system.md) | Annual + quarterly | ✅ |
+| [90-Day OKR](strategy/05-90-day-okr.md) | Sep–Dec 2026 | ✅ |
+| [Dashboard](strategy/14-master-dashboard.md) | Top KRs / risks | ✅ |
 
 ---
 
@@ -28,55 +42,16 @@ last_updated: 2026-09-18
 
 ```
 docs/
-├── README.md                    ← You are here (master index)
-├── ROADMAP.md                   ← Top-level prioritized roadmap
-├── AI_TOOLS_AND_ATTRIBUTION.md  ← AI toolchain transparency
-├── INFRASTRUCTURE.md            ← Org infrastructure overview
-├── strategy/                    ← Strategic planning & OKR system
-│   ├── README.md                ← Strategy document index
-│   ├── 01-strategic-audit.md    ← Full 32-section audit
-│   ├── 02-strategic-roadmap.md  ← Prioritized actions (NOW/NEXT/LATER)
-│   ├── 03-grant-readiness.md   ← Grant gaps + budget template
-│   ├── 04-okr-system.md        ← Master OKR (7 pillars, annual/quarterly)
-│   ├── 05-90-day-okr.md        ← Immediate 90-day objectives
-│   ├── 06-founder-okr.md       ← Founder personal OKR
-│   ├── 07-weekly-mentoring.md  ← Weekly mentoring system
-│   ├── 08-25-percent-arrangement.md ← ⚠️ Needs human decision
-│   ├── 09-review-templates.md  ← Weekly/monthly/quarterly templates
-│   ├── 10-whitepaper-alignment.md ← White paper → OKRs
-│   ├── 11-grant-alignment.md   ← Grant requirements → OKRs
-│   ├── 12-business-alignment.md ← Business experiments → OKRs
-│   ├── 13-community-impact.md  ← Community impact framework
-│   ├── 14-master-dashboard.md  ← Top KRs, risks, decisions
-│   └── 15-execution-plan.md    ← THIS WEEK/MONTH/QUARTER/YEAR
-├── architecture/                ← Technical architecture
-│   ├── 01-architecture-overview.md
-│   ├── 02-project-brain.md
-│   └── 03-repo-split-blueprint.md
-├── audits/                      ← Completed audits
-│   ├── 01-burmese-layer-audit.md
-│   ├── 02-syllable-audit.md
-│   ├── 03-database-reconciliation.md
-│   ├── 04-security-audit.md
-│   ├── 05-v2-claims-audit.md
-│   └── 06-v2-final-report.md
-├── guides/                      ← How-to guides
-│   ├── 01-getting-started.md
-│   ├── 02-annotation-guide.md
-│   ├── 03-resume-backlog.md
-│   └── 04-root-cleanup-policy.md
-├── planning/                    ← Project planning
-│   └── 01-github-org-plan.md
-└── reports/                     ← Generated reports
-    ├── CHATGPT_CONTEXT_REPORT.md
-    ├── CHATGPT_INTEGRATION_REPORT.md
-    ├── CHATGPT_REPORT_2026-09-11.md
-    ├── CHATGPT_REPORT_2026-09-12.md
-    ├── DATABASE_INTEGRITY_REPORT.md
-    ├── ECOSYSTEM_AUDIT_V2.md
-    ├── ECOSYSTEM_INVENTORY.json
-    ├── INTEGRATION_MATRIX.md
-    └── SOURCE_OF_TRUTH_MATRIX.md
+├── README.md
+├── DOCUMENTATION_CHANGELOG.md
+├── ROADMAP.md
+├── context/project-context.md     ← agents / contributors
+├── governance/                    ← SoT, roles, data, public/private
+├── strategy/                      ← canonical + numbered detail (01–15)
+├── research/ · grants/ · community/ · business/ · whitepaper/
+├── architecture/ · audits/ · guides/ · planning/ · reports/
+├── prompts/                       ← master restructuring prompt
+└── private/                       ← gitignored (sensitive)
 ```
 
 ---
@@ -92,7 +67,7 @@ docs/
 | [**90-Day OKR**](strategy/05-90-day-okr.md) | 6 immediate objectives with baselines, targets, owners, evidence, risks (Sep-Dec 2026) | 8KB |
 | [**Founder OKR**](strategy/06-founder-okr.md) | 7 skill areas for Peter — research, writing, grants, business, product, communication, technical | 9KB |
 | [**Weekly Mentoring**](strategy/07-weekly-mentoring.md) | Meeting structure with Shwe Yee — 6×10-min segments, role boundaries, decision framework | 7KB |
-| [**25% Arrangement**](strategy/08-25-percent-arrangement.md) | ⚠️ UNDEFINED — 13 questions, requires human decision | 5KB |
+| [Commercial arrangement stub](strategy/08-25-percent-arrangement.md) | Public stub only — details private / pending clarification | stub |
 | [**Review Templates**](strategy/09-review-templates.md) | Weekly, monthly, quarterly review templates | 8KB |
 | [**White Paper Alignment**](strategy/10-whitepaper-alignment.md) | White paper sections mapped to OKRs with timeline | 4KB |
 | [**Grant Alignment**](strategy/11-grant-alignment.md) | Grant requirements mapped to OKRs (NSF, UNESCO, NatGeo, Microsoft) | 4KB |

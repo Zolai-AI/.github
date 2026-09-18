@@ -156,7 +156,7 @@ status: current
    - Yes → Shwe Yee advises, Peter decides
    - No → Peter decides independently
 
-4. **Does this affect the 25% arrangement?**
+4. **Does this affect the undefined commercial arrangement?** (see stub `08-25-percent-arrangement.md` — no public terms)
    - Yes → Both must agree, document in 08-25-percent-arrangement.md
    - No → Peter decides
 

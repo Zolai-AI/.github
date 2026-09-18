@@ -2,40 +2,59 @@
 
 # Zolai-AI
 
-**Building language technology for the Zomi people.**
+**Tedim Zolai language technology & AI research**
 
-Zolai AI is an open-source initiative to preserve and teach Tedim Zolai (ZVS 2018)
-through community-owned, culturally grounded AI tools.
+Zolai AI builds trustworthy language data, knowledge infrastructure, NLP tools, literacy
+resources, and community-oriented applications for Tedim Zolai (ZVS 2018) — with specialized
+model training as a later stage when the foundation is reliable.
+
+---
+
+## Mission
+
+Create practical, evidence-based language technology and knowledge infrastructure that help
+Tedim Zolai speakers and learners access information, learn language, and participate digitally.
+
+## Vision
+
+A durable Zomi language-technology ecosystem: community-informed tools, open research,
+measurable literacy impact, and sustainable operations.
 
 ---
 
 ## What We Build
 
-| Category | Tools | Status |
+Status labels: **Implemented** · **Experimental** · **Planned** · **Live**
+
+| Category | Focus | Status |
 |----------|-------|:------:|
-| **Language Data** | Dictionary (84K+ ZO→EN, 64K+ EN→ZO), Bible corpus (31K verses), Grammar (5.5K patterns) | ✅ |
-| **NLP Pipeline** | Syllable segmentation (98.49%), POS tagging, morphology, translation | ✅ |
-| **Applications** | Web learner platform, Desktop app, MCP server for AI assistants | 🔄 |
-| **Education** | Vocabulary learning, progressive curriculum, proficiency testing | 🔄 |
-| **Research** | Low-resource NLP, evaluation benchmarks, community validation | 🔄 |
+| **Language data** | Dictionary, Bible parallel corpus (where permitted), grammar, syllables | Implemented (ongoing quality) |
+| **NLP** | Syllable segmentation strong; POS, morphology, MT, etc. | Mixed — see notes |
+| **Applications** | Web learner, desktop (early), MCP for AI assistants | Live / Early |
+| **Education** | Vocab, curriculum, exercises | Experimental → Planned |
+| **Research** | Low-resource NLP, evaluation, community validation | Planned / in progress |
+
+**NLP honesty note:** Syllable tooling has the strongest evidence. Broader NLP modules exist in
+code but many claims remain only partially verified — see
+[claims audit](https://github.com/Zolai-AI/.github/blob/main/docs/audits/05-v2-claims-audit.md).
 
 ## Data
 
-We credit the **source materials** used to build the Zolai learning system. Source corpora
-(Bible translations, TongDot/TongSan dictionaries, web-scraped Zolai corpus) are processed
-into our own cleaned, ZVS-2018-aligned relational database (`data/zolai.db`, SQLite WAL,
-99 tables / ~2.3GB / ~3.3M rows). See `zolai-datasets/data/CREDITS.md` for attribution.
+We credit **source materials** used to build the Zolai learning system. Source corpora
+(Bible translations, TongDot/TongSan dictionaries, and other corpora) are processed into a
+cleaned, ZVS-2018-aligned database (`data/zolai.db`, SQLite WAL, ~99 tables / ~2.3GB / ~3.3M rows).
+See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestricted reuse.
 
-### Key Resources
+### Key resources
 
 | Resource | Entries | Purpose |
 |----------|---------|---------|
 | `dictionary` (ZO→EN) | 84,490 | Cleaned master Zolai→English |
-| `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai + Burmese monolingual |
+| `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai (+ related fields) |
 | `bible_verses` | 31,649 | Parallel EN/ZO/MY verses |
-| `translations` | 207,623 | EN↔ZO + EN→MY sentence pairs |
+| `translations` | 207,623 | Sentence pairs |
 | `syllable_data` | 189,563 | Syllable segmentation |
-| `training_exercises` | 82,159 | 5 exercise types |
+| `training_exercises` | 82,159 | Exercise types |
 
 ## Live URLs
 
@@ -49,70 +68,70 @@ into our own cleaned, ZVS-2018-aligned relational database (`data/zolai.db`, SQL
 
 | Repo | Purpose | Status |
 |------|---------|:------:|
-| `zolai-core` | Python toolkit + RAG Knowledge Brain | ✅ Active |
-| `zolai-web` | Learner platform (Next.js + Hono + Prisma) | ✅ Active |
-| `zolai-tauri` | Offline desktop app (Tauri 2) | 🔄 Early |
-| `zolai-datasets` | Bilingual corpora & datasets (HF/Kaggle) | ✅ Active |
-| `zolai-training` | LoRA/QLoRA fine-tuning + GGUF export | 🔄 Early |
-| `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | ✅ Active |
-| `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude | ✅ Live |
-| `zolai-landing` | Org landing page for zolai.space | ✅ Live |
+| `zolai-core` | Python toolkit + RAG Knowledge Brain | Active |
+| `zolai-web` | Learner platform (Next.js + Hono + Prisma) | Active |
+| `zolai-tauri` | Offline desktop app (Tauri 2) | Early |
+| `zolai-datasets` | Bilingual corpora & datasets | Active |
+| `zolai-training` | LoRA/QLoRA + GGUF (later-stage focus) | Early |
+| `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | Active |
+| `zolai-mcp-server` | MCP for ChatGPT / Gemini / Claude | Live |
+| `zolai-landing` | Org landing (zolai.space) | Live |
 
-## Bible as Primary Corpus
+## Bible corpus
 
-The Bible is our **primary training corpus** — the only complete, trusted EN/ZO parallel
-corpus for Tedim Zolai (31,649 parallel verses across TDB77, Tedim2010, Hakha, Falam, Paite).
-We use it as a *language learning corpus*, not for religious purposes.
+Parallel Bible text is a major EN/ZO resource used as a *language learning / research corpus*,
+not for religious advocacy. License and permission status must be documented before redistribution
+or commercial reuse.
 
-## Research & Documentation
+## People
+
+| Role | Name | Notes |
+|------|------|-------|
+| Founder & Technical Lead | Peter Lianpi (`@peterlianpi`) | Architecture, engineering, execution |
+| Strategic Advisor & Business/Impact Mentor | Shwe Yee | Advisory only — no ownership; public listing subject to ongoing consent |
+
+## Research & documentation
 
 | Document | Description |
 |----------|-------------|
-| [Strategic Audit](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/01-strategic-audit.md) | Full 32-section ecosystem audit |
-| [Strategic Roadmap](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/02-strategic-roadmap.md) | Prioritized action plan |
-| [Grant Readiness](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/03-grant-readiness.md) | Grant gap analysis |
-| [AI Tools & Attribution](https://github.com/Zolai-AI/.github/blob/main/docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
+| [Project context](https://github.com/Zolai-AI/.github/blob/main/docs/context/project-context.md) | Canonical context for agents & contributors |
+| [Mission & vision](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/mission-vision.md) | Identity and pillars |
+| [Source of truth](https://github.com/Zolai-AI/.github/blob/main/docs/governance/source-of-truth.md) | Canonical doc owners |
+| [OKRs](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/okr.md) | Annual + 90-day objectives |
+| [Strategic audit](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/01-strategic-audit.md) | Full ecosystem audit |
+| [Docs index](https://github.com/Zolai-AI/.github/blob/main/docs/README.md) | Master documentation index |
 
-## How We Work
+## How we work
 
-### Open Source
-All code is MIT-licensed. All data is credited. Contributions welcome.
+- **Open source** — code MIT-licensed; data credited; contributions welcome
+- **Evidence first** — data, evaluation, and community impact before model hype
+- **Community-aware** — Zomi speakers as stakeholders, not only data sources
+- **ZVS 2018** — orthography ground truth; SOV; ergative `in`
+- **AI-assisted development** — human-directed; see [AI Tools & Attribution](https://github.com/Zolai-AI/.github/blob/main/docs/AI_TOOLS_AND_ATTRIBUTION.md)
 
-### Community-Driven
-We center Zomi speakers as stakeholders, not just data sources.
+## Get involved
 
-### AI-Assisted Development
-We use AI tools (OpenCode, P-Core Orchestra) to accelerate development.
-See [AI Tools & Attribution](https://github.com/Zolai-AI/.github/blob/main/docs/AI_TOOLS_AND_ATTRIBUTION.md) for details.
-
-### ZVS 2018 Compliant
-All Zolai text follows ZVS 2018 orthography standards.
-
-## Get Involved
-
-| Role | How to Help |
+| Role | How to help |
 |------|-------------|
-| **Zomi Speaker** | Validate translations, test tools, contribute cultural knowledge |
-| **Linguist** | Grammar analysis, dialect documentation, morphological study |
-| **ML Engineer** | NLP pipelines, evaluation benchmarks, model training |
-| **Developer** | Web/desktop/mobile apps, API development, infrastructure |
-| **Educator** | Curriculum development, exercise creation, pedagogical grammar |
+| **Zomi speaker** | Validate translations, test tools, contribute cultural knowledge |
+| **Linguist** | Grammar, dialect documentation, morphology |
+| **ML engineer** | NLP pipelines, evaluation, careful training experiments |
+| **Developer** | Web / desktop / API / infrastructure |
+| **Educator** | Curriculum, exercises, pedagogical grammar |
 
-See [CONTRIBUTING.md](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING.md).
 
 ## Contact
 
-- **GitHub Issues** — Bug reports, feature requests
-- **GitHub Discussions** — Questions, ideas, community chat
+- **GitHub Issues** — bugs, features
+- **GitHub Discussions** — questions, ideas
 - **Email** — peterpausianlian2020@gmail.com
 
 ---
 
-**Lungdam!** (Thank you!) 🙏
-
----
+**Lungdam!** (Thank you!)
 
 <p align="center">
-  <i>Built with ❤️ for the Zomi people</i><br>
-  <sub>AI-assisted development by Peter Pau Sian Lian (@peterlianpi) using OpenCode free models
+  <i>Built for the Zomi people</i><br>
+  <sub>Led by Peter Pau Sian Lian (@peterlianpi) · AI-assisted with OpenCode free models</sub>
 </p>
