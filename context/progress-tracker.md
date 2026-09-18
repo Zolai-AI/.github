@@ -301,3 +301,15 @@
 
 Docs/context: whitepaper §2 scrub, profile license honesty, benchmarks v0, gaps recommendations.
 
+## 2026-09-18 — CI status (final this pass)
+
+| Repo | Actions |
+|------|---------|
+| `.github` lint | ✅ |
+| `zolai-datasets` | ✅ |
+| `zolai-web` Testing + Monitor | ✅ (Deploy = manual) |
+| `zolai-wiki` | ✅ |
+| `zolai-core` | ✅ (Actions-safe pytest subset + seed DB) |
+| `zolai-tauri` | 🔄 Build green; fixing cargo test Deserialize |
+| Local `zolai-core` full suite | ✅ 1010 passed (needs ~2GB data/zolai.db) |
+
