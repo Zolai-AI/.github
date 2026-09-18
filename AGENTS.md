@@ -66,6 +66,7 @@ When a task spans multiple repos, read each repo's `AGENTS.md` individually rath
 
 - Orchestra lives in **pcore-orchestra** at `/home/peter/Documents/Project/pcore/pcore-orchestra` (installs into `~/.cursor` / OpenCode).
 - If Cursor Task rejects `orchestra-*` subagent types, run the loop via **conductor fallback** (parent runs phases) — do not stop the loop.
+- While orchestra is active or the user said **continue until finish**, do **not** pause with Done/Next choice menus — chain phases and handoff goals until the goal is finished or the user says stop.
 
 ---
 
