@@ -53,13 +53,19 @@ When a task spans multiple repos, read each repo's `AGENTS.md` individually rath
 ## Learned user preferences
 
 - Use **free models only** for OpenCode (e.g. `mimo-v2.5-free`, `opencode/x-preview-f-free`); keep the free-model fallback chain intact.
+- Name **Cursor** and **OpenCode** as first-class tools in docs and attribution (different model rules: Cursor pool/Auto vs OpenCode free chain).
 - RAG/embeddings-first — do **not** raw fine-tune; AIs consume Zolai knowledge as injected context.
 - Language ground truth: ZVS 2018 orthography, SOV, ergative `in`.
 - Read **`docs/context/project-context.md`** first for org-wide strategy context; then the six-file `context/*.md` set, the repo `AGENTS.md`, and README as needed — not the whole tree.
-- Canonical docs map: `docs/governance/source-of-truth.md`. Master restructuring prompt: `docs/prompts/` (local / gitignored).
+- Canonical docs map: `docs/governance/source-of-truth.md`. Local/gitignored: `docs/prompts/` (master restructuring prompt) and `docs/private/`.
 - **Cursor models:** prefer role table in `docs/context/model-routing.md`; on usage limits use **Auto**, then task-fit alternates — never block the task on one model.
 - **Use `bun`** (not npm/yarn) for all JS/TS repos.
 - MCP server: `https://mcp.zolai.space/mcp` — 8 tools for ecosystem context.
+
+## Learned Workspace Facts
+
+- Orchestra lives in **pcore-orchestra** at `/home/peter/Documents/Project/pcore/pcore-orchestra` (installs into `~/.cursor` / OpenCode).
+- If Cursor Task rejects `orchestra-*` subagent types, run the loop via **conductor fallback** (parent runs phases) — do not stop the loop.
 
 ---
 
