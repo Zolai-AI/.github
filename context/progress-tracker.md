@@ -286,3 +286,18 @@
 - zolai-web: monitor/deploy fixed (landing CF vs Next cron)
 - Docs: whitepaper related-work scrub, profile license honesty, benchmarks v0, gaps recommendations sync
 
+## 2026-09-18 — multi-repo CI green-up (continued)
+
+| Repo | Result |
+|------|--------|
+| `.github` org lint | ✅ success (scripts-scoped ruff) |
+| `zolai-datasets` | ✅ manifests CI |
+| `zolai-web` Testing Pipeline | ✅ deps + eslint |
+| `zolai-web` Monitor | ✅ CF landing edge |
+| `zolai-web` Deploy | ⏸ workflow_dispatch only (no VPS key) |
+| `zolai-core` | 🔄 hardcoded paths removed; awaiting full pytest on Actions |
+| `zolai-tauri` | 🔄 openssl + targetSdkVersion fixes |
+| `zolai-wiki` | 🔄 ZVS/markdown gates advisory |
+
+Docs/context: whitepaper §2 scrub, profile license honesty, benchmarks v0, gaps recommendations.
+
