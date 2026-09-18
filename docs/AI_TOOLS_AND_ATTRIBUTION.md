@@ -31,7 +31,7 @@ All work in Zolai AI is **human-directed and AI-assisted**:
 
 ```
 Primary Author: Peter Pau Sian Lian (@peterlianpi)
-AI Assistance: OpenCode + P-Core Orchestra
+AI Assistance: Cursor + OpenCode + P-Core Orchestra
 Reviewed by: Peter Pau Sian Lian (human review and approval)
 ```
 
@@ -46,22 +46,25 @@ AI tools assist with implementation, research, and documentation under human dir
 
 | Tool | Role | Usage |
 |------|------|-------|
-| **OpenCode** | AI coding assistant | Code generation, debugging, refactoring, documentation |
-| **P-Core Orchestra** | Multi-agent orchestration | Plan → Implement → Verify → Review loop |
-| **OpenCode Free Models** | LLM inference | All code and documentation generation |
+| **Cursor** | IDE agent (Agent / Task / Auto) | Coding, docs, QC; Cursor Models pool (Composer, Grok, Auto fallback) |
+| **OpenCode** | CLI / desktop AI coding assistant | Code generation, debugging, refactoring, documentation |
+| **P-Core Orchestra** | Multi-agent orchestration | Plan → Implement → Verify → Review (works in both Cursor and OpenCode) |
+| **OpenCode free models** | LLM inference (OpenCode path) | Prefer free-tier models only for OpenCode sessions |
+
+Name **both Cursor and OpenCode** when attributing work: they are parallel environments, not duplicates of one product.
 
 ### Models
 
-We use **OpenCode free models** for all AI-assisted work. Specific models may change
-as new free options become available. Current models include:
+**OpenCode:** free models only (e.g. `mimo-v2.5-free` and configured free fallbacks). See org `AGENTS.md`.
 
-| Model | Provider | Notes |
-|-------|----------|-------|
-| Free tier models | OpenCode | Primary coding models |
+**Cursor:** included Cursor Models pool per [`docs/context/model-routing.md`](context/model-routing.md) — preferred model → **Auto** on limits → task-fit alternate. Avoid burning “Other Models” (Claude/GPT) as a daily default.
 
-**Note:** We use free models to keep development costs zero. Model names are not listed
-because they change frequently — see OpenCode's current free model offerings for the
-latest available models.
+| Path | Provider | Notes |
+|------|----------|-------|
+| OpenCode free tier | OpenCode / Zen catalog | Primary for OpenCode sessions |
+| Cursor Models (Composer, Grok, Auto) | Cursor | Primary for Cursor Agent sessions |
+
+**Note:** Exact model IDs change often — record the path (Cursor vs OpenCode) in session notes when it matters for reproducibility.
 
 ### Orchestration System
 
