@@ -45,23 +45,25 @@ This paper makes the following contributions:
 
 ### 2.1 Low-Resource NLP
 
-The low-resource NLP community has made significant strides in recent years. Masakhane (Niu et al., 2019) demonstrated that neural machine translation is possible for African languages with as few as 10,000 parallel sentences, using transfer learning from high-resource languages. AmericasNLP (Neubig et al., 2023) extended this approach to indigenous American languages. WikiMMT (Caswell et al., 2024) created parallel corpora from Wikipedia for 100+ languages.
+The low-resource NLP community has made significant strides in recent years. **Verified community anchors** (primary URLs only in this pass): Masakhane (https://www.masakhane.io/), AmericasNLP (https://americasnlp.org/), CARE Principles for Indigenous Data Governance (https://www.gida-global.org/care), and Te Hiku Media’s Māori data sovereignty practice (https://tehiku.nz/). Peer patterns we adopt: community annotation, shared-task evaluation design, and speaker-governed data access — not unverified bibliographic strings. Legacy paper cites formerly listed here remain in `docs/research/literature-review.md` until DOI/URL confirmed; **do not copy them into grant text**.
 
-FLORES-200 (NLLB Team, 2022) established a 200-language evaluation benchmark, demonstrating that multilingual models can serve low-resource languages — but only when adequate training data exists. For languages like Zolai with minimal digital presence, even these benchmarks are aspirational.
+FLORES-200 / NLLB-scale multilingual evaluation is an **aspirational reference class** for languages with public eval sets. Tedim Zolai has no FLORES-style public split yet — see `docs/research/benchmarks.md` (PLANNED) and `docs/community/annotation-brief.md`.
 
 ### 2.2 Comparable Projects
 
-Several projects inform our approach:
+Several projects inform our approach (**VERIFIED sites / well-known corpus hosts**; academic DOIs marked only when confirmed in literature-review):
 
-- **Masakhane** (Niu et al., 2019): NMT for African languages using transfer learning. Demonstrates community-driven, open-science model.
-- **IndicNLP** (Kunchukuttan et al., 2020): Comprehensive toolkit for 22 Indian languages. Shows that language-specific toolkits outperform generic multilingual models.
-- **OPUS** (Tiedemann, 2012): Parallel corpus collection across 100+ languages. Provides methodology for building bilingual resources from public sources.
-- **Bible-based NLP** (Bergsma et al., 2007): Uses Bible translations as parallel corpora for NLP tasks. Validates our approach of leveraging existing Bible translations as primary training data.
-- **Global Voices** and **Wikimedia**: Community-driven language preservation through content creation and open licensing.
+- **Masakhane** — https://www.masakhane.io/ — community-driven African NLP / open dataset practices.
+- **AmericasNLP** — https://americasnlp.org/ — shared-task evaluation for Indigenous languages of the Americas.
+- **CARE** — https://www.gida-global.org/care — Indigenous data governance (Collective benefit, Authority, Responsibility, Ethics).
+- **Te Hiku Media** — https://tehiku.nz/ — speaker-owned language tech precedent.
+- **OPUS** — https://opus.nlpl.eu/ — parallel corpus collection methodology (Tiedemann host; cite via literature-review when needed).
+- **Bible-as-parallel** — common practice in low-resource MT; Zolai uses Bible verses only where licensing/permission allows (see CREDITS + permission-outreach).
+- **Wikimedia / Global Voices** — community content + open licensing patterns (not Tedim-scale substitutes).
 
 ### 2.3 Gap Analysis
 
-Despite these advances, no existing NLP tools exist for Zolai or closely related Chin languages. Bible-based approaches have been applied to other language families (Bergsma et al., 2007; Cettolo et al., 2012), but not systematically to Zolai. Our RAG-first approach — routing queries through dictionary → Bible → corpus → AI — is novel for this language family, offering a practical alternative to fine-tuning-dependent methods that require massive parallel corpora.
+Despite these advances, no existing public NLP toolkit exists for Zolai or closely related Chin languages. Bible-as-parallel is a known low-resource pattern elsewhere; for Tedim we apply it only under documented attribution and permission gates. Our RAG-first approach — dictionary → Bible (when permitted) → corpus → AI — is the practical path until speaker-validated gold sets exist.
 
 The gap is not merely technical. No community-driven, culturally grounded NLP toolkit exists for any Chin language. Zolai AI fills this gap by centering ZVS 2018 orthography, speaker ownership, and cultural knowledge systems.
 

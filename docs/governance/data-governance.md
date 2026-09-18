@@ -38,9 +38,22 @@ Source → Mapping → Transformation → Validation → Backup → Migration �
 
 Never delete data merely to make the schema cleaner.
 
+## CARE mapping (PROPOSED — align with GIDA)
+
+| CARE | Zolai practice |
+|------|----------------|
+| **Collective Benefit** | Literacy tools + open learning aids before extractive model dumps |
+| **Authority to Control** | Speakers/validators can reject items from public release; see annotation brief |
+| **Responsibility** | Provenance + audit trail; RESTRICTED rows until permission |
+| **Ethics** | Bible as language corpus; no surveillance use; ZVS orthography respect |
+
+Peer refs: [`../research/peer-language-communities.md`](../research/peer-language-communities.md) · https://www.gida-global.org/careprinciples
+
 ## Bible & copyrighted material
 
 Document actual source, license, and permission status before redistribution. Do not assume scraped or publicly viewable text is free for model training or commercial reuse.
+
+Inventory: [`credits-license-inventory.md`](credits-license-inventory.md) · Outreach: [`permission-outreach.md`](permission-outreach.md) · Path aliases: [`data-path-aliases.md`](data-path-aliases.md)
 
 ## Dataset release
 
@@ -48,12 +61,13 @@ Release only when: provenance complete, license clear, PII scrubbed, and CREDITS
 
 ## Open gaps (UNKNOWN / UNDER REVIEW)
 
-- Full license audit for all dictionary/corpus sources (see 90-day OKR KR2.3)
+- Full license audit for all dictionary/corpus sources — **inventory started** (KR2.3)
 - Correction/feedback tables (noted as NOT EXISTS in data SoT matrix)
 - Formal dataset release policy versioning
+- Permission letters for Bible societies + TongDot/TongSan
 
 ## Related
 
 - Data domain SoT: `docs/reports/SOURCE_OF_TRUTH_MATRIX.md`
 - Audits: `docs/audits/`
-- Credits: `zolai-datasets` repo
+- Credits: `zolai-datasets/docs/CREDITS.md` + `data/CREDITS.md`

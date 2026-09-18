@@ -11,54 +11,128 @@ import re
 from pathlib import Path
 from typing import Any
 
-# Paths
 DATA_DIR = Path("/home/peter/Documents/Projects/zolai-ai/data")
 NEW_WORDS_PATH = DATA_DIR / "raw/zomidaily/vocabulary/new_words.jsonl"
 MASTER_DICT_PATH = DATA_DIR / "dictionary/processed/dict_zo_en_master_v1.jsonl"
 OUTPUT_PATH = DATA_DIR / "dictionary/processed/dict_zomidaily_expanded.jsonl"
-
-# Morphological roots for inference
 VERB_ROOTS = {
-    "pai": "go", "mu": "see", "ne": "eat", "gen": "know", "bawl": "make",
-    "ci": "say", "om": "exist/be", "hi": "be/exist", "pia": "give",
-    "thu": "hear/listen", "hong": "come/arrive", "va": "return",
-    "khia": "depart/leave", "lut": "enter", "kik": "return/go back",
-    "dam": "live/be healthy", "khaw": "ask", "leh": "take/carry",
-    "pi": "die/pass away", "si": "die", "in": "drink", "teng": "stand",
-    "awl": "cook", "kha": "cross/pass", "kham": "be able",
-    "lai": "write/read", "ngai": "think/consider", "nghet": "believe",
-    "zong": "help", "pih": "arrive/reach", "ta": "begin/start",
+    "pai": "go",
+    "mu": "see",
+    "ne": "eat",
+    "gen": "know",
+    "bawl": "make",
+    "ci": "say",
+    "om": "exist/be",
+    "hi": "be/exist",
+    "pia": "give",
+    "thu": "hear/listen",
+    "hong": "come/arrive",
+    "va": "return",
+    "khia": "depart/leave",
+    "lut": "enter",
+    "kik": "return/go back",
+    "dam": "live/be healthy",
+    "khaw": "ask",
+    "leh": "take/carry",
+    "pi": "die/pass away",
+    "si": "die",
+    "in": "drink",
+    "teng": "stand",
+    "awl": "cook",
+    "kha": "cross/pass",
+    "kham": "be able",
+    "lai": "write/read",
+    "ngai": "think/consider",
+    "nghet": "believe",
+    "zong": "help",
+    "pih": "arrive/reach",
+    "ta": "begin/start",
 }
-
 NOUN_ROOTS = {
-    "gam": "land/earth", "van": "sky/heaven", "tui": "water",
-    "mi": "person", "numei": "woman", "khua": "village/place",
-    "sing": "tree", "ni": "day/sun", "nu": "mother", "pa": "father",
-    "tapa": "son/child", "lung": "heart/mind", "khat": "one",
-    "nun": "eye", "law": "hand", "kheng": "head", "paht": "body",
-    "kam": "word/speech", "tun": "road/path", "lai": "book/text",
-    "tang": "story/history", "lei": "ground/land", "thu": "thing/matter",
-    "hna": "work", "nasepna": "career", "biakna": "worship",
+    "gam": "land/earth",
+    "van": "sky/heaven",
+    "tui": "water",
+    "mi": "person",
+    "numei": "woman",
+    "khua": "village/place",
+    "sing": "tree",
+    "ni": "day/sun",
+    "nu": "mother",
+    "pa": "father",
+    "tapa": "son/child",
+    "lung": "heart/mind",
+    "khat": "one",
+    "nun": "eye",
+    "law": "hand",
+    "kheng": "head",
+    "paht": "body",
+    "kam": "word/speech",
+    "tun": "road/path",
+    "lai": "book/text",
+    "tang": "story/history",
+    "lei": "ground/land",
+    "thu": "thing/matter",
+    "hna": "work",
+    "nasepna": "career",
+    "biakna": "worship",
 }
-
 ADJ_ROOTS = {
-    "dam": "healthy/well", "pi": "good", "kham": "able/strong",
-    "nung": "long", "thuk": "deep", "hngal": "big/great",
-    "nung": "long/far", "than": "sharp/clever", "sang": "new",
-    "zel": "old/aged", "kha": "cold", "tui": "hot",
-    "kim": "correct/right", "mal": "wrong/bad",
+    "dam": "healthy/well",
+    "pi": "good",
+    "kham": "able/strong",
+    "nung": "long/far",
+    "thuk": "deep",
+    "hngal": "big/great",
+    "than": "sharp/clever",
+    "sang": "new",
+    "zel": "old/aged",
+    "kha": "cold",
+    "tui": "hot",
+    "kim": "correct/right",
+    "mal": "wrong/bad",
 }
-
-# Particles and function words
 PARTICLES = {
-    "hi", "hen", "un", "in", "vo", "lo", "kei", "hiam", "leh",
-    "tawh", "ah", "te", "pen", "na", "ki", "ci", "hong", "va",
-    "khia", "lut", "kik", "ta", "zo", "khin", "lai", "ding",
-    "ka", "a", "i", "ki", "kami", "nang", "amah", "mahmah",
-    "uhhi", "ahihi", "cihi", "aki", "ii", "peuhmah", "ahihman",
+    "hi",
+    "hen",
+    "un",
+    "in",
+    "vo",
+    "lo",
+    "kei",
+    "hiam",
+    "leh",
+    "tawh",
+    "ah",
+    "te",
+    "pen",
+    "na",
+    "ki",
+    "ci",
+    "hong",
+    "va",
+    "khia",
+    "lut",
+    "kik",
+    "ta",
+    "zo",
+    "khin",
+    "lai",
+    "ding",
+    "ka",
+    "a",
+    "i",
+    "kami",
+    "nang",
+    "amah",
+    "mahmah",
+    "uhhi",
+    "ahihi",
+    "cihi",
+    "aki",
+    "ii",
+    "peuhmah",
+    "ahihman",
 }
-
-# Known English translations for common modern words
 KNOWN_TRANSLATIONS = {
     "mahmah": ("very/greatly", "adverb", "intensifier"),
     "uhhi": ("[emphasis particle]", "particle", "grammar"),
@@ -135,7 +209,6 @@ KNOWN_TRANSLATIONS = {
     "moderna": ("Moderna", "proper noun", "health"),
     "astrazeneca": ("AstraZeneca", "proper noun", "health"),
     "sinovac": ("Sinovac", "proper noun", "health"),
-    # Additional common zomidaily words
     "yangon": ("Yangon", "proper noun", "place"),
     "hoihtak": ("celebration/festival", "noun", "community"),
     "uhi": ("[emphasis particle]", "particle", "grammar"),
@@ -154,22 +227,7 @@ KNOWN_TRANSLATIONS = {
     "india": ("India", "proper noun", "place"),
     "bangladesh": ("Bangladesh", "proper noun", "place"),
     "nepal": ("Nepal", "proper noun", "place"),
-    "covid": ("COVID", "noun", "health"),
     "corona": ("coronavirus", "noun", "health"),
-    "vaccine": ("vaccine", "noun", "health"),
-    "pfizer": ("Pfizer", "proper noun", "health"),
-    "astrazeneca": ("AstraZeneca", "proper noun", "health"),
-    "moderna": ("Moderna", "proper noun", "health"),
-    "sinovac": ("Sinovac", "proper noun", "health"),
-    "facebook": ("Facebook", "noun", "technology"),
-    "whatsapp": ("WhatsApp", "noun", "technology"),
-    "youtube": ("YouTube", "noun", "technology"),
-    "telegram": ("Telegram", "noun", "technology"),
-    "smartphone": ("smartphone", "noun", "technology"),
-    "computer": ("computer", "noun", "technology"),
-    "internet": ("internet", "noun", "technology"),
-    "online": ("online", "adjective", "technology"),
-    "digital": ("digital", "adjective", "technology"),
     "program": ("program", "noun", "technology"),
     "app": ("application", "noun", "technology"),
     "wifi": ("WiFi", "noun", "technology"),
@@ -193,7 +251,7 @@ KNOWN_TRANSLATIONS = {
     "student": ("student", "noun", "education"),
     "class": ("class", "noun", "education"),
     "exam": ("exam", "noun", "education"),
-    "grade": ("grade", "noun", "education"),
+    "grade": ("grade", "verb", "furniture"),
     "university": ("university", "noun", "education"),
     "college": ("college", "noun", "education"),
     "degree": ("degree", "noun", "education"),
@@ -201,43 +259,42 @@ KNOWN_TRANSLATIONS = {
     "scholarship": ("scholarship", "noun", "education"),
     "research": ("research", "noun", "education"),
     "library": ("library", "noun", "education"),
-    "book": ("book", "noun", "education"),
     "newspaper": ("newspaper", "noun", "media"),
     "magazine": ("magazine", "noun", "media"),
     "journal": ("journal", "noun", "media"),
     "article": ("article", "noun", "media"),
     "report": ("report", "noun", "media"),
-    "document": ("document", "noun", "media"),
+    "document": ("document", "verb", "furniture"),
     "letter": ("letter", "noun", "communication"),
     "email": ("email", "noun", "communication"),
     "message": ("message", "noun", "communication"),
-    "call": ("call", "verb", "communication"),
+    "call": ("call", "verb", "furniture"),
     "phone": ("phone", "noun", "communication"),
     "radio": ("radio", "noun", "communication"),
     "television": ("television", "noun", "communication"),
-    "station": ("station", "noun", "transport"),
+    "station": ("station", "verb", "furniture"),
     "bus": ("bus", "noun", "transport"),
     "car": ("car", "noun", "transport"),
-    "train": ("train", "noun", "transport"),
+    "train": ("train", "verb", "furniture"),
     "airport": ("airport", "noun", "transport"),
     "plane": ("plane", "noun", "transport"),
     "boat": ("boat", "noun", "transport"),
     "road": ("road", "noun", "transport"),
     "bridge": ("bridge", "noun", "transport"),
-    "house": ("house", "noun", "housing"),
+    "house": ("house", "verb", "furniture"),
     "building": ("building", "noun", "housing"),
     "apartment": ("apartment", "noun", "housing"),
     "hotel": ("hotel", "noun", "housing"),
     "restaurant": ("restaurant", "noun", "food"),
     "cafe": ("cafe", "noun", "food"),
     "shop": ("shop", "noun", "economy"),
-    "store": ("store", "noun", "economy"),
+    "store": ("store", "verb", "furniture"),
     "market": ("market", "noun", "economy"),
     "price": ("price", "noun", "economy"),
     "cost": ("cost", "noun", "economy"),
     "money": ("money", "noun", "economy"),
     "bank": ("bank", "noun", "economy"),
-    "account": ("account", "noun", "economy"),
+    "account": ("account", "noun", "furniture"),
     "salary": ("salary", "noun", "economy"),
     "tax": ("tax", "noun", "economy"),
     "income": ("income", "noun", "economy"),
@@ -289,7 +346,7 @@ KNOWN_TRANSLATIONS = {
     "climate": ("climate", "noun", "nature"),
     "temperature": ("temperature", "noun", "nature"),
     "season": ("season", "noun", "nature"),
-    "spring": ("spring", "noun", "nature"),
+    "spring": ("spring", "verb", "furniture"),
     "summer": ("summer", "noun", "nature"),
     "autumn": ("autumn", "noun", "nature"),
     "winter": ("winter", "noun", "nature"),
@@ -302,7 +359,7 @@ KNOWN_TRANSLATIONS = {
     "fever": ("fever", "noun", "health"),
     "pain": ("pain", "noun", "health"),
     "injury": ("injury", "noun", "health"),
-    "wound": ("wound", "noun", "health"),
+    "wound": ("wound", "verb", "furniture"),
     "blood": ("blood", "noun", "health"),
     "heart": ("heart", "noun", "health"),
     "lung": ("lung", "noun", "health"),
@@ -313,18 +370,18 @@ KNOWN_TRANSLATIONS = {
     "mouth": ("mouth", "noun", "health"),
     "tooth": ("tooth", "noun", "health"),
     "tongue": ("tongue", "noun", "health"),
-    "skin": ("skin", "noun", "health"),
+    "skin": ("skin", "verb", "furniture"),
     "bone": ("bone", "noun", "health"),
     "muscle": ("muscle", "noun", "health"),
     "joint": ("joint", "noun", "health"),
     "finger": ("finger", "noun", "health"),
     "toe": ("toe", "noun", "health"),
     "leg": ("leg", "noun", "health"),
-    "arm": ("arm", "noun", "health"),
+    "arm": ("arm", "verb", "furniture"),
     "head": ("head", "noun", "health"),
     "face": ("face", "noun", "health"),
     "neck": ("neck", "noun", "health"),
-    "back": ("back", "noun", "health"),
+    "back": ("back", "verb", "furniture"),
     "stomach": ("stomach", "noun", "health"),
     "waist": ("waist", "noun", "health"),
     "hip": ("hip", "noun", "health"),
@@ -343,8 +400,8 @@ KNOWN_TRANSLATIONS = {
     "belt": ("belt", "noun", "clothing"),
     "bag": ("bag", "noun", "clothing"),
     "wallet": ("wallet", "noun", "clothing"),
-    "watch": ("watch", "noun", "accessory"),
-    "ring": ("ring", "noun", "accessory"),
+    "watch": ("watch", "verb", "furniture"),
+    "ring": ("ring", "verb", "furniture"),
     "necklace": ("necklace", "noun", "accessory"),
     "bracelet": ("bracelet", "noun", "accessory"),
     "glasses": ("glasses", "noun", "accessory"),
@@ -366,17 +423,17 @@ KNOWN_TRANSLATIONS = {
     "washing": ("washing", "noun", "tool"),
     "machine": ("machine", "noun", "tool"),
     "hammer": ("hammer", "noun", "tool"),
-    "saw": ("saw", "noun", "tool"),
+    "saw": ("saw", "verb", "furniture"),
     "drill": ("drill", "noun", "tool"),
     "screwdriver": ("screwdriver", "noun", "tool"),
     "plank": ("plank", "noun", "tool"),
     "nail": ("nail", "noun", "tool"),
     "screw": ("screw", "noun", "tool"),
     "rope": ("rope", "noun", "tool"),
-    "wire": ("wire", "noun", "tool"),
-    "cable": ("cable", "noun", "tool"),
+    "wire": ("wire", "noun", "furniture"),
+    "cable": ("cable", "noun", "furniture"),
     "pipe": ("pipe", "noun", "tool"),
-    "tap": ("tap", "noun", "tool"),
+    "tap": ("tap", "verb", "furniture"),
     "drain": ("drain", "noun", "tool"),
     "toilet": ("toilet", "noun", "facility"),
     "bathroom": ("bathroom", "noun", "facility"),
@@ -402,7 +459,6 @@ KNOWN_TRANSLATIONS = {
     "garage": ("garage", "noun", "facility"),
     "basement": ("basement", "noun", "facility"),
     "attic": ("attic", "noun", "facility"),
-    "attic": ("attic", "noun", "facility"),
     "cabinet": ("cabinet", "noun", "furniture"),
     "chair": ("chair", "noun", "furniture"),
     "table": ("table", "noun", "furniture"),
@@ -413,18 +469,16 @@ KNOWN_TRANSLATIONS = {
     "shelf": ("shelf", "noun", "furniture"),
     "drawer": ("drawer", "noun", "furniture"),
     "lamp": ("lamp", "noun", "furniture"),
-    "light": ("light", "noun", "furniture"),
+    "light": ("light", "verb", "furniture"),
     "switch": ("switch", "noun", "furniture"),
     "socket": ("socket", "noun", "furniture"),
     "plug": ("plug", "noun", "furniture"),
-    "wire": ("wire", "noun", "furniture"),
-    "cable": ("cable", "noun", "furniture"),
     "remote": ("remote", "noun", "furniture"),
-    "control": ("control", "noun", "furniture"),
+    "control": ("control", "verb", "furniture"),
     "button": ("button", "noun", "furniture"),
     "screen": ("screen", "noun", "furniture"),
-    "display": ("display", "noun", "furniture"),
-    "monitor": ("monitor", "noun", "furniture"),
+    "display": ("display", "verb", "furniture"),
+    "monitor": ("monitor", "verb", "furniture"),
     "keyboard": ("keyboard", "noun", "furniture"),
     "mouse": ("mouse", "noun", "furniture"),
     "printer": ("printer", "noun", "furniture"),
@@ -439,7 +493,6 @@ KNOWN_TRANSLATIONS = {
     "signal": ("signal", "noun", "furniture"),
     "password": ("password", "noun", "furniture"),
     "username": ("username", "noun", "furniture"),
-    "account": ("account", "noun", "furniture"),
     "profile": ("profile", "noun", "furniture"),
     "post": ("post", "noun", "furniture"),
     "comment": ("comment", "noun", "furniture"),
@@ -477,7 +530,6 @@ KNOWN_TRANSLATIONS = {
     "drag": ("drag", "verb", "furniture"),
     "drop": ("drop", "verb", "furniture"),
     "click": ("click", "verb", "furniture"),
-    "tap": ("tap", "verb", "furniture"),
     "swipe": ("swipe", "verb", "furniture"),
     "scroll": ("scroll", "verb", "furniture"),
     "zoom": ("zoom", "verb", "furniture"),
@@ -487,7 +539,6 @@ KNOWN_TRANSLATIONS = {
     "spin": ("spin", "verb", "furniture"),
     "shake": ("shake", "verb", "furniture"),
     "vibrate": ("vibrate", "verb", "furniture"),
-    "ring": ("ring", "verb", "furniture"),
     "buzz": ("buzz", "verb", "furniture"),
     "beep": ("beep", "verb", "furniture"),
     "flash": ("flash", "verb", "furniture"),
@@ -504,7 +555,6 @@ KNOWN_TRANSLATIONS = {
     "raise": ("raise", "verb", "furniture"),
     "lower": ("lower", "verb", "furniture"),
     "lift": ("lift", "verb", "furniture"),
-    "drop": ("drop", "verb", "furniture"),
     "push": ("push", "verb", "furniture"),
     "pull": ("pull", "verb", "furniture"),
     "press": ("press", "verb", "furniture"),
@@ -530,7 +580,6 @@ KNOWN_TRANSLATIONS = {
     "unlock": ("unlock", "verb", "furniture"),
     "seal": ("seal", "verb", "furniture"),
     "unseal": ("unseal", "verb", "furniture"),
-    "close": ("close", "verb", "furniture"),
     "shut": ("shut", "verb", "furniture"),
     "block": ("block", "verb", "furniture"),
     "unblock": ("unblock", "verb", "furniture"),
@@ -540,8 +589,6 @@ KNOWN_TRANSLATIONS = {
     "add": ("add", "verb", "furniture"),
     "insert": ("insert", "verb", "furniture"),
     "extract": ("extract", "verb", "furniture"),
-    "pull": ("pull", "verb", "furniture"),
-    "push": ("push", "verb", "furniture"),
     "shove": ("shove", "verb", "furniture"),
     "thrust": ("thrust", "verb", "furniture"),
     "stab": ("stab", "verb", "furniture"),
@@ -564,16 +611,13 @@ KNOWN_TRANSLATIONS = {
     "skip": ("skip", "verb", "furniture"),
     "leap": ("leap", "verb", "furniture"),
     "bound": ("bound", "verb", "furniture"),
-    "spring": ("spring", "verb", "furniture"),
     "bounce": ("bounce", "verb", "furniture"),
     "rebound": ("rebound", "verb", "furniture"),
     "reflect": ("reflect", "verb", "furniture"),
     "echo": ("echo", "verb", "furniture"),
     "resound": ("resound", "verb", "furniture"),
     "reverberate": ("reverberate", "verb", "furniture"),
-    "vibrate": ("vibrate", "verb", "furniture"),
     "tremble": ("tremble", "verb", "furniture"),
-    "shake": ("shake", "verb", "furniture"),
     "quiver": ("quiver", "verb", "furniture"),
     "shiver": ("shiver", "verb", "furniture"),
     "shudder": ("shudder", "verb", "furniture"),
@@ -636,7 +680,6 @@ KNOWN_TRANSLATIONS = {
     "appear": ("appear", "verb", "furniture"),
     "disappear": ("disappear", "verb", "furniture"),
     "vanish": ("vanish", "verb", "furniture"),
-    "fade": ("fade", "verb", "furniture"),
     "wither": ("wither", "verb", "furniture"),
     "shrivel": ("shrivel", "verb", "furniture"),
     "wilt": ("wilt", "verb", "furniture"),
@@ -646,13 +689,10 @@ KNOWN_TRANSLATIONS = {
     "swing": ("swing", "verb", "furniture"),
     "sway": ("sway", "verb", "furniture"),
     "rock": ("rock", "verb", "furniture"),
-    "roll": ("roll", "verb", "furniture"),
     "tumble": ("tumble", "verb", "furniture"),
     "fall": ("fall", "verb", "furniture"),
-    "drop": ("drop", "verb", "furniture"),
     "plummet": ("plummet", "verb", "furniture"),
     "plunge": ("plunge", "verb", "furniture"),
-    "dive": ("dive", "verb", "furniture"),
     "crash": ("crash", "verb", "furniture"),
     "smash": ("smash", "verb", "furniture"),
     "shatter": ("shatter", "verb", "furniture"),
@@ -662,7 +702,6 @@ KNOWN_TRANSLATIONS = {
     "split": ("split", "verb", "furniture"),
     "tear": ("tear", "verb", "furniture"),
     "rip": ("rip", "verb", "furniture"),
-    "cut": ("cut", "verb", "furniture"),
     "slice": ("slice", "verb", "furniture"),
     "chop": ("chop", "verb", "furniture"),
     "hack": ("hack", "verb", "furniture"),
@@ -687,14 +726,12 @@ KNOWN_TRANSLATIONS = {
     "harm": ("harm", "verb", "furniture"),
     "hurt": ("hurt", "verb", "furniture"),
     "injure": ("injure", "verb", "furniture"),
-    "wound": ("wound", "verb", "furniture"),
     "kill": ("kill", "verb", "furniture"),
     "murder": ("murder", "verb", "furniture"),
     "assassinate": ("assassinate", "verb", "furniture"),
     "execute": ("execute", "verb", "furniture"),
     "slaughter": ("slaughter", "verb", "furniture"),
     "butcher": ("butcher", "verb", "furniture"),
-    "skin": ("skin", "verb", "furniture"),
     "flay": ("flay", "verb", "furniture"),
     "peel": ("peel", "verb", "furniture"),
     "strip": ("strip", "verb", "furniture"),
@@ -709,7 +746,6 @@ KNOWN_TRANSLATIONS = {
     "search": ("search", "verb", "furniture"),
     "look": ("look", "verb", "furniture"),
     "see": ("see", "verb", "furniture"),
-    "watch": ("watch", "verb", "furniture"),
     "observe": ("observe", "verb", "furniture"),
     "notice": ("notice", "verb", "furniture"),
     "note": ("note", "verb", "furniture"),
@@ -717,7 +753,6 @@ KNOWN_TRANSLATIONS = {
     "tag": ("tag", "verb", "furniture"),
     "label": ("label", "verb", "furniture"),
     "name": ("name", "verb", "furniture"),
-    "call": ("call", "verb", "furniture"),
     "address": ("address", "verb", "furniture"),
     "greet": ("greet", "verb", "furniture"),
     "welcome": ("welcome", "verb", "furniture"),
@@ -737,8 +772,6 @@ KNOWN_TRANSLATIONS = {
     "defend": ("defend", "verb", "furniture"),
     "protect": ("protect", "verb", "furniture"),
     "guard": ("guard", "verb", "furniture"),
-    "watch": ("watch", "verb", "furniture"),
-    "monitor": ("monitor", "verb", "furniture"),
     "survey": ("survey", "verb", "furniture"),
     "inspect": ("inspect", "verb", "furniture"),
     "examine": ("examine", "verb", "furniture"),
@@ -748,21 +781,17 @@ KNOWN_TRANSLATIONS = {
     "teach": ("teach", "verb", "furniture"),
     "instruct": ("instruct", "verb", "furniture"),
     "educate": ("educate", "verb", "furniture"),
-    "train": ("train", "verb", "furniture"),
     "coach": ("coach", "verb", "furniture"),
     "mentor": ("mentor", "verb", "furniture"),
     "guide": ("guide", "verb", "furniture"),
     "lead": ("lead", "verb", "furniture"),
     "direct": ("direct", "verb", "furniture"),
     "manage": ("manage", "verb", "furniture"),
-    "control": ("control", "verb", "furniture"),
-    "run": ("run", "verb", "furniture"),
     "operate": ("operate", "verb", "furniture"),
     "handle": ("handle", "verb", "furniture"),
     "treat": ("treat", "verb", "furniture"),
     "deal": ("deal", "verb", "furniture"),
     "cope": ("cope", "verb", "furniture"),
-    "manage": ("manage", "verb", "furniture"),
     "survive": ("survive", "verb", "furniture"),
     "endure": ("endure", "verb", "furniture"),
     "last": ("last", "verb", "furniture"),
@@ -774,13 +803,10 @@ KNOWN_TRANSLATIONS = {
     "retain": ("retain", "verb", "furniture"),
     "preserve": ("preserve", "verb", "furniture"),
     "conserve": ("conserve", "verb", "furniture"),
-    "save": ("save", "verb", "furniture"),
-    "store": ("store", "verb", "furniture"),
     "stock": ("stock", "verb", "furniture"),
     "hoard": ("hoard", "verb", "furniture"),
     "collect": ("collect", "verb", "furniture"),
     "gather": ("gather", "verb", "furniture"),
-    "assemble": ("assemble", "verb", "furniture"),
     "accumulate": ("accumulate", "verb", "furniture"),
     "amass": ("amass", "verb", "furniture"),
     "heap": ("heap", "verb", "furniture"),
@@ -794,7 +820,6 @@ KNOWN_TRANSLATIONS = {
     "group": ("group", "verb", "furniture"),
     "separate": ("separate", "verb", "furniture"),
     "divide": ("divide", "verb", "furniture"),
-    "split": ("split", "verb", "furniture"),
     "part": ("part", "verb", "furniture"),
     "join": ("join", "verb", "furniture"),
     "unite": ("unite", "verb", "furniture"),
@@ -810,11 +835,6 @@ KNOWN_TRANSLATIONS = {
     "detach": ("detach", "verb", "furniture"),
     "disconnect": ("disconnect", "verb", "furniture"),
     "sever": ("sever", "verb", "furniture"),
-    "cut": ("cut", "verb", "furniture"),
-    "break": ("break", "verb", "furniture"),
-    "snap": ("snap", "verb", "furniture"),
-    "tear": ("tear", "verb", "furniture"),
-    "rip": ("rip", "verb", "furniture"),
     "shred": ("shred", "verb", "furniture"),
     "fragment": ("fragment", "verb", "furniture"),
     "scatter": ("scatter", "verb", "furniture"),
@@ -831,10 +851,8 @@ KNOWN_TRANSLATIONS = {
     "deny": ("deny", "verb", "furniture"),
     "admit": ("admit", "verb", "furniture"),
     "confess": ("confess", "verb", "furniture"),
-    "reveal": ("reveal", "verb", "furniture"),
     "disclose": ("disclose", "verb", "furniture"),
     "divulge": ("divulge", "verb", "furniture"),
-    "share": ("share", "verb", "furniture"),
     "tell": ("tell", "verb", "furniture"),
     "inform": ("inform", "verb", "furniture"),
     "notify": ("notify", "verb", "furniture"),
@@ -853,13 +871,9 @@ KNOWN_TRANSLATIONS = {
     "provide": ("provide", "verb", "furniture"),
     "furnish": ("furnish", "verb", "furniture"),
     "equip": ("equip", "verb", "furniture"),
-    "arm": ("arm", "verb", "furniture"),
     "prepare": ("prepare", "verb", "furniture"),
-    "arrange": ("arrange", "verb", "furniture"),
-    "organize": ("organize", "verb", "furniture"),
     "plan": ("plan", "verb", "furniture"),
     "design": ("design", "verb", "furniture"),
-    "create": ("create", "verb", "furniture"),
     "invent": ("invent", "verb", "furniture"),
     "innovate": ("innovate", "verb", "furniture"),
     "develop": ("develop", "verb", "furniture"),
@@ -878,28 +892,17 @@ KNOWN_TRANSLATIONS = {
     "stitch": ("stitch", "verb", "furniture"),
     "knit": ("knit", "verb", "furniture"),
     "weave": ("weave", "verb", "furniture"),
-    "spin": ("spin", "verb", "furniture"),
     "twist": ("twist", "verb", "furniture"),
     "braid": ("braid", "verb", "furniture"),
     "plait": ("plait", "verb", "furniture"),
-    "tie": ("tie", "verb", "furniture"),
     "bind": ("bind", "verb", "furniture"),
-    "fasten": ("fasten", "verb", "furniture"),
-    "secure": ("secure", "verb", "furniture"),
-    "lock": ("lock", "verb", "furniture"),
-    "seal": ("seal", "verb", "furniture"),
-    "close": ("close", "verb", "furniture"),
-    "shut": ("shut", "verb", "furniture"),
     "bar": ("bar", "verb", "furniture"),
-    "block": ("block", "verb", "furniture"),
-    "obstruct": ("obstruct", "verb", "furniture"),
     "hinder": ("hinder", "verb", "furniture"),
     "impede": ("impede", "verb", "furniture"),
     "delay": ("delay", "verb", "furniture"),
     "postpone": ("postpone", "verb", "furniture"),
     "defer": ("defer", "verb", "furniture"),
     "wait": ("wait", "verb", "furniture"),
-    "pause": ("pause", "verb", "furniture"),
     "rest": ("rest", "verb", "furniture"),
     "relax": ("relax", "verb", "furniture"),
     "unwind": ("unwind", "verb", "furniture"),
@@ -927,20 +930,16 @@ KNOWN_TRANSLATIONS = {
     "atone": ("atone", "verb", "furniture"),
     "expiate": ("expiate", "verb", "furniture"),
     "redeem": ("redeem", "verb", "furniture"),
-    "save": ("save", "verb", "furniture"),
     "rescue": ("rescue", "verb", "furniture"),
     "deliver": ("deliver", "verb", "furniture"),
     "free": ("free", "verb", "furniture"),
     "liberate": ("liberate", "verb", "furniture"),
-    "release": ("release", "verb", "furniture"),
     "discharge": ("discharge", "verb", "furniture"),
     "dismiss": ("dismiss", "verb", "furniture"),
     "fire": ("fire", "verb", "furniture"),
     "sack": ("sack", "verb", "furniture"),
     "let": ("let", "verb", "furniture"),
-    "go": ("go", "verb", "furniture"),
     "leave": ("leave", "verb", "furniture"),
-    "depart": ("depart", "verb", "furniture"),
     "exit": ("exit", "verb", "furniture"),
     "quit": ("quit", "verb", "furniture"),
     "resign": ("resign", "verb", "furniture"),
@@ -957,13 +956,11 @@ KNOWN_TRANSLATIONS = {
     "neglect": ("neglect", "verb", "furniture"),
     "disregard": ("disregard", "verb", "furniture"),
     "overlook": ("overlook", "verb", "furniture"),
-    "miss": ("miss", "verb", "furniture"),
     "forget": ("forget", "verb", "furniture"),
     "remember": ("remember", "verb", "furniture"),
     "recall": ("recall", "verb", "furniture"),
     "recollect": ("recollect", "verb", "furniture"),
     "remind": ("remind", "verb", "furniture"),
-    "suggest": ("suggest", "verb", "furniture"),
     "hint": ("hint", "verb", "furniture"),
     "imply": ("imply", "verb", "furniture"),
     "mean": ("mean", "verb", "furniture"),
@@ -971,7 +968,6 @@ KNOWN_TRANSLATIONS = {
     "indicate": ("indicate", "verb", "furniture"),
     "show": ("show", "verb", "furniture"),
     "demonstrate": ("demonstrate", "verb", "furniture"),
-    "display": ("display", "verb", "furniture"),
     "exhibit": ("exhibit", "verb", "furniture"),
     "present": ("present", "verb", "furniture"),
     "introduce": ("introduce", "verb", "furniture"),
@@ -980,7 +976,6 @@ KNOWN_TRANSLATIONS = {
     "state": ("state", "verb", "furniture"),
     "assert": ("assert", "verb", "furniture"),
     "claim": ("claim", "verb", "furniture"),
-    "maintain": ("maintain", "verb", "furniture"),
     "argue": ("argue", "verb", "furniture"),
     "debate": ("debate", "verb", "furniture"),
     "discuss": ("discuss", "verb", "furniture"),
@@ -988,7 +983,6 @@ KNOWN_TRANSLATIONS = {
     "talk": ("talk", "verb", "furniture"),
     "speak": ("speak", "verb", "furniture"),
     "say": ("say", "verb", "furniture"),
-    "tell": ("tell", "verb", "furniture"),
     "mention": ("mention", "verb", "furniture"),
     "refer": ("refer", "verb", "furniture"),
     "cite": ("cite", "verb", "furniture"),
@@ -1000,17 +994,11 @@ KNOWN_TRANSLATIONS = {
     "clarify": ("clarify", "verb", "furniture"),
     "elucidate": ("elucidate", "verb", "furniture"),
     "illuminate": ("illuminate", "verb", "furniture"),
-    "light": ("light", "verb", "furniture"),
-    "brighten": ("brighten", "verb", "furniture"),
-    "shine": ("shine", "verb", "furniture"),
-    "glow": ("glow", "verb", "furniture"),
     "gleam": ("gleam", "verb", "furniture"),
     "glint": ("glint", "verb", "furniture"),
     "sparkle": ("sparkle", "verb", "furniture"),
     "twinkle": ("twinkle", "verb", "furniture"),
-    "flash": ("flash", "verb", "furniture"),
     "flicker": ("flicker", "verb", "furniture"),
-    "blink": ("blink", "verb", "furniture"),
     "wink": ("wink", "verb", "furniture"),
     "squint": ("squint", "verb", "furniture"),
     "stare": ("stare", "verb", "furniture"),
@@ -1020,36 +1008,22 @@ KNOWN_TRANSLATIONS = {
     "peer": ("peer", "verb", "furniture"),
     "glimpse": ("glimpse", "verb", "furniture"),
     "spot": ("spot", "verb", "furniture"),
-    "notice": ("notice", "verb", "furniture"),
     "detect": ("detect", "verb", "furniture"),
-    "discover": ("discover", "verb", "furniture"),
-    "find": ("find", "verb", "furniture"),
     "locate": ("locate", "verb", "furniture"),
     "seek": ("seek", "verb", "furniture"),
-    "search": ("search", "verb", "furniture"),
     "hunt": ("hunt", "verb", "furniture"),
     "chase": ("chase", "verb", "furniture"),
     "pursue": ("pursue", "verb", "furniture"),
-    "follow": ("follow", "verb", "furniture"),
     "track": ("track", "verb", "furniture"),
     "trail": ("trail", "verb", "furniture"),
     "shadow": ("shadow", "verb", "furniture"),
     "stalk": ("stalk", "verb", "furniture"),
-    "monitor": ("monitor", "verb", "furniture"),
-    "observe": ("observe", "verb", "furniture"),
-    "watch": ("watch", "verb", "furniture"),
-    "guard": ("guard", "verb", "furniture"),
-    "protect": ("protect", "verb", "furniture"),
-    "defend": ("defend", "verb", "furniture"),
     "shield": ("shield", "verb", "furniture"),
     "shelter": ("shelter", "verb", "furniture"),
     "harbor": ("harbor", "verb", "furniture"),
-    "house": ("house", "verb", "furniture"),
     "accommodate": ("accommodate", "verb", "furniture"),
     "lodge": ("lodge", "verb", "furniture"),
-    "board": ("board", "verb", "furniture"),
     "quarter": ("quarter", "verb", "furniture"),
-    "station": ("station", "verb", "furniture"),
     "position": ("position", "verb", "furniture"),
     "place": ("place", "verb", "furniture"),
     "set": ("set", "verb", "furniture"),
@@ -1058,54 +1032,32 @@ KNOWN_TRANSLATIONS = {
     "establish": ("establish", "verb", "furniture"),
     "found": ("found", "verb", "furniture"),
     "institute": ("institute", "verb", "furniture"),
-    "organize": ("organize", "verb", "furniture"),
-    "arrange": ("arrange", "verb", "furniture"),
     "order": ("order", "verb", "furniture"),
     "line": ("line", "verb", "furniture"),
     "rank": ("rank", "verb", "furniture"),
     "rate": ("rate", "verb", "furniture"),
-    "grade": ("grade", "verb", "furniture"),
     "score": ("score", "verb", "furniture"),
-    "mark": ("mark", "verb", "furniture"),
     "check": ("check", "verb", "furniture"),
     "verify": ("verify", "verb", "furniture"),
     "confirm": ("confirm", "verb", "furniture"),
     "validate": ("validate", "verb", "furniture"),
     "prove": ("prove", "verb", "furniture"),
-    "demonstrate": ("demonstrate", "verb", "furniture"),
-    "show": ("show", "verb", "furniture"),
-    "exhibit": ("exhibit", "verb", "furniture"),
-    "display": ("display", "verb", "furniture"),
-    "reveal": ("reveal", "verb", "furniture"),
-    "uncover": ("uncover", "verb", "furniture"),
-    "expose": ("expose", "verb", "furniture"),
-    "disclose": ("disclose", "verb", "furniture"),
-    "divulge": ("divulge", "verb", "furniture"),
-    "confess": ("confess", "verb", "furniture"),
-    "admit": ("admit", "verb", "furniture"),
     "acknowledge": ("acknowledge", "verb", "furniture"),
     "recognize": ("recognize", "verb", "furniture"),
     "identify": ("identify", "verb", "furniture"),
-    "name": ("name", "verb", "furniture"),
-    "call": ("call", "verb", "furniture"),
     "term": ("term", "verb", "furniture"),
-    "label": ("label", "verb", "furniture"),
-    "tag": ("tag", "verb", "furniture"),
     "brand": ("brand", "verb", "furniture"),
     "stamp": ("stamp", "verb", "furniture"),
     "imprint": ("imprint", "verb", "furniture"),
     "engrave": ("engrave", "verb", "furniture"),
-    "carve": ("carve", "verb", "furniture"),
     "etch": ("etch", "verb", "furniture"),
     "inscribe": ("inscribe", "verb", "furniture"),
     "write": ("write", "verb", "furniture"),
     "record": ("record", "verb", "furniture"),
-    "document": ("document", "verb", "furniture"),
     "log": ("log", "verb", "furniture"),
     "register": ("register", "verb", "furniture"),
     "enroll": ("enroll", "verb", "furniture"),
     "sign": ("sign", "verb", "furniture"),
-    "subscribe": ("subscribe", "verb", "furniture"),
     "contract": ("contract", "verb", "furniture"),
     "agree": ("agree", "verb", "furniture"),
     "consent": ("consent", "verb", "furniture"),
@@ -1113,7 +1065,6 @@ KNOWN_TRANSLATIONS = {
     "authorize": ("authorize", "verb", "furniture"),
     "permit": ("permit", "verb", "furniture"),
     "allow": ("allow", "verb", "furniture"),
-    "let": ("let", "verb", "furniture"),
     "enable": ("enable", "verb", "furniture"),
     "empower": ("empower", "verb", "furniture"),
     "license": ("license", "verb", "furniture"),
@@ -1122,7 +1073,6 @@ KNOWN_TRANSLATIONS = {
     "endorse": ("endorse", "verb", "furniture"),
     "sponsor": ("sponsor", "verb", "furniture"),
     "support": ("support", "verb", "furniture"),
-    "back": ("back", "verb", "furniture"),
     "finance": ("finance", "verb", "furniture"),
     "fund": ("fund", "verb", "furniture"),
     "subsidize": ("subsidize", "verb", "furniture"),
@@ -1138,8 +1088,6 @@ KNOWN_TRANSLATIONS = {
     "perform": ("perform", "verb", "furniture"),
     "act": ("act", "verb", "furniture"),
     "do": ("do", "verb", "furniture"),
-    "make": ("make", "verb", "furniture"),
-    "create": ("create", "verb", "furniture"),
     "produce": ("produce", "verb", "furniture"),
     "generate": ("generate", "verb", "furniture"),
     "yield": ("yield", "verb", "furniture"),
@@ -1148,7 +1096,6 @@ KNOWN_TRANSLATIONS = {
     "transport": ("transport", "verb", "furniture"),
     "convey": ("convey", "verb", "furniture"),
     "transfer": ("transfer", "verb", "furniture"),
-    "move": ("move", "verb", "furniture"),
     "shift": ("shift", "verb", "furniture"),
     "relocate": ("relocate", "verb", "furniture"),
     "displace": ("displace", "verb", "furniture"),
@@ -1162,9 +1109,6 @@ KNOWN_TRANSLATIONS = {
     "acquire": ("acquire", "verb", "furniture"),
     "obtain": ("obtain", "verb", "furniture"),
     "get": ("get", "verb", "furniture"),
-    "receive": ("receive", "verb", "furniture"),
-    "collect": ("collect", "verb", "furniture"),
-    "gather": ("gather", "verb", "furniture"),
     "harvest": ("harvest", "verb", "furniture"),
     "reap": ("reap", "verb", "furniture"),
     "pick": ("pick", "verb", "furniture"),
@@ -1176,34 +1120,16 @@ KNOWN_TRANSLATIONS = {
     "appoint": ("appoint", "verb", "furniture"),
     "assign": ("assign", "verb", "furniture"),
     "allocate": ("allocate", "verb", "furniture"),
-    "distribute": ("distribute", "verb", "furniture"),
-    "share": ("share", "verb", "furniture"),
-    "divide": ("divide", "verb", "furniture"),
-    "split": ("split", "verb", "furniture"),
     "partition": ("partition", "verb", "furniture"),
     "segment": ("segment", "verb", "furniture"),
     "section": ("section", "verb", "furniture"),
-    "cut": ("cut", "verb", "furniture"),
-    "slice": ("slice", "verb", "furniture"),
-    "carve": ("carve", "verb", "furniture"),
-    "chop": ("chop", "verb", "furniture"),
-    "hack": ("hack", "verb", "furniture"),
-    "hew": ("hew", "verb", "furniture"),
-    "saw": ("saw", "verb", "furniture"),
-    "cut": ("cut", "verb", "furniture"),
-    "slice": ("slice", "verb", "furniture"),
-    "carve": ("carve", "verb", "furniture"),
-    "chop": ("chop", "verb", "furniture"),
-    "hack": ("hack", "verb", "furniture"),
-    "hew": ("hew", "verb", "furniture"),
-    "saw": ("saw", "verb", "furniture"),
 }
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
     """Load JSONL file."""
     data = []
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -1231,14 +1157,13 @@ def infer_pos(word: str) -> str:
         return "verb"
     if word.endswith(("am", "ah", "aw")):
         return "adverb"
-    if re.search(r"(ci|ngai|leh|tua)", word):
+    if re.search("(ci|ngai|leh|tua)", word):
         return "conjunction"
-    # Default heuristic
     if word in VERB_ROOTS:
         return "verb"
     if word in NOUN_ROOTS:
         return "noun"
-    return "noun"  # default
+    return "noun"
 
 
 def infer_category(word: str) -> str:
@@ -1256,113 +1181,133 @@ def infer_category(word: str) -> str:
 
 def morphological_inference(word: str, freq: int) -> dict[str, Any]:
     """Infer meaning through morphological analysis."""
-    # Check known translations first
     if word in KNOWN_TRANSLATIONS:
         en, pos, cat = KNOWN_TRANSLATIONS[word]
-        return {"zo": word, "en": en, "freq": freq, "source": "zomidaily",
-                "pos": pos, "category": cat}
-
-    # Check verb roots
+        return {
+            "zo": word,
+            "en": en,
+            "freq": freq,
+            "source": "zomidaily",
+            "pos": pos,
+            "category": cat,
+        }
     for root, meaning in VERB_ROOTS.items():
         if word.startswith(root) and len(word) > len(root):
-            suffix = word[len(root):]
+            suffix = word[len(root) :]
             if suffix in ("hi", "ta", "zo", "ding", "in", "hi"):
-                return {"zo": word, "en": f"{meaning} (inflected)", "freq": freq,
-                        "source": "zomidaily", "pos": "verb", "category": "general"}
-            return {"zo": word, "en": f"{meaning}-related", "freq": freq,
-                    "source": "zomidaily", "pos": "verb", "category": "general"}
-
-    # Check noun roots
+                return {
+                    "zo": word,
+                    "en": f"{meaning} (inflected)",
+                    "freq": freq,
+                    "source": "zomidaily",
+                    "pos": "verb",
+                    "category": "general",
+                }
+            return {
+                "zo": word,
+                "en": f"{meaning}-related",
+                "freq": freq,
+                "source": "zomidaily",
+                "pos": "verb",
+                "category": "general",
+            }
     for root, meaning in NOUN_ROOTS.items():
         if word.startswith(root) and len(word) > len(root):
-            suffix = word[len(root):]
+            suffix = word[len(root) :]
             if suffix in ("na", "tak", "ziau", "pih"):
-                return {"zo": word, "en": f"{meaning} (derived)", "freq": freq,
-                        "source": "zomidaily", "pos": "noun", "category": "general"}
-
-    # Check adjective roots
+                return {
+                    "zo": word,
+                    "en": f"{meaning} (derived)",
+                    "freq": freq,
+                    "source": "zomidaily",
+                    "pos": "noun",
+                    "category": "general",
+                }
     for root, meaning in ADJ_ROOTS.items():
         if word.startswith(root) and len(word) > len(root):
-            return {"zo": word, "en": f"{meaning} (adjective)", "freq": freq,
-                    "source": "zomidaily", "pos": "adjective", "category": "general"}
-
-    # Particle detection
+            return {
+                "zo": word,
+                "en": f"{meaning} (adjective)",
+                "freq": freq,
+                "source": "zomidaily",
+                "pos": "adjective",
+                "category": "general",
+            }
     if word in PARTICLES:
-        return {"zo": word, "en": "[function word]", "freq": freq,
-                "source": "zomidaily", "pos": "particle", "category": "grammar"}
-
-    # Loan word detection (common patterns)
-    if re.search(r"(tion|ment|ness|ful|less|able|ous|ive)", word):
-        return {"zo": word, "en": f"[loan word: {word}]", "freq": freq,
-                "source": "zomidaily", "pos": "noun", "category": "loanword"}
-
-    # Default: mark as needing review
+        return {
+            "zo": word,
+            "en": "[function word]",
+            "freq": freq,
+            "source": "zomidaily",
+            "pos": "particle",
+            "category": "grammar",
+        }
+    if re.search("(tion|ment|ness|ful|less|able|ous|ive)", word):
+        return {
+            "zo": word,
+            "en": f"[loan word: {word}]",
+            "freq": freq,
+            "source": "zomidaily",
+            "pos": "noun",
+            "category": "loanword",
+        }
     pos = infer_pos(word)
     cat = infer_category(word)
-    return {"zo": word, "en": f"[to be translated]", "freq": freq,
-            "source": "zomidaily", "pos": pos, "category": cat}
+    return {
+        "zo": word,
+        "en": "[to be translated]",
+        "freq": freq,
+        "source": "zomidaily",
+        "pos": pos,
+        "category": cat,
+    }
 
 
 def build_expanded_dict(top_n: int = 1000) -> None:
     """Build expanded dictionary from zomidaily new words."""
-    # Load data
     new_words = load_jsonl(NEW_WORDS_PATH)
     master_dict = load_jsonl(MASTER_DICT_PATH)
     dict_index = build_dict_index(master_dict)
-
     print(f"Loaded {len(new_words)} new words from zomidaily")
     print(f"Loaded {len(master_dict)} entries from master dictionary")
-
-    # Take top N by frequency
     top_words = sorted(new_words, key=lambda x: x.get("count", 0), reverse=True)[:top_n]
     print(f"\nProcessing top {len(top_words)} words...")
-
     expanded = []
     skipped = 0
     translated = 0
     inferred = 0
-
     for entry in top_words:
         word = entry.get("word", "").strip().lower()
         freq = entry.get("count", 0)
-
         if not word or len(word) < 2:
             skipped += 1
             continue
-
-        # Check existing dictionary
         if word in dict_index:
             existing = dict_index[word]
-            # Add to expanded with existing translation
             en = existing.get("english_clean", "")
             if en and en != "[to be translated]":
-                expanded.append({
-                    "zo": word,
-                    "en": en,
-                    "freq": freq,
-                    "source": "zomidaily+dict",
-                    "pos": "noun",
-                    "category": "from_dictionary",
-                })
+                expanded.append(
+                    {
+                        "zo": word,
+                        "en": en,
+                        "freq": freq,
+                        "source": "zomidaily+dict",
+                        "pos": "noun",
+                        "category": "from_dictionary",
+                    }
+                )
                 translated += 1
                 continue
-
-        # Morphological inference
         result = morphological_inference(word, freq)
         if result["en"] != "[to be translated]":
             inferred += 1
         expanded.append(result)
-
-    # Sort by frequency
     expanded.sort(key=lambda x: x.get("freq", 0), reverse=True)
-
-    # Write output
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         for entry in expanded:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"  Total words processed: {len(expanded)}")
     print(f"  Skipped (too short): {skipped}")
     print(f"  From existing dictionary: {translated}")

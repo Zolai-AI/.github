@@ -13,13 +13,15 @@ DATA_DIR = Path("/home/peter/Documents/Projects/zolai-ai/data")
 BIBLE_FREQ_PATH = DATA_DIR / "bible/ALL_WORDS_WITH_FREQUENCY.jsonl"
 ZOMIDAILY_FREQ_PATH = DATA_DIR / "raw/zomidaily/vocabulary/words_frequency.jsonl"
 MASTER_DICT_PATH = DATA_DIR / "dictionary/processed/dict_zo_en_master_v1.jsonl"
-OUTPUT_PATH = Path("/home/peter/Documents/Projects/zolai-ai/zolai-wiki/vocabulary/frequency_dictionary.md")
+OUTPUT_PATH = Path(
+    "/home/peter/Documents/Projects/zolai-ai/zolai-wiki/vocabulary/frequency_dictionary.md"
+)
 
 
 def load_jsonl(path: Path) -> list[dict]:
     """Load JSONL file."""
     data = []
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -41,10 +43,39 @@ def build_dict_index(dict_data: list[dict]) -> dict[str, str]:
 def infer_pos(word: str) -> str:
     """Simple POS inference."""
     particles = {
-        "hi", "hen", "un", "in", "vo", "lo", "kei", "hiam", "leh",
-        "tawh", "ah", "te", "pen", "na", "ki", "ci", "hong", "va",
-        "khia", "lut", "kik", "ta", "zo", "khin", "lai", "ding",
-        "ka", "a", "i", "ki", "kami", "nang", "amah", "mahmah",
+        "hi",
+        "hen",
+        "un",
+        "in",
+        "vo",
+        "lo",
+        "kei",
+        "hiam",
+        "leh",
+        "tawh",
+        "ah",
+        "te",
+        "pen",
+        "na",
+        "ki",
+        "ci",
+        "hong",
+        "va",
+        "khia",
+        "lut",
+        "kik",
+        "ta",
+        "zo",
+        "khin",
+        "lai",
+        "ding",
+        "ka",
+        "a",
+        "i",
+        "kami",
+        "nang",
+        "amah",
+        "mahmah",
     }
     if word in particles or len(word) <= 2:
         return "particle"
@@ -117,7 +148,7 @@ def build_frequency_dict(top_n: int = 1000) -> None:
                     en = val
                     break
         if not en:
-            en = f"[to be translated]"
+            en = "[to be translated]"
         entry["en"] = en
         entry["pos"] = infer_pos(word)
 
@@ -172,9 +203,7 @@ def build_frequency_dict(top_n: int = 1000) -> None:
 
     bible_sorted = sorted(sorted_words, key=lambda x: x["bible_freq"], reverse=True)[:50]
     for i, entry in enumerate(bible_sorted, 1):
-        lines.append(
-            f"| {i} | {entry['zo']} | {entry['en']} | {entry['bible_freq']:,} |"
-        )
+        lines.append(f"| {i} | {entry['zo']} | {entry['en']} | {entry['bible_freq']:,} |")
 
     lines.append("")
     lines.append("---")
@@ -186,9 +215,7 @@ def build_frequency_dict(top_n: int = 1000) -> None:
 
     modern_sorted = sorted(sorted_words, key=lambda x: x["modern_freq"], reverse=True)[:50]
     for i, entry in enumerate(modern_sorted, 1):
-        lines.append(
-            f"| {i} | {entry['zo']} | {entry['en']} | {entry['modern_freq']:,} |"
-        )
+        lines.append(f"| {i} | {entry['zo']} | {entry['en']} | {entry['modern_freq']:,} |")
 
     lines.append("")
     lines.append("---")
@@ -228,11 +255,17 @@ def build_frequency_dict(top_n: int = 1000) -> None:
     lines.append("## Notes")
     lines.append("")
     lines.append("1. **Bible frequency** counts occurrences across all 66 books (31,649 verses)")
-    lines.append("2. **Modern frequency** counts occurrences in zomidaily.com articles (12,966 articles)")
+    lines.append(
+        "2. **Modern frequency** counts occurrences in zomidaily.com articles (12,966 articles)"
+    )
     lines.append("3. **Total** is the sum of Bible and Modern frequencies")
     lines.append("4. Words appearing in both sources indicate established vocabulary")
-    lines.append("5. High modern frequency but low Bible frequency may indicate loan words or new coinages")
-    lines.append("6. High Bible frequency but low modern frequency may indicate archaic or religious vocabulary")
+    lines.append(
+        "5. High modern frequency but low Bible frequency may indicate loan words or new coinages"
+    )
+    lines.append(
+        "6. High Bible frequency but low modern frequency may indicate archaic or religious vocabulary"
+    )
     lines.append("")
     lines.append("---")
     lines.append("")

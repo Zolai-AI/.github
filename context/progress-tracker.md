@@ -1,5 +1,29 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-09-18 (Session — peer research + auto-continue queue)
+
+- Peer communities doc: [`docs/research/peer-language-communities.md`](../docs/research/peer-language-communities.md) (Masakhane, AmericasNLP, Te Hiku/CARE, LINGUA geo, NatGeo).
+- CREDITS paths CONFIRMED → [`docs/governance/credits-license-inventory.md`](../docs/governance/credits-license-inventory.md); license checklist updated.
+- NatGeo Enduring Voices = historical (not grant); LINGUA Europe/Africa = **Chin not eligible**; grants tracker updated.
+- FineWeb2 + HPLT reading notes **ANNOTATED** from arXiv abstracts.
+- Full `zolai-core` pytest: **85 failed / 925 passed / 5 skipped** (~334s); RAG cluster `AttributeError: zo`.
+- Gaps / literature / agenda / research README / OKR evidence refreshed.
+
+### Done in-queue
+
+- Peer research + CREDITS inventory + NatGeo/LINGUA + FineWeb2/HPLT + annotation brief + AmericasNLP outline + permission outreach + path aliases
+- **KR2.1 CLOSED:** full `zolai-core` pytest **1010 passed, 5 skipped, 0 failed** (was 85 failed / 925 passed)
+
+### Auto-continue next
+
+1. Founder review permission outreach emails  
+2. Masakhane join evidence (KR1.4)  
+3. Gold annotation slices (KR3.2) from annotation brief  
+4. **Commit docs + zolai-core fixes when asked**  
+5. CARE mapping in data-governance + whitepaper citation scrub  
+
+---
+
 ## 2026-09-18 (Session — OKR evidence after docs OS close-out)
 
 - Documentation Architecture **v2.4 COMPLETE**; Master Restructuring Prompt closed.
@@ -253,3 +277,12 @@
 - `zolai/learning/grammar_editor.py` — ZVS 2018 real-time validation
 - `zolai/learning/progress.py` — streak tracking + error categorization
 - 5 test files (NEW) — 54 tests total
+
+## 2026-09-18 — CI + gaps ops pass
+
+- Org ruff: lint.yml scoped to `scripts/`; local green
+- zolai-core: ruff per-file-ignores; local pytest **1010 passed**
+- zolai-datasets: DATASET/ARCHIVE manifests + DATA_INDEX for CI
+- zolai-web: monitor/deploy fixed (landing CF vs Next cron)
+- Docs: whitepaper related-work scrub, profile license honesty, benchmarks v0, gaps recommendations sync
+

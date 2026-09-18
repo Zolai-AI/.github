@@ -103,7 +103,7 @@ or commercial reuse.
 
 ## How we work
 
-- **Open source** — code MIT-licensed; data credited; contributions welcome
+- **Open source code** — application code MIT-licensed where stated per-repo; **data is not blanket-open** (Bible/dictionary sources often RESTRICTED — see `docs/governance/credits-license-inventory.md`)
 - **Evidence first** — data, evaluation, and community impact before model hype
 - **Community-aware** — Zomi speakers as stakeholders, not only data sources
 - **ZVS 2018** — orthography ground truth; SOV; ergative `in`
