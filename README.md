@@ -104,8 +104,9 @@ and AI-assisted. See [AI Tools & Attribution](docs/AI_TOOLS_AND_ATTRIBUTION.md) 
 
 | Tool | Role | Model |
 |------|------|-------|
-| OpenCode | AI coding assistant | Free models |
-| P-Core Orchestra | Multi-agent orchestration | v2 |
+| Cursor | IDE Agent / Task / Auto | Cursor Models pool (Composer, Grok, Auto) |
+| OpenCode | CLI / desktop coding assistant | Free models only |
+| P-Core Orchestra | Multi-agent orchestration | Runs on Cursor or OpenCode |
 
 **Author:** Peter Pau Sian Lian ([@peterlianpi](https://github.com/peterlianpi))
 

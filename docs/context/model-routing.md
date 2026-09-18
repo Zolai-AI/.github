@@ -1,16 +1,18 @@
 ---
-title: "Agent model routing (Cursor)"
-description: "Best model per role + fallback when limits hit (Auto / task alternates)"
+title: "Agent model routing (Cursor + OpenCode)"
+description: "Best model per role + fallback when limits hit (Auto / free-model chains)"
 created: 2026-09-18
 last_updated: 2026-09-18
 status: CONFIRMED
 ---
 
-# Agent Model Routing
+# Agent Model Routing (Cursor + OpenCode)
+
+Both **Cursor** and **OpenCode** are first-class tools in this org. Route models by environment.
+
+## Cursor
 
 Prefer the **Cursor Models** pool. On **usage limit / rate limit / model unavailable**, do **not** stop the task — fall through the chain below.
-
-## Hard rule: never block on a preferred model
 
 ```text
 Preferred model for role

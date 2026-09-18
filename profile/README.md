@@ -133,5 +133,5 @@ See [CONTRIBUTING.md](https://github.com/Zolai-AI/.github/blob/main/CONTRIBUTING
 
 <p align="center">
   <i>Built for the Zomi people</i><br>
-  <sub>Led by Peter Pau Sian Lian (@peterlianpi) · AI-assisted with OpenCode free models</sub>
+  <sub>Led by Peter Pau Sian Lian (@peterlianpi) · AI-assisted with Cursor + OpenCode</sub>
 </p>
