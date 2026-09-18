@@ -9,19 +9,24 @@ last_updated: 2026-09-18
 
 Statuses: `discovered` → `researching` → `potentially eligible` → `eligible` → `preparing` → `submitted` → `rejected` | `awarded`
 
-> **Disclaimer:** Rows below are **seeded from internal strategy docs** (`03-grant-readiness.md`, `11-grant-alignment.md`).  
-> Amounts, deadlines, and eligibility are **NOT CONFIRMED** against live funder pages. Re-verify before any application.
+> Re-verify before any application. Rows move only after checking **official** pages.
 
-| Name / program (as cited internally) | Status | Deadline (unverified) | Amount (unverified) | Fit notes (internal) | Evidence still needed |
-|--------------------------------------|--------|----------------------|---------------------|----------------------|------------------------|
-| NSF Dynamic Language Infrastructure — DEL (cited NSF 22-615) | researching | Check official NSF | Check official | Likely needs U.S. institutional PI | Partner university; publications; DMP |
-| UNESCO IDIL 2022–2032 activities | researching | Rolling? verify | verify | Thematic alignment claimed | Community participation evidence; KPIs |
-| National Geographic endangered languages (as cited) | researching | verify | verify | Documentation angle | Community partnership; publication plan |
-| Microsoft LINGUA (as cited) | researching | verify | verify | Open-source / low-resource angle; geo fit unclear | Official eligibility for Chin/Zomi languages |
+| Name / program | Status | Official URL | Deadline | Amount / notes | Eligibility (verified summary) | Blockers for Zolai AI |
+|----------------|--------|--------------|----------|----------------|--------------------------------|----------------------|
+| NSF DLI-DEL (NSF 22-615) | researching → **potentially eligible only with U.S. partner** | https://www.nsf.gov/funding/opportunities/dli-del-nsf-dynamic-language-infrastructure-neh-documenting/nsf22-615/solicitation | **Target dates (solicitation):** 15 Feb annually thereafter; 15 Sep annually thereafter (confirm live page) | Program budget subject to funds; senior/conference awards historically up to ~$450K / up to 3 yrs | U.S. IHEs; U.S. nonprofit research/education orgs; Tribal / AIAN / Native Hawaiian–serving orgs. **For-profits not eligible** as applicants (personnel may be co-I). | Solo/personal project **cannot** submit; needs U.S. institutional PI/partner; publications/track record still thin |
+| UNESCO IDIL 2022–2032 activities | researching | *(not verified this pass)* | — | — | — | Still need official page check |
+| National Geographic endangered languages (as cited) | researching | *(not verified this pass)* | — | — | — | Still need official page check |
+| Microsoft LINGUA (as cited) | researching | *(not verified this pass)* | — | — | — | Still need official page check |
+
+## Verification log
+
+| Date | Program | Action | Result |
+|------|---------|--------|--------|
+| 2026-09-18 | NSF 22-615 DLI-DEL | Opened official NSF solicitation | Confirmed U.S.-org eligibility; for-profit applicant ineligible; partner university required for Zolai |
 
 ## How to advance a row
 
-1. Open the **official** program page; paste URL into notes  
+1. Open the **official** program page; paste URL  
 2. Record eligibility, deadline, amount, geography  
 3. Only then move to `potentially eligible` / `eligible`  
 4. Link OKRs from [`../strategy/okr.md`](../strategy/okr.md)
