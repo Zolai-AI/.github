@@ -2,10 +2,13 @@
 title: "Restructuring report — FINAL (Architecture v2)"
 created: 2026-09-18
 status: CONFIRMED
-orchestra: "conductor fallback (orchestra-* Task types unavailable; CLI start broken)"
+closed: 2026-09-18
+orchestra: "CLI start/stop fixed; Cursor Task enum still lacks orchestra-* → conductor fallback when needed"
 ---
 
 # Final Restructuring Report (Master Prompt)
+
+> **Master Restructuring Prompt closed 2026-09-18.** Documentation OS = **COMPLETE**. Next phase = **90-day OKR execution** (see §J). No new empty scaffolds.
 
 Prompt: `docs/prompts/` (gitignored) — Master Documentation & Context Restructuring.
 
@@ -75,11 +78,13 @@ Status matrix: `docs/architecture/status.md`. Syllable strongest; other NLP Expe
 - OSV vs SOV naming in grammar examples — UNDER REVIEW  
 - Syllable 98.49% unreverified this pass  
 - Nested `zolai-*` untracked checkouts (out of scope)  
-- Orchestra Task `orchestra-*` unavailable in this Cursor session; CLI `start` errored  
+- Cursor Task still lacks `orchestra-*` enum → **conductor fallback**; orchestra CLI `start`/`stop` **fixed** (pcore-orchestra saveState compat)
 
 ## L. Next phase
 
-**Execute 90-day OKRs** (engineering + evidence). Stop creating empty doc scaffolds.
+**Documentation OS = COMPLETE** (Architecture v2.4 close-out).
+
+**Next:** Execute **90-day OKRs** from §J (engineering + evidence). Prefer KR2.1 / KR2.3 / citations / grant page checks. **Stop creating empty doc scaffolds.**
 
 ---
 

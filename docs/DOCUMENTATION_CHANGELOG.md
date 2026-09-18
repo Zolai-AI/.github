@@ -7,6 +7,18 @@ last_updated: 2026-09-18
 
 # Documentation Changelog
 
+## 2026-09-18 — Documentation Architecture v2.4 (OS close-out)
+
+| Field | Value |
+|-------|-------|
+| Version | Documentation Architecture v2.4 (OS close-out) |
+| What changed | Commit AGENTS Learned sections; final report orchestra notes (CLI fixed / Task enum limited); Master Restructuring marked complete → OKR execution |
+| Why | Evidence hygiene close of Master Documentation prompt |
+| Source | Conductor fallback plan (`.cursor/orchestra-plan.md`) |
+| Reviewer | Conductor fallback |
+
+---
+
 ## 2026-09-18 — Documentation Architecture v2 · Orchestra complete (fix-all)
 
 | Field | Value |
