@@ -8,10 +8,10 @@ status: CONFIRMED
 
 # Advisors & Mentors
 
-## External Advisor Candidate
+## Peter
 
 ```text
-Name: External Advisor Candidate
+Name: Peter
 Role: Strategic Advisor & Business/Impact Mentor
 Status: Active
 Cadence: Weekly
