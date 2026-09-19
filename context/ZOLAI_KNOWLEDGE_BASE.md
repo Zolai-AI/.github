@@ -149,7 +149,7 @@ Copy this entire document into ChatGPT custom instructions for accurate Zolai tr
 ## API Access
 
 - **Endpoint:** `https://pcore-brain.peterlianpi.site/v1/chat/completions`
-- **Auth:** `x-api-key: REMOVED`
+- **Auth:** `x-api-key: ***REDACTED***`
 - **Task:** `task: "zolai"` selects Zolai system prompt
 - **Models:** auto (mimo-v2.5-free, nemotron-3-ultra-free, etc.)
 
