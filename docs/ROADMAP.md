@@ -2,7 +2,7 @@
 title: "Zolai-AI Roadmap"
 description: "Strategic roadmap aligned with OKRs and ecosystem audit"
 created: 2026-09-07
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 maintainer: "Peter Pau Sian Lian (@peterlianpi)"
 source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
 ---
@@ -10,10 +10,10 @@ source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
 # Zolai-AI Roadmap
 
 > Horizons: **Immediate 0–30d** · **Near-term 31–90d** · **Medium 3–12m** · **Long-term 1–3y**  
-> Canonical OKRs: [`strategy/okr.md`](strategy/okr.md) · Execution: [`strategy/15-execution-plan.md`](strategy/15-execution-plan.md)  
+> Canonical OKRs: [`strategy/05-90-day-okr.md`](strategy/05-90-day-okr.md) · Execution: [`strategy/15-execution-plan.md`](strategy/15-execution-plan.md)  
 > Full audit: [`strategy/01-strategic-audit.md`](strategy/01-strategic-audit.md)
 
-Every major item should link: OKR · owner · dependency · evidence · repo · docs · status.
+Every major item links: OKR · Owner · Dependency · Evidence · Repository · Docs · Status.
 
 ---
 
@@ -35,33 +35,33 @@ Every major item should link: OKR · owner · dependency · evidence · repo · 
 
 ## NOW (Week 1-4) — Critical Foundation · Immediate 0–30d
 
-| # | Task | OKR | Owner | Why | Effort | Status |
-|---|------|-----|-------|-----|:------:|:------:|
-| 1 | Fix broken tests | KR2.1 | Peter | Blocks CI | 8h | ⏳ |
-| 2 | Automated backup for data/ | KR2.2 | Peter | Data loss risk | 8h | ⏳ |
-| 3 | License audit all sources | KR2.3 | Peter | Legal / grants | 16h | ⏳ |
-| 4 | Create 100+ evaluation cases | KR3.1 | Peter | Measurement | 24h | ⏳ |
-| 5 | Archive duplicate/stale data (backup first) | KR2.4 | Peter | Reduce confusion | 16h | ⏳ |
+| # | Task | OKR | Owner | Dependency | Evidence | Repository | Docs link | Effort | Status |
+|---|------|-----|-------|------------|----------|------------|-----------|:------:|:------:|
+| 1 | Fix broken tests | KR2.1 | Peter | None | pytest output | zolai-core | [`05-90-day-okr.md`](strategy/05-90-day-okr.md) | 8h | ✅ KR2.1 CLOSED (1010 passed) |
+| 2 | Automated backup for data/ | KR2.2 | Peter | None | Backup verification log | data/ | [`05-90-day-okr.md`](strategy/05-90-day-okr.md) | 8h | ⏳ |
+| 3 | License audit all sources | KR2.3 | Peter | None | data/CREDITS.md complete | zolai-core | [`05-90-day-okr.md`](strategy/05-90-day-okr.md) | 16h | ⏳ |
+| 4 | Create 100+ evaluation cases | KR3.1 | Peter | KR2.1 (tests passing) | Evaluation dataset | zolai-core | [`05-90-day-okr.md`](strategy/05-90-day-okr.md) | 24h | ⏳ |
+| 5 | Archive duplicate/stale data (backup first) | KR2.4 | Peter | KR2.2 (backup running) | Archive log + DB size reduced | data/ | [`05-90-day-okr.md`](strategy/05-90-day-okr.md) | 16h | ⏳ |
 
 ## NEXT (Month 2-3) — Near-term 31–90d
 
-| # | Task | OKR | Owner | Why | Effort | Status |
-|---|------|-----|-------|-----|:------:|:------:|
-| 6 | Governance + advisor clarity | KR5.2 / DEC-002 | Peter | Grants, credibility | 16h | 🔄 docs v2 started |
-| 7 | Join Masakhane | KR1.2 | Peter | Network | 8h | ⏳ |
-| 8 | Interview 5 Zomi speakers | KR5.1 | Peter | Validate assumptions | 16h | ⏳ |
-| 9 | Design evaluation benchmark | KR3.2 | Peter | Research credibility | 24h | ⏳ |
-| 10 | Unified documentation (Architecture v2) | — | Peter | Discoverability | 16h | 🔄 in progress |
+| # | Task | OKR | Owner | Dependency | Evidence | Repository | Docs link | Effort | Status |
+|---|------|-----|-------|------------|----------|------------|-----------|:------:|:------:|
+| 6 | Governance + advisor clarity | KR5.2 / DEC-002 | Peter | None | Published GOVERNANCE.md | .github | [`decisions.md`](strategy/decisions.md) | 16h | 🔄 docs v2 started |
+| 7 | Join Masakhane | KR1.2 | Peter | None | Slack/GitHub membership | — | [`peer-language-communities.md`](research/peer-language-communities.md) | 8h | ⏳ |
+| 8 | Interview 5 Zomi speakers | KR5.1 | Peter | Community outreach | Interview summaries | — | [`target-users.md`](community/target-users.md) | 16h | ⏳ |
+| 9 | Design evaluation benchmark | KR3.2 | Peter | KR3.1 (100+ cases) | Published benchmark plan | zolai-core | [`benchmarks.md`](research/benchmarks.md) | 24h | ⏳ |
+| 10 | Unified documentation (Architecture v2) | — | Peter | None | Documentation Architecture v2.5 | docs/ | [`project-context.md`](context/project-context.md) | 16h | ✅ v2.5 complete |
 
 ## LATER (Month 4-12) — Research & Applications
 
-| # | Task | Why | Effort | Status |
-|---|------|-----|:------:|:------:|
-| 11 | Write workshop paper (AmericasNLP/LowResNLP) | Academic credibility | 40h | ⏳ |
-| 12 | Launch vocabulary learning app v1 | Community benefit | 60h | ⏳ |
-| 13 | Create A1-A2 curriculum | Education foundation | 80h | ⏳ |
-| 14 | Submit 2-3 grant applications | Sustainability | 120h | ⏳ |
-| 15 | Deploy desktop app v1 (Tauri) | Offline access | 60h | ⏳ |
+| # | Task | OKR | Owner | Dependency | Evidence | Repository | Docs link | Effort | Status |
+|---|------|-----|-------|------------|----------|------------|-----------|:------:|:------:|
+| 11 | Write workshop paper (AmericasNLP/LowResNLP) | KR1.3 | Peter | KR1.1 (papers read), KR3.* (evaluation) | Submission confirmation | docs/research | [`research/`](research/) | 40h | ⏳ |
+| 12 | Launch vocabulary learning app v1 | — | Peter | Web platform stable, 5+ speaker interviews | User metrics | zolai-web | [`component-status.md`](architecture/component-status.md) | 60h | ⏳ |
+| 13 | Create A1-A2 curriculum | KR5.* | Peter | KR5.1 (speaker interviews), wiki content | Curriculum document | zolai-wiki | [`component-status.md`](architecture/component-status.md) | 80h | ⏳ |
+| 14 | Submit 2-3 grant applications | KR4.3–4.4 | Peter | KR4.1 (white paper), KR4.2 (budget), legal entity | Application confirmations | docs/grants | [`03-grant-readiness.md`](strategy/03-grant-readiness.md) | 120h | ⏳ |
+| 15 | Deploy desktop app v1 (Tauri) | — | Peter | Web platform stable, Tauri build green | Working AppImage | zolai-tauri | [`component-status.md`](architecture/component-status.md) | 60h | ⏳ |
 
 ## DEFER — Blocked or Low Priority
 
