@@ -35,8 +35,8 @@ Canonical agent context: `docs/context/project-context.md` + `model-routing.md` 
 
 ## D. Governance
 
-- Founder: Peter Lianpi
-- Advisor: Peter (non-ownership)
+- Founder: Peter Pau Sian Lian
+- Advisor: Shwe Yee (non-ownership)
 - Commercial arrangement: undefined, private
 - Decisions: DEC-001 … DEC-006
 

@@ -48,16 +48,16 @@ status: current
 
 | # | Initiative | Owner | OKR | Hours | Status |
 |---|-----------|-------|-----|:-----:|:------:|
-| 1 | Fix test_prediction_api.py | Peter | O4: KR2.1 | 2h | 🔴 Not started |
-| 2 | Fix test_word_attestation | Peter | O4: KR2.1 | 4h | 🔴 Not started |
-| 3 | Set up automated backup | Peter | O4: KR2.2 | 8h | 🔴 Not started |
-| 4 | Complete license audit | Peter | O4: KR2.3 | 16h | 🔴 Not started |
-| 5 | Create 100+ evaluation cases | Peter | O3: KR3.1 | 24h | 🔴 Not started |
-| 6 | Read 10 NLP papers | Peter | O1: KR1.1 | 20h | 🔴 Not started |
-| 7 | Join Masakhane | Peter | O1: KR1.2 | 8h | 🔴 Not started |
-| 8 | Recruit 3 advisors | Peter | O1: KR1.5 | 16h | 🔴 Not started |
-| 9 | Conduct 5 speaker interviews | Peter | O5: KR5.1 | 16h | 🔴 Not started |
-| 10 | Write white paper draft | Peter + Shwe | O4: KR4.1 | 62h | 🔴 Not started |
+| 1 | Fix test_prediction_api.py | Peter Pau Sian Lian | O4: KR2.1 | 2h | 🔴 Not started |
+| 2 | Fix test_word_attestation | Peter Pau Sian Lian | O4: KR2.1 | 4h | 🔴 Not started |
+| 3 | Set up automated backup | Peter Pau Sian Lian | O4: KR2.2 | 8h | 🔴 Not started |
+| 4 | Complete license audit | Peter Pau Sian Lian | O4: KR2.3 | 16h | 🔴 Not started |
+| 5 | Create 100+ evaluation cases | Peter Pau Sian Lian | O3: KR3.1 | 24h | 🔴 Not started |
+| 6 | Read 10 NLP papers | Peter Pau Sian Lian | O1: KR1.1 | 20h | 🔴 Not started |
+| 7 | Join Masakhane | Peter Pau Sian Lian | O1: KR1.2 | 8h | 🔴 Not started |
+| 8 | Recruit 3 advisors | Peter Pau Sian Lian | O1: KR1.5 | 16h | 🔴 Not started |
+| 9 | Conduct 5 speaker interviews | Peter Pau Sian Lian | O5: KR5.1 | 16h | 🔴 Not started |
+| 10 | Write white paper draft | Peter Pau Sian Lian + Shwe Yee | O4: KR4.1 | 62h | 🔴 Not started |
 
 ---
 
@@ -65,16 +65,16 @@ status: current
 
 | # | Risk | Probability | Impact | Mitigation | Owner |
 |---|------|:-----------:|:------:|------------|-------|
-| 1 | Solo founder burnout | High | Critical | Enforce 20-25 hr/week cap | Peter |
-| 2 | Speaker outreach fails | High | High | Start with diaspora, offer incentives | Peter |
-| 3 | Grant deadlines pass | Medium | High | Track weekly, apply to rolling programs | Peter |
-| 4 | No evaluation framework | High | High | Prioritize KR3.1 (100+ eval cases) | Peter |
-| 5 | Community disengagement | High | High | Start small, build trust gradually | Peter |
-| 6 | Data quality issues | Medium | Medium | Automated CI gates, regular audits | Peter |
-| 7 | Advisor unavailability | Medium | Medium | Set clear expectations, async comms | Peter |
-| 8 | Undefined commercial arrangement (private) | Low | High | Clarify privately; legal advice; no public % terms | Peter |
-| 9 | Technical debt accumulation | Medium | Medium | Regular refactoring sprints | Peter |
-| 10 | Competing projects/apps | Low | Medium | Focus on unique value proposition | Peter |
+| 1 | Solo founder burnout | High | Critical | Enforce 20-25 hr/week cap | Peter Pau Sian Lian |
+| 2 | Speaker outreach fails | High | High | Start with diaspora, offer incentives | Peter Pau Sian Lian |
+| 3 | Grant deadlines pass | Medium | High | Track weekly, apply to rolling programs | Peter Pau Sian Lian |
+| 4 | No evaluation framework | High | High | Prioritize KR3.1 (100+ eval cases) | Peter Pau Sian Lian |
+| 5 | Community disengagement | High | High | Start small, build trust gradually | Peter Pau Sian Lian |
+| 6 | Data quality issues | Medium | Medium | Automated CI gates, regular audits | Peter Pau Sian Lian |
+| 7 | Advisor unavailability | Medium | Medium | Set clear expectations, async comms | Peter Pau Sian Lian |
+| 8 | Undefined commercial arrangement (private) | Low | High | Clarify privately; legal advice; no public % terms | Peter Pau Sian Lian |
+| 9 | Technical debt accumulation | Medium | Medium | Regular refactoring sprints | Peter Pau Sian Lian |
+| 10 | Competing projects/apps | Low | Medium | Focus on unique value proposition | Peter Pau Sian Lian |
 
 ---
 

@@ -12,8 +12,8 @@ Supply this file (or its summary) to coding agents, research agents, ChatGPT/Gem
 
 1. **Identity** — Tedim Zolai / Zomi language technology (not LLM-training-only). ZVS 2018; SOV; ergative `in`.
 2. **Mission / Vision** — [`../strategy/mission-vision.md`](../strategy/mission-vision.md)
-3. **Founder** — Peter Lianpi — Founder & Technical Lead
-4. **Advisor** — Peter — Strategic Advisor & Business/Impact Mentor (advisory only)
+3. **Founder** — Peter Pau Sian Lian — Founder & Technical Lead
+4. **Advisor** — Shwe Yee — Strategic Advisor & Business/Impact Mentor (advisory only)
 5. **Pillars** — Data · NLP/AI research · Literacy · Community · Research/open knowledge · Products/sustainability · Partnerships/grants/org
 6. **OKRs** — [`../strategy/okr.md`](../strategy/okr.md) → `04` / `05` / `06`
 7. **Architecture** — wiki → core (RAG/ngram) → web + tauri; datasets → training; MCP + landing live. Status labels: [`../architecture/status.md`](../architecture/status.md). Component matrix: [`../architecture/component-status.md`](../architecture/component-status.md). Detail: `docs/architecture/`, per-repo `AGENTS.md`

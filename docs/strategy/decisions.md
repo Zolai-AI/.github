@@ -38,7 +38,7 @@ Status
 | Context | Risk of overclaiming LLM products without foundation |
 | Options considered | (A) Fine-tune-first (B) RAG/data-first (C) Product-only |
 | Evidence | Org AGENTS.md preference; strategic audit; OKR pillars |
-| Decision maker | Peter Lianpi |
+| Decision maker | Peter Pau Sian Lian |
 | Advisor input | Aligns with mentoring focus on evidence / grant readiness |
 | Reason | Credibility, licensing, evaluation before model claims |
 | Impact | Training remains in `zolai-training` as early/experimental; docs language updated |
@@ -52,11 +52,11 @@ Status
 |-------|---------|
 | Decision ID | DEC-002 |
 | Date | 2026-09-18 |
-| Decision | Peter is Strategic Advisor & Business/Impact Mentor; not co-founder/owner |
+| Decision | Shwe Yee is Strategic Advisor & Business/Impact Mentor; not co-founder/owner |
 | Context | Weekly mentoring; informal commercial discussion exists separately |
 | Options considered | Co-founder labeling vs advisor labeling |
 | Evidence | Mentoring doc; master restructuring prompt |
-| Decision maker | Peter Lianpi |
+| Decision maker | Peter Pau Sian Lian |
 | Advisor input | Role as mentor/advisor |
 | Reason | Avoid false ownership claims; protect grant clarity |
 | Impact | Public docs use advisor language only |
@@ -74,7 +74,7 @@ Status
 | Context | Informal discussion insufficient for equity/revenue classification |
 | Options considered | Publish terms · ignore · private pending clarification |
 | Evidence | Master prompt §5; prior assessment notes |
-| Decision maker | Peter Lianpi |
+| Decision maker | Peter Pau Sian Lian |
 | Advisor input | TBD in mentoring |
 | Reason | Grant/public safety; no legal conclusions |
 | Impact | `docs/private/` gitignored; public stub only |
@@ -92,7 +92,7 @@ Status
 | Context | Batch 3 consolidation; master prompt evidence hierarchy |
 | Options considered | Trust legacy lists · delete lists · quarantine as UNKNOWN |
 | Evidence | `context/RESEARCH_SYNTHESIS.md`; `03-grant-readiness.md` |
-| Decision maker | Peter Lianpi |
+| Decision maker | Peter Pau Sian Lian |
 | Advisor input | Pending |
 | Reason | Avoid fabricating literature/eligibility |
 | Impact | `docs/research/literature-review.md`; `docs/grants/opportunities.md` |
@@ -110,7 +110,7 @@ Status
 | Context | Batch 2 of master documentation restructuring; claims audit shows partial verification |
 | Options considered | Leave marketing ✅ · honest labels · delete overview |
 | Evidence | `docs/audits/05-v2-claims-audit.md`; mission-vision; AGENTS.md SOV |
-| Decision maker | Peter Lianpi |
+| Decision maker | Peter Pau Sian Lian |
 | Advisor input | Pending |
 | Reason | Evidence-first public docs |
 | Impact | profile + architecture + roadmap updated |

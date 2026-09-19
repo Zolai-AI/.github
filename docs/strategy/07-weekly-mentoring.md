@@ -1,6 +1,6 @@
 ---
 title: "Zolai AI — Weekly Mentoring System"
-description: "Structured weekly mentoring sessions with Peter (Strategic Advisor)"
+description: "Structured weekly mentoring sessions with Shwe Yee (Strategic Advisor)"
 author: "OpenCode orchestra conductor"
 created: 2026-09-18
 last_updated: 2026-09-18
@@ -10,7 +10,7 @@ status: current
 # Zolai AI — Weekly Mentoring System
 
 **Mentee:** Peter Pau Sian Lian (@peterlianpi)
-**Mentor:** Peter (Strategic Advisor / Business & Impact Mentor)
+**Mentor:** Shwe Yee (Strategic Advisor / Business & Impact Mentor)
 **Cadence:** Weekly, 60 minutes
 **Platform:** Video call (Zoom/Google Meet) or in-person
 
@@ -18,22 +18,22 @@ status: current
 
 ## Role Boundaries
 
-### Peter IS:
+### Shwe Yee IS:
 - **Strategic Advisor** — provides business strategy, impact measurement, grant readiness guidance
-- **Business & Impact Mentor** — helps Peter think through commercialization, partnerships, sustainability
-- **Accountability Partner** — keeps Peter focused on high-impact work
-- **Network Connector** — introduces Peter to relevant contacts
+- **Business & Impact Mentor** — helps Peter Pau Sian Lian think through commercialization, partnerships, sustainability
+- **Accountability Partner** — keeps Peter Pau Sian Lian focused on high-impact work
+- **Network Connector** — introduces Peter Pau Sian Lian to relevant contacts
 
-### Peter is NOT:
+### Shwe Yee is NOT:
 - **Co-founder** — unless a separate formal agreement is made (see 08-25-percent-arrangement.md)
-- **Technical co-lead** — technical decisions remain with Peter
+- **Technical co-lead** — technical decisions remain with Peter Pau Sian Lian
 - **Employee** — this is advisory, not employment
 - **Legal counsel** — for legal questions, refer to qualified professionals
 
 ### Decision Authority:
-- **Peter decides:** All technical, product, and day-to-day operational decisions
-- **Peter advises:** Business strategy, grant applications, partnerships, community engagement
-- **Both decide:** Strategic direction (discussed, Peter has final say)
+- **Peter Pau Sian Lian decides:** All technical, product, and day-to-day operational decisions
+- **Shwe Yee advises:** Business strategy, grant applications, partnerships, community engagement
+- **Both decide:** Strategic direction (discussed, Peter Pau Sian Lian has final say)
 - **Formal agreement needed:** Any equity, revenue sharing, or commercial arrangement
 
 ---
@@ -82,15 +82,15 @@ status: current
 
 ## Preparation Checklist (Before Each Meeting)
 
-### Peter Must Prepare:
+### Peter Pau Sian Lian Must Prepare:
 - [ ] OKR dashboard updated with current status
 - [ ] Evidence collected for any KRs completed this week
 - [ ] Top 3 priorities for next week identified
 - [ ] One specific topic for Deep Dive segment
-- [ ] Any decisions needing Peter's input
+- [ ] Any decisions needing Shwe Yee's input
 - [ ] Questions or concerns written down
 
-### Peter Should Review:
+### Peter Pau Sian Lian Should Review:
 - [ ] Previous meeting action items
 - [ ] OKR progress since last meeting
 - [ ] Any relevant market/funder news
@@ -105,7 +105,7 @@ status: current
 
 ## Attendees
 - Peter Pau Sian Lian
-- Peter
+- Shwe Yee
 
 ## Duration
 - [Start time] – [End time]
@@ -122,8 +122,8 @@ status: current
 ## Action Items
 | # | Action | Owner | Due Date | Status |
 |---|--------|-------|----------|--------|
-| 1 | [Action] | [Peter] | [Date] | [ ] |
-| 2 | [Action] | [Peter] | [Date] | [ ] |
+| 1 | [Action] | [Shwe Yee] | [Date] | [ ] |
+| 2 | [Action] | [Shwe Yee] | [Date] | [ ] |
 
 ## OKR Updates
 - [Any KRs that moved from red→yellow or yellow→green]
@@ -134,35 +134,35 @@ status: current
 - Focus topic: [Topic]
 
 ## Session Rating
-- Peter: [1-5]
-- Peter: [1-5]
+- Peter Pau Sian Lian: [1-5]
+- Shwe Yee: [1-5]
 ```
 
 ---
 
 ## Decision Framework
 
-### When Peter Faces a Decision:
+### When Peter Pau Sian Lian Faces a Decision:
 
 1. **Is this a technical decision?**
-   - Yes → Peter decides (Peter provides input only if asked)
+   - Yes → Peter Pau Sian Lian decides (Shwe Yee provides input only if asked)
    - No → Continue to step 2
 
 2. **Is this a business/strategy decision?**
-   - Yes → Discuss with Peter, Peter decides
+   - Yes → Discuss with Shwe Yee, Peter Pau Sian Lian decides
    - No → Continue to step 3
 
 3. **Is this a partnership/funder decision?**
-   - Yes → Peter advises, Peter decides
-   - No → Peter decides independently
+   - Yes → Shwe Yee advises, Peter Pau Sian Lian decides
+   - No → Peter Pau Sian Lian decides independently
 
 4. **Does this affect the undefined commercial arrangement?** (see stub `08-25-percent-arrangement.md` — no public terms)
    - Yes → Both must agree, document in 08-25-percent-arrangement.md
-   - No → Peter decides
+   - No → Peter Pau Sian Lian decides
 
 ### Escalation Rules:
-- **If Peter is stuck on a decision for > 1 week:** Escalate to Peter
-- **If Peter disagrees with Peter's direction:** Peter states concern, Peter decides
+- **If Peter Pau Sian Lian is stuck on a decision for > 1 week:** Escalate to Shwe Yee
+- **If Shwe Yee disagrees with Peter Pau Sian Lian's direction:** Shwe Yee states concern, Peter Pau Sian Lian decides
 - **If there's a conflict of interest:** Disclose immediately, recuse from decision
 - **If a decision requires legal/expert advice:** Refer to qualified professional
 
@@ -192,14 +192,14 @@ status: current
 ### Preferred Channels:
 - **Urgent questions:** WhatsApp/SMS (response within 24 hours)
 - **Non-urgent questions:** Email or GitHub comment (response within 48 hours)
-- **Updates:** Weekly email summary (Peter sends to Peter every Friday)
+- **Updates:** Weekly email summary (Peter Pau Sian Lian sends to Shwe Yee every Friday)
 - **Documents:** GitHub repo (all docs version-controlled)
 
 ### Weekly Update Email Template:
 ```
 Subject: Zolai AI Weekly Update — [DATE]
 
-Hi Peter,
+Hi Shwe Yee,
 
 ## This Week
 - [Key achievement 1]
@@ -220,7 +220,7 @@ Hi Peter,
 - [Question/decision needed]
 
 Thanks,
-Peter
+Peter Pau Sian Lian
 ```
 
 ---
@@ -232,7 +232,7 @@ Peter
 | Meeting attendance | 90%+ | Attendance log |
 | Action items completed | 80%+ | Post-meeting tracking |
 | OKR progress | Consistent advancement | Monthly scorecard |
-| Peter's skill growth | Measurable improvement | Founder OKR scores |
+| Peter Pau Sian Lian's skill growth | Measurable improvement | Founder OKR scores |
 | Strategic decisions made | Timely, high-quality | Decision log |
 
 ---

@@ -11,7 +11,7 @@ status: current
 
 **Period:** 2026-09-18 to 2026-12-18
 **Founder:** Peter Pau Sian Lian (@peterlianpi)
-**Advisor:** Peter (Strategic / Business & Impact)
+**Advisor:** Shwe Yee (Strategic / Business & Impact)
 
 ---
 
@@ -20,13 +20,13 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR1.1: Read 10 papers on low-resource NLP | 0 papers read | 10 papers with notes | Peter | Annotated reading list | Low |
-| KR1.2: Join Masakhane community | Not a member | Active member, 1 intro post | Peter | Slack/GitHub membership | Low |
-| KR1.3: Submit 1 conference talk or poster | 0 submissions | 1 submission | Peter | Submission confirmation | Medium — deadline dependent |
-| KR1.4: Write research methodology section | Not written | 2-page methodology doc | Peter | Document in docs/research/ | Low |
-| KR1.5: Create annotated bibliography of 20+ relevant papers | 0 papers | 20+ annotated entries | Peter | BibTeX file + summaries | Low |
+| KR1.1: Read 10 papers on low-resource NLP | 0 papers read | 10 papers with notes | Peter Pau Sian Lian | Annotated reading list | Low |
+| KR1.2: Join Masakhane community | Not a member | Active member, 1 intro post | Peter Pau Sian Lian | Slack/GitHub membership | Low |
+| KR1.3: Submit 1 conference talk or poster | 0 submissions | 1 submission | Peter Pau Sian Lian | Submission confirmation | Medium — deadline dependent |
+| KR1.4: Write research methodology section | Not written | 2-page methodology doc | Peter Pau Sian Lian | Document in docs/research/ | Low |
+| KR1.5: Create annotated bibliography of 20+ relevant papers | 0 papers | 20+ annotated entries | Peter Pau Sian Lian | BibTeX file + summaries | Low |
 
-**Success Criteria:** Peter can articulate a clear research agenda, has network connections, and has at least 1 submission in progress.
+**Success Criteria:** Peter Pau Sian Lian can articulate a clear research agenda, has network connections, and has at least 1 submission in progress.
 
 ---
 
@@ -35,12 +35,12 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR2.1: Fix all broken tests | 2 broken tests | 0 broken, 466+ passing | Peter | pytest output | Low — FastAPI compat fix |
-| KR2.2: Set up automated daily backup | No backup | Daily backup to cloud | Peter | Backup verification log | Low |
-| KR2.3: Complete license audit | Partial | 100% sources documented | Peter | data/CREDITS.md complete | Medium — some sources unclear |
-| KR2.4: Archive duplicate data | 99 tables | 60 canonical tables | Peter | Archive log + DB size reduced | Low |
-| KR2.5: Run Myanmar translation batch (500 entries pilot) | 0 translated | 500 entries translated | Peter | Translation results in DB | Medium — API costs |
-| KR2.6: Distribute syllable annotation set to native speakers | Set created | 5+ annotations received | Peter | Annotation files | High — depends on speakers |
+| KR2.1: Fix all broken tests | 2 broken tests | 0 broken, 466+ passing | Peter Pau Sian Lian | pytest output | Low — FastAPI compat fix |
+| KR2.2: Set up automated daily backup | No backup | Daily backup to cloud | Peter Pau Sian Lian | Backup verification log | Low |
+| KR2.3: Complete license audit | Partial | 100% sources documented | Peter Pau Sian Lian | data/CREDITS.md complete | Medium — some sources unclear |
+| KR2.4: Archive duplicate data | 99 tables | 60 canonical tables | Peter Pau Sian Lian | Archive log + DB size reduced | Low |
+| KR2.5: Run Myanmar translation batch (500 entries pilot) | 0 translated | 500 entries translated | Peter Pau Sian Lian | Translation results in DB | Medium — API costs |
+| KR2.6: Distribute syllable annotation set to native speakers | Set created | 5+ annotations received | Peter Pau Sian Lian | Annotation files | High — depends on speakers |
 
 **Success Criteria:** All tests pass, data backed up, licenses documented, 500 Myanmar translations validated.
 
@@ -51,11 +51,11 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR3.1: Create 100+ evaluation test cases | 33 smoke tests | 100+ evaluation cases | Peter | Evaluation dataset | Medium — requires careful design |
-| KR3.2: Design Zolai NLP benchmark methodology | No methodology | Published benchmark plan | Peter | docs/research/benchmark.md | Low |
-| KR3.3: Create gold standard datasets (5 tasks) | 0 gold sets | 5 gold datasets | Peter | data/eval/ files | High — needs native speaker validation |
-| KR3.4: Run baseline evaluations | No baselines | 5 baseline results | Peter | Results document | Medium — requires compute |
-| KR3.5: Achieve ZVS compliance at 99%+ | ~95% | 99%+ | Peter | Compliance audit report | Low — automated checking |
+| KR3.1: Create 100+ evaluation test cases | 33 smoke tests | 100+ evaluation cases | Peter Pau Sian Lian | Evaluation dataset | Medium — requires careful design |
+| KR3.2: Design Zolai NLP benchmark methodology | No methodology | Published benchmark plan | Peter Pau Sian Lian | docs/research/benchmark.md | Low |
+| KR3.3: Create gold standard datasets (5 tasks) | 0 gold sets | 5 gold datasets | Peter Pau Sian Lian | data/eval/ files | High — needs native speaker validation |
+| KR3.4: Run baseline evaluations | No baselines | 5 baseline results | Peter Pau Sian Lian | Results document | Medium — requires compute |
+| KR3.5: Achieve ZVS compliance at 99%+ | ~95% | 99%+ | Peter Pau Sian Lian | Compliance audit report | Low — automated checking |
 
 **Success Criteria:** Evaluation framework exists, baselines measured, ZVS compliance near-perfect.
 
@@ -66,11 +66,11 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR4.1: Write white paper draft (5-8 pages) | Not written | Complete draft | Peter + Peter | docs/research/whitepaper-draft.md | Medium — time-intensive |
-| KR4.2: Complete budget justification | No budget | Full line-item budget | Peter | Budget document | Low |
-| KR4.3: Identify 3 target grant programs | 0 programs | 3 programs researched | Peter | Grant research document | Low |
-| KR4.4: Draft 1 grant application | Not started | Complete draft | Peter + Peter | Application draft | High — requires all prerequisites |
-| KR4.5: Establish organizational entity | Personal project | Entity registered or fiscal sponsor identified | Peter | Legal documents | High — legal complexity |
+| KR4.1: Write white paper draft (5-8 pages) | Not written | Complete draft | Peter Pau Sian Lian + Shwe Yee | docs/research/whitepaper-draft.md | Medium — time-intensive |
+| KR4.2: Complete budget justification | No budget | Full line-item budget | Peter Pau Sian Lian | Budget document | Low |
+| KR4.3: Identify 3 target grant programs | 0 programs | 3 programs researched | Peter Pau Sian Lian | Grant research document | Low |
+| KR4.4: Draft 1 grant application | Not started | Complete draft | Peter Pau Sian Lian + Shwe Yee | Application draft | High — requires all prerequisites |
+| KR4.5: Establish organizational entity | Personal project | Entity registered or fiscal sponsor identified | Peter Pau Sian Lian | Legal documents | High — legal complexity |
 
 **Success Criteria:** White paper draft complete, budget justified, 1 grant application draft ready.
 
@@ -81,11 +81,11 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR5.1: Complete 5 Zomi speaker interviews | 0 interviews | 5+ interviews | Peter | Interview summaries | High — requires outreach |
-| KR5.2: Publish GOVERNANCE.md | Not created | Published | Peter | Document in repo | Low |
-| KR5.3: Create community guidelines | Partial | Complete guidelines | Peter | Published document | Low |
-| KR5.4: Deploy annotation platform (pilot) | Not deployed | Platform live with 10 test items | Peter | Working URL | Medium — deployment effort |
-| KR5.5: Validate 10 dictionary entries with speakers | 0 validated | 10+ entries validated | Peter | Validation records | High — speaker availability |
+| KR5.1: Complete 5 Zomi speaker interviews | 0 interviews | 5+ interviews | Peter Pau Sian Lian | Interview summaries | High — requires outreach |
+| KR5.2: Publish GOVERNANCE.md | Not created | Published | Peter Pau Sian Lian | Document in repo | Low |
+| KR5.3: Create community guidelines | Partial | Complete guidelines | Peter Pau Sian Lian | Published document | Low |
+| KR5.4: Deploy annotation platform (pilot) | Not deployed | Platform live with 10 test items | Peter Pau Sian Lian | Working URL | Medium — deployment effort |
+| KR5.5: Validate 10 dictionary entries with speakers | 0 validated | 10+ entries validated | Peter Pau Sian Lian | Validation records | High — speaker availability |
 
 **Success Criteria:** Community engagement started, governance published, 5+ speakers consulted.
 
@@ -96,11 +96,11 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter + Peter | Interview transcripts | High — outreach required |
-| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter + Peter | Business model canvas | Low |
-| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter + Peter | Financial document | Medium — assumptions needed |
-| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or documented “none” | Peter + Peter | Legal/ethical review | High — requires legal advice |
-| KR6.5: Identify 3 potential partners (academic/community) | 0 partners | 3 identified, 1 contacted | Peter | Partner research document | Medium |
+| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter Pau Sian Lian + Shwe Yee | Interview transcripts | High — outreach required |
+| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter Pau Sian Lian + Shwe Yee | Business model canvas | Low |
+| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter Pau Sian Lian + Shwe Yee | Financial document | Medium — assumptions needed |
+| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or documented "none" | Peter Pau Sian Lian + Shwe Yee | Legal/ethical review | High — requires legal advice |
+| KR6.5: Identify 3 potential partners (academic/community) | 0 partners | 3 identified, 1 contacted | Peter Pau Sian Lian | Partner research document | Medium |
 
 **Success Criteria:** Business model validated, financial projections exist, undefined commercial arrangement assessed (private).
 

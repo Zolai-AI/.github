@@ -1,6 +1,6 @@
 ---
 title: "Zolai AI — Founder Personal OKR"
-description: "Peter's personal development OKR covering skills, knowledge, and capacity building"
+description: "Peter Pau Sian Lian's personal development OKR covering skills, knowledge, and capacity building"
 author: "OpenCode orchestra conductor"
 created: 2026-09-18
 last_updated: 2026-09-18
@@ -146,4 +146,4 @@ status: current
 
 ---
 
-*This founder OKR is self-assessed monthly and reviewed with Peter quarterly.*
+*This founder OKR is self-assessed monthly and reviewed with Shwe Yee quarterly.*
