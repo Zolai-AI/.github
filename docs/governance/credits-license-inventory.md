@@ -22,7 +22,7 @@ Inventory derived from existing CREDITS files (2026-09-18).
 |------|------|------------|
 | `zolai-datasets/docs/CREDITS.md` | Dataset repo attribution | 2026-09-07 |
 | `data/CREDITS.md` | Workspace data attribution + `zolai.db` table counts | 2026-09-13 |
-| `zolai-datasets/LICENSE` | **Code/repo** MIT (Peter Lianpi + contributors) — **not** a blanket data license | 2026 |
+| `zolai-datasets/LICENSE` | **Code/repo** MIT (Peter Pau Sian Lian + contributors) — **not** a blanket data license | 2026 |
 
 Prior checklist looked for `zolai-datasets/data/CREDITS.md` — **wrong path**; use rows above.
 

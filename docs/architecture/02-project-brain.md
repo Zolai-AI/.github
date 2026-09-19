@@ -29,7 +29,7 @@ and about Zolai using retrieved knowledge, plus an offline desktop app for areas
 | Key | Value |
 |-----|-------|
 | Organization | [Zolai-AI](https://github.com/Zolai-AI) |
-| Owner | Peter Lianpi (`peterlianpi`) |
+| Owner | Peter Pau Sian Lian (`peterlianpi`) |
 | Version | **2.0.0** (all repos) |
 | Licensing | MIT |
 | Pages site | https://zolai-ai.github.io/ (live, HTTP 200) |

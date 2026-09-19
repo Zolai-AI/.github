@@ -36,7 +36,7 @@ Template for each entry:
 | Evidence | Legacy synthesis references; grant readiness |
 | Decision | DEC-006 — UNKNOWN until primary sources verified |
 | Action | Reading log + official grant page checks |
-| Owner | Peter Lianpi |
+| Owner | Peter Pau Sian Lian |
 | Deadline | 2026-10-18 |
 | Status | open |
 
@@ -50,7 +50,7 @@ Template for each entry:
 | Evidence | Master prompt in `docs/prompts/`; existing `docs/strategy/*` |
 | Decision | Begin canonical docs OS: governance, SoT, private commercial stub, context |
 | Action | Implement foundation batch; continue research/grants/community scaffolds |
-| Owner | Peter Lianpi |
+| Owner | Peter Pau Sian Lian |
 | Deadline | Ongoing through 90-day OKR |
 | Status | open |
 
