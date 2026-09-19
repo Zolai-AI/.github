@@ -1,7 +1,7 @@
 ---
 title: Zolai AI Documentation
 description: Master documentation index for the Zolai AI project
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 ---
 
 # Zolai AI — Documentation
@@ -23,7 +23,10 @@ last_updated: 2026-09-18
 | [Advisors](strategy/advisors-and-mentors.md) | Advisor roles | ✅ |
 | [Roadmap](ROADMAP.md) | Top-level roadmap | ✅ |
 | [Architecture status](architecture/status.md) | Implemented / Experimental / … labels | ✅ |
+| [Component status](architecture/component-status.md) | Full component status matrix (repos, NLP, learning, API) | ✅ |
 | [Database docs](database/README.md) | Audit pointers, consolidation rule | ✅ |
+| [DB table catalog](database/tables.md) | Complete table inventory with row counts | ✅ |
+| [Business strategy](business/strategy.md) | Target users, hypotheses, revenue models | ✅ |
 | [Model routing](context/model-routing.md) | Best Cursor model per agent role | ✅ |
 | [Doc changelog](DOCUMENTATION_CHANGELOG.md) | Architecture v2 history | ✅ |
 
@@ -49,7 +52,10 @@ docs/
 ├── governance/                    ← SoT, roles, data, public/private
 ├── strategy/                      ← canonical + numbered detail (01–15)
 ├── research/ · grants/ · community/ · business/ · whitepaper/
+│   └── business/strategy.md       ← full strategy (users, hypotheses, revenue)
 ├── architecture/ · audits/ · guides/ · planning/ · reports/
+│   └── architecture/component-status.md ← full component status matrix
+├── database/tables.md             ← table catalog with row counts
 ├── prompts/                       ← master restructuring prompt
 └── private/                       ← gitignored (sensitive)
 ```
@@ -168,4 +174,4 @@ All documents follow these conventions:
 
 ---
 
-*Last updated: 2026-09-18*
+*Last updated: 2026-09-19*
