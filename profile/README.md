@@ -88,7 +88,7 @@ or commercial reuse.
 | Role | Name | Notes |
 |------|------|-------|
 | Founder & Technical Lead | Peter Lianpi (`@peterlianpi`) | Architecture, engineering, execution |
-| Strategic Advisor & Business/Impact Mentor | Shwe Yee | Advisory only — no ownership; public listing subject to ongoing consent |
+| Strategic Advisor & Business/Impact Mentor | Peter | Advisory only — no ownership; public listing subject to ongoing consent |
 
 ## Research & documentation
 

@@ -52,7 +52,7 @@ Status
 |-------|---------|
 | Decision ID | DEC-002 |
 | Date | 2026-09-18 |
-| Decision | Shwe Yee is Strategic Advisor & Business/Impact Mentor; not co-founder/owner |
+| Decision | Peter is Strategic Advisor & Business/Impact Mentor; not co-founder/owner |
 | Context | Weekly mentoring; informal commercial discussion exists separately |
 | Options considered | Co-founder labeling vs advisor labeling |
 | Evidence | Mentoring doc; master restructuring prompt |

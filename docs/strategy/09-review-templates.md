@@ -150,7 +150,7 @@ status: current
 - [KR2]: [Risk mitigation plan]
 
 ## 9. Advisor Update
-- Meeting with Shwe Yee: [Date]
+- Meeting with Peter: [Date]
 - Key decisions discussed: [List]
 - Action items: [List]
 
@@ -175,7 +175,7 @@ status: current
 
 ## Date: [Date]
 ## Duration: [X] minutes
-## Attendees: Peter, Shwe Yee
+## Attendees: Peter, Peter
 
 ---
 
@@ -274,7 +274,7 @@ status: current
 | 3 | [Action] | [Person] | [Date] |
 
 ## 10. Advisor Feedback
-- Shwe Yee's assessment: [Summary]
+- Peter's assessment: [Summary]
 - Key recommendations: [List]
 - Peter's response: [Summary]
 ```
@@ -285,6 +285,6 @@ status: current
 
 - **Weekly:** Every Friday, 15-20 minutes
 - **Monthly:** Last day of month, 30-45 minutes
-- **Quarterly:** Last day of quarter, 60-90 minutes (with Shwe Yee)
+- **Quarterly:** Last day of quarter, 60-90 minutes (with Peter)
 - **Store:** All reviews in docs/reviews/ directory
 - **Version:** Date-stamp each review (e.g., `2026-09-25-weekly.md`)

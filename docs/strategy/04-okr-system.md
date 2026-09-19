@@ -68,7 +68,7 @@ Canonical: [`mission-vision.md`](mission-vision.md).
 | KR1.2: Achieve 90%+ accuracy on Zolai NLP benchmark (syllable, grammar, translation) | No benchmark | 90%+ on 5 tasks | Month 6 | Published benchmark results |
 | KR1.3: Submit 1 workshop paper (AmericasNLP/LowResNLP) | 0 papers | 1 submission | Month 9 | Submission confirmation |
 | KR1.4: Join Masakhane + 1 other NLP community | 0 communities | 2 communities | Month 2 | Active membership evidence |
-| KR1.5: Establish advisory board (3+ members) | 1 active mentor/advisor (Shwe Yee); 0 formal board | 3+ formal advisors/board | Month 3 | Signed advisory agreements |
+| KR1.5: Establish advisory board (3+ members) | 1 active mentor/advisor (Peter); 0 formal board | 3+ formal advisors/board | Month 3 | Signed advisory agreements |
 
 ### Objective 2: Build Community Trust and Engagement
 **Strategic Pillar:** Community & Literacy + Sustainability & Governance

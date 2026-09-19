@@ -146,4 +146,4 @@ status: current
 
 ---
 
-*This founder OKR is self-assessed monthly and reviewed with Shwe Yee quarterly.*
+*This founder OKR is self-assessed monthly and reviewed with Peter quarterly.*

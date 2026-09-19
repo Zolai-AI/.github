@@ -11,7 +11,7 @@ status: current
 
 **Period:** 2026-09-18 to 2026-12-18
 **Founder:** Peter Pau Sian Lian (@peterlianpi)
-**Advisor:** Shwe Yee (Strategic / Business & Impact)
+**Advisor:** Peter (Strategic / Business & Impact)
 
 ---
 
@@ -66,10 +66,10 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR4.1: Write white paper draft (5-8 pages) | Not written | Complete draft | Peter + Shwe Yee | docs/research/whitepaper-draft.md | Medium — time-intensive |
+| KR4.1: Write white paper draft (5-8 pages) | Not written | Complete draft | Peter + Peter | docs/research/whitepaper-draft.md | Medium — time-intensive |
 | KR4.2: Complete budget justification | No budget | Full line-item budget | Peter | Budget document | Low |
 | KR4.3: Identify 3 target grant programs | 0 programs | 3 programs researched | Peter | Grant research document | Low |
-| KR4.4: Draft 1 grant application | Not started | Complete draft | Peter + Shwe Yee | Application draft | High — requires all prerequisites |
+| KR4.4: Draft 1 grant application | Not started | Complete draft | Peter + Peter | Application draft | High — requires all prerequisites |
 | KR4.5: Establish organizational entity | Personal project | Entity registered or fiscal sponsor identified | Peter | Legal documents | High — legal complexity |
 
 **Success Criteria:** White paper draft complete, budget justified, 1 grant application draft ready.
@@ -96,10 +96,10 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | Risk |
 |----|----------|--------|-------|----------|------|
-| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter + Shwe Yee | Interview transcripts | High — outreach required |
-| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter + Shwe Yee | Business model canvas | Low |
-| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter + Shwe Yee | Financial document | Medium — assumptions needed |
-| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or documented “none” | Peter + Shwe Yee | Legal/ethical review | High — requires legal advice |
+| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter + Peter | Interview transcripts | High — outreach required |
+| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter + Peter | Business model canvas | Low |
+| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter + Peter | Financial document | Medium — assumptions needed |
+| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or documented “none” | Peter + Peter | Legal/ethical review | High — requires legal advice |
 | KR6.5: Identify 3 potential partners (academic/community) | 0 partners | 3 identified, 1 contacted | Peter | Partner research document | Medium |
 
 **Success Criteria:** Business model validated, financial projections exist, undefined commercial arrangement assessed (private).

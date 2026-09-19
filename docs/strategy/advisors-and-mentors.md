@@ -8,10 +8,10 @@ status: CONFIRMED
 
 # Advisors & Mentors
 
-## Shwe Yee
+## Peter
 
 ```text
-Name: Shwe Yee
+Name: Peter
 Role: Strategic Advisor & Business/Impact Mentor
 Status: Active
 Cadence: Weekly

@@ -1,6 +1,6 @@
 ---
 title: "Zolai AI — Weekly Mentoring System"
-description: "Structured weekly mentoring sessions with Shwe Yee (Strategic Advisor)"
+description: "Structured weekly mentoring sessions with Peter (Strategic Advisor)"
 author: "OpenCode orchestra conductor"
 created: 2026-09-18
 last_updated: 2026-09-18
@@ -10,7 +10,7 @@ status: current
 # Zolai AI — Weekly Mentoring System
 
 **Mentee:** Peter Pau Sian Lian (@peterlianpi)
-**Mentor:** Shwe Yee (Strategic Advisor / Business & Impact Mentor)
+**Mentor:** Peter (Strategic Advisor / Business & Impact Mentor)
 **Cadence:** Weekly, 60 minutes
 **Platform:** Video call (Zoom/Google Meet) or in-person
 
@@ -18,13 +18,13 @@ status: current
 
 ## Role Boundaries
 
-### Shwe Yee IS:
+### Peter IS:
 - **Strategic Advisor** — provides business strategy, impact measurement, grant readiness guidance
 - **Business & Impact Mentor** — helps Peter think through commercialization, partnerships, sustainability
 - **Accountability Partner** — keeps Peter focused on high-impact work
 - **Network Connector** — introduces Peter to relevant contacts
 
-### Shwe Yee is NOT:
+### Peter is NOT:
 - **Co-founder** — unless a separate formal agreement is made (see 08-25-percent-arrangement.md)
 - **Technical co-lead** — technical decisions remain with Peter
 - **Employee** — this is advisory, not employment
@@ -32,7 +32,7 @@ status: current
 
 ### Decision Authority:
 - **Peter decides:** All technical, product, and day-to-day operational decisions
-- **Shwe Yee advises:** Business strategy, grant applications, partnerships, community engagement
+- **Peter advises:** Business strategy, grant applications, partnerships, community engagement
 - **Both decide:** Strategic direction (discussed, Peter has final say)
 - **Formal agreement needed:** Any equity, revenue sharing, or commercial arrangement
 
@@ -87,10 +87,10 @@ status: current
 - [ ] Evidence collected for any KRs completed this week
 - [ ] Top 3 priorities for next week identified
 - [ ] One specific topic for Deep Dive segment
-- [ ] Any decisions needing Shwe Yee's input
+- [ ] Any decisions needing Peter's input
 - [ ] Questions or concerns written down
 
-### Shwe Yee Should Review:
+### Peter Should Review:
 - [ ] Previous meeting action items
 - [ ] OKR progress since last meeting
 - [ ] Any relevant market/funder news
@@ -105,7 +105,7 @@ status: current
 
 ## Attendees
 - Peter Pau Sian Lian
-- Shwe Yee
+- Peter
 
 ## Duration
 - [Start time] – [End time]
@@ -122,8 +122,8 @@ status: current
 ## Action Items
 | # | Action | Owner | Due Date | Status |
 |---|--------|-------|----------|--------|
-| 1 | [Action] | [Peter/Shwe] | [Date] | [ ] |
-| 2 | [Action] | [Peter/Shwe] | [Date] | [ ] |
+| 1 | [Action] | [Peter] | [Date] | [ ] |
+| 2 | [Action] | [Peter] | [Date] | [ ] |
 
 ## OKR Updates
 - [Any KRs that moved from red→yellow or yellow→green]
@@ -135,7 +135,7 @@ status: current
 
 ## Session Rating
 - Peter: [1-5]
-- Shwe Yee: [1-5]
+- Peter: [1-5]
 ```
 
 ---
@@ -145,15 +145,15 @@ status: current
 ### When Peter Faces a Decision:
 
 1. **Is this a technical decision?**
-   - Yes → Peter decides (Shwe Yee provides input only if asked)
+   - Yes → Peter decides (Peter provides input only if asked)
    - No → Continue to step 2
 
 2. **Is this a business/strategy decision?**
-   - Yes → Discuss with Shwe Yee, Peter decides
+   - Yes → Discuss with Peter, Peter decides
    - No → Continue to step 3
 
 3. **Is this a partnership/funder decision?**
-   - Yes → Shwe Yee advises, Peter decides
+   - Yes → Peter advises, Peter decides
    - No → Peter decides independently
 
 4. **Does this affect the undefined commercial arrangement?** (see stub `08-25-percent-arrangement.md` — no public terms)
@@ -161,8 +161,8 @@ status: current
    - No → Peter decides
 
 ### Escalation Rules:
-- **If Peter is stuck on a decision for > 1 week:** Escalate to Shwe Yee
-- **If Shwe Yee disagrees with Peter's direction:** Shwe Yee states concern, Peter decides
+- **If Peter is stuck on a decision for > 1 week:** Escalate to Peter
+- **If Peter disagrees with Peter's direction:** Peter states concern, Peter decides
 - **If there's a conflict of interest:** Disclose immediately, recuse from decision
 - **If a decision requires legal/expert advice:** Refer to qualified professional
 
@@ -192,14 +192,14 @@ status: current
 ### Preferred Channels:
 - **Urgent questions:** WhatsApp/SMS (response within 24 hours)
 - **Non-urgent questions:** Email or GitHub comment (response within 48 hours)
-- **Updates:** Weekly email summary (Peter sends to Shwe Yee every Friday)
+- **Updates:** Weekly email summary (Peter sends to Peter every Friday)
 - **Documents:** GitHub repo (all docs version-controlled)
 
 ### Weekly Update Email Template:
 ```
 Subject: Zolai AI Weekly Update — [DATE]
 
-Hi Shwe Yee,
+Hi Peter,
 
 ## This Week
 - [Key achievement 1]

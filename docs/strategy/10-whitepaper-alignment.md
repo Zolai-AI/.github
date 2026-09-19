@@ -23,9 +23,9 @@ status: current
 | 4. Data & Resources | Database description, corpus, methodology | O2 (Data), O3 (Evaluation) | Peter | 6h | Not started |
 | 5. Methods | RAG pipeline, NLP tools, approach | O1 (Research), O2 (Data) | Peter | 8h | Not started |
 | 6. Evaluation | Benchmark results, metrics, comparison | O3 (Evaluation) | Peter | 6h | Not started |
-| 7. Community Impact | Engagement plan, literacy strategy, cultural grounding | O5 (Community), O6 (Business) | Peter + Shwe | 4h | Not started |
+| 7. Community Impact | Engagement plan, literacy strategy, cultural grounding | O5 (Community), O6 (Business) | Peter + Peter | 4h | Not started |
 | 8. Ethical Considerations | Data sovereignty, CARE principles, governance | O4 (Grants), O5 (Community) | Peter | 3h | Not started |
-| 9. Future Work | Roadmap, grant plans, scaling | O4 (Grants), O6 (Business) | Peter + Shwe | 3h | Not started |
+| 9. Future Work | Roadmap, grant plans, scaling | O4 (Grants), O6 (Business) | Peter + Peter | 3h | Not started |
 | 10. References | 20+ citations | O1 (Research) | Peter | 2h | Not started |
 | **TOTAL** | | | | **46h** | |
 
@@ -73,7 +73,7 @@ status: current
 | 9-10 | Write Section 6 (Evaluation) | 6 | 6h | Month 3 |
 | 11-12 | Write Sections 7-9 (Impact, Ethics, Future) | 7-9 | 10h | Month 3 |
 | 13-14 | References, formatting, review | 10 | 4h | Month 3 |
-| 15-16 | Shwe Yee review, revisions | All | 4h | Month 3 |
+| 15-16 | Peter review, revisions | All | 4h | Month 3 |
 | **TOTAL** | | | **62h** | **Month 3** |
 
 ---

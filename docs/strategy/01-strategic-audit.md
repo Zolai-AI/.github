@@ -943,7 +943,7 @@ Research partnerships     → Publication                → Evaluation benchmar
 | Evidence base | ⚠️ Almost Ready | Need evaluation data | High |
 | Innovation | ✅ Ready | None | — |
 | Feasibility | ⚠️ Almost Ready | Need team/partners | High |
-| Team | ⚠️ Partial | Founder + strategic advisor (Shwe Yee); still need collaborators / board | Critical |
+| Team | ⚠️ Partial | Founder + strategic advisor (Peter); still need collaborators / board | Critical |
 | Community need | ⚠️ Almost Ready | Need community validation | High |
 | Community participation | ❌ Missing | No active contributors | Critical |
 | Methodology | ⚠️ Almost Ready | Need evaluation framework | High |

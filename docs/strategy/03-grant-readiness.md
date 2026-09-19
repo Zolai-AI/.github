@@ -25,7 +25,7 @@ source: "01-strategic-audit.md"
 | Evidence base | ⚠️ Almost | 3.3M rows, claimed 98.49% syllable accuracy (**UNDER REVIEW**), 466+ tests | Need evaluation data | High |
 | Innovation | ✅ Ready | RAG-first approach, Foundation Engine, MCP integration | None | — |
 | Feasibility | ⚠️ Almost | Strong tech foundation, solo founder | Need team/partners | High |
-| Team | ⚠️ Partial | Founder + active strategic advisor (Shwe Yee); still solo engineering | Need collaborators / partners | Critical |
+| Team | ⚠️ Partial | Founder + active strategic advisor (Peter); still solo engineering | Need collaborators / partners | Critical |
 | Community need | ⚠️ Almost | Zomi speakers lack digital tools | Need community validation | High |
 | Community participation | ❌ Missing | No active contributors, no community engagement | Critical gap | Critical |
 | Methodology | ⚠️ Almost | Good NLP pipeline, limited evaluation | Need evaluation framework | High |

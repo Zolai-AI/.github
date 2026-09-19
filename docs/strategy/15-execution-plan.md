@@ -98,7 +98,7 @@ status: current
 ### Quarter Success Criteria
 - [ ] Evaluation framework operational
 - [ ] Benchmark results documented
-- [ ] White paper draft reviewed by Shwe Yee
+- [ ] White paper draft reviewed by Peter
 - [ ] 5+ community members engaged
 - [ ] Advisory board active
 - [ ] 1+ grant application ready

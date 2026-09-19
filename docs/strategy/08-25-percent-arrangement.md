@@ -16,7 +16,7 @@ Sensitive details and open questions are kept in **local private governance** (`
 ### Public facts only
 
 - Founder & Technical Lead: Peter Lianpi
-- Strategic Advisor & Business/Impact Mentor: Shwe Yee (advisory; no documented ownership)
+- Strategic Advisor & Business/Impact Mentor: Peter (advisory; no documented ownership)
 - Any commercial terms require a formal written agreement before they affect grants, public materials, or product claims
 
 ### Related
