@@ -2,7 +2,7 @@
 title: "Zolai AI — Grant System"
 description: "Grant strategy and opportunity tracking"
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 status: UNDER REVIEW
 ---
 
@@ -19,7 +19,7 @@ Never claim suitability without checking actual funder requirements.
 | Artifact | Path | Status |
 |----------|------|--------|
 | Strategy | [`strategy.md`](strategy.md) | UNDER REVIEW stub |
-| Opportunity database | [`opportunities.md`](opportunities.md) | PLANNED |
+| Opportunity database | [`opportunities.md`](opportunities.md) | UNDER REVIEW — 7 programs tracked, 4 verified not eligible |
 
 ## Legacy
 

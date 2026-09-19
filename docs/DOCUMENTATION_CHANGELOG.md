@@ -7,6 +7,18 @@ last_updated: 2026-09-19
 
 # Documentation Changelog
 
+## 2026-09-19 — Documentation Architecture v2.6 (index enrichment + stub fills)
+
+| Field | Value |
+|-------|-------|
+| Version | Documentation Architecture v2.6 |
+| What changed | README indexes updated for v2.5 docs; business/grants/whitepaper README fixes; theory-of-change OKR alignment; community interview + consent templates |
+| Why | Complete Master Prompt SS12-14, SS29 — index discoverability + stub enrichment |
+| Source | Master prompt + v2.5 component additions |
+| Reviewer | Pending (Founder + Advisor) |
+
+---
+
 ## 2026-09-19 — Documentation Architecture v2.5 (Master Prompt continuation)
 
 | Field | Value |

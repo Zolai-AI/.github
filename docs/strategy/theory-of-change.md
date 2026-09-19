@@ -2,7 +2,7 @@
 title: "Zolai AI — Theory of Change"
 description: "Causal chain from language data to long-term ecosystem impact"
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-09-19
 status: UNDER REVIEW
 ---
 
@@ -43,6 +43,20 @@ For each stage: inputs · activities · outputs · outcomes · impact · assumpt
 | Long-term ecosystem | Org capacity | Partnerships, roles | Institutions & tools | Durable ecosystem | Language tech commons | Succession possible | Founder bottleneck | Org roadmap progress |
 
 **Status:** UNDER REVIEW — refine indicators with advisor; link each KR in [`okr.md`](okr.md).
+
+## OKR alignment
+
+| Theory of Change stage | Primary OKR | Key Results |
+|------------------------|-------------|-------------|
+| Language Data | O2: Data & Language Infrastructure | KR2.1–KR2.6 |
+| Knowledge Infrastructure | O2: Data & Language Infrastructure | KR2.1–KR2.6 |
+| Research & Evaluation | O1: Research Foundation + O3: Evaluation | KR1.1–KR1.5, KR3.1–KR3.5 |
+| Language Technology | O2 + O3 | KR2.1, KR3.1–KR3.5 |
+| Literacy & Education | O5: Literacy & Community | KR5.1–KR5.5 |
+| Community Adoption | O5: Literacy & Community | KR5.1–KR5.5 |
+| Measurable Impact | O3: Evaluation | KR3.1–KR3.5 |
+| Sustainable Products / Funding | O4: White Paper & Grant Readiness | KR4.1–KR4.5 |
+| Long-term ecosystem | O6: Sustainable Business | KR6.1–KR6.5 |
 
 ## Related
 
