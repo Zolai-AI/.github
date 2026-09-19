@@ -1,7 +1,11 @@
 # Zolai — local artifacts / secrets
 .env
 .env.*
+.env.local
+.env.production
 *.env.gemini
+*secret*
+*.key
 __pycache__/
 *.pyc
 node_modules/

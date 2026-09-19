@@ -87,7 +87,7 @@
 
 ## API Access
 - **Endpoint:** `https://pcore-brain.peterlianpi.site/v1/chat/completions`
-- **Auth:** `x-api-key: REMOVED`
+- **Auth:** `x-api-key: ***REDACTED***`
 - **Task:** `task: "zolai"`
 
 ## Knowledge Base
