@@ -2,6 +2,7 @@
 title: "Restructuring report — Batch 1 (Foundation)"
 description: "Partial final report A–L for Documentation Architecture v2"
 created: 2026-09-18
+last_updated: 2026-09-19
 status: UNDER REVIEW
 ---
 

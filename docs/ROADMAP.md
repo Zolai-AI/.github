@@ -5,6 +5,7 @@ created: 2026-09-07
 last_updated: 2026-09-19
 maintainer: "Peter Pau Sian Lian (@peterlianpi)"
 source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
+status: CONFIRMED
 ---
 
 # Zolai-AI Roadmap

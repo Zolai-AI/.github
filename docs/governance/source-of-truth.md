@@ -45,7 +45,7 @@ When documents conflict, prefer the **canonical** path below. Older files become
 | Contributors / roles | [`docs/governance/contributors.md`](contributors.md) | — |
 | Data governance | [`docs/governance/data-governance.md`](data-governance.md) | `context/DATA_GOVERNANCE.md` |
 | Public vs private | [`docs/governance/public-vs-private.md`](public-vs-private.md) | — |
-| Architecture | [`docs/architecture/`](../architecture/) · [`status.md`](../architecture/status.md) | per-repo `AGENTS.md` / `context/` |
+| Architecture | [`docs/architecture/status.md`](../architecture/status.md) · [`01-architecture-overview.md`](../architecture/01-architecture-overview.md) | per-repo `AGENTS.md` / `context/` |
 | Database | [`docs/database/README.md`](../database/README.md) + live `data/zolai.db` | `docs/audits/`, `docs/reports/DATABASE_INTEGRITY_REPORT.md`, `docs/reports/SOURCE_OF_TRUTH_MATRIX.md` |
 | Org profile (GitHub) | [`profile/README.md`](../../profile/README.md) | — |
 | Nested repos | Each repo’s `AGENTS.md` + README | Do not glob `**/` from monorepo root |

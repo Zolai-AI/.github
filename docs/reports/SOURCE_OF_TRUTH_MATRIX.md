@@ -1,3 +1,11 @@
+---
+title: "Zolai-AI Source of Truth Matrix"
+description: "Data-domain source-of-truth and lineage matrix"
+created: 2026-09-19
+last_updated: 2026-09-19
+status: CONFIRMED
+---
+
 # Zolai-AI Source of Truth Matrix
 
 > Generated: 2026-09-10

@@ -1,3 +1,11 @@
+---
+title: "Zolai-AI Org Infrastructure"
+description: "Org repository layout, CI/CD, and deployment infrastructure"
+created: 2026-09-19
+last_updated: 2026-09-19
+status: CONFIRMED
+---
+
 # Zolai-AI Org Infrastructure
 
 ## Repos (org layout)

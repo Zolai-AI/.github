@@ -1,6 +1,7 @@
 ---
 title: "Restructuring report — FINAL (Architecture v2)"
 created: 2026-09-18
+last_updated: 2026-09-19
 status: CONFIRMED
 closed: 2026-09-18
 orchestra: "CLI start/stop fixed; Cursor Task enum still lacks orchestra-* → conductor fallback when needed"

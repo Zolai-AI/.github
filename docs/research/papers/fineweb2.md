@@ -2,6 +2,7 @@
 title: "Reading notes — FineWeb2"
 status: ANNOTATED
 date: 2026-09-18
+last_updated: 2026-09-19
 ---
 
 # FineWeb2 (verified + annotated)

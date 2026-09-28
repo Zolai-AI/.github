@@ -1,3 +1,11 @@
+---
+title: "Zolai-AI — ChatGPT Context Report (2026-09-12)"
+description: "Legacy ChatGPT context snapshot — superseded by CHATGPT_REPORT_2026-09-19.md"
+created: 2026-09-19
+last_updated: 2026-09-19
+status: DEPRECATED
+---
+
 # Zolai-AI — ChatGPT Context Report
 ## Generated: 2026-09-12 08:18
 

@@ -37,6 +37,8 @@ Label uncertain information **UNKNOWN** / **UNDER REVIEW**.
 | Peer language communities | [`peer-language-communities.md`](peer-language-communities.md) | UNDER REVIEW — active refs 2026-09-18 |
 | AmericasNLP 2026 outline | [`americasnlp-2026-outline.md`](americasnlp-2026-outline.md) | DRAFT — confirm CFP fit |
 | Papers reviewed | [`papers/`](papers/) | FineWeb2 + HPLT annotated |
+| Reading notes — FineWeb2 | [`papers/fineweb2.md`](papers/fineweb2.md) | ANNOTATED (arXiv:2506.20920) |
+| Reading notes — HPLT v2 | [`papers/hplt-v2.md`](papers/hplt-v2.md) | ANNOTATED (arXiv:2503.10267) |
 | Benchmarks | [`benchmarks.md`](benchmarks.md) | PLANNED (KR3.2) |
 | Methodology | [`methodology.md`](methodology.md) | PLANNED (KR1.4) |
 

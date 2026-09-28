@@ -2,6 +2,7 @@
 title: "Data path aliases (post history scrub)"
 status: CONFIRMED
 created: 2026-09-18
+last_updated: 2026-09-19
 ---
 
 # Data path aliases

@@ -2,6 +2,7 @@
 title: Zolai AI Documentation
 description: Master documentation index for the Zolai AI project
 last_updated: 2026-09-19
+status: CONFIRMED
 ---
 
 # Zolai AI — Documentation
@@ -29,6 +30,8 @@ last_updated: 2026-09-19
 | [Business strategy](business/strategy.md) | Target users, hypotheses, revenue models | ✅ |
 | [Model routing](context/model-routing.md) | Best Cursor model per agent role | ✅ |
 | [Doc changelog](DOCUMENTATION_CHANGELOG.md) | Architecture v2 history | ✅ |
+| [Infrastructure](INFRASTRUCTURE.md) | Org repo layout, CI/CD, deploy | ✅ |
+| [AI tools & attribution](AI_TOOLS_AND_ATTRIBUTION.md) | Tooling + model attribution policy | ✅ |
 
 ### Detailed strategy (preserved)
 
@@ -116,16 +119,28 @@ docs/
 | Document | Description | Size |
 |----------|-------------|------|
 | [GitHub Org Plan](planning/01-github-org-plan.md) | Organization structure plan | 4KB |
+| [Remaining gaps & recommendations](planning/remaining-gaps-recommendations.md) | Gap register follow-ups + recommended actions | 4KB |
+| [Completion Plan (waves)](planning/COMPLETION_PLAN.md) | 7-wave plan to close all remaining gaps | 8KB |
 
 ## Reports
 
 | Document | Description | Size |
 |----------|-------------|------|
 | [Ecosystem Audit V2](reports/ECOSYSTEM_AUDIT_V2.md) | Full ecosystem audit report | 40KB |
-| [ChatGPT Integration Report](reports/CHATGPT_INTEGRATION_REPORT.md) | ChatGPT integration assessment | 7KB |
+| [ChatGPT Integration Report](reports/CHATGPT_INTEGRATION_REPORT.md) | ChatGPT integration assessment | 8KB |
 | [Database Integrity Report](reports/DATABASE_INTEGRITY_REPORT.md) | Database integrity check | 4KB |
 | [Integration Matrix](reports/INTEGRATION_MATRIX.md) | Cross-repo integration map | 2KB |
 | [Source of Truth Matrix](reports/SOURCE_OF_TRUTH_MATRIX.md) | Data source tracking | 3KB |
+| [Restructuring Report v2.5](RESTRUCTURING_REPORT_v2.5.md) | v2.5 documentation architecture report | 12KB |
+| [Restructuring Report — Batch 1](reports/RESTRUCTURING_REPORT_BATCH1.md) | Batch 1 restructuring fixes | 4KB |
+| [Restructuring Report — Batch 2](reports/RESTRUCTURING_REPORT_BATCH2.md) | Batch 2 restructuring fixes | 4KB |
+| [Restructuring Report — Batch 3](reports/RESTRUCTURING_REPORT_BATCH3.md) | Batch 3 restructuring fixes | 4KB |
+| [Restructuring Report — Final](reports/RESTRUCTURING_REPORT_FINAL.md) | Final A–L restructuring report | 4KB |
+| [ChatGPT Report v3.0 (2026-09-19)](reports/CHATGPT_REPORT_2026-09-19.md) | Latest ChatGPT context report | 12KB |
+| [ChatGPT Report (2026-09-12)](reports/CHATGPT_REPORT_2026-09-12.md) | Deprecated — superseded by 2026-09-19 | 12KB |
+| [ChatGPT Report (2026-09-11)](reports/CHATGPT_REPORT_2026-09-11.md) | Deprecated — superseded by 2026-09-19 | 12KB |
+| [ChatGPT Context Report (legacy)](reports/CHATGPT_CONTEXT_REPORT.md) | Deprecated — superseded by 2026-09-19 | 4KB |
+| [OKR Evidence (2026-09-18)](reports/OKR_EVIDENCE_2026-09-18.md) | OKR evidence pointers | 4KB |
 
 ---
 

@@ -17,6 +17,9 @@ Canonical home for roles, data rules, and documentation authority.
 | [data-governance.md](data-governance.md) | Ownership, provenance, licensing | UNDER REVIEW |
 | [license-audit-checklist.md](license-audit-checklist.md) | KR2.3 source license inventory | UNDER REVIEW |
 | [public-vs-private.md](public-vs-private.md) | What may be published | CONFIRMED |
+| [credits-license-inventory.md](credits-license-inventory.md) | License / provenance inventory (KR2.3) | UNDER REVIEW |
+| [permission-outreach.md](permission-outreach.md) | Permission letters (Bible, dictionaries) | UNDER REVIEW |
+| [data-path-aliases.md](data-path-aliases.md) | Canonical path aliases for data | CONFIRMED |
 
 **Related (legacy / detailed):**
 
