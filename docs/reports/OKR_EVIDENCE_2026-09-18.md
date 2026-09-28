@@ -66,4 +66,4 @@ Tracker: `docs/grants/opportunities.md`
 | KR | Status / evidence |
 |----|-------------------|
 | KR2.1 | **CLOSED** — `pytest 1010 passed / 5 skipped / 0 failed` (2026-09-18) |
-| KR2.2 | Strategy drafted → `../governance/backup-strategy.md` (implementation pending) |
+| KR2.2 | SCRIPT WRITTEN + TESTED (2026-09-28): `scripts/backup-zolai.sh`; test run evidence in `data/backups/backup.log`; cron install pending founder |
