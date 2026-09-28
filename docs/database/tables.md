@@ -2,7 +2,7 @@
 title: "Zolai AI — Database Table Catalog"
 description: "Complete table inventory with row counts, classification, and relationships"
 created: 2026-09-19
-last_updated: 2026-09-19
+last_updated: 2026-09-28
 status: CONFIRMED
 source: "context/architecture.md + live DB audit 2026-09-13"
 ---
@@ -27,6 +27,12 @@ source: "context/architecture.md + live DB audit 2026-09-13"
 | Access | WAL enables concurrent multi-process reads |
 
 The `*_import` tables are staging copies produced by the JSONL pipeline on the way to the canonical tables below. `jsonl_import_log` (92 rows) records each import run. The canonical tables are the primary source of truth; `*_import` tables are intermediate.
+
+## Staging & archive status (2026-09-28)
+
+26 `*_import` staging tables hold ~1.79M intermediate rows.
+**Archive plan:** [`../database/archive-plan.md`](archive-plan.md) — PROPOSED, awaiting founder approval.
+Nothing deleted yet.
 
 ---
 
