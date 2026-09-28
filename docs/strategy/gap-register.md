@@ -20,7 +20,7 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 | Evaluation coverage thin | High | OPEN | KR3.* — 33 smoke tests; need 100+ |
 | Security follow-ups | Medium | OPEN | `docs/audits/04-security-audit.md` |
 | Observability / DevOps maturity | Medium | OPEN | Per-repo |
-| Backup automation | High | OPEN | KR2.2 — strategy drafted in `../governance/backup-strategy.md` |
+| Backup automation | High | **MITIGATING** | KR2.2 — script written + tested; cron install pending founder |
 
 ## Data
 
