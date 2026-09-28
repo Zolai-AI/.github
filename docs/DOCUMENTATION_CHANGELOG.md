@@ -8,6 +8,18 @@ status: CONFIRMED
 
 # Documentation Changelog
 
+## 2026-09-19 — Gap fixes + completion plan (Wave 1 + Wave 3 pre-staging)
+
+| Field | Value |
+|-------|-------|
+| Version | Documentation Architecture v2.7 |
+| What changed | Fixed broken links + missing frontmatter (14 status, 27 dates); linked 14 orphan docs; created governance README; completion plan (7 waves); filled 5 stubs (hypotheses, methodology, backup, personas, license checklist); refreshed gap register (KR2.1 CLOSED); grant budget template; interview scripts |
+| Why | Close documentation gaps and stage Wave 3 execution |
+| Source | `docs/planning/COMPLETION_PLAN.md` Waves 1 + 3 |
+| Reviewer | Pending (Founder) |
+
+---
+
 ## 2026-09-19 — Documentation Architecture v2.6 (index enrichment + stub fills)
 
 | Field | Value |

@@ -1,5 +1,24 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-09-19 (Session 2 — Gap fixes + completion plan)
+
+- **Wave 1 DONE:** broken links fixed (0 remaining), 14 missing `status:` + 27 missing `last_updated:` frontmatter added, 14 orphan docs linked, `governance/README.md` completed. (commits `d6fd12a`, `b832155`)
+- **Wave 3 pre-staged:** `business/hypotheses.md` (BH1-6 + validation plan), `research/methodology.md` (KR1.4 DRAFT), `governance/backup-strategy.md` (KR2.2), `community/target-users.md` (4 personas), `license-audit-checklist.md` (4-phase), `grants/budget-template.md` (KR4.2), `community/interview-scripts.md` (KR5.1). (commits `3badc18`, `bf7859c`)
+- **Gap register refreshed:** KR2.1 CLOSED (1010 passed); statuses aligned; wave mapping added.
+- **Advisor sweep:** Shwe Yee reclassified as whitepaper ideas contributor; advisor position vacant across 22+ files. (commits `7849319`, `b832155`)
+- **Completion plan:** `docs/planning/COMPLETION_PLAN.md` — 7 waves, Days 1–90.
+- **All repos pulled + fixed:** corrupted objects removed, upstreams set.
+
+### Auto-continue next
+
+1. **Wave 2 (founder):** review `mission-vision.md`, `theory-of-change.md`, `gap-register.md`, `business/strategy.md`, `whitepaper.md`
+2. Implement backup script (KR2.2) — code task in zolai-core
+3. Send permission outreach letters (KR2.3)
+4. Recruit 5 speakers → run interviews (KR5.1)
+5. Read 10 papers + annotate (KR1.1)
+
+---
+
 ## 2026-09-19 (Session — Master Prompt v2.5 + v2.6 + name fix + ChatGPT report)
 
 - **Documentation Architecture v2.5** (commit `dec5ad2`): component status matrix (§15), DB table catalog (§16), business strategy (§26), roadmap OKR enrichment (§25), project-context update (§22), final A–L restructuring report (§33).
