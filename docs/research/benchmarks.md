@@ -2,12 +2,19 @@
 title: "Benchmarks"
 status: PLANNED
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-09-28
 ---
 
 # Benchmarks (KR3.2)
 
 **Status:** PLANNED — task defs + gold rules drafted; scores not published until locked splits + scripts.
+
+> **Eval fixtures exist (KR3.1, 2026-09-28):** `zolai-core/zolai/eval/sets/eval_v1_*.jsonl`
+> — 110 DB-derived cases (40 ZVS + 40 QA + 30 translation), scored by
+> `zolai.eval.cli` (`zvs_compliance_rate` / `translation_bleu` / `translation_chrf` /
+> `qa_term_recall`). They are **regression fixtures**, not speaker-validated gold —
+> KR3.3 gold sets and the KR3.2 locked splits above are still required before any
+> published score.
 
 ## Tasks (v0)
 

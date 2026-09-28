@@ -2,7 +2,7 @@
 title: "Zolai AI — Documentation & Plan Completion (Phased)"
 description: "Wave-by-wave plan to close all remaining gaps"
 created: 2026-09-19
-last_updated: 2026-09-19
+last_updated: 2026-09-28
 status: CONFIRMED
 ---
 
@@ -63,7 +63,7 @@ status: CONFIRMED
 
 | # | Task | OKR | KR | Effort |
 |---|------|-----|-----|--------|
-| 4.1 | Create 100+ evaluation test cases | O3 | KR3.1 | 24h |
+| 4.1 | ✅ DONE — Create 100+ evaluation test cases (eval_v1: 110 cases) | O3 | KR3.1 | 24h |
 | 4.2 | Design benchmark methodology | O3 | KR3.2 | 8h |
 | 4.3 | Distribute syllable annotation to speakers | O3 | KR3.3 | 4h + wait |
 | 4.4 | Run baseline evaluations (5 tasks) | O3 | KR3.4 | 16h |
