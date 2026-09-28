@@ -9,7 +9,7 @@ source: "context/architecture.md + live DB audit 2026-09-13"
 
 # Zolai AI — Database Table Catalog
 
-> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows)
+> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.3GB, 101 tables, ~3.3M rows)
 > **Access pattern:** `config.paths.data / "zolai.db"` — all reads from DB, not JSONL files
 > **Cross-refs:** [`database/README.md`](README.md) · [`architecture/status.md`](../architecture/status.md)
 
@@ -21,7 +21,7 @@ source: "context/architecture.md + live DB audit 2026-09-13"
 |--------|-------|
 | Engine | SQLite (WAL mode) |
 | Busy timeout | 30000 ms |
-| Tables | 99 |
+| Tables | 101 |
 | Total rows | ~3.3M |
 | Disk size | ~2.3 GB |
 | Access | WAL enables concurrent multi-process reads |
@@ -117,6 +117,23 @@ Nothing deleted yet.
 | `gemini_model_results` | 0 | All model outputs for history tracking | (empty — not yet populated) |
 | `jsonl_import_log` | 92 | Import run tracking | source, timestamp, row_count |
 
+### 2.12 Evaluation (DB-first eval sets, added 2026-09-28)
+
+Runtime source of truth for `zolai-core` evaluation fixtures — the bundled
+`zolai/eval/sets/*.jsonl` files are import/export interchange only
+(`python scripts/eval/seed_eval_sets.py`,
+`zolai-eval --import/--export`).
+
+| Table | Rows | Purpose | Key Columns |
+|-------|-----:|---------|-------------|
+| `eval_sets` | 3 | Eval set catalogue (`smoke` 36, `eval_v1` 110, `benchmark_qa` 127) | set_name, case_count, updated_at |
+| `eval_cases` | 273 | One evaluation case per row; JSON payload stored verbatim | set_name, kind, payload, ordinal, is_active |
+
+Lanes (`eval_cases.kind` CHECK): `zvs` (40+12), `qa` (40+12+127),
+`translation` (30+12). Additive DDL created idempotently by
+`zolai-core/zolai/eval/store.py::ensure_schema`; no existing table is
+modified. See [`../research/benchmarks.md`](../research/benchmarks.md).
+
 ---
 
 ## 3. Staging / Import Tables (`*_import`)
@@ -186,7 +203,7 @@ data_audit_log.table_name → any canonical table (change tracking)
 | `gemini_model_results` empty | Low | Intended for history tracking; not yet populated |
 | `*_import` staging tables not cleaned | Medium | 13 import tables; should be archived after pipeline validation |
 | Missing correction/feedback tables | Medium | No table for user corrections, community feedback, or speaker validation |
-| Missing evaluation tables | Medium | No gold-standard test sets in DB; planned for KR3.* |
+| Missing evaluation tables | ~~Medium~~ **RESOLVED 2026-09-28** | `eval_sets` (3) + `eval_cases` (273) added — DB-first eval store; speaker-validated **gold** sets still pending (KR3.3) |
 | Some tables may overlap | Low | Consolidation candidates listed above |
 
 ---

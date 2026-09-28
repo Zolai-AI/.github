@@ -16,6 +16,35 @@ last_updated: 2026-09-28
 > KR3.3 gold sets and the KR3.2 locked splits above are still required before any
 > published score.
 
+## DB-first eval flow (2026-09-28)
+
+The eval sets live in the canonical DB — `eval_sets` + `eval_cases` in
+`data/zolai.db` are the **runtime source of truth**; the `*.jsonl` fixtures in
+`zolai-core/zolai/eval/sets/` are import/export interchange (CI fixtures,
+byte-identical on round-trip).
+
+| Set | Cases | Lanes |
+|-----|------:|-------|
+| `smoke` | 36 | 12 zvs + 12 qa + 12 translation |
+| `eval_v1` | 110 | 40 zvs + 40 qa + 30 translation |
+| `benchmark_qa` | 127 | 127 qa (static Q/A payloads) |
+
+```bash
+cd zolai-core
+python scripts/eval/seed_eval_sets.py                # seed all 3 sets (idempotent)
+python scripts/eval/seed_eval_sets.py --dry-run      # schema + counts, no writes
+
+python -m zolai.eval.cli --set db:smoke   --baseline report/eval-baseline.json --gate
+python -m zolai.eval.cli --set db:eval_v1 --baseline report/eval-baseline.json --gate --json
+
+# JSONL ⇄ DB interchange
+python -m zolai.eval.cli --import zolai/eval/sets/smoke_qa.jsonl --as smoke
+python -m zolai.eval.cli --set db:smoke --export report/smoke.jsonl
+```
+
+`--set db` merges every active set; `--set db:<name>` selects one. Evidence:
+`db:eval_v1` gate exit 0 with `1.0/1.0/1.0/1.0`; `docs/database/tables.md` §2.12.
+
 ## Tasks (v0)
 
 | Task ID | Description | Metric | Gold source |
