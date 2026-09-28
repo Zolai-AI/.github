@@ -88,7 +88,7 @@ or commercial reuse.
 | Role | Name | Notes |
 |------|------|-------|
 | Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) | Architecture, engineering, execution |
-| Strategic Advisor & Business/Impact Mentor | External Advisor Candidate | Advisory only — no ownership; public listing subject to ongoing consent |
+| Whitepaper Ideas Contributor | External Advisor Candidate | Ideas for whitepaper only — advisor role not confirmed |
 
 ## Research & documentation
 

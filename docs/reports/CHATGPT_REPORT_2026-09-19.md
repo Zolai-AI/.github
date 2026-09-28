@@ -20,7 +20,8 @@ version: 3.0
 **It is NOT** an LLM-training project. The strategy is: build trustworthy data + knowledge infrastructure + evaluation first; specialized model training can follow when the foundation is reliable.
 
 **Founder:** Peter Pau Sian Lian (@peterlianpi)
-**Advisor:** External Advisor Candidate — Strategic Advisor & Business/Impact Mentor (advisory only)
+**Advisor:** Vacant (pending confirmation)
+**Whitepaper ideas:** External Advisor Candidate (contributor)
 **Live:** https://zolai.space/ · https://mcp.zolai.space/mcp
 
 ---

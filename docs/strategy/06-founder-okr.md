@@ -146,4 +146,4 @@ status: current
 
 ---
 
-*This founder OKR is self-assessed monthly and reviewed with External Advisor Candidate quarterly.*
+*This founder OKR is self-assessed monthly and reviewed quarterly (reviewer TBD — advisor position vacant).*
