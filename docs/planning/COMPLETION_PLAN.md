@@ -45,7 +45,7 @@ status: CONFIRMED
 
 | # | Task | OKR | KR | Effort |
 |---|------|-----|-----|--------|
-| 3.1 | Read 10 low-resource NLP papers + annotate | O1 | KR1.1 | 20h |
+| 3.1 | Read 10 low-resource NLP papers + annotate — ✅ DONE (2026-09-28) | O1 | KR1.1 | 20h |
 | 3.2 | Join Masakhane (intro post) | O1 | KR1.2 | 2h |
 | 3.3 | Create annotated bibliography (20+ papers) | O1 | KR1.5 | 10h |
 | 3.4 | Write research methodology section | O1 | KR1.4 | 4h |

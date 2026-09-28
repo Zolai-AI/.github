@@ -35,9 +35,9 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Structured literature review | Medium | IN PROGRESS | 2 papers annotated (FineWeb2, HPLT); 8 UNKNOWN citations remain |
+| Structured literature review | Medium | IN PROGRESS | 6→10 papers annotated; all 10 claimed-citation rows resolved (8 VERIFIED papers + 1 LREC tutorial + 1 PARTIAL playbook) 2026-09-28 |
 | Published methodology / benchmarks | High | OPEN | KR1.4 DRAFT exists; KR3.2 PLANNED |
-| Annotated bibliography (20+) | Medium | OPEN | KR1.5 — 2 annotated so far |
+| Annotated bibliography (20+) | Medium | OPEN | 10 papers annotated (KR1.1 ✅); KR1.5 needs 20+ |
 | Masakhane membership | Medium | OPEN | KR1.2 — not joined |
 
 ## Community
