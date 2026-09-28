@@ -2,7 +2,7 @@
 title: "Literature review (canonical entry)"
 description: "Evidence hierarchy applied to legacy research synthesis — verify before citing"
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-09-28
 status: UNDER REVIEW
 ---
 
@@ -39,16 +39,16 @@ Copied from `context/RESEARCH_SYNTHESIS.md` References. Each row needs DOI/URL b
 
 | # | Claimed citation string | Verification | Primary URL |
 |---|-------------------------|--------------|-------------|
-| 1 | ACL 2025: "Building Better: Avoiding Pitfalls in Developing Language Resources" | UNKNOWN | — |
+| 1 | ACL 2025: "Building Better: Avoiding Pitfalls in Developing Language Resources" | **VERIFIED** (2026-09-28) — real title: *Building Better: Avoiding Pitfalls in Developing Language Resources when Data is Scarce* (Ousidhoum, Beloucif & Mohammad, ACL 2025 Main, pp. 8881–8894) | https://aclanthology.org/2025.acl-long.435/ · arXiv https://arxiv.org/abs/2410.12691 |
 | 2 | LaTeLL 2026: "Low-Resource, High-Impact: Building Corpora…" | UNKNOWN | — |
 | 3 | LREC 2026: "SynthLLM: …" | UNKNOWN | — |
 | 4 | ComputEL 2026: "Revitalising Endangered Languages…" | UNKNOWN | — |
-| 5 | AmericasNLP 2026: "IndigiEval: …" | UNKNOWN | — |
+| 5 | AmericasNLP 2026: "IndigiEval: …" | **VERIFIED** (2026-09-28) — real title: *IndigiEval: Evaluating LLMs in North American Indigenous Languages* (Mainzinger & Brixey, AmericasNLP 2026, pp. 82–94) | https://aclanthology.org/2026.americasnlp-6.8/ |
 | 6 | FineWeb2: "One Pipeline to Scale Them All" (HuggingFace) | **VERIFIED** (2026-09-18) | https://arxiv.org/abs/2506.20920 · dataset https://huggingface.co/datasets/HuggingFaceFW/fineweb-2 |
-| 7 | DCAD-2000: "Data Cleaning as Anomaly Detection" (NeurIPS 2025) | UNKNOWN | — |
+| 7 | DCAD-2000: "Data Cleaning as Anomaly Detection" (NeurIPS 2025) | **VERIFIED** (2026-09-28) — real title: *DCAD-2000: A Multilingual Dataset across 2000+ Languages with Data Cleaning as Anomaly Detection* (Shen et al., NeurIPS 2025 Datasets & Benchmarks Track) | https://arxiv.org/abs/2502.11546 · proceedings https://proceedings.neurips.cc/paper_files/paper/2025/hash/856c772bb61761dbb9bc1f4c0542ccca-Abstract-Datasets_and_Benchmarks_Track.html · OpenReview https://openreview.net/forum?id=Hqoywh28zV |
 | 8 | HPLT v2: "Expanded Massive Multilingual Dataset" | **VERIFIED** (2026-09-18) — real title: *An Expanded Massive Multilingual Dataset for High-Performance Language Technologies (HPLT)* | https://arxiv.org/abs/2503.10267 · ACL https://aclanthology.org/2025.acl-long.854/ · data https://hplt-project.org/datasets/v2.0 |
 | 9 | Masakhane Playbook: "Open Data Collection Playbook for African Languages" | **PARTIAL** (2026-09-18) — community playbook materials exist; exact title string not matched as a single formal pub | https://www.masakhane.io/ · guidelines https://github.com/masakhane-io/masakhane-community/blob/master/dataset-creation-guidelines.md · related BoF PDF https://seyyaw.github.io/files/AfricaNLP_BoF.pdf |
-| 10 | NüshuRescue: "Reviving Endangered Languages with AI" (COLING 2025) | UNKNOWN | — |
+| 10 | NüshuRescue: "Reviving Endangered Languages with AI" (COLING 2025) | **VERIFIED** (2026-09-28) — real title: *NüshuRescue: Reviving the Endangered Nüshu Language with AI* (Yang, Ma & Vosoughi, COLING 2025, pp. 7020–7034) | https://aclanthology.org/2025.coling-main.468/ · arXiv https://arxiv.org/abs/2412.00218 |
 
 **Action (KR1.1 / KR1.5):** Continue verifying UNKNOWN rows; move VERIFIED entries into reading notes under `papers/` when annotated.
 
@@ -58,6 +58,10 @@ Copied from `context/RESEARCH_SYNTHESIS.md` References. Each row needs DOI/URL b
 |----|------|--------------|------------------------|
 | FineWeb2 | arXiv:2506.20920 | **ANNOTATED** [`papers/fineweb2.md`](papers/fineweb2.md) | Per-language filtering, dedup, rebalance |
 | HPLT v2 | arXiv:2503.10267 | **ANNOTATED** [`papers/hplt-v2.md`](papers/hplt-v2.md) | Pipeline documentation + mono/parallel release practice |
+| Building Better | ACL 2025 — [2025.acl-long.435](https://aclanthology.org/2025.acl-long.435/) | **ANNOTATED** [`papers/building-better.md`](papers/building-better.md) | Annotation ethics, cultural suitability, credit for data workers |
+| IndigiEval | AmericasNLP 2026 — [2026.americasnlp-6.8](https://aclanthology.org/2026.americasnlp-6.8/) | **ANNOTATED** [`papers/indigieval.md`](papers/indigieval.md) | Small-scale community-runnable LLM eval; hallucinated orthography |
+| DCAD-2000 | NeurIPS 2025 D&B — [arXiv:2502.11546](https://arxiv.org/abs/2502.11546) | **ANNOTATED** [`papers/dcad-2000.md`](papers/dcad-2000.md) | Data cleaning as anomaly detection (threshold-free) |
+| NüshuRescue | COLING 2025 — [2025.coling-main.468](https://aclanthology.org/2025.coling-main.468/) | **ANNOTATED** [`papers/nushurescue.md`](papers/nushurescue.md) | Endangered-language revitalization with tiny gold seed + validators |
 
 ## Peer / program references (not papers; CONFIRMED URLs)
 
