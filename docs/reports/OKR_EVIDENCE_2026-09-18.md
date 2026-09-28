@@ -69,3 +69,4 @@ Tracker: `docs/grants/opportunities.md`
 | KR2.1 | **CLOSED** — `pytest 1010 passed / 5 skipped / 0 failed` (2026-09-18) |
 | KR2.2 | SCRIPT WRITTEN + TESTED (2026-09-28): `scripts/backup-zolai.sh`; test run evidence in `data/backups/backup.log`; cron install pending founder |
 | KR2.4 | Archive plan DRAFTED 2026-09-28: 26 import tables / 1.79M rows identified; plan at docs/database/archive-plan.md; execution pending approval |
+| KR3.1 | eval_v1 set created 2026-09-28: 110 cases (40 ZVS + 40 QA + 30 translation), DB-derived — TARGET MET (100+) — `zolai-core/zolai/eval/sets/eval_v1_*.jsonl`; CLI gate 1.0/1.0/1.0/1.0, 26 eval tests pass |

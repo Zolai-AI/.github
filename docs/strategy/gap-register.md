@@ -17,7 +17,7 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
 | Broken / flaky tests (zolai-core) | High | **CLOSED** | KR2.1 ✅ 1010 passed / 0 failed (2026-09-18) |
-| Evaluation coverage thin | High | OPEN | KR3.* — 33 smoke tests; need 100+ |
+| Evaluation coverage thin | High | **MITIGATING** | KR3.1 ✅ eval_v1 (110 cases); gold sets still needed (KR3.3) |
 | Security follow-ups | Medium | OPEN | `docs/audits/04-security-audit.md` |
 | Observability / DevOps maturity | Medium | OPEN | Per-repo |
 | Backup automation | High | **MITIGATING** | KR2.2 — script written + tested; cron install pending founder |
