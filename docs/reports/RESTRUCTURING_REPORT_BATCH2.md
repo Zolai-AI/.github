@@ -2,6 +2,7 @@
 title: "Restructuring report — Batch 2"
 description: "Profile sync, architecture status, roadmap OKRs, model routing"
 created: 2026-09-18
+last_updated: 2026-09-19
 status: UNDER REVIEW
 ---
 

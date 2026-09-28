@@ -1,3 +1,11 @@
+---
+title: "Zolai Database — Full Integrity Report"
+description: "Database integrity, language coverage, and version tracking report"
+created: 2026-09-19
+last_updated: 2026-09-19
+status: CONFIRMED
+---
+
 # Zolai Database — Full Integrity Report
 **Generated:** 2026-09-12 18:29 (updated 2026-09-18 with canonical stats)
 **Database:** 2285.9 MB (canonical: data/zolai.db)

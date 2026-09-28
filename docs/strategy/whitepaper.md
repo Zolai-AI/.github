@@ -3,6 +3,7 @@ title: "Zolai AI: RAG-First Bilingual AI for Low-Resource Language Preservation"
 subtitle: "A Technical White Paper for the Tedim Zolai Language"
 author: "Peter Pau Sian Lian"
 created: 2026-09-18
+last_updated: 2026-09-19
 status: UNDER REVIEW
 version: 0.1
 ---

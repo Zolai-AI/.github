@@ -2,6 +2,7 @@
 title: "AmericasNLP 2026 — method paper outline (DRAFT)"
 status: UNDER REVIEW
 created: 2026-09-18
+last_updated: 2026-09-19
 deadline_note: "Workshop ~3–4 Jul 2026 ACL San Diego; submissions ~15–20 Apr 2026 — confirm on https://americasnlp.org/2026_workshop.html"
 ---
 

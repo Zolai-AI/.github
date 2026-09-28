@@ -3,6 +3,7 @@ title: "Documentation Architecture v2 — Changelog"
 description: "History of major documentation restructures"
 created: 2026-09-18
 last_updated: 2026-09-19
+status: CONFIRMED
 ---
 
 # Documentation Changelog

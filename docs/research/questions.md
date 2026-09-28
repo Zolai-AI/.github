@@ -2,6 +2,7 @@
 title: "Research questions (stub)"
 status: UNDER REVIEW
 created: 2026-09-18
+last_updated: 2026-09-19
 ---
 
 # Research Questions

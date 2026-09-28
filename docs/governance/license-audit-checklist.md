@@ -2,6 +2,7 @@
 title: "License / provenance audit checklist (KR2.3)"
 status: UNDER REVIEW
 created: 2026-09-18
+last_updated: 2026-09-19
 ---
 
 # License & Provenance Audit (KR2.3)

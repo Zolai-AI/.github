@@ -1,3 +1,11 @@
+---
+title: "Zolai-AI Integration Matrix"
+description: "Cross-repository dependency and data-flow matrix for the 10-repo ecosystem"
+created: 2026-09-19
+last_updated: 2026-09-19
+status: CONFIRMED
+---
+
 # Zolai-AI Integration Matrix
 
 > Generated: 2026-09-10
