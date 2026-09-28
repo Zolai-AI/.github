@@ -3,10 +3,12 @@ title: "Zolai AI — Advisor Meeting Log"
 description: "Weekly mentoring decisions and actions"
 created: 2026-09-18
 last_updated: 2026-09-18
-status: CONFIRMED
+status: PLANNED
 ---
 
 # Advisor Meeting Log
+
+**STATUS: NOT CONFIRMED — advisor position vacant. Log template for when/if an advisor is confirmed.**
 
 Template for each entry:
 
@@ -32,7 +34,7 @@ Template for each entry:
 |-------|---------|
 | Date | 2026-09-18 |
 | Topic | Literature & grant evidence hygiene |
-| Advice | (capture in next live mentoring session) |
+| Advice | (pending — no confirmed advisor) |
 | Evidence | Legacy synthesis references; grant readiness |
 | Decision | DEC-006 — UNKNOWN until primary sources verified |
 | Action | Reading log + official grant page checks |
@@ -46,7 +48,7 @@ Template for each entry:
 |-------|---------|
 | Date | 2026-09-18 |
 | Topic | Master documentation & context restructuring |
-| Advice | (to capture in next live mentoring session) |
+| Advice | (pending — no confirmed advisor) |
 | Evidence | Master prompt in `docs/prompts/`; existing `docs/strategy/*` |
 | Decision | Begin canonical docs OS: governance, SoT, private commercial stub, context |
 | Action | Implement foundation batch; continue research/grants/community scaffolds |
