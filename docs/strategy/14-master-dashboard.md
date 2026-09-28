@@ -57,7 +57,7 @@ status: current
 | 7 | Join Masakhane | Peter Pau Sian Lian | O1: KR1.2 | 8h | 🔴 Not started |
 | 8 | Recruit 3 advisors | Peter Pau Sian Lian | O1: KR1.5 | 16h | 🔴 Not started |
 | 9 | Conduct 5 speaker interviews | Peter Pau Sian Lian | O5: KR5.1 | 16h | 🔴 Not started |
-| 10 | Write white paper draft | Peter Pau Sian Lian + Shwe Yee | O4: KR4.1 | 62h | 🔴 Not started |
+| 10 | Write white paper draft | Peter Pau Sian Lian | O4: KR4.1 | 62h | 🔴 Not started |
 
 ---
 

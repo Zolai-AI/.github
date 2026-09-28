@@ -88,7 +88,7 @@ or commercial reuse.
 | Role | Name | Notes |
 |------|------|-------|
 | Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) | Architecture, engineering, execution |
-| Strategic Advisor & Business/Impact Mentor | Shwe Yee | Advisory only — no ownership; public listing subject to ongoing consent |
+| Whitepaper Ideas Contributor | Shwe Yee | Ideas for whitepaper only — advisor role not confirmed |
 
 ## Research & documentation
 

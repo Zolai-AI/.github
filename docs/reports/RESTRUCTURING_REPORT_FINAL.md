@@ -36,7 +36,8 @@ Canonical agent context: `docs/context/project-context.md` + `model-routing.md` 
 ## D. Governance
 
 - Founder: Peter Pau Sian Lian
-- Advisor: Shwe Yee (non-ownership)
+- Advisor: Vacant (pending confirmation)
+- Whitepaper ideas: Shwe Yee (not in an advisory role)
 - Commercial arrangement: undefined, private
 - Decisions: DEC-001 … DEC-006
 

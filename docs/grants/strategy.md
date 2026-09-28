@@ -33,7 +33,8 @@ last_updated: 2026-09-18
 | Legal entity / fiscal sponsor | OPEN |
 | License / data rights completeness | OPEN |
 | Academic / community partnerships | OPEN |
-| Advisor / mentoring | **MITIGATING** — Shwe Yee active (advisory only); legacy “no advisors” is outdated |
+| Advisor / mentoring | **OPEN** — position vacant, pending confirmation; legacy “no advisors” is outdated |
+| Whitepaper ideas | Shwe Yee contributes whitepaper ideas only — not in an advisory role |
 | Publications / track record | OPEN |
 
 ## Phased approach (from legacy — still PROPOSED)

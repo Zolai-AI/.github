@@ -15,7 +15,8 @@ Do **not** assign ownership, equity, or executive authority based solely on cont
 | Role | Person / entity | Authority |
 |------|-----------------|-----------|
 | Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) | Technical architecture, engineering, product execution, documentation, partnerships prep |
-| Strategic Advisor & Business/Impact Mentor | Shwe Yee | Advisory only; weekly cadence; **no** documented ownership/management authority |
+| Strategic Advisor & Business/Impact Mentor | **Vacant — pending confirmation** | Position not confirmed |
+| Whitepaper Ideas Contributor | Shwe Yee | Ideas for whitepaper only; not advisor/mentor |
 
 ## Role definitions
 
@@ -34,7 +35,7 @@ Do **not** assign ownership, equity, or executive authority based solely on cont
 
 ## Explicit non-roles (unless documented otherwise)
 
-Shwe Yee is **not** currently classified as: Co-Founder, Co-Owner, Investor, Executive, Business Partner, or Equity Holder.
+Shwe Yee is a **whitepaper ideas contributor** (whitepaper only) and is **not** classified as an advisor or mentor, nor as Co-Founder, Co-Owner, Investor, Executive, Business Partner, or Equity Holder. The advisor/mentor position is vacant — pending confirmation.
 
 ## Organizational snapshot
 
@@ -43,7 +44,7 @@ Shwe Yee is **not** currently classified as: Co-Founder, Co-Owner, Investor, Exe
 ```text
 Founder & Technical Lead
         │
-        └── Strategic Advisor / Business & Impact Mentor
+        └── Strategic Advisor / Business & Impact Mentor — VACANT (pending confirmation)
 ```
 
 **Potential future (PLANNED — not filled)**

@@ -72,7 +72,7 @@ docs/
 | [**Master OKR System**](strategy/04-okr-system.md) | 7 strategic pillars, annual OKRs, quarterly OKRs, scoring, prioritization framework | 12KB |
 | [**90-Day OKR**](strategy/05-90-day-okr.md) | 6 immediate objectives with baselines, targets, owners, evidence, risks (Sep-Dec 2026) | 8KB |
 | [**Founder OKR**](strategy/06-founder-okr.md) | 7 skill areas for Peter Pau Sian Lian — research, writing, grants, business, product, communication, technical | 9KB |
-| [**Weekly Mentoring**](strategy/07-weekly-mentoring.md) | Meeting structure with Shwe Yee — 6×10-min segments, role boundaries, decision framework | 7KB |
+| [**Weekly Mentoring**](strategy/07-weekly-mentoring.md) | Meeting template — PLANNED, not confirmed | 7KB |
 | [Commercial arrangement stub](strategy/08-25-percent-arrangement.md) | Public stub only — details private / pending clarification | stub |
 | [**Review Templates**](strategy/09-review-templates.md) | Weekly, monthly, quarterly review templates | 8KB |
 | [**White Paper Alignment**](strategy/10-whitepaper-alignment.md) | White paper sections mapped to OKRs with timeline | 4KB |

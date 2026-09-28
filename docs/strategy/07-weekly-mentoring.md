@@ -1,17 +1,21 @@
 ---
 title: "Zolai AI — Weekly Mentoring System"
-description: "Structured weekly mentoring sessions with Shwe Yee (Strategic Advisor)"
+description: "Weekly mentoring meeting template — PLANNED, not confirmed"
 author: "OpenCode orchestra conductor"
 created: 2026-09-18
-last_updated: 2026-09-18
-status: current
+last_updated: 2026-09-28
+status: PLANNED
 ---
 
 # Zolai AI — Weekly Mentoring System
 
+> **STATUS: NOT CONFIRMED — mentoring relationship not yet established. Shwe Yee contributes whitepaper ideas only.**
+> This file is a **PLANNED** template kept for use if/when a mentoring relationship is confirmed.
+
 **Mentee:** Peter Pau Sian Lian (@peterlianpi)
-**Mentor:** Shwe Yee (Strategic Advisor / Business & Impact Mentor)
-**Cadence:** Weekly, 60 minutes
+**Mentor:** [TBD — position vacant, pending confirmation]
+**Whitepaper ideas contributor:** Shwe Yee (ideas only; not confirmed in a mentoring role)
+**Cadence:** Not yet scheduled — PLANNED weekly, 60 minutes
 **Platform:** Video call (Zoom/Google Meet) or in-person
 
 ---

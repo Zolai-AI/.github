@@ -69,7 +69,8 @@ version: "Documentation Architecture v2.5"
 | Area | Status | Notes |
 |------|--------|-------|
 | Founder | Peter Pau Sian Lian — unchanged | Solo founder |
-| Advisor | Shwe Yee — Strategic Advisor & Business/Impact Mentor | Advisory only (DEC-002) |
+| Advisor | Vacant (pending confirmation) | Position not filled |
+| Whitepaper Ideas | Shwe Yee | Contributor only — not an advisor |
 | Contributors | Limited active | Solo founder risk (HIGH) |
 | Commercial arrangement | Undefined, private (DEC-003) | Not resolved |
 | Legal entity | Not established | Blocker for grants (KR4.5) |

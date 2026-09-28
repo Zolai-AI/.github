@@ -51,10 +51,10 @@ status: current
 
 | KR | Baseline | Target | Owner | Evidence | OKR Link |
 |----|----------|--------|-------|----------|----------|
-| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter Pau Sian Lian + Shwe Yee | Interview transcripts | O5: KR5.1 (community) |
-| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter Pau Sian Lian + Shwe Yee | Business model canvas | O6: KR6.2 |
-| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter Pau Sian Lian + Shwe Yee | Financial document | O4: KR4.2 (grants) |
-| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or "none" | Peter Pau Sian Lian + Shwe Yee | Private governance + stub | — ([08 stub](08-25-percent-arrangement.md)) |
+| KR6.1: Complete customer discovery (10 interviews) | 0 interviews | 10+ interviews | Peter Pau Sian Lian | Interview transcripts | O5: KR5.1 (community) |
+| KR6.2: Document 3 potential revenue streams | 0 streams | 3 documented | Peter Pau Sian Lian | Business model canvas | O6: KR6.2 |
+| KR6.3: Create 12-month financial projection | Not created | Complete projection | Peter Pau Sian Lian | Financial document | O4: KR4.2 (grants) |
+| KR6.4: Assess undefined commercial arrangement (private) | Undefined | Assessment complete or "none" | Peter Pau Sian Lian | Private governance + stub | — ([08 stub](08-25-percent-arrangement.md)) |
 | KR6.5: Identify 3 potential partners | 0 partners | 3 identified | Peter Pau Sian Lian | Partner research | O4: KR4.4 (grants) |
 
 ---
