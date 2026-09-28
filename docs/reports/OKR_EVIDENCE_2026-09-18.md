@@ -52,7 +52,7 @@ Tracker: `docs/grants/opportunities.md`
 |------|----------|
 | Peer communities | `docs/research/peer-language-communities.md` |
 | FineWeb2 / HPLT | Annotated under `docs/research/papers/` |
-| KR1.1 papers | 6 papers annotated (2 previous + 4 new, 2026-09-28); target 10 — in progress |
+| KR1.1 papers | 10/10 papers annotated (2026-09-28) — TARGET MET |
 | AmericasNLP outline | `docs/research/americasnlp-2026-outline.md` |
 
 ## KR2.3 — License
