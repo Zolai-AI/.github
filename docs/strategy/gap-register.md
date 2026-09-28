@@ -2,7 +2,7 @@
 title: "Zolai AI — Gap Register"
 description: "Prioritized gaps across technical, data, research, community, business, org, founder"
 created: 2026-09-18
-last_updated: 2026-09-19
+last_updated: 2026-09-28
 status: CONFIRMED
 ---
 
@@ -29,7 +29,7 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 | Full license / provenance audit | High | IN PROGRESS | KR2.3 — 4-phase checklist; Phase 1 done |
 | Duplicate / non-canonical tables | Medium | OPEN | KR2.4; consolidation protocol |
 | Correction / user-feedback tables missing | Medium | OPEN | Data SoT matrix |
-| Bible & dictionary permission clarity | High | OPEN | Permission outreach drafted, not sent |
+| Bible & dictionary permission clarity | High | OPEN | Permission letters DRAFTED (3 letters, 6 targets) — founder review + send pending |
 
 ## Research
 
