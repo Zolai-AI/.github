@@ -3,7 +3,7 @@ title: "License / provenance audit checklist (KR2.3)"
 description: "4-phase license & provenance audit — inventory done, rights resolution in progress"
 status: IN PROGRESS
 created: 2026-09-18
-last_updated: 2026-09-19
+last_updated: 2026-09-28
 ---
 
 # License & Provenance Audit (KR2.3)
@@ -29,7 +29,7 @@ last_updated: 2026-09-19
 
 ### Phase 2: Rights resolution (IN PROGRESS)
 - [ ] For each source: copyright holder, license text/URL, permission letter, allowed uses
-- [ ] Send permission outreach letters (see [`permission-outreach.md`](permission-outreach.md)) — S1a/b/c (Bible), S2/S3 (dictionaries)
+- [ ] Permission letters drafted — pending founder review + send (see [`permission-outreach.md`](permission-outreach.md)) — S1a/b/c (Bible), S2/S3 (dictionaries), S8/S9 (grammar)
 - [ ] Record replies in `docs/private/` + update inventory status
 - [ ] Classify each row: CLEAR / RESTRICTED / UNKNOWN / DENIED
 
