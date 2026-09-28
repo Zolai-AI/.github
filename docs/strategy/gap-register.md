@@ -2,8 +2,8 @@
 title: "Zolai AI — Gap Register"
 description: "Prioritized gaps across technical, data, research, community, business, org, founder"
 created: 2026-09-18
-last_updated: 2026-09-18
-status: UNDER REVIEW
+last_updated: 2026-09-19
+status: CONFIRMED
 ---
 
 # Gap Register
@@ -16,43 +16,46 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Broken / flaky tests (zolai-core) | High | OPEN | 90-day KR2.1 |
-| Evaluation coverage thin | High | OPEN | KR3.* |
+| Broken / flaky tests (zolai-core) | High | **CLOSED** | KR2.1 ✅ 1010 passed / 0 failed (2026-09-18) |
+| Evaluation coverage thin | High | OPEN | KR3.* — 33 smoke tests; need 100+ |
 | Security follow-ups | Medium | OPEN | `docs/audits/04-security-audit.md` |
 | Observability / DevOps maturity | Medium | OPEN | Per-repo |
+| Backup automation | High | OPEN | KR2.2 — strategy drafted in `../governance/backup-strategy.md` |
 
 ## Data
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Full license / provenance audit | High | OPEN | KR2.3; CREDITS |
+| Full license / provenance audit | High | IN PROGRESS | KR2.3 — 4-phase checklist; Phase 1 done |
 | Duplicate / non-canonical tables | Medium | OPEN | KR2.4; consolidation protocol |
 | Correction / user-feedback tables missing | Medium | OPEN | Data SoT matrix |
-| Bible & dictionary permission clarity | High | OPEN | Data governance |
+| Bible & dictionary permission clarity | High | OPEN | Permission outreach drafted, not sent |
 
 ## Research
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Structured literature review | High | OPEN | `docs/research/` |
-| Published methodology / benchmarks | High | OPEN | KR1.*, KR3.* |
-| Annotated bibliography | Medium | OPEN | KR1.5 |
+| Structured literature review | Medium | IN PROGRESS | 2 papers annotated (FineWeb2, HPLT); 8 UNKNOWN citations remain |
+| Published methodology / benchmarks | High | OPEN | KR1.4 DRAFT exists; KR3.2 PLANNED |
+| Annotated bibliography (20+) | Medium | OPEN | KR1.5 — 2 annotated so far |
+| Masakhane membership | Medium | OPEN | KR1.2 — not joined |
 
 ## Community
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Speaker interviews | High | OPEN | KR5.1 |
-| Consent / contributor governance published | Medium | OPEN | KR5.2–5.3 |
-| Annotation pilot | Medium | OPEN | KR5.4 |
+| Speaker interviews (5) | High | OPEN | KR5.1 — template ready in `../community/README.md` |
+| Consent framework | Medium | DRAFTED | KR5.2 — templates in `../community/README.md` |
+| Annotation pilot | Medium | OPEN | KR5.4 — brief drafted; needs speakers |
+| Advisor position vacant | Medium | OPEN | Not confirmed; Shwe Yee = whitepaper ideas only |
 
 ## Business
 
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
-| Customer discovery | High | OPEN | KR6.1 — hypothesis only |
-| Revenue model validation | Medium | OPEN | KR6.2 — hypothesis |
-| Paid pilot | Low | OPEN | Premature until discovery |
+| Customer discovery (10 interviews) | High | OPEN | KR6.1 — personas drafted in `../community/target-users.md` |
+| Revenue model validation | Medium | OPEN | KR6.2 — 6 hypotheses, all UNVALIDATED |
+| Paid pilot | Low | DEFERRED | Premature until discovery |
 
 ## Organization
 
@@ -60,7 +63,8 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 |-----|----------|--------|--------------|
 | Legal entity / fiscal sponsor | High | OPEN | KR4.5 |
 | Undefined commercial arrangement | High | OPEN | Private record; DEC-003 |
-| Grant application draft | Medium | OPEN | KR4.4 |
+| Grant application draft | Medium | OPEN | KR4.4 — budget template exists in `03-grant-readiness.md` |
+| Whitepaper review + finalization | Medium | DRAFTED | v0.1 (411 lines); needs founder review |
 
 ## Founder
 
@@ -75,3 +79,15 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 - Strategic audit: `01-strategic-audit.md`
 - Grant readiness: `03-grant-readiness.md`
 - Audits: `docs/audits/`
+
+## Wave mapping
+
+See [`../planning/COMPLETION_PLAN.md`](../planning/COMPLETION_PLAN.md) for wave-by-wave closure plan.
+
+| Wave | Closes these gaps |
+|------|-------------------|
+| Wave 3 (Days 5–14) | Backup, license audit, interviews, Masakhane |
+| Wave 4 (Days 14–30) | Evaluation coverage, methodology, benchmarks |
+| Wave 5 (Days 30–45) | Whitepaper, grant draft, entity |
+| Wave 6 (Days 30–60) | Discovery, revenue, annotation pilot |
+| Wave 7 (Days 60–90) | Re-score + close |

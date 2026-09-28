@@ -7,7 +7,12 @@ status: CONFIRMED
 
 # OKR evidence slice (2026-09-18)
 
-## KR2.1 — Tests (zolai-core) — CLOSED this session
+> **Status:** LIVE TRACKING — updated as KRs complete.
+> **Next review:** Wave 7 (Day 85) per [`../planning/COMPLETION_PLAN.md`](../planning/COMPLETION_PLAN.md)
+
+## KR2.1 — Tests (zolai-core) — CLOSED (2026-09-18)
+
+**Evidence:** `pytest 1010 passed / 5 skipped / 0 failed` (2026-09-18)
 
 ```bash
 cd zolai-core && python -m pytest tests/ -q --tb=no
@@ -55,3 +60,10 @@ Tracker: `docs/grants/opportunities.md`
 - Inventory: `docs/governance/credits-license-inventory.md`
 - Outreach: `docs/governance/permission-outreach.md`
 - Path aliases: `docs/governance/data-path-aliases.md`
+
+## KR notes
+
+| KR | Status / evidence |
+|----|-------------------|
+| KR2.1 | **CLOSED** — `pytest 1010 passed / 5 skipped / 0 failed` (2026-09-18) |
+| KR2.2 | Strategy drafted → `../governance/backup-strategy.md` (implementation pending) |
