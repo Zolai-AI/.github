@@ -1,7 +1,7 @@
 ---
 title: "OKR evidence note — KR2.1 / grants / literature / KR2.3 / peers"
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-09-28
 status: CONFIRMED
 ---
 
@@ -68,3 +68,4 @@ Tracker: `docs/grants/opportunities.md`
 |----|-------------------|
 | KR2.1 | **CLOSED** — `pytest 1010 passed / 5 skipped / 0 failed` (2026-09-18) |
 | KR2.2 | SCRIPT WRITTEN + TESTED (2026-09-28): `scripts/backup-zolai.sh`; test run evidence in `data/backups/backup.log`; cron install pending founder |
+| KR2.4 | Archive plan DRAFTED 2026-09-28: 26 import tables / 1.79M rows identified; plan at docs/database/archive-plan.md; execution pending approval |

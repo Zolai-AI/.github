@@ -27,7 +27,7 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 | Gap | Priority | Status | Notes / link |
 |-----|----------|--------|--------------|
 | Full license / provenance audit | High | IN PROGRESS | KR2.3 — 4-phase checklist; Phase 1 done |
-| Duplicate / non-canonical tables | Medium | OPEN | KR2.4; consolidation protocol |
+| Duplicate / non-canonical tables | Medium | **MITIGATING** | KR2.4 — archive plan drafted (26 staging tables, 1.79M rows); execution pending founder approval → [`../database/archive-plan.md`](../database/archive-plan.md) |
 | Correction / user-feedback tables missing | Medium | OPEN | Data SoT matrix |
 | Bible & dictionary permission clarity | High | OPEN | Permission letters DRAFTED (3 letters, 6 targets) — founder review + send pending |
 
