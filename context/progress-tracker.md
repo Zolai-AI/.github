@@ -1,5 +1,23 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-09-19 (Session — Master Prompt v2.5 + v2.6 + name fix + ChatGPT report)
+
+- **Documentation Architecture v2.5** (commit `dec5ad2`): component status matrix (§15), DB table catalog (§16), business strategy (§26), roadmap OKR enrichment (§25), project-context update (§22), final A–L restructuring report (§33).
+- **Name fix** (commit `58d838d`): founder "Peter Lianpi" → **Peter Pau Sian Lian** (117 occurrences); advisor "Peter" → **Shwe Yee** (17 occurrences); 22 files updated; `07-weekly-mentoring.md` disambiguated.
+- **Documentation Architecture v2.6** (commit `eda9493`): README index updates for v2.5 docs; business/grants/whitepaper README fixes; theory-of-change OKR alignment table; community interview + consent templates (PLANNED).
+- **ChatGPT context report v3.0** (commit `9ff76f5`): `docs/reports/CHATGPT_REPORT_2026-09-19.md` — 13 sections, 295 lines, replaces Sep 12 reports.
+- **Master Prompt coverage:** all 34 sections now have corresponding documents; remaining PLANNED items need human/community input (interviews, gold sets, methodology, grant drafts, legal entity).
+
+### Auto-continue next
+
+1. Founder review of ChatGPT report v3.0  
+2. Speaker interviews (KR5.1)  
+3. Gold annotation slices (KR3.2)  
+4. Grant application draft (KR4.4)  
+5. CARE mapping in data-governance + whitepaper citation scrub  
+
+---
+
 ## 2026-09-18 (Session — peer research + auto-continue queue)
 
 - Peer communities doc: [`docs/research/peer-language-communities.md`](../docs/research/peer-language-communities.md) (Masakhane, AmericasNLP, Te Hiku/CARE, LINGUA geo, NatGeo).
