@@ -93,7 +93,7 @@ See [`zolai-datasets/data/CREDITS.md`](https://github.com/Zolai-AI/zolai-dataset
 | Grants | [`docs/grants/`](docs/grants/) | Strategy + opportunity tracker (`researching`) |
 | Strategic Audit | [`docs/strategy/01-strategic-audit.md`](docs/strategy/01-strategic-audit.md) | Full ecosystem audit |
 | OKRs | [`docs/strategy/okr.md`](docs/strategy/okr.md) | Annual + 90-day OKR entry |
-| Advisors | [`docs/strategy/advisors-and-mentors.md`](docs/strategy/advisors-and-mentors.md) | Advisor roles (non-ownership) |
+| Advisors | [`docs/strategy/advisors-and-mentors.md`](docs/strategy/advisors-and-mentors.md) | Advisor position vacant; Shwe Yee = whitepaper ideas |
 | Documentation Index | [`docs/README.md`](docs/README.md) | Master documentation index |
 | AI Tools & Attribution | [`docs/AI_TOOLS_AND_ATTRIBUTION.md`](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
 

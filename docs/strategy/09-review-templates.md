@@ -149,7 +149,7 @@ status: current
 - [KR1]: [Risk mitigation plan]
 - [KR2]: [Risk mitigation plan]
 
-## 9. Advisor Update
+## 9. Advisor Update (PLANNED — position vacant)
 - Meeting with Peter: [Date]
 - Key decisions discussed: [List]
 - Action items: [List]
@@ -273,7 +273,7 @@ status: current
 | 2 | [Action] | [Person] | [Date] |
 | 3 | [Action] | [Person] | [Date] |
 
-## 10. Advisor Feedback
+## 10. Advisor Feedback (PLANNED — position vacant)
 - Peter's assessment: [Summary]
 - Key recommendations: [List]
 - Peter's response: [Summary]

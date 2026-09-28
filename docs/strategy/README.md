@@ -16,8 +16,8 @@ last_updated: 2026-09-18
 | [mission-vision.md](mission-vision.md) | Identity, mission, vision, pillars |
 | [theory-of-change.md](theory-of-change.md) | Causal chain + indicators |
 | [okr.md](okr.md) | OKR entry → 04/05/06 |
-| [advisors-and-mentors.md](advisors-and-mentors.md) | Advisor roles |
-| [advisor-log.md](advisor-log.md) | Meeting log |
+| [advisors-and-mentors.md](advisors-and-mentors.md) | Advisor vacant; whitepaper ideas |
+| [advisor-log.md](advisor-log.md) | Meeting log (PLANNED) |
 | [decisions.md](decisions.md) | Decision register |
 | [gap-register.md](gap-register.md) | Cross-cutting gaps |
 | [08-25-percent-arrangement.md](08-25-percent-arrangement.md) | Public stub only (details private) |
@@ -37,7 +37,7 @@ last_updated: 2026-09-18
 | [04-okr-system.md](04-okr-system.md) | Master OKR — pillars, annual + quarterly |
 | [05-90-day-okr.md](05-90-day-okr.md) | 90-day objectives |
 | [06-founder-okr.md](06-founder-okr.md) | Founder personal OKR |
-| [07-weekly-mentoring.md](07-weekly-mentoring.md) | Mentoring operating system |
+| [07-weekly-mentoring.md](07-weekly-mentoring.md) | Mentoring template (PLANNED, not confirmed) |
 
 ## Review, white paper, alignment
 
