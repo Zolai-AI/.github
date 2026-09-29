@@ -1,7 +1,7 @@
 ---
 title: Zolai AI Documentation
 description: Master documentation index for the Zolai AI project
-last_updated: 2026-09-19
+last_updated: 2026-09-29
 status: CONFIRMED
 ---
 
@@ -25,6 +25,7 @@ status: CONFIRMED
 | [Roadmap](ROADMAP.md) | Top-level roadmap | ✅ |
 | [Architecture status](architecture/status.md) | Implemented / Experimental / … labels | ✅ |
 | [Component status](architecture/component-status.md) | Full component status matrix (repos, NLP, learning, API) | ✅ |
+| [**Data Platform suite**](#data-platform-2026-09) | Architecture, ADRs, data model, admin, pipelines, migration (2026-09) | ✅ |
 | [Database docs](database/README.md) | Audit pointers, consolidation rule | ✅ |
 | [DB table catalog](database/tables.md) | Complete table inventory with row counts | ✅ |
 | [Business strategy](business/strategy.md) | Target users, hypotheses, revenue models | ✅ |
@@ -58,6 +59,8 @@ docs/
 │   └── business/strategy.md       ← full strategy (users, hypotheses, revenue)
 ├── architecture/ · audits/ · guides/ · planning/ · reports/
 │   └── architecture/component-status.md ← full component status matrix
+├── adr/ · data/ · admin/ · pipelines/  ← Data Platform suite (2026-09)
+│   └── planning/DATA_PLATFORM_{MIGRATION,BACKLOG}.md
 ├── database/tables.md             ← table catalog with row counts
 ├── prompts/                       ← master restructuring prompt
 └── private/                       ← gitignored (sensitive)
@@ -85,6 +88,27 @@ docs/
 | [**Master Dashboard**](strategy/14-master-dashboard.md) | Top 5 Objectives, Top 10 KRs, Top 10 Initiatives, Top 10 Risks, Top 10 Decisions | 6KB |
 | [**Execution Plan**](strategy/15-execution-plan.md) | THIS WEEK/MONTH/QUARTER/YEAR + NOT NOW list | 6KB |
 | [Roadmap](ROADMAP.md) | Top-level prioritized roadmap with current assessment | 5KB |
+
+## Data Platform (2026-09)
+
+> Full series (batches 1–3, 2026-09-29): exec verdict → tool research → 15 ADRs → design →
+> admin/pipelines runbooks → migration roadmap + backlog. Decision vocabulary:
+> KEEP/ADOPT/CONFIGURE/BUILD/INTEGRATE/DEFER/REJECT; uncertain items marked
+> **UNKNOWN / needs-founder**.
+
+| Document | Description | Status |
+|----------|-------------|:------:|
+| [Current-state audit](architecture/current-state.md) | Stores, repos, monitoring, API, jobs, gap table (G1–G15) | ✅ |
+| [Layered design](architecture/data-platform.md) | Ingestion → canonical → serving; 10 domains; v1 ship list | ✅ |
+| [Architecture overview](architecture/overview.md) · [Observability](architecture/observability.md) · [Integrations](architecture/integrations.md) | C4-lite diagrams, KEEP-stack observability, cross-repo contracts | ✅ |
+| [Tool matrix](research/data-platform-tool-matrix.md) | Every candidate tool: license, status, official URL, evidence date | ✅ |
+| [ADR-001..015](adr/ADR-001.md) | 15 accepted architecture decisions (PG target, metrics KEEP, catalog, quality harness, no orchestrator, admin, RBAC, API, …) | ✅ |
+| [Data model](data/data-model.md) | Target schema, 10 domains, OLD→NEW mapping (migrate-not-rename) | ✅ |
+| [Dataset lifecycle](data/dataset-lifecycle.md) · [Quality](data/quality.md) · [Provenance](data/provenance.md) · [Versioning](data/versioning.md) | Publish gate, rule registry, lineage, manifest+hash | ✅ |
+| [Admin IA](admin/information-architecture.md) · [Permissions](admin/permissions.md) · [Workflows](admin/workflows.md) | Thin Next.js admin nav, role×action RBAC matrix, operator flows | ✅ |
+| [Ingestion](pipelines/ingestion.md) · [Processing](pipelines/processing.md) · [Evaluation](pipelines/evaluation.md) | source→staging→canonical, batch jobs + cron, eval gates + regression policy | ✅ |
+| [Migration roadmap (Phases 0–10)](planning/DATA_PLATFORM_MIGRATION.md) | Goal/Changes/Risks/Rollback/DoD per phase; Phase 4 cutover founder-gated | ✅ |
+| [Backlog P0–P3](planning/DATA_PLATFORM_BACKLOG.md) | Prioritized tasks + DONE markers + gated P3 revisit triggers | ✅ |
 
 ## Architecture
 
@@ -121,6 +145,8 @@ docs/
 | [GitHub Org Plan](planning/01-github-org-plan.md) | Organization structure plan | 4KB |
 | [Remaining gaps & recommendations](planning/remaining-gaps-recommendations.md) | Gap register follow-ups + recommended actions | 4KB |
 | [Completion Plan (waves)](planning/COMPLETION_PLAN.md) | 7-wave plan to close all remaining gaps | 8KB |
+| [Data Platform Migration](planning/DATA_PLATFORM_MIGRATION.md) | Phases 0–10 with rollback/DoD; Phase 0 blocks data phases | 10KB |
+| [Data Platform Backlog](planning/DATA_PLATFORM_BACKLOG.md) | P0–P3 tasks, complexity, DoD, P3 revisit triggers | 10KB |
 
 ## Reports
 
@@ -189,4 +215,4 @@ All documents follow these conventions:
 
 ---
 
-*Last updated: 2026-09-19*
+*Last updated: 2026-09-29*
