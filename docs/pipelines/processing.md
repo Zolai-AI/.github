@@ -1,8 +1,8 @@
 ---
 title: "Pipelines — Batch Processing Jobs"
-description: "Dictionary/ZVS cleaning, syllable enrichment, POS enrichment (L1.3), grammar pattern builds; cron v1 scheduling, pipeline_runs bookkeeping, backup script placement (batch 3/3)"
+description: "Dictionary/ZVS cleaning, syllable enrichment, POS enrichment (L1.3), grammar pattern builds; cron v1 scheduling, pipeline_runs bookkeeping, backup script placement, v1-vs-queue job staging (batch 3/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: PROPOSED
 ---
 
@@ -99,7 +99,33 @@ Backup is **not** a processing job — it protects the store the jobs write:
 | Protected state | pre-change backup for non-routine data changes; nightly backup regardless |
 | No silent drift | table-count re-audit (G14) + `VALID_SOURCE`/`VALID_RECORD_HASH` rules |
 
-## 6. Related docs
+## 6. Job execution staging — v1 in-process vs future queue
+
+**v1 (now): no queue.** Jobs are **in-process functions** launched by host cron or a manual
+run (`pipeline:run` / CLI), always through the `run.py` wrapper that opens and closes a
+`pipeline_runs` row ([§2](#2-scheduling--cron-v1-configure-no-orchestrator),
+[§3](#3-pipeline_runs-bookkeeping-phase-7-proposed)). There is no Redis, no broker, and no
+worker container: the minimal deployment is SQLite + API + admin + Prometheus + Grafana
+([cost model §4](../architecture/cost-model.md#4-deployment-tiers)) — **Redis is explicitly
+NOT part of the v1 minimal deployment.** Retries are manual re-runs (safe: jobs are idempotent
+by content hash), and overlap protection is the unique partial index — a second start of the
+same job is `skipped`, not queued. *(Aside: `zolai-core/docker-compose.prod.yml` defines an
+optional Redis service as an API-host cache; no platform job consumes it — its existence does
+not make a queue exist.)*
+
+**FUTURE (trigger-gated): queue + workers.** When jobs routinely outlast their cron window,
+or the need for automatic retries, concurrency control, or priorities appears, adopt a
+Redis-backed queue — **BullMQ** (MIT, polyglot incl. Python, needs Redis) or **Celery**
+(BSD-3-Clause, needs broker + worker) per [tool matrix §6](../research/data-platform-tool-matrix.md)
+(rows DEFER — "no queue need yet"). At that point the `pipeline_runs` status field already
+fits (`running|success|failed|skipped`) and becomes the queue's bookkeeping — no redesign.
+**Trigger wording (needs-founder on the exact N):** ≥N long jobs (proposed N = several jobs
+regularly exceeding their cron window) or routine manual retries. Redis then enters as **+1
+container**, never before. Note this is a *different* trigger from the orchestrator one
+([ADR-006](../adr/ADR-006.md): ≥10 interdependent pipelines → Dagster) — a queue executes
+jobs; an orchestrator schedules dependencies.
+
+## 7. Related docs
 
 - [Ingestion](ingestion.md) · [Evaluation](evaluation.md) · [Quality](../data/quality.md)
 - [ADR-005 (harness)](../adr/ADR-005.md) · [ADR-006 (no orchestrator)](../adr/ADR-006.md)
