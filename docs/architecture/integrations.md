@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — Integrations"
 description: "How the 10 repos talk: zolai-core ↔ web ↔ datasets ↔ training ↔ MCP, API contract, RAG flow, extension points, and data ownership (batch 2/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: CONFIRMED
 ---
 
@@ -51,6 +51,10 @@ Direction rules:
 4. **Landing / GitHub Pages** have no data-plane role (marketing only).
 
 ## 2. API contract
+
+Cross-cutting conventions (endpoint catalog, pagination, filtering/sorting/search, bulk ops,
+idempotency, rate limits, error format, validation, audit hooks, webhooks, background jobs):
+**[API design](api-design.md)**.
 
 | Aspect | v1 contract | Decision |
 |---|---|---|
@@ -143,7 +147,8 @@ Data-changing PRs additionally follow: backup → checksum → dry-run → apply
 ## 7. Related docs
 
 - [Architecture overview](overview.md) — module boundaries
-- [Data platform layering](data-platform.md) · [Observability](observability.md)
+- [API design](api-design.md) — cross-cutting `/api/v1` contract
+- [Data platform layering](data-platform.md) · [Observability](observability.md) · [Cost model](cost-model.md)
 - [Data model](../data/data-model.md) · [Provenance](../data/provenance.md)
 - [ADR-014 — /api/v1 + API keys](../adr/ADR-014.md) · [ADR-010 — RBAC](../adr/ADR-010.md)
 - [Tool matrix](../research/data-platform-tool-matrix.md)
