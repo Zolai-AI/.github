@@ -1,7 +1,7 @@
 ---
 title: Zolai AI Documentation
 description: Master documentation index for the Zolai AI project
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: CONFIRMED
 ---
 
@@ -91,7 +91,7 @@ docs/
 
 ## Data Platform (2026-09)
 
-> Full series (batches 1–3, 2026-09-29): exec verdict → tool research → 15 ADRs → design →
+> Full series (batches 1–3, 2026-09-29; gap-close additions 2026-09-30): exec verdict → tool research → 19 ADRs → design →
 > admin/pipelines runbooks → migration roadmap + backlog. Decision vocabulary:
 > KEEP/ADOPT/CONFIGURE/BUILD/INTEGRATE/DEFER/REJECT; uncertain items marked
 > **UNKNOWN / needs-founder**.
@@ -102,7 +102,10 @@ docs/
 | [Layered design](architecture/data-platform.md) | Ingestion → canonical → serving; 10 domains; v1 ship list | ✅ |
 | [Architecture overview](architecture/overview.md) · [Observability](architecture/observability.md) · [Integrations](architecture/integrations.md) | C4-lite diagrams, KEEP-stack observability, cross-repo contracts | ✅ |
 | [Tool matrix](research/data-platform-tool-matrix.md) | Every candidate tool: license, status, official URL, evidence date | ✅ |
-| [ADR-001..015](adr/ADR-001.md) | 15 accepted architecture decisions (PG target, metrics KEEP, catalog, quality harness, no orchestrator, admin, RBAC, API, …) | ✅ |
+| [ADR index (ADR-001..019)](adr/README.md) | 19 accepted architecture decisions + prompt §36 → ADR mapping | ✅ |
+| [**v1 decision table**](planning/ZOLAI_V1_DECISION.md) | 15-row WHY / WHY NOT / WHEN TO REVISIT consolidation (prompt §44) | ✅ |
+| [Cost model](architecture/cost-model.md) · [Repo structure](architecture/repo-structure.md) | Per-component LOW/MED/HIGH + 3 deployment tiers; 10-repo layout mapping + data zones | ✅ |
+| [API design](architecture/api-design.md) | `/api/v1` endpoint catalog (EXISTS/PROPOSED) + cross-cutting contract | ✅ |
 | [Data model](data/data-model.md) | Target schema, 10 domains, OLD→NEW mapping (migrate-not-rename) | ✅ |
 | [Dataset lifecycle](data/dataset-lifecycle.md) · [Quality](data/quality.md) · [Provenance](data/provenance.md) · [Versioning](data/versioning.md) | Publish gate, rule registry, lineage, manifest+hash | ✅ |
 | [Admin IA](admin/information-architecture.md) · [Permissions](admin/permissions.md) · [Workflows](admin/workflows.md) | Thin Next.js admin nav, role×action RBAC matrix, operator flows | ✅ |
@@ -215,4 +218,4 @@ All documents follow these conventions:
 
 ---
 
-*Last updated: 2026-09-29*
+*Last updated: 2026-09-30*
