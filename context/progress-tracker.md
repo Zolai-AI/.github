@@ -417,3 +417,38 @@ The L1–L7 plan implements this: POS → Morphology → Patterns → Grammar �
 - Permission outreach letters send (KR2.3) — 3 letters drafted, 6 targets
 - KR2.4 archive execution — needs approval
 - Speaker interview scheduling — needs contacts
+
+---
+
+## 2026-09-29 (Session — Data Platform docs suite, batches 1–3 COMPLETE)
+
+**33-doc docs-only suite** in the root `.github` repo (no code changes). Exec verdict carried
+consistently across all docs: **PostgreSQL 18 target via `database_layer.py` bridge
+(cutover founder-gated) · ZERO new infra services in v1 (keep Prometheus 3.15 + Grafana
+13.2.3) · structured JSON logs · lightweight catalog + custom quality harness · no
+orchestrator (cron + `pipeline_runs`) · manifest versioning · DB-first RAG observability ·
+action RBAC + API keys · thin custom Next.js admin · object-storage/annotation/BI/MLflow
+all DEFER with revisit triggers · net new containers 0–1 (Postgres only).**
+
+| Batch | Docs | Commits |
+|---|---|---|
+| 1 | `docs/architecture/current-state.md` (gaps G1–G15) · `docs/research/data-platform-tool-matrix.md` (licenses web-verified 2026-09-29; unverified rows flagged in-file) | `7e571ea`, `df6a8ff` |
+| 1 | `docs/adr/ADR-001..015.md` — all **ACCEPTED** (PG target, metrics KEEP, logs defer, catalog, quality harness, no orchestrator, versioning, storage defer, custom admin, RBAC, annotation defer, RAG-obs DB-first, MLflow defer, `/api/v1`+keys, migrate-not-rename) | `bc45099`, `36f5ec4`, `e6ef937`, `f70e399` |
+| 2 | `docs/architecture/{overview,data-platform,observability,integrations}.md` · `docs/data/{data-model,dataset-lifecycle,quality,provenance,versioning}.md` (+ `.gitignore` unignore `docs/data/`) | `58516b8`, `2e2fa19`, `4b8d26e`, `2fbbb80`, `b01714f` |
+| 3 | `docs/admin/{information-architecture,permissions,workflows}.md` — IA nav tree for thin admin (ADR-009), frozen `resource:action` role×action matrix on Prisma `CustomRole/Permission/RolePermission` + API-key scopes (ADR-010/014; no IdP/SSO in v1), 5 operator flows (publish, POS review, quality, eval regression, restore-from-backup) | `768a1f2` |
+| 3 | `docs/pipelines/{ingestion,processing,evaluation}.md` — source→staging→canonical + curation zones + idempotency, batch jobs + cron/`pipeline_runs` + backup placement, eval gates + **F1 regression policy (threshold needs-founder, default proposal 0.02 abs)** | `ad08041` |
+| 3 | `docs/planning/DATA_PLATFORM_MIGRATION.md` (Phases 0–10, Goal/Changes/Risks/Rollback/DoD; Phase 0 = blocking backup+checksum baseline; Phase 4 cutover = founder-gated UNKNOWN) · `docs/planning/DATA_PLATFORM_BACKLOG.md` (P0–P3, DONE markers, P3 gated with triggers) | `4f1560c` |
+| 3 | `docs/README.md` Data Platform index section + `context/progress-tracker.md` (this entry) | final commit |
+
+- **Monitoring/ACID IMPLEMENT_DONE pending verify** — orchestrator verify phase to confirm.
+- Reconciled with `docs/database/archive-plan.md` (KR2.4 — referenced, not duplicated; still
+  founder-approval-gated) and `docs/governance/backup-strategy.md` (KR2.2 — Phase 0 depends on it).
+- **needs-founder items:** PG cutover timing (Phase 4), eval F1 threshold, backup cron install,
+  KR2.4 archive execution, annotation volume/tool, BI need, strict two-person publish rule.
+
+### Auto-continue next
+
+1. Run orchestrator verify on the batch-3 commits (link/ZVS/frontmatter/tree checks)
+2. P0-2 Phase 0 backup + checksum baseline (unblocks all data phases)
+3. P0-1 API-key auth on `/api/v1` (Critical gap G2 — long-standing PENDING)
+4. Founder decisions queue (cutover, threshold, cron, archive)
