@@ -228,7 +228,7 @@ Server  Server  Page
 | Table | Status | Recommendation |
 |-------|--------|----------------|
 | *_import tables (12) | Staging | Archive after verification |
-| jsonl_import_log | 92 rows | Keep for provenance |
+| import_log | 92 rows (jsonl_import_log = 0) | Keep for provenance |
 | gemini_model_results | 0 rows | Remove or populate |
 
 #### Foundation Tables

@@ -65,9 +65,9 @@ No cross-repo globbing was performed from the workspace root (per `AGENTS.md` sc
 | Access pattern | `config.paths.data / "zolai.db"` — reads from DB, never raw JSONL | `tables.md` §7 |
 | Integrity hardening | FK guard at startup, integrity checks, migrations (27 constraints, 50+ indexes) | `zolai-core/zolai/data/{integrity,migrations}.py` |
 | Change tracking | `data_audit_log` — 30,745 rows (who/why/when, old→new) | `tables.md` §2.11 |
-| Import bookkeeping | `jsonl_import_log` — 92 runs | `tables.md` |
+| Import bookkeeping | `import_log` — 92 runs. `jsonl_import_log` exists but is **empty (0 rows)** — duplicate/legacy (the `jsonl_pipeline*.py` models write `import_log`) | live `sqlite3` query 2026-09-30; `tables.md` still attributes the 92 rows to `jsonl_import_log` (Phase 0 re-audit) |
 | Eval store (DB-first) | `eval_sets` (3), `eval_cases` (273), `eval_runs` (gate history) | `tables.md` §2.12; `zolai/data/migrations.py:1347` |
-| Staging | 26 `*_import` tables ≈ 1.79M intermediate rows; archive plan PROPOSED, nothing deleted | `tables.md` staging section |
+| Staging | 26 `*_import` tables ≈ **1.52M** intermediate rows (1,517,212 live, 2026-09-30); `tables.md` says ~1.79M → pending Phase 0 re-audit; archive plan PROPOSED, nothing deleted | live `sqlite3` query 2026-09-30 |
 
 **Role today:** transitional canonical store for everything linguistic
 (dictionary 84,490 · bible_verses 31,649 · translations 207,623 · word_usage 269,903 ·
@@ -158,10 +158,13 @@ Metric naming: `zolai_<domain>_<metric>` (HTTP, DB, analysis, corpus, eval, aler
 | `foundation_router` | **`/api/v1`** (then `/foundation/…`) | 22 |
 | `metrics_router` | `/metrics`, `/api/metrics/*` (before catch-all) | 11 |
 | `ui_router` | mounted | — |
-| `desktop_router`, `jsonl_router` | **commented out** in `server.py` | 0 |
+| `desktop_router` (12) + `jsonl_router` (7) | `include_router` **commented out**, but routes mounted via `app.router.routes.append` (`server.py:369-373`) | 19 |
 
 Findings:
 
+- **Total surface ≈ 104 routes (52 + 22 + 11 + 19).** The desktop/jsonl rows are live
+  despite the commented `include_router` lines — `server.py` appends their
+  `router.routes` directly (`desktop_router` 12 + `jsonl_router` 7 = 19).
 - A **partial `/api/v1` discipline already exists** (foundation router) but most
   legacy routes are unversioned → full discipline **BUILD** in [ADR-014](../adr/ADR-014.md).
 - **No API-key auth found** in `server.py` (grep over the server returned no
@@ -183,7 +186,7 @@ Role/Permission-style models — see [ADR-010](../adr/ADR-010.md).
 
 | Job class | What exists | Bookkeeping |
 |---|---|---|
-| JSONL ingestion | `zolai/core/jsonl_pipeline.py` + `_v2` + `_v3` → `*_import` staging → canonical promotion | `jsonl_import_log` (92 rows) |
+| JSONL ingestion | `zolai/core/jsonl_pipeline.py` + `_v2` + `_v3` → `*_import` staging → canonical promotion | `import_log` (92 rows; `jsonl_import_log` = 0 rows, empty legacy) |
 | Pipeline scripts | `zolai-core/scripts/pipelines/`: `ingest_v2.py`, `clean.py`, `align.py`, `deduplicate.py`, `export.py`, `collect.py`, `convert_linguistics.py`, `convert_usx.py`, `run.py` | **no `pipeline_runs` table** (gap §7) |
 | Batch/maintenance | `scripts/maintenance/`, `scripts/data_pipeline/`, `scripts/dictionary/`, `scripts/cleaner/`, `scripts/eval/` (e.g. `seed_eval_sets.py`) | ad-hoc |
 | CLI entry points | `zolai`, `zolai-zvs`, `zolai-eval` (`pyproject.toml [project.scripts]`) | eval writes `eval_runs` |
@@ -207,7 +210,7 @@ Role/Permission-style models — see [ADR-010](../adr/ADR-010.md).
 | G4 | No data catalog beyond `docs/database/tables.md` | **High** | **BUILD** lightweight catalog tables + generated docs + `/api/v1/catalog` (ADR-004); DEFER enterprise catalog |
 | G5 | No formal quality suite beyond eval gates; linguistic rules (ZVS 2018, SOV, ergative `in`, unicode) unformalized as registered rules | **High** | **BUILD** pytest-style harness + DB rule registry (ADR-005); DEFER GX/Soda |
 | G6 | No dataset versioning/immutability enforcement (checksums, `dataset_versions`) | **High** | **CONFIGURE** manifest+hash+tables (ADR-007); DEFER DVC until >1GB artifacts |
-| G7 | No `pipeline_runs` bookkeeping; runs only partially logged (`jsonl_import_log`) | **Medium** | **CONFIGURE** table + CLI wiring (ADR-006) |
+| G7 | No `pipeline_runs` bookkeeping; runs only partially logged (`import_log`, 92 runs — `jsonl_import_log` exists but is empty, 0 rows: duplicate/legacy) | **Medium** | **CONFIGURE** table + CLI wiring (ADR-006) |
 | G8 | No annotation workflow — L1 gold sets are CSV/JSONL files in Git | **Medium** | **DEFER** tool; needs-founder-decision on volume; Label Studio preferred when started (ADR-011) |
 | G9 | No admin UI for linguistic workflows (POS review, quality runs, publish, eval inspect) | **Medium** | **BUILD** thin Next.js admin in zolai-web (ADR-009) |
 | G10 | No `/api/v1` discipline on legacy routes | **Medium** | **CONFIGURE/BUILD** versioned surface + freeze (ADR-014) |

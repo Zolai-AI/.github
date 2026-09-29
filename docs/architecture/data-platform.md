@@ -19,7 +19,7 @@ status: CONFIRMED
 flowchart TB
   subgraph L1["Layer 1 — Ingestion (source → staging → canonical)"]
     SRC["Sources: Bible JSONL · dictionaries · corpus · PDFs · wiki content"]
-    IMP["*_import staging tables (26) + jsonl_import_log"]
+    IMP["*_import staging tables (26) + import_log (92 runs)"]
     PIPE["JSONL pipeline v2/v3 + scripts/pipelines/*<br/>clean · ZVS · syllable · POS enrichment"]
     SRC --> IMP --> PIPE
   end
@@ -63,7 +63,7 @@ flowchart TB
 Rules of the layers:
 
 - **Ingestion is idempotent:** every import is keyed by `sha256` + `batch_id`
-  (`jsonl_import_log`), re-runs never duplicate rows.
+  (`import_log`), re-runs never duplicate rows.
 - **Canonical is single-writer:** only `zolai-core` data managers write it
   (see [module boundaries](overview.md#4-module-boundaries)).
 - **Serving is read-mostly:** API + catalog + published snapshots; writes go back through
@@ -84,7 +84,7 @@ Every table in the canonical store belongs to exactly one domain
 | 4 | **linguistic** | The language itself: lexicon, POS, morphology, grammar, corpus | `dictionary`, `vocabulary`, `bible_verses`, `grammar_patterns`, `syllable_data`, `word_alignments`, `pos_canonical` columns (exists) | zolai-core |
 | 5 | **annotation** | Human review / gold sets | gold sets = CSV/JSONL in Git (exists); `annotation_*` tables **DEFERRED** (ADR-011) | zolai-datasets → tool later |
 | 6 | **quality** | Rule registry + run results | `quality_rules`, `quality_runs`, `quality_results`, `quality_issues` (**PROPOSED**, ADR-005) | zolai-core |
-| 7 | **pipeline** | Batch job bookkeeping | `jsonl_import_log` (exists); `pipeline_runs` (**PROPOSED**, ADR-006) | zolai-core |
+| 7 | **pipeline** | Batch job bookkeeping | `import_log` (exists, 92 runs; `jsonl_import_log` = empty, 0 rows); `pipeline_runs` (**PROPOSED**, ADR-006) | zolai-core |
 | 8 | **evaluation** | Eval sets, cases, run history, gates | `eval_sets`, `eval_cases`, `eval_runs`, `monitoring_annotations` (exists) | zolai-core |
 | 9 | **rag** | Retrieval artifacts: chunks, embeddings, traces | `knowledge_vectors`, `canonical_sentences` (exists); `rag_traces` (**PROPOSED**, ADR-012) | zolai-core |
 | 10 | **audit** | Change tracking, chain of custody | `data_audit_log` (exists, 30,745 rows); Prisma `AuditLog`/`SecurityEvent` | zolai-core / zolai-web |

@@ -1,6 +1,6 @@
 ---
 title: "Pipelines — Ingestion"
-description: "source → staging *_import → canonical tables; JSONL pipeline + jsonl_import_log, idempotency (content hash), run records, failure handling, curation zones (batch 3/3)"
+description: "source → staging *_import → canonical tables; JSONL pipeline + import_log, idempotency (content hash), run records, failure handling, curation zones (batch 3/3)"
 created: 2026-09-29
 last_updated: 2026-09-29
 status: CONFIRMED
@@ -15,7 +15,7 @@ status: CONFIRMED
 > [data model §1.2/§1.7](../data/data-model.md) · [provenance](../data/provenance.md) ·
 > [current-state §6](../architecture/current-state.md).
 >
-> **Tags:** **KEEP** existing JSONL pipeline + `jsonl_import_log` (works today) ·
+> **Tags:** **KEEP** existing JSONL pipeline + `import_log` (works today) ·
 > **CONFIGURE** `pipeline_runs` bookkeeping + idempotency checks (Phase 7) ·
 > **BUILD** `sources` registry rows where provenance gaps exist (Phase 6).
 
@@ -29,7 +29,7 @@ flowchart LR
     S3["Corpus, PDFs, wiki dumps"]:::raw
   end
   subgraph Z2["Zone: CURATED (staging)"]
-    IMP["*_import tables (26, ~1.79M rows)<br/>+ jsonl_import_log (92 runs)"]:::cur
+    IMP["*_import tables (26, ~1.52M rows)<br/>+ import_log (92 runs)"]:::cur
   end
   subgraph Z3["Zone: PUBLISHED (canonical + versions)"]
     CAN[("data/zolai.db canonical tables<br/>SQLite WAL → PG target")]:::pub
@@ -64,10 +64,10 @@ provenance; transformations reproducible (same input file + same script version 
 | `zolai/core/jsonl_pipeline.py` (+ `_v2`, `_v3`) | parse → validate → load JSONL batches into `*_import` staging |
 | `zolai-core/scripts/pipelines/` | `ingest_v2.py` · `clean.py` · `align.py` · `deduplicate.py` · `export.py` · `collect.py` · `convert_linguistics.py` · `convert_usx.py` · `run.py` |
 | Promotion step | staging → canonical table with mapping + validation (the `*_import` → canonical hand-off) |
-| `jsonl_import_log` | **run record per import**: `batch_id`, `source_file`, `table`, `rows`, `sha256`, `status`, `imported_at` (92 runs) |
+| `import_log` | **run record per import**: `batch_id`, `source_file`, `table`, `rows`, `sha256`, `status`, `imported_at` (92 runs) |
 | `provenance` | **file-level lineage**: filename, sha256, row_count, generator script, status, change_log |
 
-Note: `jsonl_import_log`/`import_log` belong to the **pipeline domain** of the
+Note: `import_log` (and the empty legacy `jsonl_import_log`, 0 rows) belong to the **pipeline domain** of the
 [data model](../data/data-model.md) — they also answer source questions, but they are run
 records, not the source registry (`sources`, PROPOSED).
 
@@ -75,7 +75,7 @@ records, not the source registry (`sources`, PROPOSED).
 
 | Mechanism | Rule |
 |---|---|
-| **Content hash** | input file's `sha256` is recorded in `provenance` and `jsonl_import_log`; re-ingesting the same hash is a no-op (skip + log `status=skipped`) |
+| **Content hash** | input file's `sha256` is recorded in `provenance` and `import_log`; re-ingesting the same hash is a no-op (skip + log `status=skipped`) |
 | **Record `content_hash`** | per-row hash over stored fields — dedup and re-runs key on it (`NO_DUPLICATE_RECORD`, `VALID_RECORD_HASH` rules) |
 | **Natural keys** | promotion upserts on natural keys (e.g. `zolai`, `(book,chapter,verse,version)`) — never blind appends |
 | **Batch identity** | `batch_id` scopes a run; a failed batch can be re-run without touching rows from other batches |
@@ -91,7 +91,7 @@ Every ingestion execution produces exactly one run record:
 
 | Era | Record | Status |
 |---|---|---|
-| Today | `jsonl_import_log` (imports) / `import_log` | **EXISTS** |
+| Today | `import_log` (imports, 92 runs; `jsonl_import_log` empty) | **EXISTS** |
 | Phase 7 (ADR-006) | `pipeline_runs` row: `pipeline_name`, `trigger` (`cron\|manual\|cli`), `started_at`, `finished_at`, `status` (`running\|success\|failed\|skipped`), `rows_in`, `rows_out`, `error`, `git_sha`, `params`, `host` | **PROPOSED** |
 
 `git_sha` + `params` make transformations **reproducible** (provenance question: *which

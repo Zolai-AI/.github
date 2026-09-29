@@ -40,14 +40,14 @@ already added** to `dictionary`, `vocabulary`, `zolai_vocabulary` (additive, leg
 
 | Column | Meaning | Status in L1.3 lexicon tables | Elsewhere |
 |---|---|---|---|
-| `source` | logical source name (legacy, already present on `dictionary`) | EXISTS (pre-L1.3) | `provenance.source`, `jsonl_import_log.source_file` |
+| `source` | logical source name (legacy, already present on `dictionary`) | EXISTS (pre-L1.3) | `provenance.source`, `import_log.source_file` |
 | `source_type` | enum-ish: `bible` / `dictionary` / `corpus` / `pdf` / `wiki` / `web` | EXISTS (`DEFAULT 'unknown'`) | `knowledge_vectors.source_type` EXISTS |
 | `source_url` | upstream URL when applicable | EXISTS (`NULL`) | `sources.source_url` (PROPOSED) |
 | `creator` | upstream creator/translator/agency | EXISTS (`NULL`) | — |
 | `license` | license of the source material | EXISTS (`NULL`) | `sources.license`; inventory in `docs/governance/credits-license-inventory.md` |
 | `collection_date` | when the source material was collected | EXISTS (`NULL`) | — |
-| `import_date` | when we ingested it | EXISTS (`NULL`) | `jsonl_import_log.imported_at` EXISTS |
-| `processing_version` | pipeline version stamp (e.g. `l1.3-pos-backfill`) | EXISTS (`NULL`) | `jsonl_import_log.version`, `provenance.version` EXISTS |
+| `import_date` | when we ingested it | EXISTS (`NULL`) | `import_log.imported_at` EXISTS |
+| `processing_version` | pipeline version stamp (e.g. `l1.3-pos-backfill`) | EXISTS (`NULL`) | `import_log.version`, `provenance.version` EXISTS |
 | `processing_method` | how the row was produced (script/transform id) | **PROPOSED (not yet a column)** | proxies today: `provenance.generator_script` EXISTS |
 | `review_status` | `unknown` → `reviewed` → `adjudicated` | EXISTS (`DEFAULT 'unknown'`) | `canonical_sentences.verified_at/verified_by` EXISTS |
 | `confidence` | 0.0–1.0 (CHECK-constrained where present) | EXISTS (`REAL NULL`) | CHECKs on `translations`, `foundation_*` EXISTS |
@@ -79,9 +79,9 @@ Client §42 question list, each mapped to the answering mechanism:
 | # | Question | Answered by | Status |
 |---|---|---|---|
 | 1 | Where did this sentence come from? | `source` + `source_type` + `source_url` on the row; file-level `provenance.sha256` | PARTIAL (columns on lexicon tables; extend to corpus tables) |
-| 2 | Which dataset version contains it? | `dataset_versions` + manifest record hash; `version` columns (`jsonl_import_log.version`, row `version`) | PROPOSED table (ADR-007); version columns EXISTS |
+| 2 | Which dataset version contains it? | `dataset_versions` + manifest record hash; `version` columns (`import_log.version`, row `version`) | PROPOSED table (ADR-007); version columns EXISTS |
 | 3 | Who reviewed it? | `review_status` + annotator/`verified_by` + `data_audit_log.actor_id` | PARTIAL (`verified_by` EXISTS; actor_id PROPOSED) |
-| 4 | What transformations were applied? | `processing_version` + `processing_method` (+ `jsonl_import_log` / `provenance.generator_script`) | PARTIAL — `processing_method` PROPOSED |
+| 4 | What transformations were applied? | `processing_version` + `processing_method` (+ `import_log` / `provenance.generator_script`) | PARTIAL — `processing_method` PROPOSED |
 | 5 | Which quality checks passed? | `quality_runs` → `quality_results` for that `dataset_version_id` | PROPOSED (ADR-005); eval gates EXISTS today |
 | 6 | What is the upstream source? | `sources` registry row + `creator`/`license`/`collection_date` | PROPOSED registry; columns EXISTS on lexicon |
 | 7 | Which DVC/data version? | manifest hash in `dataset_versions.manifest_sha256` (DVC deferred until >1 GB artifacts) | CONFIGURE (ADR-007); DVC = DEFER |
@@ -101,7 +101,8 @@ Lineage is surfaced, not just stored:
 - Lightweight catalog (`/api/v1/catalog`, [ADR-004](../adr/ADR-004.md)): generated
   source→table→dataset-version listing rendered into `docs/database/` on release (**BUILD**).
 - Staging lineage: `*_import` tables record `source_file` + `sha256` + `rows_imported`
-  (`jsonl_import_log`, **EXISTS**, 92 runs).
+  (`import_log`, **EXISTS**, 92 runs; `jsonl_import_log` exists but is
+  empty — 0 rows, duplicate/legacy).
 
 ## 6. Credits & licenses
 

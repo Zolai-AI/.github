@@ -81,7 +81,7 @@ Actors never touch storage directly: everything goes through zolai-core's API
 ```mermaid
 flowchart LR
   subgraph Ingestion["Ingestion layer"]
-    JSONL["JSONL pipeline<br/>jsonl_pipeline v2/v3 → *_import staging<br/>(jsonl_import_log: 92 runs)"]
+    JSONL["JSONL pipeline<br/>jsonl_pipeline v2/v3 → *_import staging<br/>(import_log: 92 runs)"]
     SCRIPTS["scripts/pipelines/*<br/>ingest · clean · align · dedup · export"]
     CRON["cron / systemd (v1)<br/>+ pipeline_runs (PLANNED)"]
     CRON --> SCRIPTS

@@ -70,7 +70,7 @@ Spec: [data model §1.7](../data/data-model.md#17-pipeline--batch-job-bookkeepin
 | `error`, `params`, `git_sha`, `host` | reproducibility (which code, which inputs, where) |
 | links | `quality_runs.pipeline_run_id` (verify jobs), `data_audit_log` (data changes) |
 
-Legacy records stay untouched: `jsonl_import_log`, `import_log`, `foundation_batches`,
+Legacy records stay untouched: `import_log` (92 runs), `jsonl_import_log` (empty), `foundation_batches`,
 `training_runs`, `db_integrity_runs` coexist ([ADR-015](../adr/ADR-015.md)).
 
 ## 4. Where `scripts/backup-zolai.sh` fits
