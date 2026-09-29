@@ -22,7 +22,7 @@ Never delete data merely to tidy the schema. Archive = move out of main DB, not 
 
 ## Phase 1 — Archive `*_import` staging tables (PROPOSED)
 
-26 tables, ~1.79M rows. Per `jsonl_import_log` (92 runs), these are intermediate
+26 tables, ~1.79M rows. Per `import_log` (92 runs), these are intermediate
 products of the JSONL pipeline; canonical tables are primary source of truth.
 
 ### Method (non-destructive)

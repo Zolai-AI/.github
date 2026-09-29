@@ -34,7 +34,7 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
                     │       CANONICAL DATA STORE          │
                     │       data/zolai.db (SQLite)        │
                     ├─────────────────────────────────────┤
-                    │ 99 tables, ~2.3GB, ~3.3M rows      │
+                    │ 105 tables, ~2.3GB, ~3.3M rows     │
                     │ WAL mode + busy_timeout=30000       │
                     └──────────────┬──────────────────────┘
                                    │
@@ -49,12 +49,13 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
 ## Database (SQLite, WAL Mode) — Canonical Data Store
 
 **Path:** `data/zolai.db` (~2.3GB)
-**Tables:** 99 tables, ~3.3M total rows
+**Tables:** 105 tables, ~3.3M total rows
 **Access:** WAL mode + busy_timeout=30000 for concurrent multi-process
 **Access pattern:** zolai-core uses `config.paths.data / "zolai.db"` → shared workspace DB
 
 The `*_import` tables are staging copies produced by the JSONL pipeline on the way to
-the canonical tables below. `jsonl_import_log` (92 rows) records each import run. The
+the canonical tables below. `import_log` (92 rows) records each import run
+(`jsonl_import_log` exists but is empty — 0 rows, duplicate/legacy). The
 canonical tables are the primary source of truth; `*_import` tables are intermediate.
 
 ### Table Summary

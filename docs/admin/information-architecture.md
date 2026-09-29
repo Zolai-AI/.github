@@ -124,7 +124,7 @@ RBAC → backing tables/endpoints.
 | **Purpose** | Batch job bookkeeping: what ran, when, rows in/out, status ([processing](../pipelines/processing.md)) |
 | **Key actions** | list runs, re-run job (manual trigger), view error + linked audit rows, inspect cron schedule (read-only in v1) |
 | **RBAC** | `pipeline:read` `pipeline:run` |
-| **Tables / endpoints** | `pipeline_runs` (PROPOSED, Phase 7), `jsonl_import_log` (EXISTS, 92 runs), `import_log`, `foundation_batches`, `training_runs`, `db_integrity_runs` |
+| **Tables / endpoints** | `pipeline_runs` (PROPOSED, Phase 7), `import_log` (EXISTS, 92 runs), `jsonl_import_log` (EXISTS, 0 rows — empty legacy), `foundation_batches`, `training_runs`, `db_integrity_runs` |
 
 ### 2.9 Audit (`/admin/audit`)
 

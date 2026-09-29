@@ -61,7 +61,7 @@ status: PROPOSED
 |---|---|---|---|---|---|
 | `provenance` | File-level lineage: filename, sha256, row_count, generator script, status, change_log | EXISTS | `id` | — | unique `filename`; index `status`, `source`, `generator_script` |
 | `sources` | Upstream source registry (Bible, dictionaries, corpus, PDFs, wiki, web) | **PROPOSED** | `id` | — | unique `source_key`; index `source_type` |
-| `jsonl_import_log`, `import_log` | *see pipeline domain* (runs), they also answer source questions | EXISTS | — | — | — |
+| `import_log`, `jsonl_import_log` (empty) | *see pipeline domain* (runs), they also answer source questions | EXISTS | — | — | — |
 
 - **Key fields (`sources`):** `source_key`, `name`, `source_type`, `source_url`, `license`,
   `creator`, `contact`, `collection_date`, `credit` (→ `docs/governance/credits-license-inventory.md`).
@@ -139,7 +139,7 @@ status: PROPOSED
 
 | Table | Purpose | Status | PK | FKs | Indexes / unique |
 |---|---|---|---|---|---|
-| `jsonl_import_log` (92 runs), `import_log` | Import runs: batch_id, source_file, table, rows, sha256, status | EXISTS | `id` | — | index `table_name`, `imported_at` |
+| `import_log` (92 runs), `jsonl_import_log` (0 rows — empty legacy) | Import runs: batch_id, source_file, table, rows, sha256, status | EXISTS | `id` | — | index `table_name`, `imported_at` |
 | `pipeline_runs` | Every batch job execution (ingest/clean/align/dedup/export/quality) | **PROPOSED** (ADR-006) | `id` | — | index `(pipeline_name, started_at)`, `status`; unique partial `(pipeline_name, started_at) WHERE status='running'` |
 | `foundation_batches`, `training_runs`, `db_integrity_runs` | Existing run-type bookkeeping | EXISTS | `id` | — | index batch/time |
 
@@ -210,12 +210,12 @@ No working table is renamed or dropped. Placement = domain; treatment = what we 
 | `monitoring_annotations` | evaluation | **KEEP** (Grafana bridge) |
 | `data_audit_log` | audit | **KEEP + EXTEND** (additive actor/run/provenance columns) — client's `audit_events` maps here |
 | `provenance` | source | **KEEP + EXTEND** with `sources` registry rows |
-| `jsonl_import_log`, `import_log`, `foundation_batches`, `training_runs`, `db_integrity_runs` | pipeline | **KEEP**; add `pipeline_runs` alongside (no merge) |
+| `import_log`, `jsonl_import_log` (empty), `foundation_batches`, `training_runs`, `db_integrity_runs` | pipeline | **KEEP**; add `pipeline_runs` alongside (no merge) |
 | `knowledge_vectors` | rag | **KEEP** — client's `embeddings` maps here |
 | `user_reviews`, `corrections`, `foundation_review_queue`, `foundation_verifications`, `pos_verified`, `morph_verified` | annotation | **KEEP** (ad-hoc today; formal `annotation_*` only at trigger) |
 | `foundation_raw_corpus`, `foundation_staging_*`, `foundation_consensus` | source/annotation | **KEEP** — map to source/annotation at Phase 2, no structural change |
 | `foundation_metrics`, `foundation_cost_tracking`, `gemini_model_results` | pipeline/evaluation | **KEEP** (run/model output history) |
-| 26 `*_import` staging tables (~1.79M rows) | source/pipeline (staging) | **ARCHIVE after verification** (plan PROPOSED; nothing deleted; `tables.md` archive-plan) |
+| 26 `*_import` staging tables (~1.52M rows live — 1,517,212, 2026-09-30; `tables.md` says ~1.79M, pending Phase 0 re-audit) | source/pipeline (staging) | **ARCHIVE after verification** (plan PROPOSED; nothing deleted; `tables.md` archive-plan) |
 | `wiki_content` (+ FTS), `wiki_lessons` | source | **KEEP** — lineage to zolai-wiki |
 | `user_streaks` and other learner-state tables | identity | **KEEP** (app-adjacent; outside corpus governance) |
 | `datasets`, `dataset_versions`, `sources`, `api_keys`, `pos_tags`, `quality_*`, `pipeline_runs`, `rag_traces` | (new) | **CREATE** per §1 |

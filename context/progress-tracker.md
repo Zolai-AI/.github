@@ -83,7 +83,7 @@
 ## 2026-09-13 (Session — Docs sync with actual DB)
 
 - Canonical DB confirmed: `data/zolai.db` = **99 tables / ~3.3M rows / ~2.3GB** (SQLite WAL).
-- JSONL pipeline imports into staging `*_import` tables (tracked by `jsonl_import_log`, 92 runs);
+- JSONL pipeline imports into staging `*_import` tables (tracked by `import_log`, 92 runs — `jsonl_import_log` is empty);
   canonical tables remain the primary source of truth.
 - Repository + service layers added (`zolai/data/repositories`, `zolai/data/services`) and
   `migrations.py` (27 constraints + 50+ indexes).
@@ -422,7 +422,7 @@ The L1–L7 plan implements this: POS → Morphology → Patterns → Grammar �
 
 ## 2026-09-29 (Session — Data Platform docs suite, batches 1–3 COMPLETE)
 
-**33-doc docs-only suite** in the root `.github` repo (no code changes). Exec verdict carried
+**34-doc docs-only suite** in the root `.github` repo (no code changes). Exec verdict carried
 consistently across all docs: **PostgreSQL 18 target via `database_layer.py` bridge
 (cutover founder-gated) · ZERO new infra services in v1 (keep Prometheus 3.15 + Grafana
 13.2.3) · structured JSON logs · lightweight catalog + custom quality harness · no
@@ -438,7 +438,7 @@ all DEFER with revisit triggers · net new containers 0–1 (Postgres only).**
 | 3 | `docs/admin/{information-architecture,permissions,workflows}.md` — IA nav tree for thin admin (ADR-009), frozen `resource:action` role×action matrix on Prisma `CustomRole/Permission/RolePermission` + API-key scopes (ADR-010/014; no IdP/SSO in v1), 5 operator flows (publish, POS review, quality, eval regression, restore-from-backup) | `f58befe` |
 | 3 | `docs/pipelines/{ingestion,processing,evaluation}.md` — source→staging→canonical + curation zones + idempotency, batch jobs + cron/`pipeline_runs` + backup placement, eval gates + **F1 regression policy (threshold needs-founder, default proposal 0.02 abs)** | `b2d138a` |
 | 3 | `docs/planning/DATA_PLATFORM_MIGRATION.md` (Phases 0–10, Goal/Changes/Risks/Rollback/DoD; Phase 0 = blocking backup+checksum baseline; Phase 4 cutover = founder-gated UNKNOWN) · `docs/planning/DATA_PLATFORM_BACKLOG.md` (P0–P3, DONE markers, P3 gated with triggers) | `1f22c7f` |
-| 3 | `docs/README.md` Data Platform index section + `context/progress-tracker.md` (this entry) | final commit |
+| 3 | `docs/README.md` Data Platform index section + `context/progress-tracker.md` (this entry) | `4244476`, `0bd456a` |
 
 - **Monitoring/ACID IMPLEMENT_DONE pending verify** — orchestrator verify phase to confirm.
 - Reconciled with `docs/database/archive-plan.md` (KR2.4 — referenced, not duplicated; still
