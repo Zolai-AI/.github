@@ -91,3 +91,34 @@ See [`../planning/COMPLETION_PLAN.md`](../planning/COMPLETION_PLAN.md) for wave-
 | Wave 5 (Days 30–45) | Whitepaper, grant draft, entity |
 | Wave 6 (Days 30–60) | Discovery, revenue, annotation pilot |
 | Wave 7 (Days 60–90) | Re-score + close |
+
+---
+
+## Linguistic Core (NEW — per Master Prompt §6–§18)
+
+| Gap | Priority | Status | Notes / link |
+|-----|----------|--------|--------------|
+| POS tagset undefined | **Critical** | OPEN | Master Prompt §10 — design from UD + Chin research + corpus |
+| Canonical lexicon schema incomplete | **Critical** | OPEN | Master Prompt §7 — needs POS, morph_features, provenance |
+| POS gold evaluation set missing | **High** | OPEN | KR3.3 — need 500 annotated sentences |
+| Morphology engine incomplete | **High** | OPEN | Master Prompt §11 — directional+stem+aspect+particle analyzer |
+| Word pattern repository missing | **High** | OPEN | Master Prompt §12 — syllable/compound/reduplication/affix patterns |
+| Phrase/sentence pattern repository missing | **High** | OPEN | Master Prompt §13 — mine from 31K bible_verses |
+| Grammar engine not built | **Critical** | OPEN | Master Prompt §14 — layered: rules + patterns + statistical |
+| Spelling error model missing | Medium | OPEN | Master Prompt §16 — separate error layer |
+| Linguistic knowledge graph missing | Medium | OPEN | Master Prompt §17 — nodes: Word/Lemma/Syllable/Morpheme/POS/Pattern |
+| Evaluation framework incomplete | **High** | MITIGATING | Master Prompt §18 — KR3.1 eval_v1 (110 cases) done; need POS/morph/grammar |
+| ZolaiBench not created | Medium | OPEN | Master Prompt §23 — 12 tasks; start with tokenization, POS, morph |
+
+### Wave mapping (Linguistic Core)
+
+| Wave | Closes these gaps |
+|------|-------------------|
+| L1 (D1-10) | POS tagset, lexicon schema, POS gold set |
+| L2 (D10-22) | Morphology engine, syllable spec, morph gold set |
+| L3 (D22-35) | Word/phrase/sentence pattern repositories |
+| L4 (D35-50) | Grammar engine, error detection, grammar gold set |
+| L5 (D50-65) | Evaluation framework, ZolaiBench v0.1 |
+| L6 (D55-70) | Knowledge graph, provenance, duplicate consolidation |
+| L7 (D65-80) | Documentation specs, paper draft |
+

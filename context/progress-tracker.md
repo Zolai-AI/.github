@@ -350,3 +350,70 @@ Docs/context: whitepaper §2 scrub, profile license honesty, benchmarks v0, gaps
 | `zolai-tauri` | 🔄 Build green; fixing cargo test Deserialize |
 | Local `zolai-core` full suite | ✅ 1010 passed (needs ~2GB data/zolai.db) |
 
+
+---
+
+## 2026-09-29 (Session — Python 3.14 upgrade + CPU/GPU install + 60-day Linguistic Core plan)
+
+### Infrastructure Upgrade (COMPLETED)
+
+- **Python 3.14.7** — `requires-python = ">=3.14"` in pyproject.toml
+- **CPU/GPU-aware installer** — `scripts/install.sh` auto-detects NVIDIA GPU:
+  - No GPU → installs `torch==2.14.0+cpu` (~200MB) + `[ml]` extras (transformers, sentence-transformers)
+  - GPU detected → installs `torch==2.14.0+cu130` + `[gpu]` extras (bitsandbytes, peft, trl, accelerate)
+  - `--base` flag → no torch at all (core only)
+- **pyproject.toml restructured:**
+  - Base: CPU-light (fastapi, sqlalchemy, pandas, numpy, scikit-learn, sklearn-crfsuite, sentencepiece, etc.)
+  - `[ml]`: torch + transformers + sentence-transformers + datasets
+  - `[gpu]`: includes `[ml]` + bitsandbytes + accelerate + peft + trl + scipy
+  - `[full]` = gui + dev + gpu
+- **`zolai/utils/device.py`** — lazy-imports torch; base install never hard-requires torch
+- **Dockerfile** — installs base+ml with CPU-only torch index
+- **requirements.txt** — deprecated notice; mirrors base+ml CPU stack
+- **README** — updated Quick Start with install.sh usage table
+- **Commit:** `21325a6` — `chore(deps): upgrade to Python 3.14 + CPU/GPU-aware install`
+- **Verified:** ruff clean; core linguistic modules import successfully; torch 2.14.0+cpu (no CUDA)
+
+### 60-Day Linguistic Core Wave Plan (NEW)
+
+Extended `docs/planning/COMPLETION_PLAN.md` with **Waves L1–L7** aligned to Master Prompt §6–§18:
+
+| Wave | Focus | Days | Key Deliverables |
+|------|-------|------|------------------|
+| **L1** | POS Tagset & Lexicon Foundation | 1–10 | POS_SPEC v0.1, lexicon schema migration, 500-sentence POS gold set, baseline CRF tagger |
+| **L2** | Morphology Engine | 10–22 | SYLLABLE_SPEC, agglutinative analyzer (dir+stem+aspect+particle), compound splitter, morph gold set |
+| **L3** | Word & Phrase Patterns | 22–35 | Pattern repositories (word/phrase/sentence), confidence scoring, query API, 200 speaker-validated patterns |
+| **L4** | Grammar Engine | 35–50 | Layered engine (rules + patterns + statistical), ZVS/SOV/ergative rules, error detection, grammar gold set |
+| **L5** | Evaluation & ZolaiBench v0.1 | 50–65 | DB-first eval sets for 5 tasks, metrics, CI gate, baseline report |
+| **L6** | Knowledge Graph & Provenance | 55–70 | Provenance columns, linguistic KG (nodes/edges), query API, duplicate archive |
+| **L7** | Documentation & Paper Prep | 65–80 | LINGUISTIC_SPEC.md, DATA_PROVENANCE.md, Zolai Linguistic Core v0.1 paper draft |
+
+**Critical path:** L1 → L2 → L3 → L4 → L5 (L6 parallel, L7 synthesizes)
+
+**Success at Day 60:** POS >88%, Morph >80%, Grammar error F1 >75%, 5/5 bench tasks passing, 200+ validated patterns, paper draft ready.
+
+### Gap Register Updated
+
+Added **Linguistic Core** section (10 gaps: 3 Critical, 4 High, 2 Medium) with wave mapping L1–L7 in `docs/strategy/gap-register.md`.
+
+### POS-First Approach Validation
+
+**YES — exactly right.** Master Prompt §1, §21, §22 mandate:
+> **Language representation → linguistic analysis → evaluation → downstream NLP → AI applications**
+> **Do NOT start with translation or LLM training.**
+
+The L1–L7 plan implements this: POS → Morphology → Patterns → Grammar → Evaluation → (then translation/RAG/LLM).
+
+### Auto-continue next
+
+1. **L1.1** — Audit existing POS in `zolai/pos_tagger/` + `grammar_patterns` table (5,560 rows)
+2. **L1.2** — Design Zomi POS tagset (compare UD + Chin research + corpus evidence)
+3. **L1.3** — Extend canonical lexicon schema with POS, morph_features, provenance
+4. **Speaker recruitment** — start Week 1 outreach for L1.6 gold annotation
+5. **Advisor recruitment** — 1 confirmed linguistics advisor for L1.2 / L4.1 / L7.3 review
+
+### Blocked on Founder
+
+- Permission outreach letters send (KR2.3) — 3 letters drafted, 6 targets
+- KR2.4 archive execution — needs approval
+- Speaker interview scheduling — needs contacts
