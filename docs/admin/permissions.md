@@ -1,15 +1,17 @@
 ---
 title: "Admin & API — Permissions (action-based RBAC)"
-description: "Frozen role × action matrix on existing Prisma CustomRole/Permission/RolePermission models + zolai-core API-key scopes; no IdP/SSO in v1 (batch 3/3)"
+description: "Frozen nine-role × action matrix on existing Prisma CustomRole/Permission/RolePermission models + zolai-core API-key scopes; no IdP/SSO in v1 (batch 3/3, expanded 2026-09-30)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: PROPOSED
 ---
 
 # Permissions — Action-Based RBAC Matrix
 
 > **Batch 3/3** of the Data Platform docs series. **Status: PROPOSED** — the matrix below is
-> the **frozen action list** that Phase 8 implements. Governing decisions:
+> the **frozen action list** that Phase 8 implements. Expanded 2026-09-30 from the original
+> five roles to the **nine-role model** (§3); the action vocabulary did not change and no
+> grant was widened for admin power. Governing decisions:
 > [ADR-010](../adr/ADR-010.md) (action RBAC on Prisma models, **DEFER** IdP/SSO) and
 > [ADR-014](../adr/ADR-014.md) (`/api/v1` + API keys). Companions:
 > [information architecture](information-architecture.md) · [workflows](workflows.md) ·
@@ -56,46 +58,91 @@ Rules:
 - `dataset:publish` is the highest-privilege data action (founder-held in v1).
 - Deny-by-default: an action not granted is denied, and the denial emits an audit event.
 
-## 3. Role × action matrix
+## 3. Role × action matrix (nine roles)
 
 Roles are **capability bundles, not job titles** (a creator and reviewer may be the same
 person until a second contributor exists — see [lifecycle §4](../data/dataset-lifecycle.md)).
+Nine roles, ordered from most to least privileged:
 
-| Action | owner | maintainer | reviewer | annotator | reader |
-|---|:--:|:--:|:--:|:--:|:--:|
-| `dashboard:read` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `dataset:read` · `catalog:read` · `source:read` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `dataset:create` · `dataset:edit` · `dataset:run_quality` | ✅ | ✅ | ✅ | ✅ | — |
-| `dataset:validate` | ✅ | ✅ | ✅ | — | — |
-| **`dataset:publish`** · **`dataset:deprecate`** | ✅ | — | — | — | — |
-| `source:write` | ✅ | ✅ | — | — | — |
-| `pos:read` · `annotation:read` · `quality:read` · `eval:read` · `pipeline:read` · `audit:read` · `settings:read` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `pos:annotate` | ✅ | ✅ | ✅ | ✅ | — |
-| `pos:review` · `pos:adjudicate` · `annotation:review` | ✅ | ✅ | ✅ | — | — |
-| `quality:run` | ✅ | ✅ | ✅ | — | — |
-| `quality:waive` | ✅ | ✅ | ✅ | — | — |
-| `eval:run` | ✅ | ✅ | ✅ | — | — |
-| `pipeline:run` | ✅ | ✅ | — | — | — |
-| `settings:write` | ✅ | ✅ | — | — | — |
-| `user:manage` · `role:manage` · `apikey:manage` | ✅ | — | — | — | — |
+| Role | Purpose | Scope of power |
+|---|---|---|
+| **platform_admin** | platform/identity steward (founder in v1) | **all 30 actions** — only holder of publish + identity + key management |
+| **data_admin** | second operator: everything data-operational | all except `dataset:publish/deprecate` and `user/role/apikey:manage` |
+| **data_engineer** | runs pipelines, imports, quality jobs | execution actions only — no validate, no waive, no publish, no identity |
+| **linguist** | linguistic authority (POS, adjudication, validation) | `pos:*`, `annotation:review`, `dataset:validate`, quality/eval runs — no publish, no identity |
+| **annotator** | contributes gold labels | create/edit + `pos:annotate` — no review, no publish |
+| **reviewer** | second pair of eyes on data + annotations | validate/review/adjudicate + quality/eval runs — no publish, no identity |
+| **researcher** | reads everything, runs evals | broad reads + `eval:run` — no data mutation |
+| **analyst** | dashboard/data consumer | read-only across datasets, quality, eval, audit |
+| **viewer** | minimal read-only (was `reader`) | read bundle only |
+
+| Action | platform_admin | data_admin | data_engineer | linguist | annotator | reviewer | researcher | analyst | viewer |
+|---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| `dashboard:read` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `dataset:read` · `catalog:read` · `source:read` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `pos:read` · `annotation:read` · `quality:read` · `eval:read` · `pipeline:read` · `audit:read` · `settings:read` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `dataset:create` · `dataset:edit` · `dataset:run_quality` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — |
+| `dataset:validate` | ✅ | ✅ | — | ✅ | — | ✅ | — | — | — |
+| **`dataset:publish`** · **`dataset:deprecate`** | ✅ | — | — | — | — | — | — | — | — |
+| `source:write` | ✅ | ✅ | ✅ | — | — | — | — | — | — |
+| `pos:annotate` | ✅ | ✅ | — | ✅ | ✅ | ✅ | — | — | — |
+| `pos:review` · `pos:adjudicate` · `annotation:review` | ✅ | ✅ | — | ✅ | — | ✅ | — | — | — |
+| `quality:run` | ✅ | ✅ | ✅ | ✅ | — | ✅ | — | — | — |
+| `quality:waive` | ✅ | ✅ | — | — | — | ✅ | — | — | — |
+| `eval:run` | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | — | — |
+| `pipeline:run` | ✅ | ✅ | ✅ | — | — | — | — | — | — |
+| `settings:write` | ✅ | ✅ | — | — | — | — | — | — | — |
+| `user:manage` · `role:manage` · `apikey:manage` | ✅ | — | — | — | — | — | — | — | — |
 
 Notes:
 
-- **owner** = founder in v1 (sole holder of publish/user/key management).
-- **maintainer** = second-operator tier: everything operational except identity, key
-  management, and irreversible data publication.
-- Publish deprecation stays owner-only alongside publish (both mutate immutable-version state).
+- **platform_admin** = founder in v1 (sole holder of publish/user/key management). Admin
+  power is **not** granted broadly: only this role reaches identity, keys, and publish.
+- **data_admin** keeps exactly the old `maintainer` posture: everything operational except
+  identity, key management, and irreversible data publication.
+- Publish and deprecation stay platform_admin-only (both mutate immutable-version state).
+- The **action list in §2 is frozen and unchanged** by the nine-role expansion — no action
+  was missing, so no row was added (30 actions, as before).
 - The matrix is the contract for enforcement tests: every admin route must cite one row.
+
+### 3.1 Migration mapping (five-role draft → nine-role model)
+
+The 2026-09-29 draft shipped five roles. Mapping to the nine-role model:
+
+| Draft role (v1) | Nine-role model | Change |
+|---|---|---|
+| `owner` | **platform_admin** | renamed; grants identical (publish + identity + keys stay here) |
+| `maintainer` | **data_admin** | renamed; grants identical |
+| `reviewer` | **reviewer** | unchanged |
+| `annotator` | **annotator** | unchanged |
+| `reader` | **viewer** | renamed; read bundle identical |
+| — | **data_engineer** | **NEW** — pipeline/import/quality execution without validate/waive/publish/identity |
+| — | **linguist** | **NEW** — POS adjudication + linguistic dataset validation + linguistic eval runs |
+| — | **researcher** | **NEW** — broad reads + `eval:run` only |
+| — | **analyst** | **NEW** — read-only data/quality/eval/audit consumer |
+
+- Migration at Phase 8 = **renaming rows + seeding four new `CustomRole` rows**; every
+  existing grant maps 1:1 (no privilege is lost, none is added to the old roles).
+- v1 still assigns **one role per user** (§4); multi-role assignment is a revisit when the
+  first external collaborator joins — paired with the two-person-rule decision (§7).
+- A person may hold several *capabilities informally* (founder = platform_admin who also
+  annotates); the role table stays strict so audit trails read cleanly.
 
 ## 4. Storage mapping (existing Prisma models)
 
 | Concept | Model | Mapping |
 |---|---|---|
-| Role | `CustomRole` (+ `UserRole` enum) | one row per bundle: `owner`, `maintainer`, `reviewer`, `annotator`, `reader` |
-| Permission | `Permission` | one row per frozen action (`resource:action`); unique `(role, permission)` via `RolePermission` |
-| Grant | `RolePermission` | role ↔ permission join |
-| Subject | `User` | role assignment (single role per user in v1) |
+| Role | `CustomRole` (+ `UserRole` enum) | one row per bundle: `platform_admin`, `data_admin`, `data_engineer`, `linguist`, `annotator`, `reviewer`, `researcher`, `analyst`, `viewer` (nine rows) |
+| Permission | `Permission` | one row per frozen action (`resource:action`) — 30 rows; unique `(role, permission)` via `RolePermission` |
+| Grant | `RolePermission` | role ↔ permission join (the §3 matrix, expressed as rows) |
+| Subject | `User` | role assignment (single role per user in v1; multi-role is a revisit at first external collaborator) |
 | Audit | `AuditLog`, `SecurityEvent` | every grant/denial/mutation |
+
+Proposed `CustomRole.baseRole` seed (uses the **existing** `UserRole` enum — no schema
+change): `platform_admin→SUPER_ADMIN`, `data_admin→ADMIN`, `data_engineer→CONTENT_ADMIN`,
+`linguist→EDITOR`, `annotator→CONTRIBUTOR`, `reviewer→MODERATOR`, `researcher→USER`,
+`analyst→USER`, `viewer→VIEWER`. `baseRole` is a coarse default only — the
+`RolePermission` rows are authoritative.
 
 No schema rename is required ([ADR-015](../adr/ADR-015.md)): Phase 8 **seeds** `Permission`
 rows from the frozen list and wires checks — additive only. Enforcement points: admin route
@@ -113,7 +160,7 @@ Keys authenticate **machines**; scopes are subsets of the same action list. Stor
 | `desktop` | `dataset:read`, `catalog:read` | zolai-tauri offline/sync mode |
 | `pipeline-ci` | `pipeline:run`, `quality:run`, `quality:read`, `eval:run`, `dataset:create`, `dataset:edit` | cron + GitHub Actions batch jobs |
 | `web-backend` | `dataset:*`, `quality:read`, `eval:read`, `catalog:read`, `audit:read` | zolai-web server-side reads |
-| `founder-automation` | `owner` bundle (all actions) | local scripts; shortest expiry, rotated first |
+| `founder-automation` | `platform_admin` bundle (all actions) | local scripts; shortest expiry, rotated first |
 
 | Control | v1 rule |
 |---|---|
@@ -142,7 +189,7 @@ the *subject* and our action grants stay untouched — no RBAC rewrite.
 
 Also needs-founder: whether a **strict two-person rule** (creator ≠ publisher) is required
 before external collaborators join ([lifecycle §4](../data/dataset-lifecycle.md)); the matrix
-already supports it — owner-only `dataset:publish` is the default posture.
+already supports it — platform_admin-only `dataset:publish` is the default posture.
 
 ## 8. Related docs
 
