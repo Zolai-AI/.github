@@ -1,8 +1,8 @@
 ---
 title: "Zolai Data Platform — Observability"
-description: "KEEP Prometheus 3.15 + Grafana 13.2.3; structured logs now / Loki later; tracing deferred; alert routing and metric inventory (batch 2/3)"
+description: "KEEP Prometheus 3.15 + Grafana 13.2.3; structured logs now / Loki later; tracing deferred; alert routing, metric inventory, and the dashboard ownership matrix (batch 2/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: CONFIRMED
 ---
 
@@ -136,10 +136,25 @@ part of this workstream.
 | CONFIGURE DB-first RAG obs | Eval gates exist today; diagnosis happens in SQL | Langfuse = 4-service stack (PG+CH+Redis+S3); Phoenix = ELv2 server | RAG regressions untraceable from evals |
 | DEFER BI in observability | Non-SQL consumer set empty; avoid duplication with Grafana | Superset = 4-part stack; Metabase AGPL + paid SSO/RLS gates | First community analyst self-serve need |
 
-## 7. Related docs
+## 7. Dashboard ownership matrix (operational vs data vs AI/RAG)
+
+The standing "no duplication" line in §0 is made explicit here — the ownership **decision**
+is [ADR-016](../adr/ADR-016.md):
+
+| Dashboard class | Examples | Owning tool (v1) | Backing store | Disposition |
+|---|---|---|---|---|
+| **Operational** | API traffic/latency, DB health + WAL, pipeline run outcomes, alert state | **Grafana** — sole owner (3 provisioned dashboards + unified alerting) | Prometheus `/metrics` + `/api/metrics/*` | **KEEP** ([ADR-002](../adr/ADR-002.md)) |
+| **Data** | records/dataset counts, POS distribution, quality failures, annotation progress | **Zolai Admin analytics section** ([ADR-009](../adr/ADR-009.md), Phase 8); **interim before Phase 8 = Grafana `data` folder** as sole owner — it moves to admin, it never doubles | canonical DB tables (SQL) | interim **CONFIGURE**; Superset/Metabase **DEFER** — trigger: first community analyst self-serve need (**needs-founder**, BI need = UNKNOWN) ([ADR-016](../adr/ADR-016.md)) |
+| **AI/RAG** | eval pass/fail + gate history, retrieval/answer quality, `rag_traces` | **Zolai Admin + eval tables** (DB-first, [ADR-012](../adr/ADR-012.md)); Prometheus/Grafana retain **latency metrics only** for this class | `eval_sets` / `eval_cases` / `eval_runs` (+ planned `rag_traces`), `/api/metrics/eval` | **CONFIGURE** now (exists); platforms **DEFER** (Phoenix first at trigger) |
+
+**Rule: never the same dashboard in two tools.** Every panel has exactly one owner class and
+one owning tool; other surfaces *link* to it, never clone it. A new dashboard request starts
+by citing its row here.
+
+## 8. Related docs
 
 - [`zolai-core/docs/MONITORING.md`](../../zolai-core/docs/MONITORING.md) — operational runbook
 - [Current-state §4](current-state.md) — inventory evidence
-- [ADR-002](../adr/ADR-002.md) · [ADR-003](../adr/ADR-003.md) · [ADR-012](../adr/ADR-012.md)
+- [ADR-002](../adr/ADR-002.md) · [ADR-003](../adr/ADR-003.md) · [ADR-012](../adr/ADR-012.md) · [ADR-016](../adr/ADR-016.md) (dashboard ownership)
 - [Quality](../data/quality.md) — how quality results surface here
 - [Data platform layering](data-platform.md)
