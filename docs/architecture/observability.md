@@ -136,7 +136,7 @@ part of this workstream.
 | CONFIGURE DB-first RAG obs | Eval gates exist today; diagnosis happens in SQL | Langfuse = 4-service stack (PG+CH+Redis+S3); Phoenix = ELv2 server | RAG regressions untraceable from evals |
 | DEFER BI in observability | Non-SQL consumer set empty; avoid duplication with Grafana | Superset = 4-part stack; Metabase AGPL + paid SSO/RLS gates | First community analyst self-serve need |
 
-## 7. Dashboard ownership matrix (operational vs data vs AI/RAG)
+## 7. Dashboard ownership matrix
 
 The standing "no duplication" line in §0 is made explicit here — the ownership **decision**
 is [ADR-016](../adr/ADR-016.md):

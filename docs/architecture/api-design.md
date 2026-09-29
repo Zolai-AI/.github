@@ -178,7 +178,7 @@ to RFC 7807 `application/problem+json`, for continuity with existing clients):
   [processing §6](../pipelines/processing.md), [ADR-006](../adr/ADR-006.md)); the queue
   revisit trigger governs any future worker.
 - Polling clients may watch Grafana (operational) or the run row (data) — never both for
-  the same fact ([observability §7](observability.md#7-dashboard-ownership-matrix-operational-vs-data-vs-ai-rag)).
+  the same fact ([observability §7](observability.md#7-dashboard-ownership-matrix)).
 
 ## 14. Compatibility
 
