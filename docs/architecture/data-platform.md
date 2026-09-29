@@ -79,7 +79,7 @@ Every table in the canonical store belongs to exactly one domain
 | # | Domain | Purpose | Primary tables (today → target) | Owner |
 |---|---|---|---|---|
 | 1 | **identity** | Users, roles, permissions, API keys | Prisma `User`/`CustomRole`/`Permission`/`RolePermission` (exists); core `api_keys` (**PROPOSED**, ADR-014) | zolai-web / zolai-core |
-| 2 | **source** | Where data came from; import bookkeeping | `provenance`, `jsonl_import_log`, `import_log` (exists); `sources` registry (**PROPOSED**) | zolai-core |
+| 2 | **source** | Where data came from; file-level lineage | `provenance` (exists); `sources` registry (**PROPOSED**) | zolai-core |
 | 3 | **dataset** | Dataset catalogue, versions, immutability | `datasets`, `dataset_versions` (**PROPOSED**, ADR-007) | zolai-core |
 | 4 | **linguistic** | The language itself: lexicon, POS, morphology, grammar, corpus | `dictionary`, `vocabulary`, `bible_verses`, `grammar_patterns`, `syllable_data`, `word_alignments`, `pos_canonical` columns (exists) | zolai-core |
 | 5 | **annotation** | Human review / gold sets | gold sets = CSV/JSONL in Git (exists); `annotation_*` tables **DEFERRED** (ADR-011) | zolai-datasets → tool later |
