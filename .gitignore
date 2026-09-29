@@ -18,6 +18,8 @@ artifacts/
 
 # Data directory (too large for git)
 data/
+# …but docs/data/ holds the Data Platform documentation (batch 2/3)
+!docs/data/
 
 # Online downloaded data (too large for git)
 zolai-ai-local/
