@@ -40,8 +40,9 @@ phases: 2, 3, 4, 5, 6, 7, 9).** Phases 1 and 10 are docs/observability-only; Pha
 with its own additive DDL and still respects the protocol.
 
 **Decision vocabulary** (unchanged from the matrix): KEEP / ADOPT / CONFIGURE / BUILD /
-INTEGRATE / DEFER / REJECT. Full WHY / WHY NOT / REVISIT rows:
-[tool matrix](../research/data-platform-tool-matrix.md).
+INTEGRATE / DEFER / REJECT. Decision + URL/license/status/evidence:
+[tool matrix](../research/data-platform-tool-matrix.md); WHY / WHY NOT (and REVISIT
+triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 
 ---
 
