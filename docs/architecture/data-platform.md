@@ -145,5 +145,5 @@ preference for new tech — see [ADR-001](../adr/ADR-001.md) §Problem.
 - [Architecture overview](overview.md) — diagrams, module boundaries, invariants
 - [Observability](observability.md) · [Integrations](integrations.md)
 - [Data model](../data/data-model.md) · [Quality](../data/quality.md) · [Versioning](../data/versioning.md)
-- [Tool matrix](../research/data-platform-tool-matrix.md) — full WHY / WHY NOT / REVISIT rows
+- [Tool matrix](../research/data-platform-tool-matrix.md) — decision + URL/license/status/evidence; WHY / WHY NOT live in ADR Reasons / Rejected alternatives
 - Migration roadmap + backlog: `docs/planning/DATA_PLATFORM_MIGRATION.md` (batch 3 of the series)

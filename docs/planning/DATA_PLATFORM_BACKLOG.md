@@ -26,13 +26,13 @@ status: CONFIRMED
 | 2026 tool matrix (web-verified licenses) | **DONE** | `docs/research/data-platform-tool-matrix.md` — commit `df6a8ff` |
 | ADR-001..015 | **DONE** (all ACCEPTED) | `docs/adr/` — commits `bc45099`, `36f5ec4`, `e6ef937`, `f70e399` |
 | Architecture + data docs (batches 1–2) | **DONE** | `docs/architecture/*`, `docs/data/*` — commits `58516b8`, `2e2fa19`, `2fbbb80`, `b01714f` (+ `4b8d26e` unignore) |
-| Admin + pipeline docs (batch 3) | **DONE** | `docs/admin/*`, `docs/pipelines/*` — commits `768a1f2`, `ad08041` |
+| Admin + pipeline docs (batch 3) | **DONE** | `docs/admin/*`, `docs/pipelines/*` — commits `f58befe`, `b2d138a` |
 | Migration roadmap + backlog + index (batch 3) | **DONE** | this series' final commits |
 | Monitoring stack (Prometheus 3.15 + Grafana 13.2.3, 3 dashboards, alert parity gate, metrics REST) | **DONE** (pre-existing) | `zolai-core/docs/MONITORING.md`; KEEP per [ADR-002](../adr/ADR-002.md) |
 | DB integrity hardening (FK guard, WAL, migrations 27 constraints/50+ indexes) | **DONE** (pre-existing) | `zolai-core/zolai/data/{integrity,migrations}.py` |
 | Eval store DB-first (`eval_sets/eval_cases/eval_runs` + `/api/metrics/eval`) | **DONE** (pre-existing) | 273 cases / 3 sets; KR3.1 evidence |
 | Backup script (local leg) | **DONE** (KR2.2) | `scripts/backup-zolai.sh` + `--verify` drill 2026-09-28; [backup strategy](../governance/backup-strategy.md) |
-| This docs suite (33 docs: 5 arch + 1 matrix + 15 ADR + 5 data + 3 admin + 3 pipelines + 2 planning) | **DONE** | `docs/README.md` index updated |
+| This docs suite (34 docs: 5 arch + 1 matrix + 15 ADR + 5 data + 3 admin + 3 pipelines + 2 planning) | **DONE** | `docs/README.md` index updated |
 
 ---
 
