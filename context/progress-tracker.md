@@ -452,3 +452,29 @@ all DEFER with revisit triggers · net new containers 0–1 (Postgres only).**
 2. P0-2 Phase 0 backup + checksum baseline (unblocks all data phases)
 3. P0-1 API-key auth on `/api/v1` (Critical gap G2 — long-standing PENDING)
 4. Founder decisions queue (cutover, threshold, cron, archive)
+
+---
+
+## 2026-09-30 (Session — Data Platform docs suite + zolai-core monitoring/L1.3 cycles CLOSED)
+
+Two full orchestra loops completed (plan → implement → verify → review, ORCHESTRA_COMPLETE both):
+
+### 1. Data Platform docs suite (root `.github` repo, docs-only, 34 new docs)
+- **Commit:** `7e571ea..0bd456a` + review fixes `ff769e9` (17 commits) — **pushed**.
+- **Exec verdict (consistent across suite):** PostgreSQL 18 target via `database_layer.py` (cutover founder-gated) · ZERO new infra in v1 (KEEP Prometheus 3.15 + Grafana 13.2.3) · structured JSON logs (Loki defer) · lightweight catalog + custom quality harness (OpenMetadata/DataHub/GX/Soda defer/reject) · no orchestrator (cron + `pipeline_runs`; Dagster at ≥10 pipelines) · manifest+hash versioning (DVC >1GB trigger; lakeFS BSL reject) · DB-first RAG observability · action RBAC + API keys · thin custom Next.js admin · object-storage/annotation/BI/MLflow DEFER with triggers.
+- **Delivered:** current-state audit (gaps G1–G15) · tool matrix (~50 tools, licenses web-verified vs primary sources) · **ADR-001..015** (all ACCEPTED, 8-section) · architecture 4 · data 5 (10-domain model + OLD→NEW map, no renames) · admin 3 (IA/RBAC/workflows) · pipelines 3 · **DATA_PLATFORM_MIGRATION** Phases 0–10 (Phase 0 backup+checksum blocking; Phase 4 PG cutover founder-gated) · **DATA_PLATFORM_BACKLOG** P0–P3 with revisit triggers · README indexed.
+- **Verifier caught + fixed:** stale commit evidence SHAs, doc count 33→34. **Reviewer caught + fixed:** desktop/jsonl routers ARE mounted (19 routes via `app.router.routes.append`; total surface ≈104), `import_log`=92 runs vs `jsonl_import_log`=0 (empty legacy dup), staging sum 1.52M not 1.79M → `ff769e9`.
+- **needs-founder:** PG cutover (Phase 4), eval F1 threshold (default proposal 0.02), annotation tool/volume, BI need, two-person publish rule, Phase 0 backup cron.
+
+### 2. zolai-core: L1.3 + ACID + monitoring (10 commits `86bdff2..dd30523`) — **pushed**
+- **L1.3:** 13 POS/provenance columns × 3 lexicon tables (ALTER-only, additive), `pos_normalize.py` 17-UPOS allowlist matching POS_SPEC, backfill.
+- **ACID:** per-connection PRAGMAs (FK/WAL/busy_timeout/synchronous) via `sqlite_on_connect` listener, QueuePool, `immediate_transaction`/`write_session`.
+- **Monitoring:** `zolai/monitoring/` (route-template labels, DB op classifier, ring-buffer percentiles, alert evaluator) · `/metrics` + `/api/metrics/*` (registered before catch-all) · new tables `monitoring_annotations`/`eval_runs`/`db_integrity_runs` + `ux_fraw_content_hash` · `zolai db integrity` CLI · `ops/` Prometheus+Grafana provisioning, 3 dashboards, 3 alert rules × 2 systems parity-gated · `docs/MONITORING.md`.
+- **Verification:** full pytest **1329 passed / 0 failed / 7 skipped** (was 1010) · `ruff check zolai tests` clean · compose config OK · lint residuals fixed (`dd30523`: root-anchored `/data` exclude, import sorts).
+- **Accepted debts:** 13 pre-existing ruff errors in `zolai/data` (E501/F811/F841 — separate cleanup) · `.ignore` bare `data/` hides package from walk-lint · runtime compose-up smoke pending · async annotation handler suggestion.
+
+### Auto-continue next
+1. **P0-1: API-key auth on `/api/v1`** (Critical gap G2 — long-standing PENDING)
+2. **P0-2 / Phase 0: backup+checksum baseline** (blocks all data phases; needs founder cron approval)
+3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
+4. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4), permission letters
