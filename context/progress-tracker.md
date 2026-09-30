@@ -562,3 +562,27 @@ Two full orchestra loops completed (plan → implement → verify → review, OR
   `ddgs>=9.16` floor set in `pyproject.toml` + `requirements.txt`.
 - **Validation:** `ruff check zolai tests scripts/smart_install.py` clean ·
   `pip check` clean · both repos committed clean.
+
+---
+
+## 2026-10-01 (Session — Phase 0 (Backend Core v1) COMPLETE + G14 doc-sync)
+
+- **Phase 0 backup + verify ran.** Compressed backup
+  `data/backups/zolai-2026-10-01_0002.db.gz` (sha256 recorded in `backup.log`);
+  **baseline JSON** (106 table counts) at `data/backups/baseline-2026-09-30.json`;
+  restore drill OK.
+- **`docs/database/tables.md` reconciled:** 106 tables (incl. 5 `wiki_content_fts*`
+  shadows / 101 excl. / 107 raw `sqlite_master`), `import_log` = 92 runs
+  (`jsonl_import_log` = 0, empty legacy), staging = **1,517,212 rows (~1.52M)**.
+- **Gap G14 (table-count doc drift) RESOLVED** — live 106 vs 101-excl-FTS5 drift
+  closed; source fix commit `0e6dbac` + this docs sync sweep.
+- **Cycles:** `0e6dbac` (Phase 0 baseline + tables.md) → this sync → verifier **PASS**
+  → reviewer fix round (14 line fixes applied here).
+- **needs-founder:** nightly backup cron (Phase 0 is a one-shot run today).
+
+### Auto-continue next
+
+1. **P0 done → P1: `/api/v1` core surface** (ADR-014 versioned API surface + freeze)
+2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
+3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
+4. Founder decisions queue: nightly backup cron, PG cutover, eval threshold, archive (KR2.4)

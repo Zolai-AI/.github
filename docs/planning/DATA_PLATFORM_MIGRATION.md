@@ -2,7 +2,7 @@
 title: "Data Platform Migration Roadmap (Phases 0–10)"
 description: "Goal/Changes/Risks/Rollback/DoD per phase; Phase 0 backup+checksum baseline blocks all data phases; Phase 4 PG cutover is founder-gated; every data change follows backup→checksum→dry-run→apply→verify (batch 3/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-10-01
 status: PROPOSED
 ---
 
@@ -164,7 +164,7 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 
 | Existing plan | Relationship |
 |---|---|
-| [`docs/database/archive-plan.md`](../database/archive-plan.md) (KR2.4) | **Authoritative** for staging-table archival (26 `*_import`, 1.79M rows). This roadmap **references** it: Phase 2/9 require its founder approval before any archive executes; nothing here deletes data. |
+| [`docs/database/archive-plan.md`](../database/archive-plan.md) (KR2.4) | **Authoritative** for staging-table archival (26 `*_import`, 1.52M rows). This roadmap **references** it: Phase 2/9 require its founder approval before any archive executes; nothing here deletes data. |
 | [`../governance/backup-strategy.md`](../governance/backup-strategy.md) (KR2.2) | **Authoritative** for backup mechanics; Phase 0 depends on it (local leg IMPLEMENTED; cloud + cron pending founder). |
 | [`COMPLETION_PLAN.md`](COMPLETION_PLAN.md) (waves L1–L7) | Linguistic-Core waves are parallel work; Phase 5/9 quality + provenance gates serve L5 evaluation. |
 | [`../database/tables.md`](../database/tables.md) | Live table catalog; Phase 0/2 reconcile the count drift (G14). |

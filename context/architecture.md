@@ -34,7 +34,7 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
                     │       CANONICAL DATA STORE          │
                     │       data/zolai.db (SQLite)        │
                     ├─────────────────────────────────────┤
-                    │ 105 tables, ~2.3GB, ~3.3M rows     │
+                    │ 106 tables, ~2.4GB, ~3.3M rows     │
                     │ WAL mode + busy_timeout=30000       │
                     └──────────────┬──────────────────────┘
                                    │
@@ -48,8 +48,9 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
 
 ## Database (SQLite, WAL Mode) — Canonical Data Store
 
-**Path:** `data/zolai.db` (~2.3GB)
-**Tables:** 105 tables, ~3.3M total rows
+**Path:** `data/zolai.db` (~2.4GB)
+**Tables:** 106 tables (incl. FTS5 shadows), ~3.3M total rows — count conventions
+(106 / 101 / 107) are defined in `docs/database/tables.md`
 **Access:** WAL mode + busy_timeout=30000 for concurrent multi-process
 **Access pattern:** zolai-core uses `config.paths.data / "zolai.db"` → shared workspace DB
 
