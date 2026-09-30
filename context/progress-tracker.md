@@ -545,3 +545,20 @@ Two full orchestra loops completed (plan → implement → verify → review, OR
 2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
 3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
 4. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4)
+
+---
+
+## 2026-09-30 (Session — dep refresh cycle follow-up)
+
+- **zolai-core dependency refresh cycle closed** — fastapi 0.142.2, `huggingface_hub`
+  capped `<2` (transformers constraint), `duckduckgo-search` → **ddgs 9.16.0**,
+  transitive bumps; verifier **PASS** + reviewer **ORCHESTRA_COMPLETE**
+  (commits `a8e14e0`, `147f50b`, `91d3f85`).
+- **Follow-up cleanup (this entry):** dead `config/uv.lock` removed (nothing runs
+  `uv sync` — CI/install.sh/Dockerfile all use pip; it pinned the removed
+  `duckduckgo-search`), `docs/STRUCTURE.md` + `docs/index/INDEX.md` de-listed it,
+  `scripts/smart_install.py` dep floors synced to pyproject
+  (fastapi/huggingface_hub/ddgs, shell-quoted for the `<2` cap), and
+  `ddgs>=9.16` floor set in `pyproject.toml` + `requirements.txt`.
+- **Validation:** `ruff check zolai tests scripts/smart_install.py` clean ·
+  `pip check` clean · both repos committed clean.
