@@ -2,16 +2,35 @@
 title: "Zolai AI — Database Table Catalog"
 description: "Complete table inventory with row counts, classification, and relationships"
 created: 2026-09-19
-last_updated: 2026-09-28
+last_updated: 2026-09-30
 status: CONFIRMED
-source: "context/architecture.md + live DB audit 2026-09-13"
+source: "context/architecture.md + live DB audit 2026-09-13 + Phase 0 reconciliation 2026-09-30"
 ---
 
 # Zolai AI — Database Table Catalog
 
-> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.3GB, 101 tables, ~3.3M rows)
+> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.4GB, **106 tables**, ~3.3M rows)
 > **Access pattern:** `config.paths.data / "zolai.db"` — all reads from DB, not JSONL files
 > **Cross-refs:** [`database/README.md`](README.md) · [`architecture/status.md`](../architecture/status.md)
+
+> **Reconciled 2026-09-30 (Phase 0 backup baseline — closes gap G14).** All figures below
+> re-verified read-only against the live DB; baseline artifacts (untracked, `data/` is
+> gitignored): `data/backups/baseline-2026-09-30.json` (sha256 of DB + backup, per-table
+> counts, header/WAL facts, restore-drill result) and backup
+> `data/backups/zolai-2026-10-01_0002.db.gz` (sha256 `1919ce1c4545…`).
+> - **Tables = 106** user tables (excludes internal `sqlite_sequence`; 107 raw
+>   `sqlite_master` rows; **101** excluding the 5 `wiki_content_fts*` FTS5 virtual/shadow
+>   tables). Earlier figures: documented **101** (2026-09-13 audit) and gap-register
+>   **105** (pre-`api_keys`; `api_keys` added 2026-09-30) → live **106**.
+> - **Import run log:** `import_log` = **92** runs is the real tracker;
+>   `jsonl_import_log` = **0** rows (empty legacy duplicate — previous note here was wrong).
+> - **Staging:** 26 `*_import` tables hold **1,517,212** rows (~1.52M, not ~1.79M).
+> - **Row counts in §2 are point-in-time** (2026-09-13 audit / 2026-09-28 eval add);
+>   all were re-verified 2026-09-30 and unchanged, except: `zolai_tone_sandhi` (19) and
+>   `zolai_songs` (1,032) are **not present** in the live DB — live equivalents are
+>   `tone_sandhi` (16) and `songs` (1,032); `jsonl_import_log` row corrected below.
+> - **Backup:** nightly-capable `scripts/backup-zolai.sh --verify` runs clean (last run
+>   2026-10-01, restore drill PASS). **Cron install = needs-founder** — not installed.
 
 ---
 
@@ -21,16 +40,16 @@ source: "context/architecture.md + live DB audit 2026-09-13"
 |--------|-------|
 | Engine | SQLite (WAL mode) |
 | Busy timeout | 30000 ms |
-| Tables | 101 |
-| Total rows | ~3.3M |
-| Disk size | ~2.3 GB |
+| Tables | 106 (101 excl. FTS5 shadows; see reconciliation note) |
+| Total rows | ~3.3M (3,288,257) |
+| Disk size | ~2.4 GB |
 | Access | WAL enables concurrent multi-process reads |
 
-The `*_import` tables are staging copies produced by the JSONL pipeline on the way to the canonical tables below. `jsonl_import_log` (92 rows) records each import run. The canonical tables are the primary source of truth; `*_import` tables are intermediate.
+The `*_import` tables are staging copies produced by the JSONL pipeline on the way to the canonical tables below. `import_log` (92 rows) records each import run; `jsonl_import_log` (0 rows) is an empty legacy duplicate. The canonical tables are the primary source of truth; `*_import` tables are intermediate.
 
-## Staging & archive status (2026-09-28)
+## Staging & archive status (2026-09-28; counts reconciled 2026-09-30)
 
-26 `*_import` staging tables hold ~1.79M intermediate rows.
+26 `*_import` staging tables hold **1,517,212** intermediate rows (~1.52M — corrected from ~1.79M).
 **Archive plan:** [`../database/archive-plan.md`](archive-plan.md) — PROPOSED, awaiting founder approval.
 Nothing deleted yet.
 
@@ -73,7 +92,7 @@ Nothing deleted yet.
 |-------|-----:|---------|-------------|
 | `grammar_patterns` | 5,560 | Sentence patterns + SOV/tense/negation | pattern, category, example |
 | `zolai_grammar_patterns` | 13,519 | Grammar patterns from all sources | pattern, source, category |
-| `zolai_tone_sandhi` | 19 | Tone sandhi rules (19 rules) | rule, description |
+| `tone_sandhi` | 16 | Tone sandhi rules (live table; earlier audits listed `zolai_tone_sandhi` 19 — absent 2026-09-30) | rule, description |
 
 ### 2.6 Training & Exercises
 
@@ -100,7 +119,7 @@ Nothing deleted yet.
 |-------|-----:|---------|-------------|
 | `proverbs` | 8,203 | Proverbs with source/category | proverb, translation, source |
 | `zolai_proverbs_idioms` | 4,984 | Proverbs with cultural context | proverb, context, category |
-| `zolai_songs` | 1,032 | Zolai songs catalogue | title, lyrics, source |
+| `songs` | 1,032 | Zolai songs catalogue (live table; earlier audits: `zolai_songs` — absent 2026-09-30) | title, lyrics, source |
 
 ### 2.10 Reference & Wiki
 
@@ -115,7 +134,8 @@ Nothing deleted yet.
 |-------|-----:|---------|-------------|
 | `data_audit_log` | 30,745 | Every change tracked (who, why, when, old→new) | table_name, action, timestamp, old_value, new_value |
 | `gemini_model_results` | 0 | All model outputs for history tracking | (empty — not yet populated) |
-| `jsonl_import_log` | 92 | Import run tracking | source, timestamp, row_count |
+| `import_log` | 92 | **Import run tracking (real table)** | source, timestamp, row_count |
+| `jsonl_import_log` | 0 | Legacy duplicate of `import_log` — empty | (not populated; use `import_log`) |
 
 ### 2.12 Evaluation (DB-first eval sets, added 2026-09-28)
 
@@ -138,7 +158,7 @@ modified. See [`../research/benchmarks.md`](../research/benchmarks.md).
 
 ## 3. Staging / Import Tables (`*_import`)
 
-These tables are produced by the JSONL pipeline and are **intermediate** — not the primary source of truth.
+These tables are produced by the JSONL pipeline and are **intermediate** — not the primary source of truth. (Subset of the 26 live `*_import` tables; names verified against live DB 2026-09-30.)
 
 | Table | Purpose |
 |-------|---------|
@@ -146,13 +166,12 @@ These tables are produced by the JSONL pipeline and are **intermediate** — not
 | `dictionary_en_zo_import` | Staging for dictionary EN→ZO import |
 | `dictionary_en_my_import` | Staging for dictionary EN→MY (Myanmar) import |
 | `dictionary_trilingual_import` | Staging for trilingual dictionary import |
-| `bible_import` | Staging for Bible verses import |
+| `bible_verses_import` | Staging for Bible verses import |
 | `translations_import` | Staging for translation pairs import |
 | `phrases_import` | Staging for phrases import |
 | `grammar_patterns_import` | Staging for grammar patterns import |
-| `vocabulary_import` | Staging for vocabulary import |
-| `syllable_data_import` | Staging for syllable data import |
-| `word_usage_import` | Staging for word usage import |
+| `vocab_import` | Staging for vocabulary import |
+| `word_usage_profiles_import` | Staging for word usage import |
 | `training_exercises_import` | Staging for training exercises import |
 | `proverbs_import` | Staging for proverbs import |
 
@@ -201,7 +220,7 @@ data_audit_log.table_name → any canonical table (change tracking)
 | Issue | Severity | Details |
 |-------|----------|---------|
 | `gemini_model_results` empty | Low | Intended for history tracking; not yet populated |
-| `*_import` staging tables not cleaned | Medium | 13 import tables; should be archived after pipeline validation |
+| `*_import` staging tables not cleaned | Medium | 26 import tables (1,517,212 rows); should be archived after pipeline validation |
 | Missing correction/feedback tables | Medium | No table for user corrections, community feedback, or speaker validation |
 | Missing evaluation tables | ~~Medium~~ **RESOLVED 2026-09-28** | `eval_sets` (3) + `eval_cases` (273) added — DB-first eval store; speaker-validated **gold** sets still pending (KR3.3) |
 | Some tables may overlap | Low | Consolidation candidates listed above |
@@ -212,8 +231,8 @@ data_audit_log.table_name → any canonical table (change tracking)
 
 - **Primary access:** `zolai-core` reads via `config.paths.data / "zolai.db"` (shared workspace DB)
 - **MCP server:** Proxies queries to zolai-core API (not direct DB access)
-- **CI/Testing:** Subset queries for validation; full DB requires ~2.3GB local
-- **Backup:** `data/` directory git-ignored; manual backup to cloud recommended (KR2.2)
+- **CI/Testing:** Subset queries for validation; full DB requires ~2.4GB local
+- **Backup:** `data/` directory git-ignored; `scripts/backup-zolai.sh --verify` does a WAL-safe `sqlite3 .backup` + gzip + rotation (baseline recorded 2026-09-30). **Nightly cron install = needs-founder — not installed.**
 
 ---
 
