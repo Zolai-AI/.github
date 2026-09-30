@@ -478,3 +478,30 @@ Two full orchestra loops completed (plan → implement → verify → review, OR
 2. **P0-2 / Phase 0: backup+checksum baseline** (blocks all data phases; needs founder cron approval)
 3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
 4. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4), permission letters
+
+---
+
+## 2026-09-30 (Session — Master Data Platform Prompt gap-closure)
+
+- **Gap audit** against the Master Data Platform prompt found **8 gaps**: ADR topics,
+  cost model, repo structure, 9-role RBAC, API cross-cutting concerns, consolidated
+  §44 decision table, dashboard ownership, and job staging.
+- **Closed in 7 commits `d1f7dc5..ede484c`:**
+  - `d1f7dc5` — ADR-016..019 + `adr/README.md` 19-ADR index with prompt §36 mapping
+  - `1dcb401` — `architecture/cost-model.md`, `architecture/repo-structure.md`,
+    dashboard ownership matrix
+  - `d686b6d` — `admin/permissions.md` expanded to the 9-role model
+  - `f5fa3b7` — `architecture/api-design.md` cross-cutting API design
+  - `588b2d5` — `planning/ZOLAI_V1_DECISION.md` (consolidated §44 decision table) +
+    job queue staging clarification (`pipelines/processing.md` §6)
+  - `b5fab9d` — dashboard ownership anchor-slug link fixes
+  - `ede484c` — ADR-014 decision-summary row fix (after verifier PASS)
+- **Verification:** verifier **PASS** after `ede484c`; reviewer **ORCHESTRA_COMPLETE**.
+- **Coverage:** all **22 §40 deliverables** and every row of the **§44 decision table**
+  now have a document home.
+
+### Auto-continue next
+
+1. **P0-1:** API-key auth on `/api/v1` (Critical gap G2)
+2. **P0-2 / Phase 0:** backup + checksum baseline (founder cron approval)
+3. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4)
