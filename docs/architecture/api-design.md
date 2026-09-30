@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — API Design (cross-cutting contract for /api/v1)"
 description: "Endpoint catalog for all /api/v1 groups (EXISTS/PROPOSED spot-check) plus auth, authz, pagination, filtering/sorting/search, bulk ops, idempotency, rate limits, error format, validation, audit hooks, webhooks, and background jobs"
 created: 2026-09-30
-last_updated: 2026-09-30
+last_updated: 2026-10-01
 status: PROPOSED
 ---
 
@@ -15,31 +15,36 @@ status: PROPOSED
 > [ADR-002](../adr/ADR-002.md) (metrics stay outside `/api/v1`). Companions:
 > [integrations §2 (API contract)](integrations.md) · [permissions](../admin/permissions.md) ·
 > [current-state §5](current-state.md).
-> **Endpoint statuses below are a spot-check of `zolai-core/zolai/api/` (2026-09-30), not an
-> exhaustive audit** — grep of router wiring + route decorators.
+> **Endpoint statuses below are a spot-check of `zolai-core/zolai/api/` (2026-10-01, including the
+> Phase 1 `/api/v1` core surface), not an exhaustive audit** — grep of router wiring + route decorators.
 
 ## 1. Endpoint catalog (prompt §20 groups)
 
 Legend: **EXISTS** = wired and reachable today · **PARTIAL** = functional route exists under a
 different/legacy path · **PROPOSED** = designed, not built (phase noted).
+**Phase 1** column = the 2026-10-01 `/api/v1` core surface: **BUILD now** (shipped in Phase 1)
+· **LATER** (later phase/backlog) · **outside v1** (stays off `/api/v1`).
 
-| Group | Representative endpoints (method + path) | Status | Notes |
-|---|---|:--:|---|
-| **sources** | `GET/POST /api/v1/sources` · `GET /api/v1/sources/{id}` | PROPOSED | source registry = [data model §1.2](../data/data-model.md); provenance prerequisite of publish |
-| **datasets** | `GET/POST /api/v1/datasets` · `GET/PATCH /api/v1/datasets/{id}` | PROPOSED | state machine per [ADR-017](../adr/ADR-017.md) (Phase 6/9) |
-| **dataset-versions** | `GET /api/v1/datasets/{id}/versions` · `POST .../versions/{v}/publish` · `POST .../versions/{v}/deprecate` | PROPOSED | publish/deprecate require `dataset:publish` / `dataset:deprecate` (Phase 9) |
-| **records** | `GET /api/v1/records?table={t}&limit=` · `GET /api/v1/records/{id}` | PROPOSED | read-only row access; today's equivalents are **EXISTS** legacy `POST /dictionary/search`, `GET /bible/search` (unversioned, frozen) |
-| **imports** | `POST /api/v1/imports` · `GET /api/v1/imports/{id}` · `GET /api/v1/imports` | **PARTIAL** | bulk intake **EXISTS** at `POST /desktop/jsonl/import/all`, `import/file`, `GET import/status/{batch_id}`, `import/log` (legacy prefix); v1 path = Phase 6 mapping + idempotency keys (§7) |
-| **linguistics/\*** | `/api/v1/linguistics/{pos,morphology,phonology,corpus,grammar,translation,search}` | **PARTIAL** | **EXISTS** as `/api/v1/foundation/{analyze/corpus,analyze/morphology,analyze/phonology,grammar/validate-structure,search/ranked,search/cross-lingual,translate/enhanced,progress/*}` (22 routes) + legacy `POST /learning/*` (frozen) — rename into `linguistics/*` is a migrate-not-rename mapping, not a rebuild |
-| **annotation/\*** | `/api/v1/annotation/queue` · `.../items/{id}` · `.../items/{id}/approve|reject|assign` · `.../bulk` | **PARTIAL** | **EXISTS** as `/api/v1/foundation/review/{queue,{item_id},approve,reject,assign,bulk}` — group rename only; multi-annotator studio stays DEFERRED ([ADR-011](../adr/ADR-011.md)) |
-| **quality/\*** | `GET /api/v1/quality/rules` · `POST /api/v1/quality/runs` · `GET /api/v1/quality/runs/{id}/issues` | PROPOSED | Phase 5, [ADR-005](../adr/ADR-005.md); results gate publish ([ADR-017](../adr/ADR-017.md)) |
-| **pipelines** | `GET /api/v1/pipelines/runs` · `POST /api/v1/pipelines/{name}/runs` · `GET /api/v1/pipelines/runs/{id}` | PROPOSED | Phase 7 ([ADR-006](../adr/ADR-006.md)); `pipeline_runs` bookkeeping. *Legacy note:* `zolai/api/pipeline.py` defines `/api/pipeline/*` routes but they are **not mounted by `server.py`** — treat as legacy, do not extend |
-| **evaluations** | `GET /api/v1/evaluations/sets` · `GET .../runs` · `POST .../runs` | **PARTIAL** | gate reads **EXISTS** via `GET /api/metrics/eval` (metrics surface) + `zolai-eval` CLI; set/run CRUD PROPOSED (Phase 7), append-only runs ([ADR-019](../adr/ADR-019.md)) |
-| **rag** | `POST /api/v1/rag/query` · `GET /api/v1/rag/traces` | **PARTIAL** | answer path **EXISTS** as legacy `POST /knowledge/search`, `POST /chat/zolai` (frozen); `rag_traces` read PROPOSED (Phase 10, [ADR-012](../adr/ADR-012.md)) |
-| **audit** | `GET /api/v1/audit?table=&row_id=&limit=` | PROPOSED | read-only over `data_audit_log` (EXISTS data, Phase 8/9 API) — no write endpoint ever ([permissions §2](../admin/permissions.md)) |
-| **admin** | `/api/v1/admin/api-keys` (issue · list · `/{id}/rotate` · `/{id}/revoke`) · `/api/v1/admin/users` · `.../roles` · `.../settings` | **PARTIAL** | **api-keys EXISTS** (2026-09-30, scope `apikey:manage`, plaintext returned once) · users/roles/settings = Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key secrets never returned |
-| **catalog** | `GET /api/v1/catalog` · `GET /api/v1/catalog/{dataset}` | PROPOSED | [ADR-004](../adr/ADR-004.md) — read-only metadata, Phase 6 |
-| **metrics** (kept outside `/api/v1`) | `GET /metrics` · `GET /api/metrics/{summary,health,eval,performance,alerts,info,annotations,...}` (11) | **EXISTS** | not moved under `/api/v1` — scrape/parity contract per [ADR-002](../adr/ADR-002.md) |
+| Group | Representative endpoints (method + path) | Status | Phase 1 | Notes |
+|---|---|:--:|:--:|---|
+| **sources** | `GET/POST /api/v1/sources` · `GET /api/v1/sources/{id}` | PROPOSED | LATER | source registry = [data model §1.2](../data/data-model.md); provenance prerequisite of publish |
+| **datasets** | `GET/POST /api/v1/datasets` · `GET/PATCH /api/v1/datasets/{id}` | PROPOSED | LATER | state machine per [ADR-017](../adr/ADR-017.md) (Phase 6/9) |
+| **dataset-versions** | `GET /api/v1/datasets/{id}/versions` · `POST .../versions/{v}/publish` · `POST .../versions/{v}/deprecate` | PROPOSED | LATER | publish/deprecate require `dataset:publish` / `dataset:deprecate` (Phase 9) |
+| **lexicon** *(Phase 1 addition)* | `GET /api/v1/lexicon/{word}` · `GET /api/v1/lexicon/search?limit=&cursor=` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): dictionary + `dictionary_en_zo` lookup, L1.3 POS columns **where present**, bilingual `q` search, `{items,next_cursor,has_more}`, `Cache-Control`; scope `dataset:read` |
+| **records** | `GET /api/v1/records?table={t}&q=&limit=&cursor=` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): read-only rows over a fixed whitelist (`RECORDS_WHITELIST` — 5 tables); `api_keys`, `data_audit_log` and `*_import` staging rejected **400** before any query; scope `dataset:read`. Legacy equivalents **EXISTS** unversioned `POST /dictionary/search`, `GET /bible/search` (frozen) |
+| **review** *(Phase 1 addition)* | `PATCH /api/v1/review/records/{table}/{row_id}` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): whitelisted column correction + `reason`; one `data_audit_log` row per written field (old→new, actor = key prefix); `review_status='reviewed'` only where the column exists (no ALTER); scope `dataset:edit` |
+| **imports** | `POST /api/v1/imports` · `GET /api/v1/imports/{id}` · `GET /api/v1/imports` | **PARTIAL** | LATER | bulk intake **EXISTS** at `POST /desktop/jsonl/import/all`, `import/file`, `GET import/status/{batch_id}`, `import/log` (legacy prefix); v1 path = Phase 6 mapping + idempotency keys (§7) |
+| **linguistics/\*** | `/api/v1/linguistics/{pos,syllable}` · `/api/v1/linguistics/{analyze,search}/*` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): `linguistics/pos` + `linguistics/syllable` (GET/POST twins) plus the foundation analysis/search routes re-mounted as **same-callable aliases** at `/api/v1/linguistics/{analyze,search}/*` (migrate-not-rename; `/api/v1/foundation/*` originals kept). Remaining `foundation/*` routes (grammar/translate/progress) stay on the foundation prefix; legacy `POST /learning/*` frozen |
+| **predictions** (word engine) *(Phase 1 addition)* | `GET/POST /api/v1/predictions/{next,complete,corrections}` · `GET .../health` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): n-gram engine mounted from the legacy `zolai/api/tools.py` side app (handlers reused, not duplicated); plan name `/complete` alongside the original `/completions` path (migrate-not-rename); scope `dataset:read` |
+| **annotation/\*** | `/api/v1/annotation/queue` · `.../items/{id}` · `.../items/{id}/approve|reject|assign` · `.../bulk` | **PARTIAL** | LATER | **EXISTS** as `/api/v1/foundation/review/{queue,{item_id},approve,reject,assign,bulk}` — group rename only; multi-annotator studio stays DEFERRED ([ADR-011](../adr/ADR-011.md)) |
+| **quality/\*** | `GET /api/v1/quality/rules` · `POST /api/v1/quality/runs` · `GET /api/v1/quality/runs/{id}/issues` | PROPOSED | LATER | Phase 5, [ADR-005](../adr/ADR-005.md); results gate publish ([ADR-017](../adr/ADR-017.md)) |
+| **pipelines** | `GET /api/v1/pipelines/runs` · `POST /api/v1/pipelines/{name}/runs` · `GET /api/v1/pipelines/runs/{id}` | PROPOSED | LATER | Phase 7 ([ADR-006](../adr/ADR-006.md)); `pipeline_runs` bookkeeping. *Legacy note:* `zolai/api/pipeline.py` defines `/api/pipeline/*` routes but they are **not mounted by `server.py`** — treat as legacy, do not extend |
+| **evaluations** | `GET /api/v1/evaluations/sets` · `GET .../runs` · `POST .../runs` | **PARTIAL** | LATER | gate reads **EXISTS** via `GET /api/metrics/eval` (metrics surface) + `zolai-eval` CLI; set/run CRUD PROPOSED (Phase 7), append-only runs ([ADR-019](../adr/ADR-019.md)) |
+| **rag** | `POST /api/v1/rag/query` · `GET /api/v1/rag/traces` | **PARTIAL** | LATER | answer path **EXISTS** as legacy `POST /knowledge/search`, `POST /chat/zolai` (frozen); `rag_traces` read PROPOSED (Phase 10, [ADR-012](../adr/ADR-012.md)) |
+| **audit** | `GET /api/v1/audit?table=&row_id=&limit=&cursor=` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): read-only newest-first tail of `data_audit_log`, cursor walks down (`id < ?`), scope `audit:read` — **no write endpoint ever**; writes are a side effect of mutating routes (§11) |
+| **admin** | `/api/v1/admin/api-keys` (issue · list · `/{id}/rotate` · `/{id}/revoke`) · `/api/v1/admin/users` · `.../roles` · `.../settings` | **PARTIAL** | LATER¹ | ¹ api-keys **EXISTS** (P0-1, 2026-09-30, scope `apikey:manage`, plaintext returned once) · users/roles/settings = Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key secrets never returned |
+| **catalog** | `GET /api/v1/catalog` · `GET /api/v1/catalog/{dataset}` | PROPOSED | LATER | [ADR-004](../adr/ADR-004.md) — read-only metadata, Phase 6 |
+| **metrics** (kept outside `/api/v1`) | `GET /metrics` · `GET /api/metrics/{summary,health,eval,performance,alerts,info,annotations,...}` (11) | **EXISTS** | outside v1 | not moved under `/api/v1` — scrape/parity contract per [ADR-002](../adr/ADR-002.md) |
 
 Legacy surface (**EXISTS**, frozen then migrated): ~52 direct routes in `server.py`
 (`/dictionary/*`, `/bible/*`, `/knowledge/*`, `/chat/*`, `/learning/*`, `/crawl`, `/clean`,
