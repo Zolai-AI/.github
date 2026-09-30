@@ -69,9 +69,9 @@ Nine roles, ordered from most to least privileged:
 | **platform_admin** | platform/identity steward (founder in v1) | **all 30 actions** — only holder of publish + identity + key management |
 | **data_admin** | second operator: everything data-operational | all except `dataset:publish/deprecate` and `user/role/apikey:manage` |
 | **data_engineer** | runs pipelines, imports, quality jobs | execution actions only — no validate, no waive, no publish, no identity |
-| **linguist** | linguistic authority (POS, adjudication, validation) | `pos:*`, `annotation:review`, `dataset:validate`, quality/eval runs — no publish, no identity |
-| **annotator** | contributes gold labels | create/edit + `pos:annotate` — no review, no publish |
-| **reviewer** | second pair of eyes on data + annotations | validate/review/adjudicate + quality/eval runs — no publish, no identity |
+| **linguist** | linguistic authority (POS, adjudication, validation) | `pos:*`, `annotation:review`, `dataset:create/edit/run_quality`, `dataset:validate`, quality/eval runs — no waive, no publish, no identity |
+| **annotator** | contributes gold labels | `dataset:create/edit/run_quality` + `pos:annotate` — no validate, no review, no publish |
+| **reviewer** | second pair of eyes on data + annotations | validate/review/adjudicate + `dataset:create/edit/run_quality` + `pos:annotate` + quality runs **and waive** + eval runs — no publish, no identity |
 | **researcher** | reads everything, runs evals | broad reads + `eval:run` — no data mutation |
 | **analyst** | dashboard/data consumer | read-only across datasets, quality, eval, audit |
 | **viewer** | minimal read-only (was `reader`) | read bundle only |
