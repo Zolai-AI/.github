@@ -53,10 +53,10 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 |---|---|
 | Mechanism | `Authorization: Bearer <key>` (or `X-API-Key`) on every `/api/v1` route (boundary-aware: `/api/v1x` is not gated) |
 | Storage | `api_keys`: `key_prefix`, `key_hash` (SHA-256, never plaintext), `scopes`, `expires_at`, `revoked_at`, `last_used_at` ([permissions §5](../admin/permissions.md)) |
-| Modes | `ZOLAI_API_AUTH` — **`warn` (default)**: missing/invalid key is logged (rate limited per reason) and the request continues, the dual-accept window · **`enforce`**: **401** `{"error":"unauthorized","reason":"missing_api_key"|"invalid_api_key"}` · **`off`**: middleware bypasses entirely (rollback) |
+| Modes | `ZOLAI_API_AUTH` — **`warn` (default)**: missing/invalid key is logged (rate limited per reason) and the request continues, the dual-accept window · **`enforce`**: **401** `{"detail":{"error":"unauthorized","reason":"missing_api_key"|"invalid_api_key"}}` (FastAPI `HTTPException` wraps the payload under `detail`) · **`off`**: middleware bypasses entirely (rollback) |
 | Rate limit | per-key in-memory token bucket, `ZOLAI_API_RATE_LIMIT_RPM` (default **60**/min): **429** + `Retry-After` + `X-RateLimit-{limit,remaining,reset}` on authenticated calls |
 | Exemptions | `/metrics` scrape, `/health`, `/api/v1/health` ([ADR-002](../adr-002.md)); legacy unversioned routes keep their current behavior |
-| Key management | `GET/POST /api/v1/admin/api-keys`, `POST .../{id}/rotate|revoke` (scope `apikey:manage`) and the `zolai apikey create\|list\|rotate\|revoke` CLI — plaintext shown **once** on create/rotate |
+| Key management | `GET/POST /api/v1/admin/api-keys`, `POST .../{id}/rotate|revoke` (scope `apikey:manage`) and the `zolai apikey create\|list\|rotate\|revoke` CLI — plaintext shown **once** on create/rotate. Admin minting routes are **strict**: a presented, valid `apikey:manage` key is required in `warn` *and* `enforce` (only `off` bypasses) — an absent key is **401**, so warn cannot be used to mint a key that survives the enforce flip; the CLI is the bootstrap path |
 | Humans | session auth stays in zolai-web; the admin BFF presents its own server key to core |
 | Failure | missing/invalid/expired/revoked → **401** (structured, rate-limited log on `zolai.api.auth`); authenticated but out-of-scope → **403** with the action name; issue/rotate/revoke emit `data_audit_log` rows (never a secret) |
 | Status | **IMPLEMENTED (P0-1, 2026-09-30)** — `zolai/api/auth.py` + `auth_middleware.py` + `admin_api_keys_router.py`; default posture is `warn`, flipping `ZOLAI_API_AUTH=enforce` is an ops decision (founder gate) |
@@ -65,7 +65,9 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 
 - Key `scopes` and human role grants are the **same action vocabulary**:
   `resource:action` ([permissions §2](../admin/permissions.md) — frozen, 30 actions).
-- Deny-by-default: an action not granted → **403** with the action name in `details`;
+- Deny-by-default: an action not granted → **403** with the action name in `detail`
+  (`{"detail":{"error":"forbidden","action":"…","reason":"missing_scope"}}` — FastAPI
+  `HTTPException` wraps payloads under `detail`, not `details`);
   the denial emits an audit event.
 - Endpoint ↔ action mapping is declared per route (route-lint test: a route without a
   cited action fails CI — ADR-010 consequence). Examples: `dataset:publish` on
