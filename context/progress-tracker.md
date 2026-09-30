@@ -505,3 +505,43 @@ Two full orchestra loops completed (plan → implement → verify → review, OR
 1. **P0-1:** API-key auth on `/api/v1` (Critical gap G2)
 2. **P0-2 / Phase 0:** backup + checksum baseline (founder cron approval)
 3. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4)
+
+---
+
+## 2026-09-30 (Session — P0-1 API-key auth SHIPPED + reviewer defect fixes)
+
+- **P0-1 / ADR-014 API-key auth is SHIPPED.**
+  - zolai-core: `309df21` (`api_keys` migration + auth service) · `9046651`
+    (`ApiKeyMiddleware` + `/api/v1/admin/api-keys`) · `1619ec3` (`zolai apikey`
+    create/list/rotate/revoke CLI) · `0f9eebf` (reviewer fixes below).
+  - root: `1206f28` (backlog P0-1 marked DONE) · `52dccd8` (test count corrected
+    to 48) · **this commit** (progress-tracker + API error-body contract sync).
+- **Posture:** default `ZOLAI_API_AUTH=warn` (dual-accept + rate-limited failure
+  logging); flipping to `enforce` is a **founder gate** (ops decision).
+- **Ops follow-up:** issue consumer keys for `zolai-mcp-server`, `zolai-tauri`
+  and scripts **before** the flip — the reviewer found **zero current
+  `/api/v1` consumers**, so the enforce flip is low-risk (nothing to break today).
+- **Reviewer defects fixed (zolai-core `0f9eebf` / doc sync in this commit):**
+  1. **Auth cache bounded** — `_CACHE` grew without limit (TTL logical only, and
+     every presented token incl. invalid was cached) → writes now prune expired
+     entries + hard size cap `_CACHE_PRUNE_SIZE=4096` (mirrors the rate-limiter
+     `_BUCKET_PRUNE_SIZE`/`_prune` pattern); flood test added.
+  2. **Warn-mode admin minting closed** — `POST /api/v1/admin/api-keys` no longer
+     dual-accepts: `require_scope(..., strict=True)` demands a presented, valid
+     `apikey:manage` key in `warn` **and** `enforce` (only `off` bypasses), so an
+     unauthenticated caller cannot mint a `*`-scoped key that survives the enforce
+     flip; CLI `zolai apikey` remains the bootstrap path. Warn test retargeted to
+     a non-admin path.
+  3. **Doc/code contract synced** — `docs/architecture/api-design.md` 401/403
+     bodies corrected to the actual `{"detail":{...}}` FastAPI envelope
+     (`detail`, not `details` / top-level `error`).
+- **Validation:** `tests/test_api_auth.py test_api_key_admin.py test_api_key_cli.py
+  test_api_keys_migration.py` → **51 passed** · `ruff check zolai tests` clean ·
+  both repos committed clean.
+
+### Auto-continue next
+
+1. **P0-2 / Phase 0:** backup + checksum baseline (founder cron approval)
+2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
+3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
+4. Founder decisions queue: PG cutover, eval threshold, archive (KR2.4)
