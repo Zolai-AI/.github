@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — Canonical Data Model"
 description: "Target schema across 10 domains with PK/FK/index/lifecycle specs, client table-list evaluation, and the OLD→NEW mapping (migrate-not-rename) (batch 2/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-10-01
 status: PROPOSED
 ---
 
@@ -12,7 +12,7 @@ status: PROPOSED
 > design; the live store already works and changes land only through the migration plan.
 > Governing rule: **migrate, never blind-rename** ([ADR-015](../adr/ADR-015.md)).
 > Evidence base: [current-state audit](../architecture/current-state.md) · `docs/database/tables.md` ·
-> live `data/zolai.db` (105 tables, queried 2026-09-29).
+> live `data/zolai.db` (106 tables, reconciled 2026-09-30).
 > Companions: [lifecycle](dataset-lifecycle.md) · [quality](quality.md) · [provenance](provenance.md) ·
 > [versioning](versioning.md) · [data-platform layering](../architecture/data-platform.md).
 
@@ -215,7 +215,7 @@ No working table is renamed or dropped. Placement = domain; treatment = what we 
 | `user_reviews`, `corrections`, `foundation_review_queue`, `foundation_verifications`, `pos_verified`, `morph_verified` | annotation | **KEEP** (ad-hoc today; formal `annotation_*` only at trigger) |
 | `foundation_raw_corpus`, `foundation_staging_*`, `foundation_consensus` | source/annotation | **KEEP** — map to source/annotation at Phase 2, no structural change |
 | `foundation_metrics`, `foundation_cost_tracking`, `gemini_model_results` | pipeline/evaluation | **KEEP** (run/model output history) |
-| 26 `*_import` staging tables (~1.52M rows live — 1,517,212, 2026-09-30; `tables.md` says ~1.79M, pending Phase 0 re-audit) | source/pipeline (staging) | **ARCHIVE after verification** (plan PROPOSED; nothing deleted; `tables.md` archive-plan) |
+| 26 `*_import` staging tables (1,517,212 rows live ~1.52M, 2026-09-30 — `tables.md` reconciled 2026-09-30) | source/pipeline (staging) | **ARCHIVE after verification** (plan PROPOSED; nothing deleted; `tables.md` archive-plan) |
 | `wiki_content` (+ FTS), `wiki_lessons` | source | **KEEP** — lineage to zolai-wiki |
 | `user_streaks` and other learner-state tables | identity | **KEEP** (app-adjacent; outside corpus governance) |
 | `datasets`, `dataset_versions`, `sources`, `api_keys`, `pos_tags`, `quality_*`, `pipeline_runs`, `rag_traces` | (new) | **CREATE** per §1 |

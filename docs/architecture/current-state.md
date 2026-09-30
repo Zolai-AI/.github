@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — Current-State Audit"
 description: "Inventory audit of data stores, repos, monitoring, API surface, jobs, and gaps as of 2026-09-29 (batch 1/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-10-01
 status: CONFIRMED
 source: "live DB query + zolai-core/pyproject.toml + zolai-web/prisma/schema.prisma + docs/database/tables.md + zolai-core/docs/MONITORING.md"
 ---
@@ -41,7 +41,7 @@ Read-only audit performed 2026-09-29:
 | Evidence | What it showed |
 |---|---|
 | Live query on `data/zolai.db` (`sqlite_master`) | table count (see §2.1 discrepancy note) |
-| `docs/database/tables.md` (updated 2026-09-28) | 101-table catalog, row counts, staging/archive status |
+| `docs/database/tables.md` (reconciled 2026-09-30) | 106-table catalog (conventions: 106 incl. FTS5 shadows / 101 excl. / 107 raw `sqlite_master`), row counts, staging/archive status |
 | `zolai-core/pyproject.toml` | deps: SQLAlchemy, `prometheus-client==0.26.0`, `psycopg2-binary`; CLI entry points |
 | `zolai-web/prisma/schema.prisma` | `provider = "postgresql"`, 66 Prisma models |
 | `zolai-core/docs/MONITORING.md` | Prometheus 3.15.0 + Grafana 13.2.3 runbook, endpoints, dashboards, alert rules |
@@ -59,15 +59,15 @@ No cross-repo globbing was performed from the workspace root (per `AGENTS.md` sc
 | Property | Value | Evidence |
 |---|---|---|
 | Engine | SQLite, WAL mode, `busy_timeout=30000` | `docs/database/tables.md` |
-| Disk size | ~2.3 GB | `tables.md` / `MONITORING.md` |
+| Disk size | ~2.4 GB | `tables.md` / `MONITORING.md` |
 | Rows | ~3.3M across all tables | `tables.md` |
-| Tables | **live count = 105 non-internal tables (queried 2026-09-29)**; `tables.md` documents **101** (2026-09-28) | drift → logged as Low-severity gap §7 |
+| Tables | **106 live (incl. FTS5 shadows, reconciled 2026-09-30)**; `tables.md` documents 101 excluding the 5 `wiki_content_fts*` shadows (107 raw `sqlite_master`) | count conventions defined in `tables.md` — drift closed |
 | Access pattern | `config.paths.data / "zolai.db"` — reads from DB, never raw JSONL | `tables.md` §7 |
 | Integrity hardening | FK guard at startup, integrity checks, migrations (27 constraints, 50+ indexes) | `zolai-core/zolai/data/{integrity,migrations}.py` |
 | Change tracking | `data_audit_log` — 30,745 rows (who/why/when, old→new) | `tables.md` §2.11 |
-| Import bookkeeping | `import_log` — 92 runs. `jsonl_import_log` exists but is **empty (0 rows)** — duplicate/legacy (the `jsonl_pipeline*.py` models write `import_log`) | live `sqlite3` query 2026-09-30; `tables.md` still attributes the 92 rows to `jsonl_import_log` (Phase 0 re-audit) |
+| Import bookkeeping | `import_log` — 92 runs. `jsonl_import_log` exists but is **empty (0 rows)** — duplicate/legacy (the `jsonl_pipeline*.py` models write `import_log`) | live `sqlite3` query 2026-09-30; `tables.md` reconciled 2026-09-30 (correct) |
 | Eval store (DB-first) | `eval_sets` (3), `eval_cases` (273), `eval_runs` (gate history) | `tables.md` §2.12; `zolai/data/migrations.py:1347` |
-| Staging | 26 `*_import` tables ≈ **1.52M** intermediate rows (1,517,212 live, 2026-09-30); `tables.md` says ~1.79M → pending Phase 0 re-audit; archive plan PROPOSED, nothing deleted | live `sqlite3` query 2026-09-30 |
+| Staging | 26 `*_import` tables = **1,517,212** intermediate rows (~1.52M, 2026-09-30); reconciled 2026-09-30 (0e6dbac); archive plan PROPOSED, nothing deleted | live `sqlite3` query 2026-09-30 |
 
 **Role today:** transitional canonical store for everything linguistic
 (dictionary 84,490 · bible_verses 31,649 · translations 207,623 · word_usage 269,903 ·
@@ -96,7 +96,7 @@ flowchart LR
   subgraph Ingestion
     S[Sources: Bible JSONL, dicts, corpus, PDFs] --> IMP["*_import staging tables"]
   end
-  IMP -->|"JSONL pipeline (92 logged runs)"| CAN[(data/zolai.db SQLite WAL ~2.3GB)]
+  IMP -->|"JSONL pipeline (92 logged runs)"| CAN[(data/zolai.db SQLite WAL ~2.4GB)]
   CAN --> BR["database_layer.py (bridge)"]
   BR -.->|"Phase 3 dual-run (deferred, founder-gated)"| PG[("PostgreSQL 18 TARGET")]
   CAN --> CORE[zolai-core FastAPI RAG/eval API]
@@ -217,7 +217,7 @@ Role/Permission-style models — see [ADR-010](../adr/ADR-010.md).
 | G11 | No structured logging convention (ad-hoc file logs) | **Medium** | **CONFIGURE** JSON + rotation; DEFER Loki/OTel/Alertmanager (ADR-003) |
 | G12 | No RAG trace tables (`rag_traces`); regressions only diagnosable via `eval_runs` | **Medium** | **CONFIGURE** DB-first traces (ADR-012); DEFER Langfuse/Phoenix |
 | G13 | Provenance chain exists (`data_audit_log`, `pos` columns) but is not surfaced/catalogued; dataset-level provenance links incomplete | **Medium** | **CONFIGURE** provenance columns + lineage views (data/provenance doc, batch 2) |
-| G14 | Table-count doc drift: live 105 vs documented 101 vs brief 103 | **Low** | re-audit counts at Phase 0 backup baseline; fix in `tables.md` during Phase 2 mapping |
+| G14 | Table-count doc drift (as audited 2026-09-29): live 105 vs documented 101 vs brief 103 | **Low** | **RESOLVED 2026-09-30 (0e6dbac)** — live 106 vs 101-excl-FTS5 drift closed; count conventions documented in `tables.md` |
 | G15 | BI/analytics for non-SQL consumers: none | **Low** (need = UNKNOWN, needs-founder-decision) | **DEFER**; interim = Grafana `data` folder |
 
 ### Already solved — do NOT redo

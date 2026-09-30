@@ -3,7 +3,7 @@ title: "Database archive plan (KR2.4)"
 description: "Non-destructive archive plan for staging and empty tables — approval required before execution"
 status: PROPOSED
 created: 2026-09-28
-last_updated: 2026-09-28
+last_updated: 2026-10-01
 ---
 
 # Database Archive Plan (KR2.4)
@@ -22,7 +22,7 @@ Never delete data merely to tidy the schema. Archive = move out of main DB, not 
 
 ## Phase 1 — Archive `*_import` staging tables (PROPOSED)
 
-26 tables, ~1.79M rows. Per `import_log` (92 runs), these are intermediate
+26 tables, 1,517,212 rows (~1.52M). Per `import_log` (92 runs), these are intermediate
 products of the JSONL pipeline; canonical tables are primary source of truth.
 
 ### Method (non-destructive)

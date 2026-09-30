@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — Layered Design"
 description: "Ingestion → canonical → serving layering, the 10 data domains, database roles, and what ships in v1 vs explicitly not (batch 2/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-10-01
 status: CONFIRMED
 ---
 
@@ -25,7 +25,7 @@ flowchart TB
   end
 
   subgraph L2["Layer 2 — Canonical store (single source of truth)"]
-    CAN[("data/zolai.db — SQLite WAL TODAY<br/>105 tables · ~3.3M rows · ~2.3 GB")]
+    CAN[("data/zolai.db — SQLite WAL TODAY<br/>106 tables · ~3.3M rows · ~2.4 GB")]
     TARGET[("PostgreSQL 18 TARGET<br/>via database_layer.py dual-run")]
     CAN <-->|"Phase 3, founder-gated"| TARGET
   end

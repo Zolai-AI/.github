@@ -2,7 +2,7 @@
 title: "Zolai Data Platform — Architecture Overview"
 description: "C4-lite context + container diagrams, v1 target stack, module boundaries, and standing invariants (batch 2/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-10-01
 status: CONFIRMED
 ---
 
@@ -88,7 +88,7 @@ flowchart LR
   end
 
   subgraph Canonical["Canonical store"]
-    DB[("data/zolai.db<br/>SQLite WAL · 105 tables · ~2.3 GB<br/>TRANSITIONAL canonical — KEEP now")]
+    DB[("data/zolai.db<br/>SQLite WAL · 106 tables · ~2.4 GB<br/>TRANSITIONAL canonical — KEEP now")]
     BR["database_layer.py<br/>(bridge, dual-run)"]
     DB --> BR
     BR -.->|"Phase 3, founder-gated"| PG[("PostgreSQL 18<br/>TARGET canonical")]
