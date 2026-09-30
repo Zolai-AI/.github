@@ -151,8 +151,14 @@ middleware (zolai-web), server actions (zolai-web), and API middleware (zolai-co
 ## 5. API-key scopes (zolai-core, [ADR-014](../adr/ADR-014.md))
 
 Keys authenticate **machines**; scopes are subsets of the same action list. Stored in
-`api_keys` (PROPOSED): `key_prefix`, `key_hash` (never plaintext), `scopes`, `expires_at`,
-`revoked_at`, `last_used_at`, `created_by`.
+`api_keys` **(SHIPPED 2026-09-30 — [ADR-014](../adr/ADR-014.md) / backlog P0-1)**:
+`key_prefix`, `key_hash` (SHA-256, never plaintext), `scopes`, `expires_at`,
+`revoked_at`, `last_used_at`, `created_by`. Issued via the `zolai apikey create|list|rotate|revoke`
+CLI or `GET/POST /api/v1/admin/api-keys` + `.../{id}/rotate|revoke` (scope `apikey:manage`);
+the plaintext secret is shown **once** at issue/rotate. Verification is the
+`ApiKeyMiddleware` on `/api/v1` plus the `require_scope` dependency
+(`ZOLAI_API_AUTH`: `warn` dual-accept default → `enforce` → `off`, see
+[api-design §2](../architecture/api-design.md)).
 
 | Key (example holder) | Scopes | Used by |
 |---|---|---|
@@ -166,7 +172,7 @@ Keys authenticate **machines**; scopes are subsets of the same action list. Stor
 |---|---|
 | Transport | `Authorization: Bearer <key>` or `X-API-Key` on `/api/v1` |
 | Exemptions (no key) | `/metrics` scrape (Prometheus), `/health`, Grafana provisioning — parity with [ADR-002](../adr/ADR-002.md) |
-| Limits | per-key rate + row-limit counters (the known PENDING "per-key/organization limits") |
+| Limits | per-key rate limit **shipped** (60 rpm default, `ZOLAI_API_RATE_LIMIT_RPM`, 429 + `Retry-After`); row-limit counters = still PENDING (the "per-key/organization limits") |
 | Rotation | issue second key → migrate consumer → revoke first (dual-accept window before enforcement) |
 | Revocation | `revoked_at` set → immediate 401; emits `apikey:manage` audit event |
 | Secrets | hashes only in DB; keys never in Git (`.env` / secret store policy) |
@@ -174,7 +180,8 @@ Keys authenticate **machines**; scopes are subsets of the same action list. Stor
 ## 6. Enforcement checklist
 
 1. **Deny-by-default middleware** on every `/admin` route and every mutating server action.
-2. **API middleware** on `/api/v1` for all non-exempt routes (legacy routes deprecated per ADR-014).
+2. **API middleware** on `/api/v1` for all non-exempt routes (legacy routes deprecated per
+   ADR-014) — **shipped** (`ApiKeyMiddleware`, mode-gated: `warn` → `enforce`).
 3. **Route-lint test:** a route added without a cited action = CI failure (ADR-010 consequence).
 4. **Audit on deny and on mutate** — denied attempts are security-relevant events.
 5. **Graceful degradation:** unauthenticated → login; authenticated but ungranted → 403 with

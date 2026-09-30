@@ -2,7 +2,7 @@
 title: "Data Platform Backlog (P0–P3)"
 description: "Prioritized tasks with reason, dependencies, complexity, files, DoD; P3 tools gated by decision-table revisit triggers; completed items marked DONE with commit refs (batch 3/3)"
 created: 2026-09-29
-last_updated: 2026-09-29
+last_updated: 2026-09-30
 status: CONFIRMED
 ---
 
@@ -32,6 +32,7 @@ status: CONFIRMED
 | DB integrity hardening (FK guard, WAL, migrations 27 constraints/50+ indexes) | **DONE** (pre-existing) | `zolai-core/zolai/data/{integrity,migrations}.py` |
 | Eval store DB-first (`eval_sets/eval_cases/eval_runs` + `/api/metrics/eval`) | **DONE** (pre-existing) | 273 cases / 3 sets; KR3.1 evidence |
 | Backup script (local leg) | **DONE** (KR2.2) | `scripts/backup-zolai.sh` + `--verify` drill 2026-09-28; [backup strategy](../governance/backup-strategy.md) |
+| API-key auth on zolai-core `/api/v1` (P0-1) | **DONE** (code) | zolai-core `309df21`, `9046651`, `1619ec3`; [api-design §2](../architecture/api-design.md), [permissions §5](../admin/permissions.md) |
 | This docs suite (34 docs: 5 arch + 1 matrix + 15 ADR + 5 data + 3 admin + 3 pipelines + 2 planning) | **DONE** | `docs/README.md` index updated |
 
 ---
@@ -40,7 +41,7 @@ status: CONFIRMED
 
 | # | Task | Reason | Dependencies | Cx | Files | DoD |
 |---|---|---|---|:--:|---|---|
-| P0-1 | **API-key auth + per-key/org limits on zolai-core `/api/v1`** | Known long-standing **PENDING** gap; Critical gap G2 — open API with zero per-caller identity ([ADR-014](../adr/ADR-014.md)) | P0-3 (action/scopes list) | **L** | `zolai-core/zolai/api/server.py`, new middleware, `api_keys` DDL, consumers (`zolai-mcp-server`, `zolai-tauri`, scripts) | keys issued to all consumers → dual-accept window → enforcement on; `/metrics` + `/health` exempt; revocation tested; audit on issue/revoke; no plaintext at rest |
+| P0-1 | ~~API-key auth + per-key limits on zolai-core `/api/v1`~~ | — | — | — | `zolai-core/zolai/api/{auth,auth_middleware,admin_api_keys_router}.py`, `zolai/data/migrations.py`, `zolai/cli/main.py` | **DONE** — zolai-core `309df21`, `9046651`, `1619ec3` (2026-09-30): `api_keys` DDL (hash-only) + `warn`/`enforce`/`off` middleware on `/api/v1` (default `warn` = dual-accept window; `/metrics` + `/health` exempt) + `require_scope` 403 with action + per-key 60 rpm → 429 + `Retry-After` + `X-RateLimit-*` + `zolai apikey` CLI + `/api/v1/admin/api-keys` (plaintext once) + audit on issue/rotate/revoke; 51 new tests, full suite 1380 passed. **Ops follow-ups:** issue keys to consumers (`zolai-mcp-server`, `zolai-tauri`, scripts) → flip `ZOLAI_API_AUTH=enforce` (founder gate); row-limit counters still PENDING |
 | P0-2 | **Phase 0 backup + checksum baseline** | Blocking prerequisite for every data phase ([migration §0](DATA_PLATFORM_MIGRATION.md)) | backup script (DONE) | **S** | `scripts/backup-zolai.sh` (run), `data/backups/baseline-*` (artifact), `docs/database/tables.md` (count reconcile) | verified restore drill + baseline sha256/counts file + G14 table-count drift reconciled + cron decision recorded |
 | P0-3 | **Action-list freeze → seed Prisma `Permission` rows** | Critical gap G3 — RBAC day-1 constraint; matrix exists as doc only ([ADR-010](../adr/ADR-010.md)) | [permissions matrix](../admin/permissions.md) (DONE) | **M** | `zolai-web/prisma/schema.prisma` (seed), enforcement middleware, route-lint test | all frozen actions seeded; deny-by-default on admin routes; route without cited action fails CI |
 | P0-4 | **Structured JSON logging + rotation** | Gap G11; cheap CONFIGURE that later phases depend on for triage ([ADR-003](../adr/ADR-003.md)) | none | **M** | zolai-core logging config, logrotate/systemd unit, docs note | JSON logs with rotation on host; log volume measured (feeds the Loki revisit trigger) |

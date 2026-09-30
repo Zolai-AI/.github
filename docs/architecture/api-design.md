@@ -37,7 +37,7 @@ different/legacy path · **PROPOSED** = designed, not built (phase noted).
 | **evaluations** | `GET /api/v1/evaluations/sets` · `GET .../runs` · `POST .../runs` | **PARTIAL** | gate reads **EXISTS** via `GET /api/metrics/eval` (metrics surface) + `zolai-eval` CLI; set/run CRUD PROPOSED (Phase 7), append-only runs ([ADR-019](../adr/ADR-019.md)) |
 | **rag** | `POST /api/v1/rag/query` · `GET /api/v1/rag/traces` | **PARTIAL** | answer path **EXISTS** as legacy `POST /knowledge/search`, `POST /chat/zolai` (frozen); `rag_traces` read PROPOSED (Phase 10, [ADR-012](../adr/ADR-012.md)) |
 | **audit** | `GET /api/v1/audit?table=&row_id=&limit=` | PROPOSED | read-only over `data_audit_log` (EXISTS data, Phase 8/9 API) — no write endpoint ever ([permissions §2](../admin/permissions.md)) |
-| **admin** | `/api/v1/admin/users` · `.../roles` · `.../api-keys` · `.../settings` | PROPOSED | Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key secrets never returned |
+| **admin** | `/api/v1/admin/api-keys` (issue · list · `/{id}/rotate` · `/{id}/revoke`) · `/api/v1/admin/users` · `.../roles` · `.../settings` | **PARTIAL** | **api-keys EXISTS** (2026-09-30, scope `apikey:manage`, plaintext returned once) · users/roles/settings = Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key secrets never returned |
 | **catalog** | `GET /api/v1/catalog` · `GET /api/v1/catalog/{dataset}` | PROPOSED | [ADR-004](../adr/ADR-004.md) — read-only metadata, Phase 6 |
 | **metrics** (kept outside `/api/v1`) | `GET /metrics` · `GET /api/metrics/{summary,health,eval,performance,alerts,info,annotations,...}` (11) | **EXISTS** | not moved under `/api/v1` — scrape/parity contract per [ADR-002](../adr/ADR-002.md) |
 
@@ -51,12 +51,15 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 
 | Rule | v1 contract |
 |---|---|
-| Mechanism | `Authorization: Bearer <key>` (or `X-API-Key`) on every `/api/v1` route |
-| Storage | `api_keys`: `key_prefix`, `key_hash` (never plaintext), `scopes`, `expires_at`, `revoked_at`, `last_used_at` ([permissions §5](../admin/permissions.md)) |
-| Exemptions | `/metrics` scrape, `/health`, Grafana provisioning ([ADR-002](../adr/ADR-002.md)) |
+| Mechanism | `Authorization: Bearer <key>` (or `X-API-Key`) on every `/api/v1` route (boundary-aware: `/api/v1x` is not gated) |
+| Storage | `api_keys`: `key_prefix`, `key_hash` (SHA-256, never plaintext), `scopes`, `expires_at`, `revoked_at`, `last_used_at` ([permissions §5](../admin/permissions.md)) |
+| Modes | `ZOLAI_API_AUTH` — **`warn` (default)**: missing/invalid key is logged (rate limited per reason) and the request continues, the dual-accept window · **`enforce`**: **401** `{"error":"unauthorized","reason":"missing_api_key"|"invalid_api_key"}` · **`off`**: middleware bypasses entirely (rollback) |
+| Rate limit | per-key in-memory token bucket, `ZOLAI_API_RATE_LIMIT_RPM` (default **60**/min): **429** + `Retry-After` + `X-RateLimit-{limit,remaining,reset}` on authenticated calls |
+| Exemptions | `/metrics` scrape, `/health`, `/api/v1/health` ([ADR-002](../adr-002.md)); legacy unversioned routes keep their current behavior |
+| Key management | `GET/POST /api/v1/admin/api-keys`, `POST .../{id}/rotate|revoke` (scope `apikey:manage`) and the `zolai apikey create\|list\|rotate\|revoke` CLI — plaintext shown **once** on create/rotate |
 | Humans | session auth stays in zolai-web; the admin BFF presents its own server key to core |
-| Failure | missing/invalid/revoked → **401**; expired → 401; both emit audit events |
-| Status | **PROPOSED / P0** — no API-key auth exists in `server.py` today (current-state gap G2) |
+| Failure | missing/invalid/expired/revoked → **401** (structured, rate-limited log on `zolai.api.auth`); authenticated but out-of-scope → **403** with the action name; issue/rotate/revoke emit `data_audit_log` rows (never a secret) |
+| Status | **IMPLEMENTED (P0-1, 2026-09-30)** — `zolai/api/auth.py` + `auth_middleware.py` + `admin_api_keys_router.py`; default posture is `warn`, flipping `ZOLAI_API_AUTH=enforce` is an ops decision (founder gate) |
 
 ## 3. Authorization (authz = RBAC actions)
 
@@ -107,12 +110,15 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 
 ## 8. Rate limits
 
-- Per-key token-bucket: default **60 req/min** burst 120 (proposal — tune on evidence);
-  heavy endpoints (search, imports, quality runs) get separate buckets.
+- Per-key token bucket — **shipped with API-key auth (P0-1)**: default **60 req/min**
+  (`ZOLAI_API_RATE_LIMIT_RPM`, capacity refilled over 60 s), in-memory per process
+  (multi-worker/DB-backed limits = deferred). Separate buckets for heavy endpoints
+  (search, imports, quality runs) remain a proposal — tune on evidence.
 - Exceed → **429** + `Retry-After` + `X-RateLimit-{limit,remaining,reset}`; every response
   carries `X-RateLimit-*` for keys.
-- Row-limit counters (existing PENDING "per-key/organization limits") share the same
-  accounting path. Unauthenticated (exempt routes excepted) → 401, never 429-anonymous.
+- Row-limit counters (the remaining PENDING "per-key/organization limits") share the same
+  accounting path — **not yet implemented**. Unauthenticated (exempt routes excepted) → 401,
+  never 429-anonymous.
 
 ## 9. Error format
 
