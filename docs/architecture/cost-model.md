@@ -57,7 +57,7 @@ Columns: **CPU** / **RAM** = steady-state load · **Disk** = footprint & growth 
 
 | Component | CPU | RAM | Disk | Ops | Net | Maint | Trigger before adoption |
 |---|:--:|:--:|:--:|:--:|:--:|:--:|---|
-| **Metabase** (BI) | LOW | MED | LOW | MED | MED | MED | first community analyst self-serve need ([ADR-016](../adr/ADR-016.md)); AGPL, Pro $575/mo gates SSO/RLS |
+| **Metabase** (BI) | LOW | MED | LOW | MED | MED | MED | first community analyst self-serve need ([ADR-016](../adr/ADR-016.md)); AGPL, Pro from $575/mo gates SSO/RLS |
 | **Apache Superset** (BI) | MED | MED | MED | **HIGH** | MED | HIGH | governance-heavy BI need; 4-part stack (web, worker, Redis, metadata DB) |
 | **Label Studio** (annotation) | LOW | MED | MED | MED | MED | MED | first 5+ external annotators ([ADR-011](../adr/ADR-011.md)) |
 | **OpenMetadata** (catalog/lineage) | MED | **HIGH** | MED | **HIGH** | MED | **HIGH** | ≥3 external systems / column-level lineage at scale ([ADR-018](../adr/ADR-018.md)); Kafka/ES/Neo4j-class footprint + ~10 vCPU |
