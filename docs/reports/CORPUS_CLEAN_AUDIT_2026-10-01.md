@@ -315,3 +315,88 @@ Totals: 1115265 == 1115265 — **identical** ✅
 - Class sum: written cells 5775 = html 0 + whitespace 9 + ZVS 2999 + JSON 2767 (JSON cells are classed `json` regardless of the defect kinds they contained).
 
 > `suah` / word-sanity / json / unique / duplicate counts above are the deliberate remainder — **cleaned ≠ zero defects**.
+
+---
+
+## C1.1 correction (2026-10-02)
+
+The founder caught false positives in the `corpus_clean_v1` apply above: person-name
+cells were gam-ified, EN glosses in `dictionary_en_zo` were rewritten, usage-table name
+lists lost their onomastic token, and `zolai_grammar_patterns` teaching contrasts were
+destroyed. This section records the revert + the guards that keep it from recurring.
+
+### Detection (re-derived from `data_audit_log` + live-cell compare — never hard-coded ids)
+
+Scanned all **5775** `reason="corpus_clean_v1 by cli"` rows; classification is
+deterministic and re-runnable:
+
+| # | Category | Cells | Definition |
+|---|---|---:|---|
+| A | `name_ram` | **70** | old matches the titlecase person-name pattern AND new contains gam/Gam — any table (bible_verses 22 · translations 16 · training_exercises 14 · phrases 6 · zolai_bible_analysis 6 · vocabulary 3 · proverbs 1 · zolai_grammar_patterns 1 · zolai_proverbs_idioms 1) |
+| B | `en_headword` | **31** | `dictionary_en_zo` cell (25 JSON + 6 `translations_clean` strings) where a changed string leaf's **old** value is an exact EN headword of that table (23 × `ram` element, 2 × `samna`) |
+| C | `usage_ram` | **8** | `word_usage` (5 × `co_occurring_words` JSON) / `zolai_word_usage` (3 × `word`) name-list cell with a lowercase earth/land token rewritten |
+| D | `grammar_meta` | **46** | `zolai_grammar_patterns` cell (22 distinct old values) holding a ZVS violation inside a meta marker (`(not ` / `❌`) — documentation, not usage |
+| — | out-of-scope | 5620 | legitimate corrections (COMPOUND fixes, titlecase God-name same-lexeme modernisation) — **deliberately untouched** |
+| | **pending total** | **155** | |
+
+### Prevention guards (committed with the revert)
+
+1. **Titlecase person-name guard** (`_zvs_step`) — the earth/land DIALECT rewrite now
+   fires only when the matched span is the exact lowercase token; the titlecase Bible
+   person-name (1CH 2:9-11 genealogy, Job 32:2) is never rewritten. All other DIALECT
+   entries (God-name, life/son, …) keep rewriting case-insensitively.
+2. **EN-headword guard** (`_clean_string`/`_clean_json_node` via `_headword_guard`) —
+   a `dictionary_en_zo` JSON element, or a whole `translations_clean` value, exactly
+   equal to an EN headword of the same table is an English gloss: ZVS is skipped
+   (whitespace/HTML fixes still apply).
+3. **Meta-doc guard** — a `zolai_grammar_patterns` cell containing `(not ` or `❌`
+   alongside a ZVS violation is teaching material; ZVS is skipped for the whole cell so
+   contrasts like `Uses gam (not …)` survive.
+4. Idempotency, NO-ALTER, no-drops and batched-transaction behavior are unchanged.
+
+CLI: `zolai corpus revert-c1 [--apply] [--json] [--db PATH]` (dry-run by default).
+
+### Live run evidence (2026-10-02)
+
+- **Fresh backup first:** `data/backups/zolai-2026-10-02_0500.db.gz` (563M, dictionary
+  rows 84490 verified by the backup script).
+- **Dry-run:** 155 pending (A 70 / B 31 / C 8 / D 46), 0 written, audit log 36520.
+- **Apply:** **155/155 reverted** · `data_audit_log` +155 rows
+  (`reason="c1_1_name_revert by cli"`, old=corrupted → new=restored) · log total
+  36520 → 36675 · **pending after run: 0** ✓
+- **Spot-check:** `bible_verses` `1CH 2:9` live now reads
+  `… Jerahme-el, Ram, leh Khelubai ahi uh hi.` (`zo_tdb77` + `zo_tedim2010`) ✓
+- **B/C/D spot-checks:** `dictionary_en_zo` arrays restored (`["pieces", …, "ram"]`,
+  `["samna", …]`); `word_usage.co_occurring_words` restored (`["ram"]`,
+  `["tapate", "tacil", "ram", …]`); `zolai_word_usage.word` restored to `ram`
+  (3 rows); grammar cells restored (`Uses `gam` (not `ram`)`) ✓
+- **Detection re-run:** pending **0** · already **155** · conflict 0 · missing 0 ✓
+- **Second `--apply` (live idempotency):** 0 cells, 0 audit rows ✓
+- **Row counts unchanged:** bible_verses 31649 · translations 207623 ·
+  dictionary_en_zo 64025 · word_usage 269903 · zolai_grammar_patterns 13519 ·
+  training_exercises 82159 — all identical to the C1 apply table above ✓
+- Original `corpus_clean_v1 by cli` audit rows were **never deleted** (full
+  before/after chain preserved).
+
+### Verification
+
+- Full `zolai-core` pytest: **1584 passed · 0 failed · 8 skipped · 1 xfailed** (665s),
+  including 6 new C1.1 tests (guards ×3, revert dry-run/apply+idempotency, CLI JSON).
+- `ruff check zolai tests` clean; ZVS source-compliance gate (docstrings/comments across
+  `zolai/`) **0 violations** — the report documents literal tokens, code cites descriptive
+  glosses and points at `zvs/rules_data` for the literal map.
+- Commits: zolai-core `b36b98c` (guards + revert + tests) · this docs commit (root).
+
+### Residuals / needs-founder
+
+1. **Validator-level titlecase behavior** — `zolai.zvs.validate()` still matches the
+  titlecase person-name case-insensitively (rule application uses `re.IGNORECASE`,
+  `rules.py` `_apply_rule`); the corpus guard sits at the corpus_clean layer only, so
+  other `validate()` consumers will still flag it. Changing rule semantics is a
+  founder/linguist decision.
+2. **C-class and bare listing cells remain re-exposure risks** — prevention rules 1-3
+  protect person-names, EN glosses and meta-docs only; a future clean run would again
+  rewrite lowercase name-list tokens and bare `` `ram` `` listing cells in
+  `zolai_grammar_patterns` (37 cells were deliberately kept this round as genuine
+  table-content rewrites). Extend the guards if corpus_clean is ever re-run.
+3. **Out-of-scope 5620 cells** stand as legitimate C1 corrections — no action needed.
