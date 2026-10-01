@@ -2,15 +2,15 @@
 
 - **Status:** PRE-APPLY (read-only defect matrix — committed as evidence before `--apply`)
 - **DB:** `/home/peter/Documents/Projects/zolai-ai/data/zolai.db`
-- **Generated:** 2026-10-01 15:38:42 UTC · scan 231.62s
+- **Generated:** 2026-10-01 16:15:09 UTC · scan 227.64s
 - **Spec:** `docs/planning/C1_CORPUS_CLEAN_PLAN.md` · module `zolai/data/corpus_clean.py`
 - **Tables scanned:** 15
 
 ## Summary
 
 - cells scanned: **1499337** · changed-candidate cells: 53543 · would-write: 5775
-- defects: html 0 · whitespace 2669 · ZVS 50908 cells (123084 hits) · suah 3214 · uppercase 48 · word-sanity 122678 · json-unparseable 0
-- review-needs: **suah 2883** · **word-sanity 137** · **json 0** · **unique 29** (total 3049)
+- defects: html 0 · whitespace 2669 · ZVS 50908 cells (123084 hits) · suah 3259 · uppercase 48 · word-sanity 122678 · json-unparseable 0
+- review-needs: **suah 2928** · **word-sanity 137** · **json 0** · **unique 29** (total 3094)
 - exact-duplicate groups: **29557** (detect + count only — no deletes)
 
 > `suah` is never rewritten; `zo_hcl06`/`zo_fcl` are audit-only; EN/MY/label/staging columns are never selected. Row counts below are the pre-apply baseline — after apply they must be identical (NO-drops proof).
@@ -28,11 +28,11 @@
 | bible_verses | `zo_hcl06` | sentence | scripture | 28201 | 0 | 0 | 24062 (66939) | 2 | 0 | 0 | 0 | 24062 | — (audit-only) |
 | bible_verses | `zo_fcl` | sentence | scripture | 29661 | 0 | 0 | 23540 (52680) | 329 | 0 | 0 | 0 | 23540 | — (audit-only) |
 | phrases | `zolai` | word | modern | 10722 | 0 | 0 | 13 (13) | 3 | 0 | 10719 | 10 | 13 | 3 |
-| phrases | `examples` | json | modern | 10722 | 0 | 1721 | 66 (66) | 13 | 0 | 0 | 0 | 1764 | 1764 |
+| phrases | `examples` | json | modern | 10722 | 0 | 1721 | 66 (66) | 20 | 0 | 0 | 0 | 1764 | 1764 |
 | translations | `target` | sentence | modern | 27473 | 0 | 0 | 323 (332) | 185 | 0 | 0 | 0 | 323 | 323 |
 | translations | `source` | sentence | modern | 29185 | 0 | 0 | 339 (348) | 188 | 0 | 0 | 0 | 339 | 339 |
 | vocabulary | `headword` | word | modern | 104905 | 0 | 91 | 33 (33) | 78 | 0 | 42128 | 119 | 124 | 2 |
-| vocabulary | `examples` | json | modern | 104906 | 0 | 848 | 19 (21) | 7 | 0 | 0 | 0 | 856 | 856 |
+| vocabulary | `examples` | json | modern | 104906 | 0 | 848 | 19 (21) | 45 | 0 | 0 | 0 | 856 | 856 |
 | word_usage | `word` | word | modern | 269903 | 0 | 0 | 16 (16) | 100 | 0 | 46544 | 1 | 16 | 1 |
 | word_usage | `co_occurring_words` | json | modern | 269903 | 0 | 0 | 6 (6) | 131 | 0 | 0 | 0 | 6 | 6 |
 | training_exercises | `zolai` | sentence | modern | 82159 | 0 | 0 | 979 (1000) | 532 | 0 | 0 | 0 | 979 | 979 |
@@ -237,3 +237,81 @@
 ## Note
 
 **Cleaned ≠ zero defects.** Only deterministic ZVS/whitespace/HTML fixes are applied; everything else stays as review-needs triage (`suah`, word-sanity, json, unique-collision, duplicates). After `--apply` an `## Apply results` section is appended with before/after row counts, audit-row totals and the idempotency proof.
+
+## Apply results
+
+- **Applied:** 2026-10-01 15:43 UTC · db `/home/peter/Documents/Projects/zolai-ai/data/zolai.db` · batch 5000
+- **Fresh backup before apply:** `data/backups/zolai-2026-10-01_2113.db.gz` (563M · sha256 in `data/backups/backup.log`)
+- **Cells changed:** 5775 · **`data_audit_log` rows added:** 5775 (one per changed cell, `reason="corpus_clean_v1 by cli"`) · log total now 36520
+- **Defect classes among written cells:** html 0 · whitespace 9 · ZVS 2999 · JSON 2767
+
+### Row counts before == after (NO-drops proof)
+
+| table | rows before | rows after | cells changed | audit rows |
+|---|---:|---:|---:|---:|
+| dictionary | 84490 | 84490 | 1 | 1 |
+| dictionary_en_zo | 64025 | 64025 | 147 | 147 |
+| bible_verses | 31649 | 31649 | 926 | 926 |
+| phrases | 10722 | 10722 | 1767 | 1767 |
+| translations | 207623 | 207623 | 662 | 662 |
+| vocabulary | 104906 | 104906 | 858 | 858 |
+| word_usage | 269903 | 269903 | 7 | 7 |
+| training_exercises | 82159 | 82159 | 979 | 979 |
+| proverbs | 8203 | 8203 | 73 | 73 |
+| word_collocations | 5000 | 5000 | 0 | 0 |
+| zolai_vocabulary | 112279 | 112279 | 3 | 3 |
+| zolai_bible_analysis | 30758 | 30758 | 181 | 181 |
+| zolai_word_usage | 85045 | 85045 | 7 | 7 |
+| zolai_grammar_patterns | 13519 | 13519 | 110 | 110 |
+| zolai_proverbs_idioms | 4984 | 4984 | 54 | 54 |
+
+Totals: 1115265 == 1115265 — **identical** ✅
+
+### Cells changed per table
+
+| table | html | whitespace | zvs | json |
+|---|---:|---:|---:|---:|
+| dictionary | 0 | 0 | 1 | 0 |
+| dictionary_en_zo | 0 | 0 | 6 | 141 |
+| bible_verses | 0 | 1 | 925 | 0 |
+| phrases | 0 | 0 | 3 | 1764 |
+| translations | 0 | 0 | 662 | 0 |
+| vocabulary | 0 | 0 | 2 | 856 |
+| word_usage | 0 | 0 | 1 | 6 |
+| training_exercises | 0 | 0 | 979 | 0 |
+| proverbs | 0 | 1 | 72 | 0 |
+| word_collocations | 0 | 0 | 0 | 0 |
+| zolai_vocabulary | 0 | 0 | 3 | 0 |
+| zolai_bible_analysis | 0 | 7 | 174 | 0 |
+| zolai_word_usage | 0 | 0 | 7 | 0 |
+| zolai_grammar_patterns | 0 | 0 | 110 | 0 |
+| zolai_proverbs_idioms | 0 | 0 | 54 | 0 |
+
+### Re-audit after apply (remaining defects = triage)
+
+- review-needs: suah **2928** · word-sanity **137** · json **0** · unique **29** (total 3094)
+- would-write cells remaining: **0**
+- duplicate groups: **29558** (count-only — no deletes)
+- html remaining: 0 · whitespace remaining: 91 · ZVS cells remaining: 47677
+
+### Idempotency (second `--apply`)
+
+- cells changed: **0** · audit rows added: **0** ✅ (0 new audit rows — clean is idempotent)
+
+### needs-founder
+
+1. **`suah` target** — rules_data says `chuak`, AGENTS/ZVS says `suahtakna` (context-dependent). C1 never rewrites `suah`; every hit is counted as a review-need for a founder decision.
+2. **Dedupe DELETEs** — duplicate groups are counted only (destructive removal needs an explicit founder decision; row counts are unchanged).
+3. **Unique-index collisions** — a cleaned value that already exists in another row of the same table (e.g. `dictionary.zolai` has a UNIQUE index) would merge two rows. C1 refuses the write and counts the cell as a review-need (`unique`); row counts never change.
+4. **Junk / word-sanity headwords** — word fields whose cleaned value fails `^[a-z][a-z-]*$` are left untouched (changing them could alter headword identity); they are counted as review-needs.
+5. **Fate of `zo_hcl06` / `zo_fcl`** — audit quantifies their historical-form counts; C1 never writes them.
+6. **Mixed EN/ZO JSON content** — `dictionary_en_zo.translations` and `word_usage.co_occurring_words` contain English glosses alongside ZO; plan §3 treats JSON string values as ZO, so a small number of ZVS rewrites touch EN-looking cells (reversible via `data_audit_log`).
+
+### Report notes
+
+- Pre-apply section regenerated from backup `zolai-2026-10-01_2113.db.gz` after the JSON suah-counter fix (`7f1df75`): the original committed audit (`57c145d`) undercounted suah in JSON cells that had no other pending change (suah cells 3214→3259, review-needs suah 2883→2928 / total 3049→3094, +45 cells). All other pre-apply figures unchanged (html/whitespace/ZVS/uppercase/word-sanity/json, changed-candidates 53543, would-write 5775, duplicate groups 29557). Pre == post suah 2928 proves apply never touched `suah`.
+- Duplicate groups 29557 → 29558 (net +1): ZVS normalization (`na ding` → `nading`) retexted one existing 2-row group in place (same rows, remove+add = net 0) and made one previously-distinct verse pair byte-identical (+1 group). Count-only — no deletes, row counts identical.
+- Idempotency shown is the full re-scan run under final code (third `--apply`, state was terminal so cursors reset); the second apply (immediately after the first) was also 0/0. The suah-counter fix only propagates counters in the no-change path — write behavior (`changed`) is unchanged.
+- Class sum: written cells 5775 = html 0 + whitespace 9 + ZVS 2999 + JSON 2767 (JSON cells are classed `json` regardless of the defect kinds they contained).
+
+> `suah` / word-sanity / json / unique / duplicate counts above are the deliberate remainder — **cleaned ≠ zero defects**.
