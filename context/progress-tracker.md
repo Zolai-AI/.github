@@ -586,3 +586,57 @@ Two full orchestra loops completed (plan → implement → verify → review, OR
 2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
 3. **L1.4:** POS backfill run + 500-sentence gold set (needs speaker recruitment)
 4. Founder decisions queue: nightly backup cron, PG cutover, eval threshold, archive (KR2.4)
+
+---
+
+## 2026-10-01 (Session — Backend Core v1: Phase 1 API surface + Phase 2 engines/mode)
+
+Two orchestra cycles (plan → implement → verify → review) on `zolai-core`, in the same day as
+the Phase 0 data baseline above. Root docs repo stays the tracker home; all code/commits below
+are zolai-core unless noted.
+
+### Phase 1 — `/api/v1` core surface (ADR-014) — ORCHESTRA_COMPLETE, pushed
+
+- **44 `/api/v1` paths** verified via OpenAPI: foundation 22 · linguistics 9 · predictions 5 ·
+  admin(api-keys) 3 · lexicon 2 · records 1 · review 1 · audit 1 (total 155 paths incl. legacy).
+- **103 phase-1 API tests** across `test_lexicon_api` / `test_word_engine_api` /
+  `test_records_api` / `test_review_records_api` (re-collected to confirm).
+- Composite-cursor defect fix `3320abd`; zolai-core chain pushed
+  (`origin/main` == `3320abd`), root pushed at `a9beb17`.
+- Plan status: **P1 ✅ (pending final sign-off)**.
+
+### Phase 2 — engine registry + AI-optional mode switch (D2) — implemented, awaiting verify
+
+- **`zolai/engines.py` registry: 16 entries**, all lazy targets verified to import;
+  capability flags (network/deterministic/provider) + `resolve_engine_path()` +
+  `AI_KEY_ENV_VARS` (Gemini/OpenAI/OpenRouter keys only — keyless local LLM = "no credential",
+  documented as F4 design note, not a defect).
+- **`ZOLAI_ENGINE_MODE` rule|hybrid|ai (default `rule`)**: `engine_mode()` reads live env →
+  falls back to `config.engine_mode`; `llm_allowed()` gate added at the TOP of
+  `FallbackChain.generate` (before provider registry is touched); `/predictions/health`
+  gained **additive `mode` key** only — no other behavior change (D2 constraint held).
+- **Tests: 61 new (49 contract + 12 API smoke)** — registry↔probe drift guard, 16 lazy-import,
+  15 offline engines run twice deterministically under a socket guard (0 outbound attempts),
+  11 mode tests (rule blocks chain even with `GEMINI_API_KEY` set; ai/hybrid keyless degrade
+  to `provider="rule_based"` with HTTP 200; ai-with-key calls a fake provider exactly once).
+  **1 xfail**: F1 — legacy `/chat/*` bypasses the mode gate (observed 500 + network attempt).
+- **D2 inventory (docs only):** 201 raw AST ≥4-entry hits → **104 curated rows**
+  (79 engine-path literals / 22 files + 25 repo-wide / 21 files) + 15 ZVS forbidden-form copies;
+  every row carries file:line, literal type and its C2/C3 replacement rule
+  (`docs/linguistics/ENGINE_HARDCODE_INVENTORY.md`).
+- **Findings F1–F6** (`docs/linguistics/ENGINE_FINDINGS.md`): legacy chat mode bypass (xfail),
+  OnlineSearch ungated, tokenizer construct-only until P3, key-based AI gate rationale,
+  ZVS 15-copy drift (canonical = `zolai/zvs/rules_data.py`), attestation cold start ~21s.
+  **No behavior fixes in P2** — deferred by plan constraint.
+- **Full suite: 1552 passed, 7 skipped, 1 xfailed, 0 failed** (was 1499 collected) ·
+  `ruff check zolai tests` clean.
+- **Commits:** `366a9e3` feat(engines) · `c9e09b1` test(engines) · `bcc0d16` docs(engines) —
+  3 ahead of origin (push pending orchestration) · root tracker sync = this commit.
+
+### Auto-continue next
+
+1. **C1 corpus clean** (R1 revised order: P2 → C1) — in-place ZVS-2018 normalization +
+   dedupe with `data_audit_log` rows; cleaning report before/after per table
+2. Verifier/reviewer sign-off on the P2 trio above, then push zolai-core
+3. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
+4. Founder decisions queue: nightly backup cron, PG cutover, eval threshold, archive (KR2.4)
