@@ -21,7 +21,7 @@ status: current
 | ZVS 2018 compliance rate | ~95% | 99%+ | 99.5%+ | Automated compliance check |
 | Dictionary entries (Zolai→English) | 84,490 | 84,490 | 85,000+ | Database count |
 | Dictionary entries (English→Zolai) | 64,025 | 64,025 | 65,000+ | Database count |
-| Bible verses processed | 31,649 | 31,649 | 31,649 | Database count |
+| Bible verses processed | 31,102 | 31,102 | 31,102 | Database count |
 | Grammar patterns documented | 5,560 | 5,560 | 6,000+ | Database count |
 | Training exercises available | 82,159 | 82,159 | 85,000+ | Database count |
 

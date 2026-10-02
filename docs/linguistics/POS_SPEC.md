@@ -34,7 +34,7 @@ version: 0.1
 | **UD Zomi corpus** — Tun Tun Aung, Univ. of Strasbourg TCLoc (Oct 2025): 10,583 tokens, POS + morphological features (tense, aspect, case, evidentiality) + dependencies, custom Zomi annotation guidelines; baseline POS-tagging experiments | Prior art, documented | Confirms UD is applicable to Zomi; features: TAME + evidentiality |
 | *A Descriptive Grammar of the Zo language* (2013 thesis) | Linguistic literature, documented | TAME system, stem alternation, agglutination, ergativity |
 | *A Descriptive Grammar of Tedim Chin* (Zam Ngaih Cing, 2017) | Linguistic literature, documented | Tedim-specific grammar |
-| Our corpus: `bible_verses` (31,649), `translations` (207,623), `word_usage` (269,903) | Corpus-observed | Frequency, attestation of tags/particles |
+| Our corpus: `bible_verses` (31,102), `translations` (207,623), `word_usage` (269,903) | Corpus-observed | Frequency, attestation of tags/particles |
 | `grammar_patterns` (5,560 rows / 52 syntactic functions) | Corpus-observed | Sentence-level function labels |
 | Existing `zolai/pos_tagger` 13-tag set | In-house prior work | Legacy mapping (§6) |
 

@@ -26,7 +26,7 @@ Source: [`questions.md`](questions.md)
 | Source | Rows | License | Use in research |
 |--------|------|---------|-----------------|
 | dictionary | 84,490 | Under audit (KR2.3) | Lexical tasks, NER |
-| bible_verses | 31,649 | RESTRICTED — permission pending | Parallel tasks (permission-gated) |
+| bible_verses | 31,102 | RESTRICTED — permission pending | Parallel tasks (permission-gated) |
 | translations | 207,623 | Under audit | MT evaluation |
 | syllable_data | 189,563 | Derived from sources | Syllable segmentation |
 | grammar_patterns | 5,560 | Derived | Grammar validation |

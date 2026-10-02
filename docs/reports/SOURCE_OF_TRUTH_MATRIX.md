@@ -18,7 +18,7 @@ status: CONFIRMED
 | Sessions | PostgreSQL (zolai-web) | — | — | PostgreSQL | HIGH |
 | Dictionary (ZO→EN) | SQLite `dictionary` table (84,490) | — | — | SQLite (data/zolai.db) | HIGH |
 | Dictionary (EN→ZO) | SQLite `dictionary_en_zo` table (64,025) | — | — | SQLite (data/zolai.db) | HIGH |
-| Bible verses | SQLite `bible_verses` table (31,649) | — | — | SQLite (data/zolai.db) | HIGH |
+| Bible verses | SQLite `bible_verses` table (31,102) | — | — | SQLite (data/zolai.db) | HIGH |
 | Grammar patterns | SQLite `grammar_patterns` table (5,560) | — | — | SQLite (data/zolai.db) | HIGH |
 | Vocabulary | SQLite `vocabulary` table (104,906) | — | — | SQLite (data/zolai.db) | HIGH |
 | Phrases | SQLite `phrases` table (10,722) | — | — | SQLite (data/zolai.db) | HIGH |

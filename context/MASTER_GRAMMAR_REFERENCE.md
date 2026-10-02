@@ -1274,7 +1274,7 @@ User question (Zolai or English)
     ↓
 zolai-core RAG pipeline:
     1. Dictionary lookup (dictionary table — 84,490 words)
-    2. Bible verse search (bible_verses table — 31,649 verses)
+    2. Bible verse search (bible_verses table — 31,102 verses)
     3. Phrase matching (phrases table — 10,722 phrases)
     4. Grammar pattern check (grammar_patterns table — 5,560 patterns)
     5. Context-aware translation (word_usage table — 269,903 records)
@@ -1411,7 +1411,7 @@ Pasian in vantung leh leitung a piangsak hi.
 |--------|---------|------|---------|
 | `vocabulary` (table) | 104,906 | — | Word frequency + examples |
 | `grammar_patterns` (table) | 5,560 | — | Grammar patterns |
-| `bible_verses` (table) | 31,649 | — | Bible verses |
+| `bible_verses` (table) | 31,102 | — | Bible verses |
 | `phrases` (table) | 10,722 | — | Multi-word phrases |
 | `word_alignments` (table) | 385,120 | — | Word alignments |
 | `dictionary` (table, ZO→EN) | 84,490 | — | ZO→EN dictionary |

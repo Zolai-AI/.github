@@ -70,7 +70,7 @@ No cross-repo globbing was performed from the workspace root (per `AGENTS.md` sc
 | Staging | 26 `*_import` tables = **1,517,212** intermediate rows (~1.52M, 2026-09-30); reconciled 2026-09-30 (0e6dbac); archive plan PROPOSED, nothing deleted | live `sqlite3` query 2026-09-30 |
 
 **Role today:** transitional canonical store for everything linguistic
-(dictionary 84,490 · bible_verses 31,649 · translations 207,623 · word_usage 269,903 ·
+(dictionary 84,490 · bible_verses 31,102 · translations 207,623 · word_usage 269,903 ·
 training_exercises 82,159 · syllable_data 189,563 · …).
 
 ### 2.2 Application store — Prisma/PostgreSQL (zolai-web)

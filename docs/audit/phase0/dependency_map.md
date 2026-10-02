@@ -39,7 +39,7 @@ llm  →  config                 (only reachable via engines gate)
 **Violation candidates (audit only, Phase 1 fixes):** `api/server.py` imports legacy everything (monolith 49KB); `scripts/*` import zolai directly (batch jobs). Target: api routes thin, domain logic in foundation/learning.
 
 ## D. DB dependencies (data/zolai.db, 106 tables, WAL + busy_timeout=30000)
-- **Read-heavy hot**: dictionary (84,490), dictionary_en_zo (64,025), bible_verses (31,649), phrases (10,722), vocabulary (104,906), word_usage (269,903), translations (207,623), syllable_data (189,563), word_alignments (385,120), word_collocations (5,000 — C2 expand)
+- **Read-heavy hot**: dictionary (84,490), dictionary_en_zo (64,025), bible_verses (31,102), phrases (10,722), vocabulary (104,906), word_usage (269,903), translations (207,623), syllable_data (189,563), word_alignments (385,120), word_collocations (5,000 — C2 expand)
 - **Write**: data_audit_log (36,520), api_keys, monitoring_annotations, eval_runs, db_integrity_runs, review_status updates (L1.3 cols on lexicon tables)
 - **Staging (read-only for prod)**: 26 `*_import` (1,517,212)
 - **Access pattern**: `zolai/config.py` → `config.paths.zolai_db` = workspace-root `data/zolai.db` (2.4GB; `zolai-core/data/zolai.db` is 0-byte stub — do not use)

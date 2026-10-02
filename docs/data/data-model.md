@@ -91,7 +91,7 @@ status: PROPOSED
 |---|---|---|---|---|---|
 | `dictionary` (84,490) · `dictionary_en_zo` (64,025) · `dictionary_meanings` | Lexicon ZO→EN / EN→ZO; sense-level rows | EXISTS | `id` | — | unique `zolai` (+ `english`); `content_hash`; partial `pos_canonical` |
 | `vocabulary` (104,906) · `zolai_vocabulary` | Frequency-ranked vocabulary index | EXISTS | `id` | — | unique `word`; partial `pos_canonical` |
-| `bible_verses` (31,649) · `translations` (207,623) · `word_alignments` (385,120) | Parallel corpus + word alignment | EXISTS | `id` | logical (verse refs) | unique (book, chapter, verse, version); index `confidence` |
+| `bible_verses` (31,102) · `translations` (207,623) · `word_alignments` (385,120) | Parallel corpus + word alignment | EXISTS | `id` | logical (verse refs) | unique (book, chapter, verse, version); index `confidence` |
 | `phrases` (10,722) · `word_usage` (269,903) · `word_collocations` | Multi-word expressions, per-book usage | EXISTS | `id` | — | unique phrase key; index book/frequency |
 | `grammar_patterns` (5,560) · `zolai_grammar_patterns` (13,519) · `grammar_instructions` | Sentence/grammar patterns (SOV, negation, questions) | EXISTS | `id` | — | index pattern/scope |
 | `syllable_data` (189,563) · `tone_sandhi` · `tone_patterns` | Syllable segmentation + 19 sandhi rules | EXISTS | `id` | — | unique (word, syllable) |

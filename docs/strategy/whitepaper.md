@@ -14,7 +14,7 @@ version: 0.1
 
 ## Abstract
 
-Of the world's approximately 7,000 languages, nearly 40% are endangered, with Tibeto-Burman languages among those facing digital extinction. Tedim Zolai (ZVS 2018 orthography) — spoken by over 200,000 people in Myanmar and the diaspora — has virtually no NLP tools, digital corpora, or language technology. This paper introduces Zolai AI, a RAG-first bilingual AI toolkit designed to preserve and teach Tedim Zolai through a community-owned, culturally grounded approach. We present the largest existing Zolai language dataset: a canonical SQLite database containing 99 tables, 3.3 million rows, and 2.3 GB of cleaned, ZVS-2018-aligned linguistic data, including 84,490 dictionary entries, 31,649 parallel Bible verses, 207,623 translation pairs, and 269,903 word usage records. Our RAG-first architecture avoids raw fine-tuning, instead routing queries through a four-tier pipeline — dictionary lookup, phrase matching, Bible parallel retrieval, and AI fallback — with ZVS 2018 orthography enforced at every stage. We report 98.49% accuracy on syllable segmentation (1,725-word evaluation set) and 100% accuracy on multi-syllable words. An MCP server deployed on Cloudflare Workers integrates our toolkit with ChatGPT, Gemini, and Claude. All code, data schemas, and evaluation scripts are released under MIT license. Zolai AI demonstrates that community-driven, RAG-first approaches can produce functional NLP tools for low-resource languages without requiring massive parallel corpora or large-scale fine-tuning.
+Of the world's approximately 7,000 languages, nearly 40% are endangered, with Tibeto-Burman languages among those facing digital extinction. Tedim Zolai (ZVS 2018 orthography) — spoken by over 200,000 people in Myanmar and the diaspora — has virtually no NLP tools, digital corpora, or language technology. This paper introduces Zolai AI, a RAG-first bilingual AI toolkit designed to preserve and teach Tedim Zolai through a community-owned, culturally grounded approach. We present the largest existing Zolai language dataset: a canonical SQLite database containing 99 tables, 3.3 million rows, and 2.3 GB of cleaned, ZVS-2018-aligned linguistic data, including 84,490 dictionary entries, 31,102 parallel Bible verses, 207,623 translation pairs, and 269,903 word usage records. Our RAG-first architecture avoids raw fine-tuning, instead routing queries through a four-tier pipeline — dictionary lookup, phrase matching, Bible parallel retrieval, and AI fallback — with ZVS 2018 orthography enforced at every stage. We report 98.49% accuracy on syllable segmentation (1,725-word evaluation set) and 100% accuracy on multi-syllable words. An MCP server deployed on Cloudflare Workers integrates our toolkit with ChatGPT, Gemini, and Claude. All code, data schemas, and evaluation scripts are released under MIT license. Zolai AI demonstrates that community-driven, RAG-first approaches can produce functional NLP tools for low-resource languages without requiring massive parallel corpora or large-scale fine-tuning.
 
 ## 1. Introduction
 
@@ -80,7 +80,7 @@ All data is stored in a single canonical SQLite database (`data/zolai.db`) runni
 |----------|-----:|---------|
 | dictionary (ZO→EN) | 84,490 | Cleaned master Zolai→English dictionary |
 | dictionary_en_zo (EN→ZO) | 64,025 | English→Zolai + Burmese monolingual |
-| bible_verses | 31,649 | Parallel EN/ZO/MY verses (6 translations) |
+| bible_verses | 31,102 | Parallel EN/ZO/MY verses (6 translations) |
 | translations | 207,623 | EN↔ZO sentence pairs |
 | word_usage | 269,903 | Per-book word profiles + co-occurring words |
 | vocabulary | 104,906 | Vocabulary index with frequency |
@@ -100,7 +100,7 @@ Data is collected from public, community-validated sources:
 
 | Category | Source | Entries |
 |----------|--------|--------:|
-| Bible translations | TDB77, Tedim2010, Hakha, Falam, Paite | 31,649 parallel verses |
+| Bible translations | TDB77, Tedim2010, Hakha, Falam, Paite | 31,102 parallel verses |
 | Dictionary (ZO→EN) | TongDot, TongSan, cleaned master | 84,490 entries |
 | Dictionary (EN→ZO) | TongDot, TongSan, processed trilingual | 64,025 entries |
 | Web corpus | Web-scraped Zolai content, cleaned | 3M+ sentences |
@@ -127,7 +127,7 @@ Zolai AI adopts a RAG-first architecture that avoids raw fine-tuning for the mai
 
 1. **Dictionary lookup** (84,490 ZO→EN + 64,025 EN→ZO entries) — exact and fuzzy matching with confidence scoring.
 2. **Phrase matching** (10,722 phrases) — multi-word expression detection.
-3. **Bible parallel retrieval** (31,649 verses) — parallel verse lookup with word-level alignment (385,120 alignments).
+3. **Bible parallel retrieval** (31,102 verses) — parallel verse lookup with word-level alignment (385,120 alignments).
 4. **AI fallback** — LLM generation with ZVS 2018 system prompt, RAG context injected from previous tiers.
 
 This pipeline ensures that known translations are returned from authoritative sources before resorting to generative AI, reducing hallucination and maintaining orthographic accuracy.
@@ -226,7 +226,7 @@ Zolai AI supports progressive literacy through:
 
 - **CEFR A1-C2 curriculum**: 8 levels from basic vocabulary (A1) to advanced literary analysis (C2).
 - **Vocabulary builder**: Spaced repetition system with 8 quiz types (Bible, phrases, reverse, frequency).
-- **Bible study engine**: Verse-by-verse analysis with morphological breakdown, leveraging 31,649 parallel verses as primary learning material.
+- **Bible study engine**: Verse-by-verse analysis with morphological breakdown, leveraging 31,102 parallel verses as primary learning material.
 - **Grammar checker**: Real-time ZVS 2018 compliance checking for all user input.
 
 ### 6.4 CARE Principles
@@ -246,7 +246,7 @@ Zolai AI is designed for community ownership. The canonical database is maintain
 
 ### 7.2 Cultural Sensitivity
 
-The Bible is used as a language corpus, not a religious tool. We explicitly note this in all documentation. The 31,649 parallel verses provide the only complete, trusted, EN/ZO parallel corpus available for Zolai — no other source comes close in size, quality, or community validation. We respect ZVS 2018 orthography throughout, centering indigenous knowledge systems rather than imposing external linguistic frameworks.
+The Bible is used as a language corpus, not a religious tool. We explicitly note this in all documentation. The 31,102 parallel verses provide the only complete, trusted, EN/ZO parallel corpus available for Zolai — no other source comes close in size, quality, or community validation. We respect ZVS 2018 orthography throughout, centering indigenous knowledge systems rather than imposing external linguistic frameworks.
 
 ### 7.3 AI Ethics
 
