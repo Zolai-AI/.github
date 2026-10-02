@@ -64,7 +64,7 @@ canonical tables are the primary source of truth; `*_import` tables are intermed
 |-------|------|---------|
 | dictionary | 84,490 | Zolai→English (master, enriched from 6 sources) |
 | dictionary_en_zo | 64,025 | English→Zolai + Burmese monolingual |
-| bible_verses | 31,649 | Parallel EN/ZO/MY verses |
+| bible_verses | 31,102 | Parallel EN/ZO/MY verses |
 | grammar_patterns | 5,560 | Sentence patterns + SOV/tense/negation |
 | phrases | 10,722 | Multi-word expressions |
 | vocabulary | 104,906 | Vocabulary index with frequency |
@@ -101,7 +101,7 @@ third-party dataset repositories as sources.
 
 | Category | Source | Size | Entries |
 |----------|--------|------|---------|
-| Bible | Tedim Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | 31,649 parallel verses | 31,649 |
+| Bible | Tedim Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | 31,102 parallel verses | 31,102 |
 | Dictionary (ZO→EN) | Our cleaned master dictionary | 11MB | 84,490 |
 | Dictionary (EN→ZO) | Our cleaned master dictionary | 56MB | 64,025 |
 | Dictionary (Trilingual) | Our processed trilingual dictionary | 6.7MB | 7,841 |
@@ -121,7 +121,7 @@ third-party dataset repositories as sources.
 
 The Bible is our **primary training corpus** because it is the **only complete, trusted, EN/ZO parallel corpus** available for Tedim Zolai:
 
-- **31,649 parallel verses** (EN↔ZO) — no other source comes close
+- **31,102 parallel verses** (EN↔ZO) — no other source comes close
 - **Complete text** — all 66 books, covering all registers (narrative, poetry, dialogue, law)
 - **Multiple versions** — TDB77, Tedim2010, Hakha, Falam, Paite
 - **Community-validated** — decades of translation work by native speakers
@@ -232,7 +232,7 @@ User input (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
     1. Dictionary lookup (84,490 words)
-    2. Bible verse search (31,649 verses)
+    2. Bible verse search (31,102 verses)
     3. Phrase matching (10,722 phrases)
     4. Grammar pattern check (5,560 patterns)
     5. Context-aware translation (269,903 records)
@@ -298,7 +298,7 @@ User question (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
     1. Dictionary lookup (dictionary table — 84,490 words)
-    2. Bible verse search (bible_verses table — 31,649 verses)
+    2. Bible verse search (bible_verses table — 31,102 verses)
     3. Phrase matching (phrases table — 10,722 phrases)
     4. Grammar pattern check (grammar_patterns table — 5,560 patterns)
     5. Context-aware translation (word_usage table — 269,903 records)

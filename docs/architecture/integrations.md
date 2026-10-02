@@ -84,7 +84,7 @@ flowchart LR
   subgraph P["zolai-core RAG pipeline (reads data/zolai.db)"]
     direction LR
     R1["1 dictionary lookup (84,490)"]
-    R2["2 bible verse search (31,649)"]
+    R2["2 bible verse search (31,102)"]
     R3["3 phrase matching (10,722)"]
     R4["4 grammar patterns (5,560)"]
     R5["5 word_usage context (269,903)"]

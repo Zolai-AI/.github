@@ -36,7 +36,7 @@ CONSUMERS:
 |-------|------|---------|
 | dictionary | 84,490 | Zolai→English |
 | dictionary_en_zo | 64,025 | English→Zolai |
-| bible_verses | 31,649 | Parallel EN/ZO/MY |
+| bible_verses | 31,102 | Parallel EN/ZO/MY |
 | grammar_patterns | 5,560 | Sentence patterns |
 | phrases | 10,722 | Multi-word expressions |
 | vocabulary | 104,906 | Vocabulary index |
@@ -51,7 +51,7 @@ CONSUMERS:
 
 | Category | Source | Size | Entries |
 |----------|--------|------|---------|
-| Bible | TDB77, Tedim2010, Hakha, Falam, Paite (31,649 parallel verses) | 31,649 | 31,649 |
+| Bible | TDB77, Tedim2010, Hakha, Falam, Paite (31,102 parallel verses) | 31,102 | 31,102 |
 | Dictionary (ZO→EN) | Web-scraped TongSan dictionary, cleaned | 11MB | 84,490 |
 | Dictionary (EN→ZO) | Web-scraped TongSan dictionary, cleaned | 56MB | 64,025 |
 | Dictionary (Trilingual) | Web-scraped TongSan dictionary, cleaned | 6.7MB | 7,841 |
@@ -68,7 +68,7 @@ User question (Zolai or English)
     ↓
 zolai-core RAG pipeline (reads from data/zolai.db):
     1. Dictionary lookup (84,490 words)
-    2. Bible verse search (31,649 verses)
+    2. Bible verse search (31,102 verses)
     3. Phrase matching (10,722 phrases)
     4. Grammar pattern check (5,560 patterns)
     5. Context-aware translation (269,903 records)

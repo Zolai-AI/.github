@@ -2,12 +2,13 @@
 title: "Zolai Database — Full Integrity Report"
 description: "Database integrity, language coverage, and version tracking report"
 created: 2026-09-19
-last_updated: 2026-09-19
+last_updated: 2026-10-03
 status: CONFIRMED
 ---
 
 # Zolai Database — Full Integrity Report
-**Generated:** 2026-09-12 18:29 (updated 2026-09-18 with canonical stats)
+**Generated:** 2026-09-12 18:29 (updated 2026-09-18 with canonical stats; 2026-10-03 bible-ref
+fix — `bible_verses` 31,649 → **31,102**, see `docs/reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md`)
 **Database:** 2285.9 MB (canonical: data/zolai.db)
 
 ## 1. Language Coverage (ZO / EN / MY)
@@ -15,7 +16,7 @@ status: CONFIRMED
 | Table | Zolai | English | Myanmar | Total |
 |-------|-------|---------|---------|-------|
 | dictionary | 84,490 (100%) | 84,490 (100%) | — | 84,490 |
-| bible_verses | 31,649 (100%) | 31,649 (100%) | — | 31,649 |
+| bible_verses | 31,102 (100%) | 31,102 (100%) | — | 31,102 |
 | dictionary_en_zo | — | 64,025 (100%) | — | 64,025 |
 | translations | — | — | — | 207,623 |
 | word_alignments | — | — | — | 385,120 |
@@ -85,7 +86,7 @@ status: CONFIRMED
 |------|--------|
 | Dictionary (ZO→EN) | ✅ 84,490 entries |
 | Dictionary (EN→ZO) | ✅ 64,025 entries |
-| Bible verses | ✅ 31,649 verses |
+| Bible verses | ✅ 31,102 verses |
 | Word alignments | ✅ 385,120 alignments |
 | Translations | ✅ 207,623 pairs |
 | Phrases | ✅ 10,722 phrases |

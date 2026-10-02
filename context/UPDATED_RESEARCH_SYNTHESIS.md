@@ -6,7 +6,7 @@
 
 | Source | Type | Size | Status |
 |--------|------|------|--------|
-| Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | Corpus | 31,649 parallel verses | ✅ Complete |
+| Bible corpus (TDB77, Tedim2010, Hakha, Falam, Paite) | Corpus | 31,102 parallel verses | ✅ Complete |
 | TongDot/TongSan dictionaries | Dictionary | 11MB ZO→EN, 56MB EN→ZO | ✅ Complete |
 | Web-scraped Zolai corpus | Corpus | 686MB, 3M+ sentences | ✅ Complete |
 | Grammar references (Zolai Grammar Vol 1, Zolai Sinna, ZVS 2018) | Reference | 6.5MB, 23 files | ✅ Complete |

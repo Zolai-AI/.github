@@ -25,7 +25,7 @@ per-word derived stats, additive-only on the live DB.
 | 4 Contexts | word_usage per-book co_occurring (269,903) | obs-level contexts not persisted | `contexts.py`: left/right window + snippet, top-K with counts → stats.contexts JSON; word_usage reused for per-book |
 | 5 Co-occurrence | corpus.py:127 reads 5,000-row word_collocations | no per-word PMI from obs pass | `cooccurrence.py`: ±2 pairs in TEMP `obs_pair_counts`, PMI=log2(c·N/(f1·f2)), top-K → stats.neighbors/collocations JSON; word_collocations stays read-only |
 | 6 Attestation §27 | word_attestation.py loaders :39-95 (~21s cold start), attest_word:97, get_stats:199 | cold-start reload; no index/cache/Bloom | `attestation_index(word,source)` built by SAME loader queries → loads read index; bounded LRU + stats cache; optional Bloom `data/attestation/bloom-v1.{bin,json}` (blake2b, negative-only short-circuit, positives exact-verified) |
-| 7 Sentence extraction | bible_verses 31,649, translations ZO sides (29,185+27,473), phrases 10,722; splitter only legacy cleaner/pipeline.py:146 | no canonical source abstraction | `sentences.py`: declarative `SentenceSource` list (query + Zolai field + id derivation); pre-segmented only (free-text splitter deferred Phase 5) |
+| 7 Sentence extraction | bible_verses 31,102, translations ZO sides (29,185+27,473), phrases 10,722; splitter only legacy cleaner/pipeline.py:146 | no canonical source abstraction | `sentences.py`: declarative `SentenceSource` list (query + Zolai field + id derivation); pre-segmented only (free-text splitter deferred Phase 5) |
 
 ## Pipeline
 `foundation/observation/pipeline.py`: sources → sentences → tokenize → normalize →

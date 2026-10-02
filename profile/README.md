@@ -51,7 +51,7 @@ See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestric
 |----------|---------|---------|
 | `dictionary` (ZO→EN) | 84,490 | Cleaned master Zolai→English |
 | `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai (+ related fields) |
-| `bible_verses` | 31,649 | Parallel EN/ZO/MY verses |
+| `bible_verses` | 31,102 | Parallel EN/ZO/MY verses |
 | `translations` | 207,623 | Sentence pairs |
 | `syllable_data` | 189,563 | Syllable segmentation |
 | `training_exercises` | 82,159 | Exercise types |

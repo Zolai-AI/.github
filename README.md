@@ -72,7 +72,7 @@ All data lives in `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows).
 |-------|------|---------|
 | `dictionary` (ZO→EN) | 84,490 | Zolai→English (master, cleaned) |
 | `dictionary_en_zo` (EN→ZO) | 64,025 | English→Zolai + Burmese |
-| `bible_verses` | 31,649 | Parallel EN/ZO/MY verses |
+| `bible_verses` | 31,102 | Parallel EN/ZO/MY verses |
 | `translations` | 207,623 | EN↔ZO + EN→MY sentence pairs |
 | `syllable_data` | 189,563 | Syllable segmentation |
 | `vocabulary` | 104,906 | Vocabulary index with frequency |

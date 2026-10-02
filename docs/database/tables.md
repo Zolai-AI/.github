@@ -68,7 +68,7 @@ Nothing deleted yet.
 
 | Table | Rows | Purpose | Key Columns |
 |-------|-----:|---------|-------------|
-| `bible_verses` | 31,649 | Parallel EN/ZO/MY verses (6 translations) | book, chapter, verse, en, zo, my |
+| `bible_verses` | 31,102 | Parallel EN/ZO/MY verses (6 translations) | book, chapter, verse, en, zo, my |
 | `zolai_bible_analysis` | 30,758 | Verse + compounds + grammar analysis | verse_id, compounds, grammar |
 
 ### 2.3 Vocabulary
