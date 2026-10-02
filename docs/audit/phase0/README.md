@@ -1,6 +1,6 @@
 # Phase 0 — Audit (Master Prompt §36)
 
-**Status: COMPLETE (2026-10-02)** · Read-only inspection · No behavior changes · zolai-core @ `9cc1884`+ (post-C1, suite 1578 green)
+**Status: COMPLETE (2026-10-02)** · Read-only inspection · No behavior changes · zolai-core @ `f42443e` (post-C1, suite 1578 green)
 
 Governing spec: **Master Prompt — Zolai Core → Zolai Language Intelligence Engine** (39 sections). Phase order per §36: 0 Audit → 1 Contracts → 2 Observation → 3 Linguistic Discovery → 4 Knowledge → 5 Incremental → 6 RAG → 7 Cloud Publishing → 8 Production.
 

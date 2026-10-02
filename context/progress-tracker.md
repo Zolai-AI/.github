@@ -637,10 +637,36 @@ are zolai-core unless noted.
   root syncs: `5f8648b` + this commit.
 - **Plan canonical in repo:** `docs/planning/BACKEND_CORE_V1_PLAN.md` (P0–P5 + R1 revision).
 
+---
+
+## 2026-10-02 (Session — C1 corpus clean + C1.1 correction + Phase 0 audit)
+
+### (a) C1 corpus clean APPLIED
+
+- **5,775 cells normalized in place** — JSON 2767 / ZVS 2999 / whitespace 9.
+- `data_audit_log` **30,745 → 36,520** rows (full old→new trail).
+- Commits: `f6b15ab` (plan) + `89d657c..8422c58` apply chain +
+  report `CORPUS_CLEAN_AUDIT_2026-10-01.md`.
+
+### (b) C1.1 correction (reviewer/founder catch)
+
+- Founder caught person-name **`Ram`** overwritten (1CH 2:9-11, Job 32:2) →
+  **155 cells reverted** (A70 name / B31 EN-gloss / C8 word_usage / D46 meta-docs).
+- `data_audit_log` **36,520 → 36,675**.
+- **3 guards added:** Titlecase-ram, EN-headword, meta-doc.
+- zolai-core `b36b98c` + root `0f105aa`; suite **1584 green**.
+- **Residuals needs-founder:** validator IGNORECASE still flags titlecase `Ram`;
+  any re-run requires founder gate + `revert-c1` dry-run.
+
+### (c) Master Prompt Phase 0 audit COMPLETE
+
+- **9 files** in `docs/audit/phase0/` (8 deliverables + README index);
+  root commit `6ab0e3b`.
+
 ### Auto-continue next
 
-1. **C1 corpus clean** (R1 revised order: P2 → C1) — in-place ZVS-2018 normalization +
-   dedupe with `data_audit_log` rows; cleaning report before/after per table
-2. Push zolai-core (4 commits ahead; verifier/reviewer sign-off complete)
-3. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip `ZOLAI_API_AUTH=enforce`
-4. Founder decisions queue: nightly backup cron, PG cutover, eval threshold, archive (KR2.4)
+1. **Phase 1 Contracts** (Master Prompt §36) — contract shapes sketched in
+   `docs/audit/phase0/README.md`; additive migrations only
+2. **P5 deploy to pcore-server**
+3. **needs-founder queue** — C1 residuals (validator IGNORECASE vs titlecase `Ram`,
+   re-run gate + `revert-c1` dry-run) and standing decisions
