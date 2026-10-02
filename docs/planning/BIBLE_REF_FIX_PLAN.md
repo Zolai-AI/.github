@@ -1,7 +1,16 @@
 # Bible Verse Ref Fix Plan (C2-style data correction)
 
-Status: PLANNED · 2026-10-03 · Repo: zolai-core + zolai-datasets · Source: orchestra-planner PLAN_READY
+Status: **COMPLETE** · 2026-10-03 · Repo: zolai-core + zolai-datasets · Source: orchestra-planner PLAN_READY
 Founder decisions: **Archive + remove** (bible_verses → 31,102) · GEN 1:2 wrong-ref sighting was **in a test** (trace test fixtures).
+
+> **Result (2026-10-03):** all Done-when gates met — `bible_verses` = 31,102 (0 impossible,
+> 0 duplicate), 547 rows archived + 8,178 downstream refs remapped (8,725 audit rows, idempotent),
+> EN restores 0 (measured — see §4 of the report), ruff clean, builder guard live.
+> Evidence + plan-vs-measured deltas + the NullType regression found by the full suite:
+> [`docs/reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md`](../reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md).
+> Deviations: Phase 2 remap executed before its own dedicated commit (its code shipped atomically
+> in commit 2; noted in tracker); 2 unresolvable rows + `REV 12:18` archived rather than left
+> untouched (founder gate 31,102 / 0 impossible, archive lossless).
 
 ## Goal
 Audit and correct impossible Bible `ref`s in `bible_verses` (+ downstream copies) so every

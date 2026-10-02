@@ -712,3 +712,66 @@ are zolai-core unless noted.
 
 1. **P5 deploy to pcore-server**; **L1.4** POS backfill + gold set (needs speakers)
 2. needs-founder queue — C1 residuals, nightly backup cron, PG cutover
+
+---
+
+## 2026-10-03 (Session — Bible verse ref fix EXECUTED end-to-end)
+
+Plan [`docs/planning/BIBLE_REF_FIX_PLAN.md`](../docs/planning/BIBLE_REF_FIX_PLAN.md) → **COMPLETE**;
+full evidence report [`docs/reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md`](../docs/reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md).
+
+### What ran (live `data/zolai.db`, founder gate: archive + remove)
+
+- **Backup first:** `data/backups/zolai-2026-10-03_0349.db.gz` (563 MB, restore-verified OK).
+- **`zolai bible-ref audit`** (read-only): 31,649 = **31,102 ok + 547 impossible refs**; 0 dup
+  triples; 0 formula mismatches; all 19 NULL `en_kJV` rows sit *at impossible refs*; downstream
+  **word_alignments 7,150 rows / 528 distinct bad refs · translations 1,028 / 529** (= plan figures).
+- **`fix --apply`:** 547/547 archived → `bible_verses` = **31,102**, archive 547, audit 547,
+  EN restores **0**, NULL fills 0 (all defects were on the doomed rows; targets already
+  KJV-matching — plan's 81 EN variants / 89 restores were absorbed by the calibrated matcher:
+  exact 17,702 · normalized 7,010 · extended 6,245 · fuzzy 145, non-match 0).
+- **`remap --apply`:** 7,150 + 1,028 = **8,178** downstream refs re-pointed, audit-logged;
+  post-check 0 rows on archived refs; remaining invalid refs = the 2 pre-existing
+  `news:`/`parallel:` pseudo-refs (not Bible refs).
+- **Idempotency:** 2nd fix → 0 actions/0 audit; 2nd remap → 0/0; `data_audit_log` stable at
+  **8,725** (`ref` 7,697 + `reference` 1,028; **0 `en_kJV`/ZO writes**).
+- **Archive content integrity:** 532/547 archived rows byte-duplicate their (chapter−1, verse)
+  target ZO; 12 have `zo_tdb77` empty but content in other variant columns; **0 rows empty across
+  all ZO columns**; unique content confined to 3 rows — `3JN 1:15` (TDB77 closing doxology),
+  `1CH 19:20` (`zo_fcl` only), `REV 12:18` (`zo_hcl06`/`zo_fcl`) — all preserved with
+  `source_row_id` for founder re-attach. GEN 1:2 sighting = test fixtures
+  (`test_observation_pipeline.py:71`, `test_attestation_index.py:79`), not DB.
+
+### Regression found by the full suite (caught + fixed)
+
+- First full run after apply: `6 failed / 1621 passed / **201 errors**` — every error
+  `sqlalchemy CompileError: Can't generate DDL for NullType() (bible_verses_archive.id)`.
+  The archive `CREATE TABLE` had copied bare column **names**; untyped columns reflect as
+  NullType and break every reflect + `create_all` path (`database.py`/`migrations.py`/`sync.py`)
+  → **API/migration/sync startup against the live DB was broken by the apply**.
+- **Code fix:** `_archive_ddl()` mirrors source type/NOT NULL/DEFAULT/PRIMARY KEY and
+  parenthesizes defaults (bare `DEFAULT datetime('now')` is a SQLite syntax error).
+  Guard test `test_archive_columns_declare_types_so_sqlalchemy_can_compile`.
+- **Data fix:** live archive table rebuilt in place (rename → typed recreate → copy →
+  **sha256-identical 547 rows** → drop untyped copy → integrity ok, indexes restored,
+  reflect+compile OK). Repair script kept out of the engine so `bible_ref_fix.py` still has
+  zero `ALTER TABLE`/`DROP TABLE` (source-scan test).
+- **Re-run of the 7 broken files: 148 passed, 0 failed, 0 errors.**
+
+### Also in this cycle
+
+- **zolai-datasets build guard** (`60b1f73`): `verse_counts` mirror + builder refuses impossible
+  refs before writing (parse-all → validate → build; `build_all` propagates) + 23 guard tests.
+- **Doc sweep:** `31,649 → 31,102` in 21 living docs (44 replacements) — README, profile,
+  `context/*` (architecture, MASTER_PLAN, project-overview, …), `docs/database/tables.md`,
+  whitepaper, data/architecture/research/linguistics/phase0 docs. Left as-is: JSONL row counts
+  (file still 31,649), plan diagnosis lines, dated snapshot reports.
+
+### Auto-continue next
+
+1. **needs-founder:** 3 archive-only content rows (`3JN 1:15` / `1CH 19:20` / `REV 12:18`
+   versification nuance) · regenerate `parallel_corpus_v1.jsonl` (still 31,649 — guard now
+   refuses until the md flush bug is fixed) · `zolai-landing` Credits.tsx still says 31,649 ·
+   150,965 non-verse `translations` rows · GEN 1:2 test fixtures.
+2. **P5 deploy to pcore-server**; **L1.4** POS backfill + gold set (needs speakers)
+3. Standing queue: nightly backup cron, `ZOLAI_API_AUTH=enforce` flip, C1 residuals, PG cutover
