@@ -670,3 +670,45 @@ are zolai-core unless noted.
 2. **P5 deploy to pcore-server**
 3. **needs-founder queue** — C1 residuals (validator IGNORECASE vs titlecase `Ram`,
    re-run gate + `revert-c1` dry-run) and standing decisions
+
+---
+
+## 2026-10-02 (Session — Master Prompt Phase 1 Contracts (§36) COMPLETE)
+
+- **Plan:** `docs/planning/PHASE1_CONTRACTS_PLAN.md` (root `074fda7`).
+- **zolai-core — 3 commits:**
+  - `4753a05` `feat(contracts)` — `zolai/shared/contracts/` package: 11 pydantic-v2
+    types + `KnowledgeStatus` (6 values, transition whitelist) +
+    `confidence_from_evidence()` (lazy EvidenceTier weights, 2 dp, evidence-only) +
+    evidence gate (SUPPORTED/VERIFIED need ≥1 evidence) + UPOS allowlist POS check +
+    Evidence `from/to_foundation` adapters; `tests/test_contracts.py` (61).
+  - `4499f50` `feat(db)` — additive migrations: 16 `ALTER ADD COLUMN` across
+    vocabulary/foundation_evidence/grammar_patterns/provenance, 2 indexes,
+    4 new tables (`hypotheses`, `knowledge_claims` + expression-unique,
+    `claim_evidence`, `knowledge_versions` FK→`eval_runs`), ORM in `models.py`,
+    registered in `run_all_migrations`; `tests/test_contracts_migrations.py` (32)
+    — idempotent, row counts unchanged, **0 DROP/RENAME/TRUNCATE** source scan.
+  - `986dc8e` `feat(data)` — `repositories/knowledge.py` (Claim with evidence gate +
+    atomic links, Hypothesis kind-scoped, KnowledgeVersion `row_version` lock),
+    registered `claims`/`hypotheses`/`knowledge_versions`;
+    `tests/test_knowledge_repositories.py` (29).
+- **Gates:** `ruff check zolai tests` clean · full `pytest -q` →
+  **1716 passed, 0 failed, 8 skipped, 1 xfailed** (≥1584 gate) · API/engine
+  contract shard (lexicon/engine/word-engine/prediction/records) **144 passed**
+  · exactly 3 zolai-core commits, trees clean.
+- **Deviation (live DB):** the pre-existing `TestClient`→FastAPI-lifespan vector
+  ran `run_all_migrations(get_manager())` against live `data/zolai.db` during the
+  first full-suite run (contract DDL registered in commit 2 → applied early,
+  plan wanted it post-verify). **Verified post-hoc:** `PRAGMA integrity_check` = ok;
+  no baseline table missing; only additive tables added (all 0 rows); row-count
+  diffs vs `baseline-2026-09-30.json` limited to `data_audit_log` (C1/C1.1) and
+  eval/integrity/monitoring tables written by earlier sessions — no writes from
+  this session's runs. `sqlite_sequence` = internal table, not a real addition.
+- **Deferred (Phase 2+):** `observations`/`word_forms` DDL, contract population
+  (Phases 3–4), foundation Evidence migration, claims/hypotheses `/api/v1`
+  endpoints, engine-registry entries.
+
+### Auto-continue next
+
+1. **P5 deploy to pcore-server**; **L1.4** POS backfill + gold set (needs speakers)
+2. needs-founder queue — C1 residuals, nightly backup cron, PG cutover
