@@ -12,7 +12,7 @@ status: PROPOSED
 > design; the live store already works and changes land only through the migration plan.
 > Governing rule: **migrate, never blind-rename** ([ADR-015](../adr/ADR-015.md)).
 > Evidence base: [current-state audit](../architecture/current-state.md) · `docs/database/tables.md` ·
-> live `data/zolai.db` (106 tables, reconciled 2026-09-30).
+> live `data/zolai.db` (116 tables, reconciled 2026-10-03).
 > Companions: [lifecycle](dataset-lifecycle.md) · [quality](quality.md) · [provenance](provenance.md) ·
 > [versioning](versioning.md) · [data-platform layering](../architecture/data-platform.md).
 

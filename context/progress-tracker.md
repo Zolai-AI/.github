@@ -775,3 +775,48 @@ full evidence report [`docs/reports/BIBLE_REF_FIX_AUDIT_2026-10-03.md`](../docs/
    150,965 non-verse `translations` rows · GEN 1:2 test fixtures.
 2. **P5 deploy to pcore-server**; **L1.4** POS backfill + gold set (needs speakers)
 3. Standing queue: nightly backup cron, `ZOLAI_API_AUTH=enforce` flip, C1 residuals, PG cutover
+
+---
+
+## 2026-10-03 (Session — Phase 2 Observation Engine COMPLETE)
+
+Plan [`docs/planning/PHASE2_OBSERVATION_PLAN.md`](../docs/planning/PHASE2_OBSERVATION_PLAN.md)
+→ **COMPLETE** (Master Prompt §36, 7 capabilities: tokenization, normalization,
+frequency, contexts, co-occurrence, attestation, sentence extraction).
+
+- **zolai-core — 5 code commits (all pushed):**
+  `50a3bf4` `feat(shared)` canonical word tokenizer ·
+  `2482a1d` `feat(db)` `observations`/`word_observation_stats`/`attestation_index`
+  tables + models (additive IF NOT EXISTS, 0 DROP/RENAME/ALTER-existing) ·
+  `a745379` `feat(observation)` sentences/normalize/stats/contexts/co-occurrence
+  pipeline ·
+  `b8befbf` `feat(attestation)` §27 indexed DB lookup + LRU + optional Bloom artifact ·
+  `332301b` `feat(engines)` 17th EngineSpec (`network=False`, `deterministic=True`,
+  `writes=True`) + `zolai observation build|refresh-index|bloom` CLI +
+  PROBES/R17 mount-guard tests.
+- **Live validation** (fresh backup `data/backups/zolai-2026-10-03_0848.db.gz` first):
+  - `zolai observation build --limit 500` → **2,000 observations** (500 × 4 sources) ·
+    **2,075 `word_observation_stats`** · 27,713 tokens · 39.3s · DDL all "already exists".
+  - `zolai observation refresh-index` → **161,513** `(word, source)` pairs
+    (dict 84,466 · corpus 50,151 · bible 19,036 · extra 7,860) in 31.8s.
+  - `PRAGMA integrity_check` = **ok**; canonical counts unchanged (dictionary 84,490 ·
+    bible_verses 31,102 · translations 207,623); `data_audit_log` untouched by the build
+    (deviation 5 — bulk writes skip per-row audit).
+- **Gates:** `ruff check zolai tests` clean · full suite **1835 passed / 8 skipped /
+  1 xfailed / 0 failed** (gate ≥1825) · engines = **17** · observation probe offline
+  (socket-guard, 0 egress) · R17 guard green · trees clean, both repos pushed.
+- **Table counts:** live DB **116 tables** (111 excl. FTS5 shadows; 117 raw
+  `sqlite_master`) — baseline 106 + Phase 1 contracts +4 + bible-ref archive +1 +
+  Phase 2 +3 + 2 stray empty `zz1`/`zz2` (needs-founder). `tables.md` +
+  `context/architecture.md` + data-platform/overview/data-model swept to 116.
+- **Deferrals (explicit):** full-corpus build (~130k observations — idempotent,
+  `--limit` was the validation) · `word_forms` DDL (deviation 2, morphology-owned) ·
+  `/api/v1` observation endpoints (deviation 4, Phase 6) · free-text sentence splitter
+  (Phase 5) · pos_tagger tokenizer swap (Phase 3) · observations→evidence linkage
+  (Phase 3/4).
+
+### Auto-continue next
+
+1. **P5 deploy to pcore-server**; full-corpus `zolai observation build` when founder wants the layer populated
+2. **Phase 3** — hypotheses fill + pos_tagger tokenizer swap + subword consolidation
+3. Standing queue: nightly backup cron, `ZOLAI_API_AUTH=enforce` flip, zz1/zz2 scratch-table cleanup (needs-founder), PG cutover

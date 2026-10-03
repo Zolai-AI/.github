@@ -88,7 +88,7 @@ flowchart LR
   end
 
   subgraph Canonical["Canonical store"]
-    DB[("data/zolai.db<br/>SQLite WAL · 106 tables · ~2.4 GB<br/>TRANSITIONAL canonical — KEEP now")]
+    DB[("data/zolai.db<br/>SQLite WAL · 116 tables · ~2.4 GB<br/>TRANSITIONAL canonical — KEEP now")]
     BR["database_layer.py<br/>(bridge, dual-run)"]
     DB --> BR
     BR -.->|"Phase 3, founder-gated"| PG[("PostgreSQL 18<br/>TARGET canonical")]
