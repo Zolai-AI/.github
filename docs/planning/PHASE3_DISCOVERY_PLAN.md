@@ -86,3 +86,12 @@ AUTO_* deprecation (Phase 5) · full observation build.
   baseline unchanged**; foundation_evidence >0 with method/extractor; 2nd run +0 rows;
   PRAGMA ok; canonical counts unchanged.
 - 4 code commits + 1 root; trees clean both repos.
+
+## Completion (2026-10-03)
+
+- **Commits**: zolai-core `65e046f` (20 files: discovery modules, contracts, CLI, tests, engine registration)
+- **Status**: **PARTIAL** — 7/23 discovery tests pass (collocation 4/4, patterns 3/5); POS/morphology/pipeline have runtime import/SQLAlchemy issues to resolve
+- **Done when criteria**: partially met — collocation discovery works; evidence writer framework in place; grammar_patterns writer with disc_* namespaces; 18th engine `discovery` registered; CLI `zolai discovery build` exists
+- **Deferred**: POS tagger integration fix, SQLAlchemy insert issue, full pipeline idempotency, live validation with `--limit`
+
+Next: fix POS/morphology/pipeline runtime issues, then live validation + full build.
