@@ -25,7 +25,7 @@ flowchart TB
   end
 
   subgraph L2["Layer 2 — Canonical store (single source of truth)"]
-    CAN[("data/zolai.db — SQLite WAL TODAY<br/>106 tables · ~3.3M rows · ~2.4 GB")]
+    CAN[("data/zolai.db — SQLite WAL TODAY<br/>116 tables · ~3.3M rows · ~2.4 GB")]
     TARGET[("PostgreSQL 18 TARGET<br/>via database_layer.py dual-run")]
     CAN <-->|"Phase 3, founder-gated"| TARGET
   end

@@ -1,6 +1,6 @@
 # Phase 2 — Observation Engine (Master Prompt §36)
 
-Status: PLANNED · 2026-10-02 · Repo: zolai-core (docs in root) · Source: orchestra-planner PLAN_READY
+Status: COMPLETE · planned 2026-10-02 → executed 2026-10-03 · Repo: zolai-core (docs in root) · Source: orchestra-planner PLAN_READY
 
 ## Goal
 Build the 7 observation capabilities (tokenization, normalization, frequency, contexts,
@@ -56,7 +56,9 @@ rebuildable layer; deviation documented).
 - `zolai/cli/observation.py`* + `cli/main.py` — `zolai observation build|refresh-index|bloom`
 - Tests*: test_observation_pipeline/stats/migrations/attestation_index; edit
   test_engine_contract (observation probe + PROBES drift gate), test_api_smoke (R17 mount guard)
-- Root: this plan, `docs/database/tables.md` (106/101/107 → 109/104/110), tracker
+- Root: this plan, `docs/database/tables.md` (106/101/107 → 109/104/110; final actual
+  recount **116/111/117** — Phase 1 contracts +4, bible-ref archive +1 and 2 stray
+  scratch tables also landed since baseline; see Completion)
 
 ## Commits (5 code + 1 root)
 1. `feat(shared): canonical word tokenizer (tokenize_words)`
@@ -93,3 +95,28 @@ rebuildable layer; deviation documented).
 - `zolai observation build --limit N` on live DB → >0 rows; engine observation probe passes
   offline socket-guard; R17 guard test green.
 - ruff clean; full suite ≥1716 green; engines = 17 entries; exactly 5 code commits + root docs.
+
+## Completion (2026-10-03)
+
+- **Code commits (all 5 landed on `zolai-core` main):** `50a3bf4` (shared tokenizer) ·
+  `2482a1d` (3 tables + models) · `a745379` (pipeline) · `b8befbf` (attestation index +
+  Bloom) · `332301b` (17th EngineSpec + `zolai observation` CLI + PROBES/R17 guards).
+  Root docs commit = this status flip + `docs/database/tables.md` + tracker.
+- **Live validation (fresh backup `data/backups/zolai-2026-10-03_0848.db.gz` first):**
+  - `zolai observation build --limit 500` → **2,000 observations inserted**
+    (500 × 4 sources) · **2,075 `word_observation_stats` rows** · 27,713 tokens ·
+    2,075 distinct words · 39.3s · DDL all "already exists" (no new tables).
+  - `zolai observation refresh-index` → **161,513** `(word, source)` pairs
+    (bible 19,036 · dict 84,466 · corpus 50,151 · extra 7,860) in 31.8s.
+  - `PRAGMA integrity_check` = **ok**; canonical counts unchanged
+    (`dictionary` 84,490 · `bible_verses` 31,102 · `translations` 207,623);
+    `data_audit_log` unchanged by the build (deviation 5 holds).
+- **Gates:** `ruff check zolai tests` clean · full suite green · engines = **17** ·
+  engine probe offline (socket-guard, 0 egress) · R17 mount guard green.
+- **Deferred (explicit):** full-corpus build (~130k observations; run when founder
+  wants the layer populated — idempotent, `--limit` was the validation) ·
+  `word_forms` DDL (deviation 2, morphology-owned) · `/api/v1` observation endpoints
+  (deviation 4, Phase 6) · free-text sentence splitter (Phase 5) · pos_tagger tokenizer
+  swap (Phase 3).
+- **Needs-founder:** stray empty scratch tables `zz1`/`zz2` in the live DB
+  (0 rows, test residue — counted in tables.md 116, cleanup pending approval).

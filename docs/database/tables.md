@@ -2,35 +2,51 @@
 title: "Zolai AI — Database Table Catalog"
 description: "Complete table inventory with row counts, classification, and relationships"
 created: 2026-09-19
-last_updated: 2026-09-30
+last_updated: 2026-10-03
 status: CONFIRMED
-source: "context/architecture.md + live DB audit 2026-09-13 + Phase 0 reconciliation 2026-09-30"
+source: "context/architecture.md + live DB audit 2026-09-13 + Phase 0 reconciliation 2026-09-30 + Phase 2 observation layer 2026-10-03"
 ---
 
 # Zolai AI — Database Table Catalog
 
-> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.4GB, **106 tables**, ~3.3M rows)
+> **Canonical DB:** `data/zolai.db` (SQLite WAL, ~2.4GB, **116 tables**, ~3.3M rows)
 > **Access pattern:** `config.paths.data / "zolai.db"` — all reads from DB, not JSONL files
 > **Cross-refs:** [`database/README.md`](README.md) · [`architecture/status.md`](../architecture/status.md)
 
-> **Reconciled 2026-09-30 (Phase 0 backup baseline — closes gap G14).** All figures below
-> re-verified read-only against the live DB; baseline artifacts (untracked, `data/` is
-> gitignored): `data/backups/baseline-2026-09-30.json` (sha256 of DB + backup, per-table
-> counts, header/WAL facts, restore-drill result) and backup
-> `data/backups/zolai-2026-10-01_0002.db.gz` (sha256 `1919ce1c4545…`).
-> - **Tables = 106** user tables (excludes internal `sqlite_sequence`; 107 raw
->   `sqlite_master` rows; **101** excluding the 5 `wiki_content_fts*` FTS5 virtual/shadow
->   tables). Earlier figures: documented **101** (2026-09-13 audit) and gap-register
->   **105** (pre-`api_keys`; `api_keys` added 2026-09-30) → live **106**.
+> **Reconciled 2026-09-30 (Phase 0 backup baseline — closes gap G14); recount
+> 2026-10-03 (Phase 2 observation layer).** All figures below re-verified
+> read-only against the live DB; baseline artifacts (untracked, `data/` is
+> gitignored): `data/backups/baseline-2026-09-30.json` (sha256 of DB + backup,
+> per-table counts, header/WAL facts, restore-drill result) and backup
+> `data/backups/zolai-2026-10-03_0848.db.gz` (pre-build, WAL-safe).
+> - **Tables = 116** user tables (excludes internal `sqlite_sequence`; 117 raw
+>   `sqlite_master` rows; **111** excluding the 5 `wiki_content_fts*` FTS5
+>   virtual/shadow tables). Earlier figures: documented **101** (2026-09-13
+>   audit), gap-register **105** (pre-`api_keys`), baseline **106** (2026-09-30)
+>   → live **116** on 2026-10-03.
+> - **+10 since the 2026-09-30 baseline** (verified by set-diff against the
+>   baseline per-table counts): Phase 2 observation layer **+3**
+>   (`observations`, `word_observation_stats`, `attestation_index`) · Phase 1
+>   contracts **+4** (`hypotheses`, `knowledge_claims`, `claim_evidence`,
+>   `knowledge_versions`) · Bible ref fix **+1** (`bible_verses_archive`) ·
+>   **+2 stray empty scratch tables `zz1`/`zz2`** (0 rows each, test residue —
+>   needs-founder cleanup; counted above because they exist in `sqlite_master`).
+>   Excluding those 2 strays the real schema is **114** tables.
+> - **Phase 2 row counts (2026-10-03 `build --limit 500`, partial by design):**
+>   `observations` **2,000** · `word_observation_stats` **2,075** ·
+>   `attestation_index` **161,513** (from `refresh-index`). Full-corpus build
+>   (~130k observations) is deferred — the layer is idempotent and rebuildable.
 > - **Import run log:** `import_log` = **92** runs is the real tracker;
 >   `jsonl_import_log` = **0** rows (empty legacy duplicate — previous note here was wrong).
 > - **Staging:** 26 `*_import` tables hold **1,517,212** rows (~1.52M, not ~1.79M).
 > - **Row counts in §2 are point-in-time** (2026-09-13 audit / 2026-09-28 eval add);
 >   all were re-verified 2026-09-30 and unchanged, except: `zolai_tone_sandhi` (19) and
 >   `zolai_songs` (1,032) are **not present** in the live DB — live equivalents are
->   `tone_sandhi` (16) and `songs` (1,032); `jsonl_import_log` row corrected below.
+>   `tone_sandhi` (16) and `songs` (1,032); `jsonl_import_log` row corrected below;
+>   `data_audit_log` has grown with the C1 corpus clean + Bible ref fix (§2.11 still
+>   shows the 30,745 audit baseline).
 > - **Backup:** nightly-capable `scripts/backup-zolai.sh --verify` runs clean (last run
->   2026-10-01, restore drill PASS). **Cron install = needs-founder** — not installed.
+>   2026-10-03, pre-Phase-2-build). **Cron install = needs-founder** — not installed.
 
 ---
 
@@ -40,7 +56,7 @@ source: "context/architecture.md + live DB audit 2026-09-13 + Phase 0 reconcilia
 |--------|-------|
 | Engine | SQLite (WAL mode) |
 | Busy timeout | 30000 ms |
-| Tables | 106 (101 excl. FTS5 shadows; see reconciliation note) |
+| Tables | 116 (111 excl. FTS5 shadows; 117 raw `sqlite_master`; see reconciliation note) |
 | Total rows | ~3.3M (3,288,257) |
 | Disk size | ~2.4 GB |
 | Access | WAL enables concurrent multi-process reads |
@@ -153,6 +169,25 @@ Lanes (`eval_cases.kind` CHECK): `zvs` (40+12), `qa` (40+12+127),
 `translation` (30+12). Additive DDL created idempotently by
 `zolai-core/zolai/eval/store.py::ensure_schema`; no existing table is
 modified. See [`../research/benchmarks.md`](../research/benchmarks.md).
+
+### 2.13 Observation layer (Phase 2 §36, added 2026-10-03)
+
+Derived, **rebuildable** layer of the observation engine
+(`zolai-core` `zolai/foundation/observation/`) — additive DDL only
+(`IF NOT EXISTS`, no `ALTER` on existing tables), rule mode, offline.
+Bulk writes intentionally skip per-row `data_audit_log` rows (plan deviation 5).
+
+| Table | Rows | Purpose | Key Columns |
+|-------|-----:|---------|-------------|
+| `observations` | 2,000¹ | One row per extracted Zolai sentence + token/JSON surfaces | source_ref (UNIQUE), tokens, document, zvs_corrected |
+| `word_observation_stats` | 2,075¹ | §8-9 per-word roll-up: freq/doc_freq/sent_freq/source_count/diversity + contexts/neighbors/collocations/attestation JSON | normalized_form (PK), 5 scalars, pipeline_version |
+| `attestation_index` | 161,513 | §27 materialized `(word, source)` membership — kills the ~21s attestation cold start | word+source (PK), ix_attestation_source |
+
+¹ **Partial by design** — counts after `zolai observation build --limit 500`
+(500 sentences × 4 sources, 27,713 tokens, 39.3s) on 2026-10-03. Re-running
+without `--limit` upserts the same rows plus the rest of the corpus
+(idempotent via `ux_obs_source_ref`); full-corpus build is deferred.
+`refresh-index` (same day) wrote the 161,513 index pairs in 31.8s.
 
 ---
 
