@@ -116,3 +116,20 @@ Production-harden the system: monitoring, metrics, alerts, security, performance
 10. GitHub Actions workflow runs on tag push (dry-run in test repo).
 
 PLAN_READY
+
+## Completion (2026-10-03)
+
+- **Commits**: zolai-core `7fc637c` (9 files: production metrics, alerts, security, rate limiting, profiling CLI, release CLI, 23rd engine)
+- **Status**: **CORE COMPLETE** — All 6 components implemented:
+  - ✅ Enhanced Metrics (`production_metrics.py`) — 25+ new Prometheus metrics (language intelligence, RAG, engine, incremental, publishing)
+  - ✅ Alerting Rules (`alerts.py`, `ops/prometheus/alerts.yml`) — 12 alert rules (API errors, latency, pipeline failure, evidence coverage, ZVS compliance, engine probes, disk, memory, RAG latency, incremental stuck, publish sync)
+  - ✅ Security Hardening (`security.py`) — input sanitization (SQL/XSS), API key age validation, security headers, CORS
+  - ✅ Rate Limiting (`rate_limit.py`) — per-scope token bucket (120/min dataset:read, 60/min rag:read, etc.), in-memory with cleanup
+  - ✅ Profiling CLI (`zolai profile engine|api|memory|compare`) — cProfile, memory (tracemalloc), async load testing
+  - ✅ Release Automation (`zolai release prepare|promote|rollback|status`) — RC tags, promotion, rollback, status
+  - ✅ 23rd EngineSpec `production` registered, PROBES updated
+- **Test Results**: Engine contract tests **106 passed** (includes `production` probe); full suite **106 passed, 1 xfail**
+- **Deferred**: Redis-backed rate limiting, Redis caching for /v1/word/, GitHub Actions CI/CD, chaos engineering, SOC2 audit
+
+**All Master Prompt §36 Phases 0-8 Core Complete!**
+
