@@ -104,3 +104,17 @@ Implement the Cloudflare Publishing Contract (§23): knowledge build → validat
 7. Cross-repo: zolai-mcp-server updated with new tool proxies (separate PR).
 
 PLAN_READY
+
+## Completion (2026-10-03)
+
+- **Commits**: zolai-core `7cb81e1` (8 files: publishing modules, CLI, engine registration, auth scope)
+- **Status**: **CORE COMPLETE** — All 5 components implemented:
+  - ✅ Knowledge Artifact Builder (`build_knowledge_artifact`) — manifest.json + 9 JSONL exports (words, word_forms, morphology, pos_hypotheses, grammar_patterns, collocations, knowledge_claims, evidence, statistics) with SHA256 hashes
+  - ✅ R2/D1 Sync (`sync_to_r2`, `sync_to_d1`) — wrangler-based upload to Cloudflare R2 bucket and D1 database
+  - ✅ Release Orchestrator (`release_knowledge`) — validation → artifact → sync → knowledge_version row → git tag
+  - ✅ CLI Commands (`zolai publish build|sync-r2|sync-d1|release|status`)
+  - ✅ 22nd EngineSpec `publishing` registered, PROBES updated
+- **Test Results**: Engine contract tests **103 passed** (includes `publishing` probe); full suite **103 passed**
+- **Deferred**: Actual Cloudflare credentials setup, zolai-mcp-server MCP tool proxies, CI/CD pipeline, multi-region R2/D1, rollback automation
+
+Next: Phase 8 (Production — monitoring, metrics, alerts, security, performance, release process)
