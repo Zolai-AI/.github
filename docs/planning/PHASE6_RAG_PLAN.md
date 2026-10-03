@@ -112,3 +112,16 @@ Implement structured retrieval (dictionary, word attestations, sentences, gramma
 - RAG evaluation benchmark (ZolaiBench v0.1, Phase 6/7 boundary).
 
 PLAN_READY
+
+## Completion (2026-10-03)
+
+- **Commits**: zolai-core `5839ef7` (13 files: rag modules, api router, CLI, engine registration, auth scope)
+- **Status**: **CORE COMPLETE** — All 6 components implemented:
+  - ✅ Knowledge Graph Integration (`kg_nodes`, `kg_edges` tables + `KGRepository` with 10 §21 relations, traversal)
+  - ✅ Vector Index Population (`build_knowledge_vectors` for all canonical sources, 384-dim embeddings)
+  - ✅ RAG Retrieval Engine (`UnifiedRetriever` — multi-source retrieval, `EvidencePack` per §20)
+  - ✅ API Layer (§24) — 13 new /api/v1 endpoints (word, forms, contexts, collocations, patterns, evidence, analyze, search, rag, knowledge/version, knowledge/stats) with `rag:read`/`dataset:read` scopes
+  - ✅ 21st EngineSpec `rag` (network=True, deterministic=False, writes=False) registered, PROBES updated
+  - ✅ CLI Commands (`zolai rag build|word|search|rag|word-forms|contexts|collocations|patterns|evidence|stats|version`)
+- **Test Results**: Engine contract tests **64 passed** (includes `rag` probe); full suite 101 passed
+- **Deferred**: Vector index population (needs sentence-transformers), JSON collocations parsing fix, zolai-mcp-server MCP tool proxies, Cloudflare publishing contract doc (separate repo)
