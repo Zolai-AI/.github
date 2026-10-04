@@ -2,7 +2,7 @@
 title: "Admin & API — Permissions (action-based RBAC)"
 description: "Frozen nine-role × action matrix on existing Prisma CustomRole/Permission/RolePermission models + zolai-core API-key scopes; no IdP/SSO in v1 (batch 3/3, expanded 2026-09-30)"
 created: 2026-09-29
-last_updated: 2026-09-30
+last_updated: 2026-10-04
 status: PROPOSED
 ---
 
@@ -35,6 +35,11 @@ resolve to a concrete action.
 
 ## 2. The action list (frozen)
 
+**Counts:** the table below is the **33-action API-key scope vocab** (`zolai/api/auth.py:
+VALID_ACTIONS`) = the **30 human actions** of the §3 matrix + `rag:read` (key-scope, never
+added to the human matrix) + the P2 amendment row `agent:read`/`agent:run`. Baseline before
+P2 was **31** (30 + `rag:read`); P2 took it to **33** (+2).
+
 | Resource | Actions | Notes |
 |---|---|---|
 | `dashboard` | `dashboard:read` | implied by any `*:read` grant |
@@ -45,6 +50,7 @@ resolve to a concrete action.
 | `quality` | `quality:read` `quality:run` `quality:waive` | waivers are audited |
 | `eval` | `eval:read` `eval:run` | eval lane ≠ quality lane |
 | `pipeline` | `pipeline:read` `pipeline:run` | manual re-runs only; cron is not a subject |
+| `rag` | `rag:read` | `/api/v1/rag` retrieval — **key-scope only** (shipped with the rag router; not in the §3 human matrix) |
 | `catalog` | `catalog:read` | `/api/v1/catalog` |
 | `audit` | `audit:read` | read-only by definition |
 | `user` / `role` | `user:manage` `role:manage` | identity + grants |
@@ -59,14 +65,16 @@ Rules:
 - `dataset:publish` is the highest-privilege data action (founder-held in v1).
 - Deny-by-default: an action not granted is denied, and the denial emits an audit event.
 
-> **Amendment 2026-10-04 — scope vocab 30 → 32 (P2 of `AI_AGENTS_RBAC_PLAN`).**
+> **Amendment 2026-10-04 — scope vocab 31 → 33 (P2 of `AI_AGENTS_RBAC_PLAN`).**
 > The **human** (zolai-web / Prisma) action list stays frozen at its original **30
-> actions** — the `agent` row above is an amendment row: `agent:*` never joins the
-> nine-role matrix or the `Permission` table. The **API-key
+> actions** — the `rag` and `agent` rows above are key-scope rows: neither `rag:*` nor
+> `agent:*` joins the nine-role matrix or the `Permission` table. The **API-key
 > scope vocab** (`zolai/api/auth.py:VALID_ACTIONS`, `zolai/api/rate_limit.py:SCOPE_LIMITS`)
-> gains `agent:read` (60/min) and `agent:run` (10/min) for the P3/P4 agent + assistant
-> surface. `agent:run` strictly gates `POST /api/v1/agent/runs` and the admin assistant;
-> `agent:read` covers run listing/health. Sugar (`dataset:*`, `*`) unchanged.
+> stood at **31** before this amendment (the 30 human actions + `rag:read`, added with the
+> rag router and never listed in §2 until now) and gains `agent:read` (60/min) and
+> `agent:run` (10/min) for the P3/P4 agent + assistant surface → **33**. `agent:run`
+> strictly gates `POST /api/v1/agent/runs` and the admin assistant; `agent:read` covers run
+> listing/health. Sugar (`dataset:*`, `*`) unchanged.
 
 ## 3. Role × action matrix (nine roles)
 
@@ -111,8 +119,9 @@ Notes:
 - **data_admin** keeps exactly the old `maintainer` posture: everything operational except
   identity, key management, and irreversible data publication.
 - Publish and deprecation stay platform_admin-only (both mutate immutable-version state).
-- The **action list in §2 is frozen and unchanged** by the nine-role expansion — no action
-  was missing, so no row was added (30 actions, as before).
+- The **§3 human matrix below is frozen and unchanged** by the nine-role expansion — no
+  action was missing, so no row was added (30 human actions, as before). The §2 API-key
+  vocab is 33 (`+ rag:read`, `+ agent:read/run`, both key-scope only).
 - The matrix is the contract for enforcement tests: every admin route must cite one row.
 
 ### 3.1 Migration mapping (five-role draft → nine-role model)
