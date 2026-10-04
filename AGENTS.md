@@ -12,7 +12,7 @@ that causes heavy disk I/O and memory usage.
 - The org profile + community files live at root (this repo IS the `.github` org profile repo).
 - **Use `bun`** as the package manager for all JS/TS repos.
 
-## Repos (10)
+## Repos (11)
 
 | Repo | Path | Purpose |
 |------|------|---------|
@@ -26,6 +26,7 @@ that causes heavy disk I/O and memory usage.
 | `zolai-ai.github.io` | `zolai-ai.github.io/` | GitHub Pages org site |
 | `zolai-mcp-server` | `zolai-mcp-server/` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
 | `zolai-landing` | `zolai-landing/` | Org landing page for zolai.space (React + Vite + Three.js) |
+| `zolai-journey` | `zolai-journey/` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 
 ## Live URLs
 
@@ -41,6 +42,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
+zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 ```
 
 ## Tool scoping

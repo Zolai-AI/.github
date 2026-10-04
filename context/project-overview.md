@@ -18,6 +18,7 @@ Ten independent repos under one org. Workspace root coordinates but is NOT a git
 | `zolai-ai.github.io` | GitHub Pages landing site |
 | `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
 | `zolai-landing` | Org landing page for zolai.space (React + Vite + Three.js) |
+| `zolai-journey` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 
 ## Live URLs
 
@@ -33,6 +34,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
+zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 ```
 
 ## Language Learning Features
@@ -139,6 +141,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
+zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 ```
 
 ## Key Features for Learners

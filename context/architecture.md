@@ -9,6 +9,7 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
 ## MCP & Landing
 - `zolai-mcp-server` (Cloudflare Workers): serves ecosystem context + proxies dictionary/bible lookups to zolai-core API.
 - `zolai-landing` (Cloudflare Pages): React 19 + Vite + Three.js org landing at zolai.space.
+- `zolai-journey` (Cloudflare Pages): React 19 + Vite + Framer Motion scene timeline at journey.zolai.space.
 
 ## Data Flow Diagram
 
