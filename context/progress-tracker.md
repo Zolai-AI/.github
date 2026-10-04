@@ -884,3 +884,13 @@ frequency, contexts, co-occurrence, attestation, sentence extraction).
 - Root docs synced: AGENTS.md repo table (11), context/project-overview.md, context/architecture.md.
 - Verified: `bun run build` OK · `python3 scripts/build_journey.py --check` fresh ·
   ruff clean · zero CJK characters in src.
+
+---
+
+## 2026-10-04 (Session — zolai-journey 3D enhancement)
+
+- Three.js + React Three Fiber added to zolai-journey: `SceneCanvas` wrapper with SVG
+  suspense/error fallback, 7 reusable low-poly scenes + HeroScene, lazy `vendor-3d` chunk
+  (manualChunks: vendor-3d / vendor-motion / vendor-react), enriched scroll/hover motion
+  on stats/roadmap/repos/footer/navbar. Commits `cfe4b42..6aa04dd`. `journey:check` fresh,
+  no CJK in src, design-notes.md updated (`04fc6b3`).
