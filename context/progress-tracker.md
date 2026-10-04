@@ -820,3 +820,45 @@ frequency, contexts, co-occurrence, attestation, sentence extraction).
 1. **P5 deploy to pcore-server**; full-corpus `zolai observation build` when founder wants the layer populated
 2. **Phase 3** — hypotheses fill + pos_tagger tokenizer swap + subword consolidation
 3. Standing queue: nightly backup cron, `ZOLAI_API_AUTH=enforce` flip, zz1/zz2 scratch-table cleanup (needs-founder), PG cutover
+
+
+---
+
+## 2026-10-04 (Session — AI Providers + RBAC + Agent + Assistants + Studio plan PLANNED v2)
+
+- **Plan (v2, founder-expanded):** `docs/planning/AI_AGENTS_RBAC_PLAN.md` (423 lines,
+  docs-only — no code) — amended in place after the founder expanded scope; 6 phases
+  P1 providers → P2 RBAC+roles → P3 agent runtime+tools → P4 public+admin assistants →
+  P5 Studio UI → P6 deploy+verify.
+- **Reference patterns skimmed from pcore-assistant (ported as ideas, code stays in zolai-core):**
+  `catalog/ai-providers.ts` (stable `catalog_id` seed-on-boot, adapters
+  `brain|openai|openrouter|custom`, blank baseUrl = catalog default), `services/ai.ts`
+  (brain URL/key env resolution, `NATIVE_TOOL_TYPES={openai,openrouter}`, `pickProvider`
+  per-request no-reroute + `NO_ACTIVE_PROVIDER`/`MODEL_NOT_CONFIGURED` errors),
+  `agent-loop.ts` (`## TOOLS` + `<<<TOOL>>>`/`<<<TOOL_RESULT>>>` markers, brace-scan parse,
+  ≤1 tool/turn, 3 turns, `HOLD_CHARS=16`), `assistant-ai.ts` (pin→global resolution +
+  `ASSISTANT_*` error codes), `routes/settings.ts`+`assistants.ts` (admin CRUD vs public).
+- **Design deltas vs v1:** pcore-brain is a first-class provider (`AI_BRAIN_URL`/
+  `PCORE_BRAIN_URL` → `https://pcore-brain.peterlianpi.site/v1`, Bearer from
+  `AI_BRAIN_API_KEY`/`PCORE_BRIDGE_API_KEY`, 4 opencode free models, **never a native `tools`
+  key**); `assistant_ai_pins` table for per-assistant pin→global resolution; agent = real tool
+  loop (9 public + admin-only tools incl. `kb_research`, `review_queue_submit`,
+  `provider_status`) with run phases research→build→review→shipped→**learn** (learn writes
+  `hypotheses`/review-queue candidates only — LLM→canonical DB stays FORBIDDEN per §36/§39);
+  two assistants (`POST /api/v1/assistant/chat` **public even under enforce**, honest
+  `retrieval_only` fallback + citations; `POST /api/v1/admin/assistant/chat` strict admin +
+  `agent:run`, full tool set + trace); provider test-connection endpoint; Studio gains
+  Settings (paste key/model/test), Assistant (public↔admin switch), Agent (steps + trace +
+  feedback thumbs) role-gated via `GET /api/v1/auth/me`.
+- **RBAC:** `PUBLIC_ROUTES` documented (incl. public assistant) so enforce never 401s it;
+  vocab 30→32 (`agent:read`, `agent:run`); anonymous IP buckets (public 120/min, chat 10/min).
+
+### Auto-continue next
+
+1. **P1 implement:** catalog + `ai_providers`/`assistant_ai_pins` migrations + adapter dispatch
+   (brain-first) + admin router (GET/PUT/activate/test) + tests
+2. **P2:** `rbac.py` public/member/admin matrix + `auth/me` + route-completeness test + doc sync
+3. **P3:** `zolai/agent/` marker-protocol tool loop + `agent_runs` + learn→hypotheses + CLI + engine
+4. **P4:** assistant_router (public + admin chat) · **P5:** Studio Settings/Assistant/Agent
+5. **P6:** pcore-server deploy + 7-point verify matrix; standing queue unchanged (enforce flip,
+   backup cron)
