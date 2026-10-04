@@ -851,7 +851,7 @@ frequency, contexts, co-occurrence, attestation, sentence extraction).
   Settings (paste key/model/test), Assistant (public↔admin switch), Agent (steps + trace +
   feedback thumbs) role-gated via `GET /api/v1/auth/me`.
 - **RBAC:** `PUBLIC_ROUTES` documented (incl. public assistant) so enforce never 401s it;
-  vocab 30→32 (`agent:read`, `agent:run`); anonymous IP buckets (public 120/min, chat 10/min).
+  vocab 31→33 (`agent:read`, `agent:run`); anonymous IP buckets (public 120/min, chat 10/min).
 
 ### Auto-continue next
 
@@ -906,7 +906,7 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
 | Phase | Commit | What |
 |---|---|---|
 | P1 | `e0207e9` | AI provider catalog (7 rows, `pcore-brain` first-class, seed-on-boot), `ai_providers`/`assistant_ai_pins` migrations (additive), adapter dispatch (brain env URL/key; native `tools` only openai/openrouter — brain body structurally keyless), admin GET/PUT/activate/test with **masked** `secret {mode, ref_masked, configured}` |
-| P2 | `55776da` | `rbac.py` public/member/admin tiers + `PUBLIC_ROUTES` (incl. `POST /api/v1/assistant/chat`) + `GET /auth/me` + scope vocab 30→32 (`agent:read` 60/min, `agent:run` 10/min) + completeness guard |
+| P2 | `55776da` | `rbac.py` public/member/admin tiers + `PUBLIC_ROUTES` (incl. `POST /api/v1/assistant/chat`) + `GET /auth/me` + scope vocab 31→33 (`agent:read` 60/min, `agent:run` 10/min) + completeness guard |
 | RAG/fixes | `3cc2d5a` `ce04c72` `f8287a1` | related-words ranking, real 404s, ruff baseline clean |
 | P3+P4 | `33f87c5` | **this session** — `zolai/agent/` (marker-protocol loop, allow-listed DB-first executor, orchestrator research→build→review→shipped + `zvs_review`, proposal-only learn, synthesis/citations, `zolai agent` CLI), `agent_router` (strict `agent:run`/`agent:read`, 5 runs/min→429), `assistant_router` (public chat = honest `retrieval_only`+citations, never persists; admin chat = strict role+scope, tool trace, `persist`→`agent_runs`), 24th engine `agent`, `agent_runs` DDL (additive), citations generalized to dict-shaped tool data, 4 new test files + engine-contract probe/caps |
 
@@ -928,7 +928,8 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
 3. Repo **CI red since 2026-10-03** (5 consecutive failing runs on `main`) for the same reasons.
 
 ### Doc sync (this commit)
-- `docs/admin/permissions.md` — §2 dated **30→32** key-scope amendment (human/Prisma list stays
+- `docs/admin/permissions.md` — §2 dated **31→33** key-scope amendment (baseline already 31
+  incl. `rag:read`, previously unlisted; human/Prisma list stays
   frozen) + §6.1 anon/member/admin tiers with documented `PUBLIC_ROUTES`/prefixes + `studio-agent`
   key row.
 - `docs/architecture/api-design.md` — §1 `agent`/`assistant`/`auth` catalog rows + ai-providers in
