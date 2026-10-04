@@ -12,7 +12,7 @@ that causes heavy disk I/O and memory usage.
 - The org profile + community files live at root (this repo IS the `.github` org profile repo).
 - **Use `bun`** as the package manager for all JS/TS repos.
 
-## Repos (11)
+## Repos (12)
 
 | Repo | Path | Purpose |
 |------|------|---------|
@@ -27,6 +27,7 @@ that causes heavy disk I/O and memory usage.
 | `zolai-mcp-server` | `zolai-mcp-server/` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
 | `zolai-landing` | `zolai-landing/` | Org landing page for zolai.space (React + Vite + Three.js) |
 | `zolai-journey` | `zolai-journey/` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
+| `zolai-explorer` | `zolai-explorer/` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
 
 ## Live URLs
 
@@ -34,6 +35,7 @@ that causes heavy disk I/O and memory usage.
 |---------|-----|--------|
 | Landing page | https://zolai.space/ | ✅ LIVE |
 | MCP server | https://mcp.zolai.space/mcp | ✅ LIVE |
+| Studio workbench | https://studio.zolai.space/ | ✅ LIVE |
 
 ## Ecosystem Architecture
 
@@ -43,6 +45,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
+zolai-explorer → studio.zolai.space (API studio workbench)
 ```
 
 ## Tool scoping

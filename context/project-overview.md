@@ -4,7 +4,7 @@
 **Mission:** Preserve & teach Tedim Zolai (ZVS 2018) with a RAG-first bilingual AI toolkit for the Zomi people.
 
 ## Scope
-Ten independent repos under one org. Workspace root coordinates but is NOT a git repo (P-Core pattern).
+Eleven independent repos under one org. Workspace root coordinates but is NOT a git repo (P-Core pattern).
 
 | Repo | Role |
 |------|------|
@@ -19,6 +19,7 @@ Ten independent repos under one org. Workspace root coordinates but is NOT a git
 | `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
 | `zolai-landing` | Org landing page for zolai.space (React + Vite + Three.js) |
 | `zolai-journey` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
+| `zolai-explorer` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
 
 ## Live URLs
 
@@ -26,6 +27,7 @@ Ten independent repos under one org. Workspace root coordinates but is NOT a git
 |---------|-----|--------|
 | Landing page | https://zolai.space/ | ✅ LIVE |
 | MCP server | https://mcp.zolai.space/mcp | ✅ LIVE |
+| Studio workbench | https://studio.zolai.space/ | ✅ LIVE |
 
 ## Ecosystem Architecture
 
@@ -35,6 +37,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
+zolai-explorer → studio.zolai.space (API studio workbench)
 ```
 
 ## Language Learning Features
@@ -133,6 +136,7 @@ for full attribution.
 |---------|-----|--------|
 | Landing page | https://zolai.space/ | ✅ LIVE |
 | MCP server | https://mcp.zolai.space/mcp | ✅ LIVE |
+| Studio workbench | https://studio.zolai.space/ | ✅ LIVE |
 
 ## Ecosystem Architecture
 
@@ -142,6 +146,7 @@ zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web 
 zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
+zolai-explorer → studio.zolai.space (API studio workbench)
 ```
 
 ## Key Features for Learners
