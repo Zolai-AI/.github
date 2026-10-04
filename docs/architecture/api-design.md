@@ -42,7 +42,10 @@ different/legacy path · **PROPOSED** = designed, not built (phase noted).
 | **evaluations** | `GET /api/v1/evaluations/sets` · `GET .../runs` · `POST .../runs` | **PARTIAL** | LATER | gate reads **EXISTS** via `GET /api/metrics/eval` (metrics surface) + `zolai-eval` CLI; set/run CRUD PROPOSED (Phase 7), append-only runs ([ADR-019](../adr/ADR-019.md)) |
 | **rag** | `POST /api/v1/rag/query` · `GET /api/v1/rag/traces` | **PARTIAL** | LATER | answer path **EXISTS** as legacy `POST /knowledge/search`, `POST /chat/zolai` (frozen); `rag_traces` read PROPOSED (Phase 10, [ADR-012](../adr/ADR-012.md)) |
 | **audit** | `GET /api/v1/audit?table=&row_id=&limit=&cursor=` | **EXISTS** | **BUILD now** | Phase 1 (2026-10-01): read-only newest-first tail of `data_audit_log`, cursor walks down (`id < ?`), scope `audit:read` — **no write endpoint ever**; writes are a side effect of mutating routes (§11) |
-| **admin** | `/api/v1/admin/api-keys` (issue · list · `/{id}/rotate` · `/{id}/revoke`) · `/api/v1/admin/users` · `.../roles` · `.../settings` | **PARTIAL** | LATER¹ | ¹ api-keys **EXISTS** (P0-1, 2026-09-30, scope `apikey:manage`, plaintext returned once) · users/roles/settings = Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key secrets never returned |
+| **admin** | `/api/v1/admin/api-keys` (issue · list · `/{id}/rotate` · `/{id}/revoke`) · `/api/v1/admin/ai-providers` (list · create · update · `/{id}/activate` · `/{id}/test`) · `POST /api/v1/admin/assistant/chat` · `/api/v1/admin/users` · `.../roles` · `.../settings` | **PARTIAL** | LATER¹ | ¹ api-keys **EXISTS** (P0-1, 2026-09-30, scope `apikey:manage`, plaintext returned once) · **ai-providers + admin assistant chat EXISTS** (P1/P4, 2026-10-04, strict role + scope — §2.1) · users/roles/settings = Phase 8 ([ADR-009](../adr/ADR-009.md), [ADR-010](../adr/ADR-010.md)); key/provider secrets never returned (masked) |
+| **agent** *(P3, 2026-10-04)* | `POST /api/v1/agent/runs` · `GET /api/v1/agent/runs` · `GET /api/v1/agent/runs/{id}` · `POST /api/v1/agent/runs/{id}/feedback` · `GET /api/v1/agent/health` | **EXISTS** | LATER | rule-mode tool loop (research → build → review → shipped), 24th engine `zolai.agent.orchestrator:run_agent_goal`; `POST` strict scope `agent:run` (401 anon even in warn), list/show `agent:read`; in-process 5 runs/min → **429**; thumbs-up learn phase writes `hypotheses` + review-queue candidates **only** (never canonical tables) |
+| **assistant** *(P4, 2026-10-04)* | `POST /api/v1/assistant/chat` (public) · `POST /api/v1/admin/assistant/chat` (admin) | **EXISTS** | LATER | public chat is in `rbac.PUBLIC_ROUTES` → **never 401 under `enforce`** (anonymous bucket 10/min, §8); answers always carry `citations`; no usable provider → honest `retrieval_only: true` fallback (never fake generation); admin chat = strict role + `agent:run`, full tool trace, `persist: true` → one `agent_runs` row |
+| **auth** *(P2, 2026-10-04)* | `GET /api/v1/auth/me` | **EXISTS** | LATER | public identity probe `{role, key_prefix, scopes}` for Studio role gating — never 401s |
 | **catalog** | `GET /api/v1/catalog` · `GET /api/v1/catalog/{dataset}` | PROPOSED | LATER | [ADR-004](../adr/ADR-004.md) — read-only metadata, Phase 6 |
 | **metrics** (kept outside `/api/v1`) | `GET /metrics` · `GET /api/metrics/{summary,health,eval,performance,alerts,info,annotations,...}` (11) | **EXISTS** | outside v1 | not moved under `/api/v1` — scrape/parity contract per [ADR-002](../adr/ADR-002.md) |
 
@@ -60,11 +63,33 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 | Storage | `api_keys`: `key_prefix`, `key_hash` (SHA-256, never plaintext), `scopes`, `expires_at`, `revoked_at`, `last_used_at` ([permissions §5](../admin/permissions.md)) |
 | Modes | `ZOLAI_API_AUTH` — **`warn` (default)**: missing/invalid key is logged (rate limited per reason) and the request continues, the dual-accept window · **`enforce`**: **401** `{"detail":{"error":"unauthorized","reason":"missing_api_key"|"invalid_api_key"}}` (FastAPI `HTTPException` wraps the payload under `detail`) · **`off`**: middleware bypasses entirely (rollback) |
 | Rate limit | per-key in-memory token bucket, `ZOLAI_API_RATE_LIMIT_RPM` (default **60**/min): **429** + `Retry-After` + `X-RateLimit-{limit,remaining,reset}` on authenticated calls |
-| Exemptions | `/metrics` scrape, `/health`, `/api/v1/health` ([ADR-002](../adr-002.md)); legacy unversioned routes keep their current behavior |
+| Exemptions | `/metrics` scrape, `/health`, `/api/v1/health` ([ADR-002](../adr-002.md)); legacy unversioned routes keep their current behavior; **plus the `rbac.PUBLIC_ROUTES` / `PUBLIC_PREFIXES` set — open in *every* mode** (incl. `POST /api/v1/assistant/chat`, `GET /api/v1/auth/me`, search/rag/word/lexicon/analyze reads — [permissions §6.1](../admin/permissions.md)) |
 | Key management | `GET/POST /api/v1/admin/api-keys`, `POST .../{id}/rotate|revoke` (scope `apikey:manage`) and the `zolai apikey create\|list\|rotate\|revoke` CLI — plaintext shown **once** on create/rotate. Admin minting routes are **strict**: a presented, valid `apikey:manage` key is required in `warn` *and* `enforce` (only `off` bypasses) — an absent key is **401**, so warn cannot be used to mint a key that survives the enforce flip; the CLI is the bootstrap path |
 | Humans | session auth stays in zolai-web; the admin BFF presents its own server key to core |
 | Failure | missing/invalid/expired/revoked → **401** (structured, rate-limited log on `zolai.api.auth`); authenticated but out-of-scope → **403** with the action name; issue/rotate/revoke emit `data_audit_log` rows (never a secret) |
 | Status | **IMPLEMENTED (P0-1, 2026-09-30)** — `zolai/api/auth.py` + `auth_middleware.py` + `admin_api_keys_router.py`; default posture is `warn`, flipping `ZOLAI_API_AUTH=enforce` is an ops decision (founder gate) |
+
+## 2.1 Provider-secret masking & stable error codes (P1/P4, 2026-10-04)
+
+**Masking contract** — no route ever returns a secret:
+
+| Surface | Shape |
+|---|---|
+| Provider secret (DB row) | `secret: {mode: "none"|"env"|"encrypted", ref_masked, configured}` — `env:NAME` or `enc:v1:********…last4`; plaintext only accepted in the **write** body (POST/PUT) and never echoed |
+| API key (issued) | plaintext returned **once** at create/rotate (`zolai_sk_…`); reads show `key_prefix` only; DB stores `key_hash` (SHA-256) |
+
+**Stable error codes** (FastAPI `{"detail": {...}}` envelope, §9) — never guess a model:
+
+| Code | Raised when |
+|---|---|
+| `NO_ACTIVE_PROVIDER` | no usable active row for the requested model (no silent reroute) |
+| `MODEL_NOT_CONFIGURED` | active row has no model selected |
+| `ASSISTANT_PROVIDER_NOT_FOUND` / `ASSISTANT_MODEL_NOT_SELECTED` / `ASSISTANT_MODEL_UNKNOWN_FOR_PROVIDER` | assistant pin → global resolution failure |
+
+`ZOLAI_ENGINE_MODE=rule` short-circuits **before** any provider lookup. Assistant chat
+degrades instead of failing: a `ProviderError` (any code above) → HTTP 200 with
+`retrieval_only: true` + `provider_error: <code>`; agent runs persist
+`status=failed` + `error: provider_error…`.
 
 ## 3. Authorization (authz = RBAC actions)
 
@@ -126,6 +151,11 @@ be added outside `/api/v1` ([ADR-014](../adr/ADR-014.md)). A separate legacy sid
 - Row-limit counters (the remaining PENDING "per-key/organization limits") share the same
   accounting path — **not yet implemented**. Unauthenticated (exempt routes excepted) → 401,
   never 429-anonymous.
+- Anonymous buckets — **shipped with RBAC (P2, 2026-10-04)**: public exempt reads
+  **120/min** (`ZOLAI_PUBLIC_RATE_LIMIT_RPM`), `POST /api/v1/assistant/chat` **10/min**
+  (`ZOLAI_PUBLIC_CHAT_RATE_LIMIT_RPM`); per-scope caps in
+  `rate_limit.py:SCOPE_LIMITS` (e.g. `agent:run` 10/min, `agent:read` 60/min) → **429**.
+  Agent runs additionally cap at 5/min per key in-process (`agent_router`).
 
 ## 9. Error format
 

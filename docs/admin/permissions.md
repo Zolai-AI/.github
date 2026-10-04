@@ -50,6 +50,7 @@ resolve to a concrete action.
 | `user` / `role` | `user:manage` `role:manage` | identity + grants |
 | `apikey` | `apikey:manage` | issue/rotate/revoke |
 | `settings` | `settings:read` `settings:write` | non-secret config only |
+| `agent` | `agent:read` `agent:run` | **key-scope amendment only** (see below) — agent runs + admin assistant chat |
 
 Rules:
 
@@ -57,6 +58,15 @@ Rules:
   other actions, never directly.
 - `dataset:publish` is the highest-privilege data action (founder-held in v1).
 - Deny-by-default: an action not granted is denied, and the denial emits an audit event.
+
+> **Amendment 2026-10-04 — scope vocab 30 → 32 (P2 of `AI_AGENTS_RBAC_PLAN`).**
+> The **human** (zolai-web / Prisma) action list stays frozen at its original **30
+> actions** — the `agent` row above is an amendment row: `agent:*` never joins the
+> nine-role matrix or the `Permission` table. The **API-key
+> scope vocab** (`zolai/api/auth.py:VALID_ACTIONS`, `zolai/api/rate_limit.py:SCOPE_LIMITS`)
+> gains `agent:read` (60/min) and `agent:run` (10/min) for the P3/P4 agent + assistant
+> surface. `agent:run` strictly gates `POST /api/v1/agent/runs` and the admin assistant;
+> `agent:read` covers run listing/health. Sugar (`dataset:*`, `*`) unchanged.
 
 ## 3. Role × action matrix (nine roles)
 
@@ -166,6 +176,7 @@ the plaintext secret is shown **once** at issue/rotate. Verification is the
 | `desktop` | `dataset:read`, `catalog:read` | zolai-tauri offline/sync mode |
 | `pipeline-ci` | `pipeline:run`, `quality:run`, `quality:read`, `eval:run`, `dataset:create`, `dataset:edit` | cron + GitHub Actions batch jobs |
 | `web-backend` | `dataset:*`, `quality:read`, `eval:read`, `catalog:read`, `audit:read` | zolai-web server-side reads |
+| `studio-agent` | `agent:read`, `agent:run` | Studio Assistant/Agent panel + `zolai agent` runner keys (P3/P4) |
 | `founder-automation` | `platform_admin` bundle (all actions) | local scripts; shortest expiry, rotated first |
 
 | Control | v1 rule |
@@ -186,6 +197,26 @@ the plaintext secret is shown **once** at issue/rotate. Verification is the
 4. **Audit on deny and on mutate** — denied attempts are security-relevant events.
 5. **Graceful degradation:** unauthenticated → login; authenticated but ungranted → 403 with
    the action name (never a silent no-op button — UI hides what you cannot do).
+
+### 6.1 Route tiers & `PUBLIC_ROUTES` (P2, 2026-10-04)
+
+Single source of truth: `zolai/api/rbac.py` — both `ApiKeyMiddleware` and
+`require_scope` consult `is_public_path()`, which is what guarantees
+`ZOLAI_API_AUTH=enforce` can never 401 a public read.
+
+| Tier | Class rule (code) | Anonymous? | Examples |
+|---|---|---|---|
+| **public** | `PUBLIC_ROUTES` + `PUBLIC_PREFIXES` (`rbac.is_public_path`) | allowed in **every** mode | `/health`, `/metrics`, `/api/v1/health`, `GET /api/v1/auth/me`, **`POST /api/v1/assistant/chat`**, `GET/POST /api/v1/search`, `POST /api/v1/rag`, `GET /api/v1/foundation/stats`, `GET /api/v1/knowledge/{version,statistics}`, prefixes `GET /api/v1/word`, `GET /api/v1/lexicon`, `POST /api/v1/analyze` |
+| **member** | `MEMBER_PREFIXES` | 401 anon in `enforce`; dual-accept in `warn` | `/api/v1/{agent,assistant(non-chat),records,audit,review,linguistics,predictions,foundation,auth}/*` |
+| **admin** | `ADMIN_PREFIXES` = `/api/v1/admin` | **401 anon in `warn` *and* `enforce`** (`require_role(..., strict=True)`) + scope-gated | `/api/v1/admin/*` — api-keys, **ai-providers**, **assistant chat** |
+
+- `GET /api/v1/auth/me` returns `{role, key_prefix, scopes}` and is itself public, so
+  Studio can gate its own UI without probing admin endpoints.
+- Anonymous IPs get dedicated buckets: public reads 120/min, the chat path
+  (`PUBLIC_CHAT_PATHS` = `/api/v1/assistant/chat`) 10/min.
+- **Completeness guard:** `tests/test_rbac_public_matrix.py` walks `app.routes` and fails
+  on any `/api/v1` route classified `unclassified` — a new route must join `PUBLIC_*`,
+  `MEMBER_PREFIXES` or `ADMIN_PREFIXES` on day one.
 
 ## 7. No IdP/SSO in v1
 
