@@ -395,27 +395,27 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
 
 ## Done when
 
-- [ ] Catalog seeded on boot (7 rows incl. `pcore-brain`); rows renameable, joined by
+- [x] Catalog seeded on boot (7 rows incl. `pcore-brain`); rows renameable, joined by
       `catalog_id` only; migrations additive (source scan: 0 DROP/RENAME/ALTER-existing).
-- [ ] Brain resolves URL from `AI_BRAIN_URL`/`PCORE_BRAIN_URL` and key from its env-key order;
+- [x] Brain resolves URL from `AI_BRAIN_URL`/`PCORE_BRAIN_URL` and key from its env-key order;
       **unit test proves the brain request body has no `tools` key**; native `tools` sent only
       for `openai`/`openrouter` rows.
-- [ ] `GET /admin/ai-providers` masked (no plaintext anywhere), `PUT`/`activate`/`test` strict
+- [x] `GET /admin/ai-providers` masked (no plaintext anywhere), `PUT`/`activate`/`test` strict
       401 anon+member, unknown id 404; `pick_provider` honors enable/disable per request and
       returns `NO_ACTIVE_PROVIDER`/`MODEL_NOT_CONFIGURED` instead of guessing.
-- [ ] Every `/api/v1` route classified (completeness test green); under temporary `enforce`:
+- [x] Every `/api/v1` route classified (completeness test green); under temporary `enforce`:
       public reads **and `POST /assistant/chat` → 200 with no key**; `POST /agent/runs` +
       `/admin/assistant/chat` → 401 anon, admin chat → 403 member.
-- [ ] `zolai agent run "<goal>"` completes offline in `rule` mode; run row has phases + tool_calls
+- [x] `zolai agent run "<goal>"` completes offline in `rule` mode; run row has phases + tool_calls
       + evidence + provider/model/turns/latency; marker loop parses fenced `<<<TOOL>>>` blocks,
       respects ≤1 tool/turn and `AGENT_MAX_TURNS`; unknown/out-of-allowlist tool → error result.
-- [ ] Review step uses `zolai/zvs/rules_data.py`; thumbs-up creates a `hypotheses`/review-queue
+- [x] Review step uses `zolai/zvs/rules_data.py`; thumbs-up creates a `hypotheses`/review-queue
       candidate and **no canonical table row** (source-scan test).
-- [ ] Public chat returns citations or `retrieval_only: true` (never fake generation); admin chat
+- [x] Public chat returns citations or `retrieval_only: true` (never fake generation); admin chat
       returns a tool-call trace.
 - [ ] Studio: anonymous public chat + Word/Search/Analyze work; Settings/Agent/admin-mode hidden;
       admin key reveals all; test-connection + paste-key + model pick work; thumbs feed the loop.
-- [ ] Gates: ruff clean · pytest ≥1835 + new, 0 failed · `bun run typecheck && bun run test`
+- [ ] Gates (partial): ruff clean ✓ · full pytest 2062 passed, **0 new failures** (9 failed + 2 knowledge collection errors are pre-existing — stash-A/B proven, repo CI red since 2026-10-03) · bun gates belong to P5 · `bun run typecheck && bun run test`
       green · 24th engine caps + offline probe green.
 - [ ] P6 7-point verify matrix executed on pcore-server, results recorded in
       `context/progress-tracker.md`; both repos committed clean and pushed.
