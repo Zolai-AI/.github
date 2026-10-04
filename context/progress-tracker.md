@@ -862,3 +862,25 @@ frequency, contexts, co-occurrence, attestation, sentence extraction).
 4. **P4:** assistant_router (public + admin chat) · **P5:** Studio Settings/Assistant/Agent
 5. **P6:** pcore-server deploy + 7-point verify matrix; standing queue unchanged (enforce flip,
    backup cron)
+
+---
+
+## 2026-10-04 (Session — zolai-journey cinematic timeline site)
+
+- **New repo `zolai-journey/`** (git init, origin `Zolai-AI/zolai-journey`) — Vite 6 + React 19 +
+  TS + Tailwind v4 + Framer Motion 12 + lucide-react; NO Three.js, no CJK fonts/characters.
+- **`scripts/build_journey.py`** (stdlib, deterministic) derives `src/data/journey.json` from
+  `git log --format='%h|%ad|%s' --date=iso` across root + all repo dirs,
+  `context/progress-tracker.md` session headers, `docs/planning/*.md` Status/frontmatter dates,
+  and COMPLETION_PLAN waves. `--check` for CI. Committed, never hand-edited.
+- **Cinematic scene timeline:** each milestone renders as a scene card with its own layered SVG
+  parallax landscape (forest/mountain/river/coast/village/city/temple); `useScroll`+`useTransform`
+  parallax; click → modal: scene → era → milestone → commits/docs; scrollspy month-grouped
+  timeline with growing brush line.
+- **Roadmap:** completion waves + planning archive with accurate ISO dates + PLANNED backlog
+  note for component testing (chat, word search).
+- **Deploy:** `wrangler.toml` route `journey.zolai.space/*` (zone zolai.space);
+  `bun run deploy` = build + `wrangler pages deploy dist`.
+- Root docs synced: AGENTS.md repo table (11), context/project-overview.md, context/architecture.md.
+- Verified: `bun run build` OK · `python3 scripts/build_journey.py --check` fresh ·
+  ruff clean · zero CJK characters in src.
