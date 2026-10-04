@@ -3,7 +3,7 @@ title: "Backup strategy (KR2.2)"
 description: "Automated daily backup plan for data/zolai.db and critical assets"
 status: IMPLEMENTED
 created: 2026-09-19
-last_updated: 2026-09-28
+last_updated: 2026-10-04
 ---
 
 # Backup Strategy (KR2.2)
@@ -90,6 +90,68 @@ crontab -e
 ```
 
 Expected run: nightly 02:00, ~562 MB `.gz` per night → ≈ 3.9 GB/week before rotation; steady-state with 7 daily + 4 weekly ≈ **7–8 GB**. Disk budget at implementation: 32 GB free — sufficient, but re-check after any big data import.
+
+## Sync server ↔ local (one direction per update)
+
+**Rule: every update moves the DB exactly one way — the side that changed is the source.**
+Never merge automatically; pick the direction for that update:
+
+| Update kind | Command | Direction |
+|---|---|---|
+| Server deploy / migration / provider seed / server-side review or learn write | `sync-db-from-server.sh` | server → local |
+| Local data work finished (clean, import, annotation, review) | `sync-db-to-server.sh` | local → server |
+
+### Pull to local (server → workspace)
+
+The nightly backup covers the **local** leg. When the server has the newer DB (after a
+pcore-server deploy, migration, provider seed, observation build, or any review/learn
+write), pull it back so the workspace copy stays authoritative for local work:
+
+```bash
+zolai-core/scripts/sync-db-from-server.sh --dry-run   # preview (no changes)
+zolai-core/scripts/sync-db-from-server.sh             # pull
+```
+
+| Step | What happens |
+|------|--------------|
+| 1 | `ssh pcore-server "sqlite3 …/data/zolai.db '.backup /tmp/zolai-sync.db'"` — **WAL-safe snapshot** (a live WAL file is never raw-copied) |
+| 2 | `rsync` the snapshot to `data/zolai.db.incoming` (same filesystem) |
+| 3 | `PRAGMA integrity_check` on the pulled file — abort unless `ok` |
+| 4 | Back up the existing local DB first via `scripts/backup-zolai.sh` (fallback: `data/backups/zolai-<ts>.db.gz`) |
+| 5 | `mv` into place and drop the stale `-wal`/`-shm` of the replaced file |
+| 6 | Remove the remote snapshot; echo sizes at every step (`set -euo pipefail`) |
+
+- **Cadence:** after **every** server deploy / DB-affecting update (see
+  `docs/planning/AI_AGENTS_RBAC_PLAN.md` §F Deployment). Not a substitute for the nightly
+  backup — it *overwrites* local, so step 4 is the safety net.
+- **Overrides:** `ZOLAI_SYNC_HOST`, `ZOLAI_SYNC_SERVER_DB`, `ZOLAI_SYNC_SSH_KEY`,
+  `ZOLAI_DATA_ROOT`, `--target PATH`.
+- Default target: `<workspace>/data/zolai.db` (the same file `scripts/backup-zolai.sh`
+  backs up).
+
+### Push to server (workspace → server)
+
+When the **local** DB is the one that changed, push it up:
+
+```bash
+zolai-core/scripts/sync-db-to-server.sh --dry-run   # preview (no changes)
+zolai-core/scripts/sync-db-to-server.sh             # push
+```
+
+| Step | What happens |
+|------|--------------|
+| 1 | Local `sqlite3 .backup` snapshot + `PRAGMA integrity_check` (WAL-safe, never raw-copy) |
+| 2 | `rsync` the snapshot to `<db-dir>/.zolai-push.db` on the server |
+| 3 | **Stop the api container** — the server DB is hot; never swap a file the process holds open |
+| 4 | Back up the server DB first → `data/backups/zolai-<ts>.db.gz` |
+| 5 | `PRAGMA integrity_check` **on the server** on the pushed file — abort (and restart api) unless `ok` |
+| 6 | `mv` into place, drop stale `-wal`/`-shm`, start the api container |
+| 7 | `/health` 200 gate (30s) — the update is not "done" until the API answers |
+
+- **Cadence:** after **every** local DB-affecting change that must reach production; the
+  paired pull runs after every server-side change. One direction per update.
+- **Overrides:** `ZOLAI_SYNC_HOST`, `ZOLAI_SYNC_SERVER_DB`, `ZOLAI_SYNC_SSH_KEY`,
+  `ZOLAI_SYNC_COMPOSE`, `ZOLAI_DATA_ROOT`, `--target PATH`, `--no-restart-health`.
 
 ## Open items
 

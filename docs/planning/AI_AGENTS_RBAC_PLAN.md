@@ -30,7 +30,8 @@ assistants** (anonymous public chat, admin chat with full tools + trace); **Stud
   (warn = dual-accept + rate-limited failure log; enforce = 401). Verified key published on
   `scope["state"]["api_key"]`; per-key token bucket → 429 + `Retry-After` (`ZOLAI_API_RATE_LIMIT_RPM`,
   default 60).
-- `zolai/api/auth.py`: frozen **30-action** vocabulary incl. `dataset:read`, `rag:read`,
+- `zolai/api/auth.py`: frozen **31-action** vocabulary (the 30 human actions + `rag:read`)
+  incl. `dataset:read`, `rag:read`,
   `pos:read`, `audit:read`, `catalog:read`, `quality:read`, `source:read`, `apikey:manage`,
   `settings:read/write`; `require_scope(action, strict=False)` (strict = 401 in warn+enforce,
   used today by `admin_api_keys_router`).
@@ -182,9 +183,10 @@ assistant or public dictionary/search:
   regression), 401 in enforce; admin/agent routes `strict=True` (401 in warn+enforce, `off` only).
 - **`GET /api/v1/auth/me`** (public, never 401): `{role, key_prefix, scopes}` → powers Studio
   role gating without probing admin endpoints.
-- **Scope vocab 30 → 32:** +`agent:read`, `agent:run` in `VALID_ACTIONS` (sugar still works),
+- **Scope vocab 31 → 33:** +`agent:read`, `agent:run` in `VALID_ACTIONS` (sugar still works),
   `rate_limit.py:SCOPE_LIMITS` rows (`agent:run` 10/min, `agent:read` 60/min), dated amendment in
-  `docs/admin/permissions.md` §2 (human 30-action list stays frozen).
+  `docs/admin/permissions.md` §2 (baseline 31 = 30 human actions + `rag:read`, which was never
+  listed in §2; human 30-action list stays frozen).
 - **Completeness guard:** `tests/test_rbac_public_matrix.py` walks `app.routes` and fails on any
   `/api/v1` route that is neither public nor declared authed.
 
@@ -290,6 +292,17 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
   lifespan; `ZOLAI_API_AUTH` stays `warn` (flip is founder-gated) — enforce exercised via a
   temporary env only.
 - **Studio:** `bun run typecheck && bun run test && bun run build && bash scripts/deploy.sh`.
+- **DB sync after every update (bidirectional):** one direction per update — the side that
+  changed is the source, never a merge.
+  - server-side change (P6 deploy, migrations, catalog seed, observation build, review/learn
+    writes) → `zolai-core/scripts/sync-db-from-server.sh` (server → local: WAL-safe
+    `sqlite3 .backup` on pcore-server → rsync → integrity_check → local backup first →
+    atomic replace, stale `-wal`/`-shm` dropped).
+  - local data work → `zolai-core/scripts/sync-db-to-server.sh` (local → server: local
+    snapshot + integrity → rsync up → **stop api container** → server backup first → remote
+    integrity check → atomic replace → start container → **/health 200 gate**).
+  - Both support `--dry-run`; runbooks in `docs/governance/backup-strategy.md` →
+    “Sync server ↔ local”.
 - **Verify matrix:** (1) enforce: public word/search/analyze/rag + **`POST /assistant/chat` →
   200 no key**; (2) enforce: `POST /agent/runs` + `/admin/assistant/chat` → 401 anon; member key →
   200 agent, 403 admin chat; (3) admin key: providers GET masked (no plaintext), PUT, activate,
@@ -342,7 +355,7 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
 | Path | Why |
 |---|---|
 | `docs/planning/AI_AGENTS_RBAC_PLAN.md` | this plan (v2 amend) |
-| `docs/admin/permissions.md` | vocab 30→32 amendment + anon/member/admin tier + documented `PUBLIC_ROUTES` |
+| `docs/admin/permissions.md` | vocab 31→33 amendment + `rag:read` row + anon/member/admin tier + documented `PUBLIC_ROUTES` |
 | `docs/architecture/api-design.md` | catalog/assistants/agent endpoints, masking contract, error codes |
 | `context/progress-tracker.md` | session entry + Auto-continue next |
 
@@ -370,7 +383,7 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
   - `feat(assistant): public + admin chat routes with citations and tool trace` (P4)
   - `feat(studio): provider settings, assistant chat, agent tab with role gating` (zolai-explorer, P5)
   - `docs(planning): AI providers + RBAC + agent + assistants plan (v2)` (this file + tracker)
-  - `docs(rbac): sync permissions + api-design to 32-action public/member/admin matrix` (P2/P6)
+  - `docs(rbac): sync permissions + api-design to 33-action public/member/admin matrix` (P2/P6)
 - Gates each commit: `.venv/bin/ruff check zolai tests` clean · full pytest ≥1835 + new, 0 failed
   · `bun run typecheck && bun run test` · both trees clean.
 
