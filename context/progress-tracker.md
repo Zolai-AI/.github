@@ -943,3 +943,20 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
 2. **P6**: deploy core image + Studio bundle; 7-point verify matrix on pcore-server.
 3. needs-founder: quarantine-or-implement the knowledge test API; nightly backup cron;
    `ZOLAI_API_AUTH=enforce` flip (issue consumer keys first).
+
+---
+
+## 2026-10-04 (Session — zolai-journey animation fix + snake road + ambient backdrop)
+
+- **Animation/motion fix** (zolai-journey `1d86db7`): fixed card width ratchet on hover (R3F
+  Canvas inline `position:absolute` override so the auto grid track no longer feeds width),
+  `useScrollCamera` invalidates while settling + honors `prefers-reduced-motion`, new
+  `src/lib/motion.ts` spring/cinematic presets, staggered entrances, controlled spring hover
+  scale (settles to 1 on leave), smooth-scroll gated behind reduced-motion.
+- **Snake road + ambient backdrop** (`3b8f441`): vertical brush line replaced with a single
+  smooth cubic-bezier snake-road path (milestones alternate left/right, month nodes on path,
+  mobile centered-line fallback); fixed `AmbientBackdrop` canvas (ink blobs, wave lines, falling
+  petals, reduced-motion + dpr-cap aware); per-scene accent color on cards/chips; dead
+  `.brush-line` style dropped.
+- `journey.json` regenerated (`5b84e21`, `d8a07c5`); design-notes.md synced (snake road +
+  AmbientBackdrop). Build gates green, zero CJK in src, `journey:check` fresh.
