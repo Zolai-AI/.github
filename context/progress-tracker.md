@@ -894,3 +894,52 @@ frequency, contexts, co-occurrence, attestation, sentence extraction).
   (manualChunks: vendor-3d / vendor-motion / vendor-react), enriched scroll/hover motion
   on stats/roadmap/repos/footer/navbar. Commits `cfe4b42..6aa04dd`. `journey:check` fresh,
   no CJK in src, design-notes.md updated (`04fc6b3`).
+
+---
+
+## 2026-10-04 (Session — AI Agents plan P1–P4 SHIPPED: providers, RBAC, agent runtime, assistants)
+
+Plan [`docs/planning/AI_AGENTS_RBAC_PLAN.md`](../docs/planning/AI_AGENTS_RBAC_PLAN.md) v2 —
+implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
+
+### zolai-core commits
+| Phase | Commit | What |
+|---|---|---|
+| P1 | `e0207e9` | AI provider catalog (7 rows, `pcore-brain` first-class, seed-on-boot), `ai_providers`/`assistant_ai_pins` migrations (additive), adapter dispatch (brain env URL/key; native `tools` only openai/openrouter — brain body structurally keyless), admin GET/PUT/activate/test with **masked** `secret {mode, ref_masked, configured}` |
+| P2 | `55776da` | `rbac.py` public/member/admin tiers + `PUBLIC_ROUTES` (incl. `POST /api/v1/assistant/chat`) + `GET /auth/me` + scope vocab 30→32 (`agent:read` 60/min, `agent:run` 10/min) + completeness guard |
+| RAG/fixes | `3cc2d5a` `ce04c72` `f8287a1` | related-words ranking, real 404s, ruff baseline clean |
+| P3+P4 | `33f87c5` | **this session** — `zolai/agent/` (marker-protocol loop, allow-listed DB-first executor, orchestrator research→build→review→shipped + `zvs_review`, proposal-only learn, synthesis/citations, `zolai agent` CLI), `agent_router` (strict `agent:run`/`agent:read`, 5 runs/min→429), `assistant_router` (public chat = honest `retrieval_only`+citations, never persists; admin chat = strict role+scope, tool trace, `persist`→`agent_runs`), 24th engine `agent`, `agent_runs` DDL (additive), citations generalized to dict-shaped tool data, 4 new test files + engine-contract probe/caps |
+
+### Gates
+- `ruff check zolai tests` → **clean**.
+- Full suite (`pytest -q --continue-on-collection-errors`, 45 min): **2062 passed / 7 skipped /
+  1 xfailed / 9 failed / 2 collection errors** — **0 new failures**. New suites all green:
+  `test_agent_runs` + `test_agent_tools` + `test_agent_cli` + `test_assistant_api` +
+  `test_engine_contract` = 129 passed / 1 xfailed.
+- **A/B proof of pre-existing debt:** `git stash -u` → rerun of the 9 failing files without the
+  P3/P4 diff → identical 9 failures (`test_discovery_*` ×7, `test_dbfirst_compliance` ×2).
+
+### Pre-existing debt surfaced (NOT this session — needs-founder)
+1. `tests/test_knowledge_{promotion,consensus}.py` import an API that was **never implemented**
+   (`DEFAULT_KINDS`, `KIND_TO_CLAIM_TYPE`, `ClaimExpression`, `ClaimConsensus`, … — absent from
+   every commit since `13ec169`, Oct 3). Plain `pytest -q` aborts with **2 collection errors**;
+   use `--continue-on-collection-errors` until quarantined (skip) or implemented.
+2. 9 discovery/dbfirst failures (stash-A/B proven above).
+3. Repo **CI red since 2026-10-03** (5 consecutive failing runs on `main`) for the same reasons.
+
+### Doc sync (this commit)
+- `docs/admin/permissions.md` — §2 dated **30→32** key-scope amendment (human/Prisma list stays
+  frozen) + §6.1 anon/member/admin tiers with documented `PUBLIC_ROUTES`/prefixes + `studio-agent`
+  key row.
+- `docs/architecture/api-design.md` — §1 `agent`/`assistant`/`auth` catalog rows + ai-providers in
+  the admin row, §2 Exemptions now cite `rbac.PUBLIC_ROUTES`, §2.1 masking contract + stable error
+  codes (`NO_ACTIVE_PROVIDER`/`MODEL_NOT_CONFIGURED`/`ASSISTANT_*`), §8 anonymous + per-scope
+  buckets.
+- Plan Done-when checkboxes marked for P1–P4; Studio/P6/gates rows stay open.
+
+### Auto-continue next
+1. **P5 Studio** (zolai-explorer): Settings (paste key/model/test), Assistant (public↔admin),
+   Agent (steps + trace + thumbs), nav gating via `GET /api/v1/auth/me`, vitest.
+2. **P6**: deploy core image + Studio bundle; 7-point verify matrix on pcore-server.
+3. needs-founder: quarantine-or-implement the knowledge test API; nightly backup cron;
+   `ZOLAI_API_AUTH=enforce` flip (issue consumer keys first).
