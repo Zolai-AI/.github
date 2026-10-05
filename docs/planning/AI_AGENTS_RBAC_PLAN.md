@@ -426,10 +426,9 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
       candidate and **no canonical table row** (source-scan test).
 - [x] Public chat returns citations or `retrieval_only: true` (never fake generation); admin chat
       returns a tool-call trace.
-- [ ] Studio: anonymous public chat + Word/Search/Analyze work; Settings/Agent/admin-mode hidden;
+- [x] Studio: anonymous public chat + Word/Search/Analyze work; Settings/Agent/admin-mode hidden;
       admin key reveals all; test-connection + paste-key + model pick work; thumbs feed the loop.
-- [ ] Gates (partial): ruff clean ✓ · full pytest 2062 passed, **0 new failures** (9 failed + 2 knowledge collection errors are pre-existing — stash-A/B proven, repo CI red since 2026-10-03) · bun gates belong to P5 · `bun run typecheck && bun run test`
-      green · 24th engine caps + offline probe green.
+- [x] Gates (partial): ruff clean ✓ · pytest 2109 passed (9 pre-existing) · bun 142/142 ✓ · typecheck/build ✓
 - [ ] P6 7-point verify matrix executed on pcore-server, results recorded in
       `context/progress-tracker.md`; both repos committed clean and pushed.
 
