@@ -8,12 +8,19 @@ Studio UI hardening on `zolai-explorer` (HEAD `946e7fd`), following the 2026-10-
 
 | Commit | What it closed |
 |--------|----------------|
-| `b2cb8e0` | **D1** honesty repair — review queue link states as server-rendered (`/review/stats` does not exist on the versioned API), `/analyze` empty `pos`/`grammar`/`entities` labelled rather than half-rendered, `sentence_frequency` rendered `—`. |
-| `bf83338` | **D2** `/login` route — verify-then-store sign-in screen; **D3** dashboard/data honesty — zero-based `#` from `0`, bars scaled `value / largest` with no 1% floor, share-of-total printed beside the number. |
-| `34fc66d` | **D4** route registry (`src/lib/routes.ts`) made the single source of truth for router, sidebar, ⌘K palette and role gates; **D5** `/data` `?collection=` deep links so a collection tile opens the page that owns the number instead of doing nothing. |
-| `b9c808a` | **D6** server-side limits (footers say `showing N rows (limit L)` and warn when `N === L`; no invented "of N rows" total) + zero-based data page + per-source search grouping. |
-| `ed12280` | Gates tied to the route registry + curation chart repair; **P6 deploy** of the rebuilt bundle. |
+| `b2cb8e0` | **D1 endpoint registry** — `src/lib/endpoints.ts` added as the single source of truth for the API endpoint table, adopted by every feature's `api.ts` in place of per-file URL literals. |
+| `bf83338` | **D2 sign-in + api-keys panel** — verify-then-store `/login` route (`src/routes/Login.tsx` + `src/lib/session.ts`) and the admin api-keys panel (`src/features/apikeys/`). |
+| `34fc66d` | **D3 nav cards + route registry** — `src/lib/routes.ts` added as the single source of truth for router, sidebar, ⌘K palette and dashboard nav cards, plus `/data` `?collection=` deep links so a collection tile opens the page that owns the number instead of doing nothing. |
+| `b9c808a` | **D4 limits** — server-side limits surfaced honestly (footers say `showing N rows (limit L)` and warn when `N === L`; no invented "of N rows" total). **D5 gap states** — every known gap gets an explanatory state instead of an empty panel, including the `/review/` link note `/review/ — server-rendered HTML; /review/stats is not available`. **D6 zero-based #/bars** — zero-based `#` from `0`, bars scaled `value / largest` with no 1% floor, share-of-total printed beside the number, zero-based data page + per-source search grouping. |
+| `ed12280` | **Review round** — gates tied to the route registry + curation chart repair. |
 | `946e7fd` | **Review round MINOR-1..7** — stale test counts (142 → **269**), README `/login` row + chicken-and-egg note, README API-keys panel + endpoints, `isWriteMethod` no longer dead, `limitMax` docstring corrected (server cap on GET vs deliberate **client** clamp on `/search`/`/rag`), in-app destinations read from the registry with a **path-drift guard**, and a Dismiss control on the rotate secret banner. |
+
+### Pre-existing honesty states (re-affirmed, **not** part of this batch)
+
+Both pre-date the D1–D6 round and are **not** credited to any commit above:
+
+- `/analyze` empty `pos`/`grammar`/`entities` labelled ("not populated" / `—`) landed in `13d0024` (2026-10-04, shadcn/ui design-system commit).
+- `sentence_frequency` rendered `—` landed in `dc48494` (the original Word explorer panel).
 
 ### Gates
 
@@ -30,6 +37,7 @@ Studio UI hardening on `zolai-explorer` (HEAD `946e7fd`), following the 2026-10-
 
 ### Deployment / tunnel state
 
+- **P6 deploy:** the rebuilt bundle was deployed at the end of the D1–D6 round (bundle `index-97vGCS1y.js`).
 - Cloudflare named tunnel **`zolai-production`** (`3e45cb07-a713-4319-9791-9a3fc4ceda21`) with a credentials file; ingress `api.zolai.space → http://127.0.0.1:8001`, `studio.zolai.space → http://127.0.0.1:3000` (nginx static bundle).
 - DNS for both hosts is **CNAME to the tunnel** (not A records).
 - **Cloudflare's managed challenge still gates non-browser clients** — `curl` against the public hostnames gets challenged; verification therefore runs against the origin (127.0.0.1) or with a browser.
