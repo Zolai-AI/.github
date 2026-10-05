@@ -1,5 +1,19 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-10-05 (Session — zolai-core Blocker-2 resolved + P5 Studio UI SHIPPED)
+
+- **Blocker-2 RESOLVED (zolai-core `2d70eb1`):** Implemented Phase-4 promotion/consensus API — `promotion.py`, `consensus.py` + 4 callers. Gap tests **47 passed** (was 2 collection errors). Full suite: **9 failed (pre-existing) / 2109 passed / 7 skipped / 1 xfailed / 0 collection errors** (was 2). The missing `DEFAULT_KINDS`, `KIND_TO_CLAIM_TYPE`, `ClaimExpression`, `ClaimConsensus` APIs now exist; `tests/test_knowledge_{promotion,consensus}.py` collect cleanly.
+- **P5 Studio UI SHIPPED (zolai-explorer):** `9a82cd6` (feat), `7a31818` (fixes: stored-mode honesty, read-mostly copy, a11y switch 40px, README routes), `5e5a1cb` (docs: 142 counts). Gates: **typecheck ✓, 142/142 tests ✓, build ✓**. Features: Settings (admin AI Providers table + test-connection + paste-key), Assistant (public/admin chat switch + honesty `retrieval_only` label + citations + tool trace), Agent (member+ run + stepper + trace + feedback thumbs), `auth.ts` role gating via `GET /auth/me`, AGENTS.md amended (read-mostly + honesty rules).
+
+### Auto-continue next
+
+1. **P6 deploy + 7-point verify matrix** on pcore-server (enforce via temp env only)
+2. **needs-founder:** nightly backup cron, `ZOLAI_API_AUTH=enforce` flip (issue consumer keys first), PG cutover
+3. **L1.4** POS backfill + 500-sentence gold set (needs speaker recruitment)
+4. Phase 3 hypotheses fill + pos_tagger tokenizer swap + subword consolidation
+
+---
+
 ## 2026-09-19 (Session 2 — Gap fixes + completion plan)
 
 - **Wave 1 DONE:** broken links fixed (0 remaining), 14 missing `status:` + 27 missing `last_updated:` frontmatter added, 14 orphan docs linked, `governance/README.md` completed. (commits `d6fd12a`, `b832155`)
