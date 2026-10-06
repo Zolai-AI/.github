@@ -1030,3 +1030,63 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
   `.brush-line` style dropped.
 - `journey.json` regenerated (`5b84e21`, `d8a07c5`); design-notes.md synced (snake road +
   AmbientBackdrop). Build gates green, zero CJK in src, `journey:check` fresh.
+
+---
+
+## 2026-10-06 (Session — P5 Accounts: username/password + revocable sessions COMPLETE)
+
+**P5 Accounts** (Option A: password login + session tokens, founder approved) implemented end-to-end across two repos.
+
+### zolai-core (4 commits)
+| Commit | Scope |
+|--------|-------|
+| `e15b487` | feat(db): users + sessions tables (additive migrations, 116→118 tables, NO FKs, idempotent) |
+| `521bb7d` | feat(auth): argon2id password hashing + session service (argon2-cffi==25.1.0 pinned) |
+| `83da6e5` | feat(api): /auth/login + /auth/logout + middleware session path + additive /auth/me |
+| `c95d7b0` | feat(cli): zolai user create/list/disable/enable/password/revoke-sessions + docs |
+
+**Backend contracts verified:**
+- POST /auth/login: public, 5/min IP + 10/min username rate limits BEFORE argon2; single 401 shape `{"error":"invalid_credentials"}` (no enumeration); dummy argon2 verify on unknown user; 404 when ZOLAI_AUTH_SESSIONS=off; token `zolai_ss_` SHA-256 at rest; 200 returns `{token, token_type:"bearer", expires_at, user:{id,username,display_name,role,scopes}}`
+- POST /auth/logout: always 200, revokes presented session only
+- GET /auth/me: original 4 keys + `auth_source`/`username`/`display_name`/`user_id`/`expires_at` for sessions
+- Middleware: X-API-Key wins; `Bearer zolai_ss_*` → session; other Bearer → key path (MCP/Tauri/scripts unaffected)
+- Scopes: VALID_ACTIONS=33 frozen; MEMBER_SCOPES (5: dataset:read, rag:read, catalog:read, agent:read, agent:run); ADMIN_SCOPES (10: +apikey:manage, settings:read, settings:write, user:manage, role:manage); no `*`; unknown role → member fallback
+- Kill switch: ZOLAI_AUTH_SESSIONS=off → login/logout 404, middleware ignores sessions, /auth/me original 4 keys
+- CLI: no default password, refuses duplicate, --json sanitized, hidden prompt or --password-stdin
+- Argon2 pinned in pyproject.toml, requirements.txt, scripts/smart_install.py; import+hash verified
+- 126 targeted tests pass; ruff clean; migrations idempotent on copy; no DROP/RENAME/TRUNCATE outside comments
+
+### zolai-explorer (1 commit)
+| Commit | Scope |
+|--------|-------|
+| `48d43f8` | feat(studio): password login form + session storage + credentials resolver |
+
+**Studio changes:**
+- `src/lib/sessionAuth.ts` — sessionStorage store (`zolai.session`), injectable backend, mask, subscribe
+- `src/lib/credentials.ts` — ONE resolver: session wins else key, never both
+- `src/lib/api.ts` — uses resolver for Authorization: Bearer (session) or X-API-Key (key)
+- `src/lib/session.ts` — signInWithPassword (401→rejected, transport/5xx→unreachable, 429→rate_limited); signOutSession (best-effort logout then clear+cache)
+- `src/routes/Login.tsx` — second card: username+password form, autoComplete, "Use an API key instead" toggle, honest failure copy
+- `src/lib/endpoints.ts` — identity.login, identity.logout records
+- `src/lib/schemas.ts` — AuthMe additive .catch fields + tolerant LoginSchema
+- `src/lib/routes.ts` — login keywords += username password
+- `AGENTS.md` — amended non-negotiable #1 (dual credential paths)
+- `README.md` — 2 new endpoint rows (POST /auth/login, POST /auth/logout) + updated /login desc
+- Gates: bun typecheck 0; bun test 348 passed (+44 new); bun build OK
+
+### Security posture
+- Session in sessionStorage (`zolai.session`), sent as `Authorization: Bearer`; API key stays in localStorage (`zolai.apiKey`), sent as `X-API-Key` — one active credential (session clears key on login)
+- Argon2id m=65536 t=3 p=4 (~490ms verify) in run_in_threadpool; dual rate limits before hash
+- No plaintext password/token anywhere; audit rows never contain secrets
+- Precedence preserved: X-API-Key > session; MCP/Tauri/scripts (zolai_sk_*) unaffected
+- Feature flag `ZOLAI_API_AUTH=warn` (default) unchanged; session flag `ZOLAI_AUTH_SESSIONS=on` default
+
+### Rollback
+- `ZOLAI_AUTH_SESSIONS=off` → login/logout 404, middleware ignores sessions, /auth/me original 4 keys
+- Tables inert (no DROP); git revert explorer commit restores UI
+
+### Auto-continue next
+1. **P6 deploy** to pcore-server (core image + Studio bundle) + 7-point verify matrix
+2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip ZOLAI_API_AUTH=enforce
+3. **L1.4** POS backfill run + 500-sentence gold set (needs speaker recruitment)
+4. Standing queue: nightly backup cron, PG cutover, archive (KR2.4)
