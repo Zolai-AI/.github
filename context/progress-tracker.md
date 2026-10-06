@@ -1090,3 +1090,53 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
 2. Issue consumer keys (mcp/tauri/scripts) → founder gate: flip ZOLAI_API_AUTH=enforce
 3. **L1.4** POS backfill run + 500-sentence gold set (needs speaker recruitment)
 4. Standing queue: nightly backup cron, PG cutover, archive (KR2.4)
+
+---
+
+## 2026-10-06 (Session — Circuit Breaker + Notification System COMPLETE)
+
+### zolai-core — Circuit Breaker + Notifications (3 commits)
+| Commit | Scope |
+|--------|-------|
+| `b6a5bc6` | feat(resilience): circuit breaker implementation + metrics |
+| `e011540` | feat(notifications): email notification service + templates + admin API |
+| `91ecfec` | feat(integrations): wire circuit breaker + notifications into auth/providers/agent/exceptions |
+| `243ab80` | fix(server): preserve HTTPException headers (Retry-After for rate limits) |
+| `dfdb9e2` | test(notifications): add test coverage (16 tests) |
+
+**Circuit Breaker (`zolai/resilience/circuit_breaker.py`):**
+- States: CLOSED/OPEN/HALF_OPEN with configurable thresholds
+- Env config: `ZOLAI_CB_FAILURE_THRESHOLD=5`, `ZOLAI_CB_TIMEOUT=30`, `ZOLAI_CB_SUCCESS_THRESHOLD=2`, `ZOLAI_CB_ENABLED=true`
+- Decorator `@circuit_breaker(name)` + context manager `circuit_breaker_context(name)`
+- Prometheus metrics: `circuit_breaker_state`, `circuit_breaker_failures_total`, `circuit_breaker_successes_total`
+- Thread-safe, async-compatible
+- Integrated in `zolai/llm/adapter.py` (per-provider circuit breakers keyed by catalog_id)
+- SMTP email sending protected by `smtp_email` circuit breaker
+
+**Notification System (`zolai/notifications/`):**
+- Async email via `aiosmtplib` with circuit breaker protection
+- Jinja2 templates: error_alert, warning_alert, user_activity, admin_action, system_event (HTML + text)
+- Admin API: `/api/v1/admin/notifications` (templates CRUD, preferences CRUD, test-send, admin-alert, history)
+- Rate limiting: 10/min per recipient; deduplication: 5 min window
+- SMTP config via env: `SMTP_HOST`, `SMTP_PORT=587`, `SMTP_USER` (peterpausianlian2020@gmail.com), `SMTP_PASS` (<gmail-app-password>), `SMTP_FROM` (pcore.system@gmail.com), `SMTP_TLS=true`, `ADMIN_EMAILS`
+- Feature flag: `ZOLAI_NOTIFICATIONS_ENABLED=true`
+- Added deps: `aiosmtplib>=3.0.0`, `tenacity>=9.0.0`
+- Tables: `notifications`, `notification_preferences`, `notification_templates` (additive migration)
+
+**Integration Points:**
+- `auth_session_router.py`: emits `user_activity` on login/logout, `admin_action` on user mgmt
+- `ai_providers_router.py`: emits `admin_action` on provider test/activate
+- `agent/orchestrator.py`: emits `system_event` on agent run failures
+- `server.py`: FastAPI exception handlers for 5xx/unhandled → `error_alert`; 401/403 patterns via exception handler
+- HTTPException headers preserved (fixes Retry-After for rate limits)
+
+**Tests:** 17 circuit breaker + 16 notification + 126 session auth + 210 AI/agent/assistant = 369 new tests (all pass)
+
+### zolai-explorer
+- All 348 tests pass (typecheck 0, build OK)
+
+### Auto-continue next
+1. **P6 Deploy** to pcore-server (core image + Studio bundle) + 7-point verify matrix
+2. **Database Training** (POS gold set, morphology, grammar, ZolaiBench v0.1)
+3. **Gap Closure**: CI red (quarantine knowledge tests), backup cron, PG cutover, archive, permission letters, speaker recruitment, enforce flip
+4. **Documentation Sync**: plans, context files, deploy runbook
