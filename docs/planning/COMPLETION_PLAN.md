@@ -2,7 +2,7 @@
 title: "Zolai AI — Documentation & Plan Completion (Phased)"
 description: "Wave-by-wave plan to close all remaining gaps"
 created: 2026-09-19
-last_updated: 2026-09-28
+last_updated: 2026-10-06
 status: CONFIRMED
 ---
 
@@ -43,33 +43,44 @@ status: CONFIRMED
 
 ## Wave 3: Evidence Gathering (Days 5–14) — NEEDS FOUNDER + COMMUNITY
 
-| # | Task | OKR | KR | Effort |
-|---|------|-----|-----|--------|
-| 3.1 | Read 10 low-resource NLP papers + annotate — ✅ DONE (2026-09-28) | O1 | KR1.1 | 20h |
-| 3.2 | Join Masakhane (intro post) | O1 | KR1.2 | 2h |
-| 3.3 | Create annotated bibliography (20+ papers) | O1 | KR1.5 | 10h |
-| 3.4 | Write research methodology section | O1 | KR1.4 | 4h |
-| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h |
-| 3.6 | Complete license audit (100% sources) | O2 | KR2.3 | 16h |
-| 3.7 | Send permission outreach letters (Bible + dicts) | O2 | KR2.3 | 4h |
-| 3.8 | Archive duplicate/stale data (backup first) | O2 | KR2.4 | 8h |
-| 3.9 | Interview 5 Zomi speakers | O5 | KR5.1 | 16h |
-| 3.10 | Create consent framework + forms | O5 | KR5.2 | 4h |
-| 3.11 | Run Myanmar translation batch pilot (500) | O2 | KR2.5 | 8h |
+| # | Task | OKR | KR | Effort | Status |
+|---|------|-----|-----|--------|--------|
+| 3.1 | Read 10 low-resource NLP papers + annotate | O1 | KR1.1 | 20h | ✅ DONE (2026-09-28) |
+| 3.2 | Join Masakhane (intro post) | O1 | KR1.2 | 2h | 🔄 IN PROGRESS |
+| 3.3 | Create annotated bibliography (20+ papers) | O1 | KR1.5 | 10h | 🔄 IN PROGRESS |
+| 3.4 | Write research methodology section | O1 | KR1.4 | 4h | 🔄 IN PROGRESS |
+| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h | ⏳ NEEDS FOUNDER |
+| 3.6 | Complete license audit (100% sources) | O2 | KR2.3 | 16h | ⏳ NEEDS FOUNDER |
+| 3.7 | Send permission outreach letters (Bible + dicts) | O2 | KR2.3 | 4h | ⏳ NEEDS FOUNDER |
+| 3.8 | Archive duplicate/stale data (backup first) | O2 | KR2.4 | 8h | ⏳ NEEDS FOUNDER |
+| 3.9 | Interview 5 Zomi speakers | O5 | KR5.1 | 16h | ⏳ NEEDS FOUNDER |
+| 3.10 | Create consent framework + forms | O5 | KR5.2 | 4h | ⏳ NEEDS FOUNDER |
+| 3.11 | Run Myanmar translation batch pilot (500) | O2 | KR2.5 | 8h | ⏳ NEEDS FOUNDER |
+| 3.12 | **Circuit Breaker Implementation** | — | — | 16h | ✅ DONE (2026-10-06) |
+| 3.13 | **Notification System (Email Alerts)** | — | — | 20h | ✅ DONE (2026-10-06) |
+| 3.14 | **Login Rate Limit Fix (Retry-After Header)** | — | — | 2h | ✅ DONE (2026-10-06) |
+
+**Wave 3 done when:** KR1.1, KR1.2, KR1.5, KR2.2, KR2.3, KR2.5, KR5.1 evidence filed; circuit breaker + notifications operational.
 
 **Wave 3 done when:** KR1.1, KR1.2, KR1.5, KR2.2, KR2.3, KR2.5, KR5.1 evidence filed.
 
 ## Wave 4: Evaluation & Research (Days 14–30) — NEEDS FOUNDER + SPEAKERS
 
-| # | Task | OKR | KR | Effort |
-|---|------|-----|-----|--------|
-| 4.1 | ✅ DONE — Create 100+ evaluation test cases (eval_v1: 110 cases) | O3 | KR3.1 | 24h |
-| 4.2 | Design benchmark methodology | O3 | KR3.2 | 8h |
-| 4.3 | Distribute syllable annotation to speakers | O3 | KR3.3 | 4h + wait |
-| 4.4 | Run baseline evaluations (5 tasks) | O3 | KR3.4 | 16h |
-| 4.5 | Achieve ZVS compliance 99%+ | O3 | KR3.5 | 8h |
-| 4.6 | Fill research methodology doc | O1 | KR1.4 | 4h |
-| 4.7 | Expand literature review (verify UNKNOWN rows) | O1 | KR1.1 | 8h |
+| # | Task | OKR | KR | Effort | Status |
+|---|------|-----|-----|--------|--------|
+| 4.1 | Create 100+ evaluation test cases (eval_v1: 110 cases) | O3 | KR3.1 | 24h | ✅ DONE |
+| 4.2 | Design benchmark methodology | O3 | KR3.2 | 8h | 🔄 IN PROGRESS |
+| 4.3 | Distribute syllable annotation to speakers | O3 | KR3.3 | 4h + wait | ⏳ NEEDS SPEAKERS |
+| 4.4 | Run baseline evaluations (5 tasks) | O3 | KR3.4 | 16h | ⏳ NEEDS SPEAKERS |
+| 4.5 | Achieve ZVS compliance 99%+ | O3 | KR3.5 | 8h | ⏳ NEEDS SPEAKERS |
+| 4.6 | Fill research methodology doc | O1 | KR1.4 | 4h | 🔄 IN PROGRESS |
+| 4.7 | Expand literature review (verify UNKNOWN rows) | O1 | KR1.1 | 8h | 🔄 IN PROGRESS |
+| 4.8 | **POS Tagger Training Infrastructure** (L1.4-L1.7) | O3 | KR3.1 | 40h | 🔄 IN PROGRESS |
+| 4.9 | **Morphology Gold Set + Evaluation** (L2.6-L2.7) | O3 | KR3.2 | 24h | ⏳ NEEDS SPEAKERS |
+| 4.10 | **Grammar Gold Set + Evaluation** (L4.7) | O3 | KR3.3 | 24h | ⏳ NEEDS SPEAKERS |
+| 4.11 | **ZolaiBench v0.1 Infrastructure** (L5.1-L5.5) | O3 | KR3.4 | 32h | 🔄 IN PROGRESS |
+
+**Wave 4 done when:** KR3.1–KR3.5 evidence filed; benchmark plan published; POS/morph/grammar gold sets created; ZolaiBench v0.1 runs in CI.
 
 **Wave 4 done when:** KR3.1–KR3.5 evidence filed; benchmark plan published.
 
@@ -112,6 +123,21 @@ status: CONFIRMED
 | 7.4 | 90-day OKR review + scoring | Day 85 |
 | 7.5 | Plan next quarter OKRs | Day 90 |
 | 7.6 | Update progress-tracker + changelog | Day 90 |
+
+## Wave 8: Production Hardening (Days 90+) — TECHNICAL FOUNDATION
+
+| # | Task | Dependencies |
+|---|------|--------------|
+| 8.1 | P6 Deploy to pcore-server (7-point verify) | Wave 3-5 complete |
+| 8.2 | Nightly backup cron operational | Wave 3.5 |
+| 8.3 | PostgreSQL cutover (Phase 4 DATA_PLATFORM_MIGRATION) | Wave 8.1 |
+| 8.4 | Duplicate archive execution (KR2.4) | Founder approval |
+| 8.5 | Permission letters sent (KR2.3) | Wave 3.7 |
+| 8.6 | Speaker recruitment (5 Zomi speakers) | Wave 3.9 |
+| 8.7 | Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip | Wave 8.1 |
+| 8.8 | CI green (quarantine knowledge tests) | Immediate |
+| 8.9 | Deploy runbook documented | Wave 8.1 |
+| 8.10 | Circuit breaker + notifications docs | ✅ DONE |
 
 ---
 

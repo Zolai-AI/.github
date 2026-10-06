@@ -291,6 +291,34 @@ pcore-brain API (task: "zolai"):
 - Heavy data stays git-ignored (`data/`, `node_modules/`, `.venv/`).
 - **Canonical data store:** `data/zolai.db` (SQLite) — all reads from DB, not JSONL files.
 
+## Resilience: Circuit Breaker
+
+**Location:** `zolai/resilience/circuit_breaker.py`
+
+Three-state model (CLOSED/OPEN/HALF_OPEN) protecting external calls:
+- **LLM Providers**: Per-provider circuit breakers keyed by `catalog_id` (in `zolai/llm/adapter.py`)
+- **SMTP Email**: `smtp_email` circuit breaker in notification service
+- **Config**: `ZOLAI_CB_FAILURE_THRESHOLD=5`, `ZOLAI_CB_TIMEOUT=30`, `ZOLAI_CB_SUCCESS_THRESHOLD=2`, `ZOLAI_CB_ENABLED=true`
+- **Metrics**: Prometheus `circuit_breaker_state`, `circuit_breaker_failures_total`, `circuit_breaker_successes_total`
+- **Usage**: `@circuit_breaker(name)` decorator or `circuit_breaker_context(name)` context manager
+
+See: `docs/architecture/CIRCUIT_BREAKER.md`
+
+## Observability: Notification System
+
+**Location:** `zolai/notifications/`
+
+Async email alerts for system events with circuit breaker protection:
+- **Event Types**: `error_alert` (5xx), `warning_alert` (4xx/rate limits), `user_activity` (login/logout/new user), `admin_action` (key mint/provider activate), `system_event` (backup/migration/deploy)
+- **Templates**: Jinja2 (HTML + text) for each event type
+- **Admin API**: `/api/v1/admin/notifications` (templates CRUD, preferences, test-send, history)
+- **Rate Limiting**: 10/min per recipient; **Deduplication**: 5 min window
+- **SMTP**: `aiosmtplib` with `smtp_email` circuit breaker
+- **Config**: `SMTP_HOST`, `SMTP_USER` (peterpausianlian2020@gmail.com), `SMTP_PASS`, `ADMIN_EMAILS`, `ZOLAI_NOTIFICATIONS_ENABLED=true`
+- **Integration Points**: Auth session router, AI providers router, Agent orchestrator, Server exception handlers
+
+See: `docs/architecture/NOTIFICATIONS.md`
+
 ## RAG Integration Guide
 
 ### How Knowledge Flows to the AI

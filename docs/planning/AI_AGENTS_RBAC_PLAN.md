@@ -433,3 +433,37 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
       `context/progress-tracker.md`; both repos committed clean and pushed.
 
 PLAN_READY
+
+---
+
+## Additional Completed Items (2026-10-06)
+
+### Circuit Breaker Implementation ✅
+- [x] `zolai/resilience/circuit_breaker.py` — CLOSED/OPEN/HALF_OPEN states
+- [x] Config via env: `ZOLAI_CB_FAILURE_THRESHOLD=5`, `ZOLAI_CB_TIMEOUT=30`, `ZOLAI_CB_SUCCESS_THRESHOLD=2`, `ZOLAI_CB_ENABLED=true`
+- [x] Decorator `@circuit_breaker(name)` + context manager
+- [x] Prometheus metrics: `circuit_breaker_state`, `circuit_breaker_failures_total`, `circuit_breaker_successes_total`
+- [x] Integrated in `zolai/llm/adapter.py` (per-provider circuit breakers)
+- [x] SMTP email protected by `smtp_email` circuit breaker
+- [x] 17 tests in `tests/test_circuit_breaker.py`
+
+### Notification System ✅
+- [x] `zolai/notifications/` package with models, service, templates, router
+- [x] Async email via `aiosmtplib` with circuit breaker protection
+- [x] Jinja2 templates: error_alert, warning_alert, user_activity, admin_action, system_event (HTML + text)
+- [x] Admin API: `/api/v1/admin/notifications` (templates CRUD, preferences CRUD, test-send, admin-alert, history)
+- [x] Rate limiting: 10/min per recipient; deduplication: 5 min window
+- [x] SMTP config: `SMTP_HOST`, `SMTP_PORT=587`, `SMTP_USER` (peterpausianlian2020@gmail.com), `SMTP_PASS` (<gmail-app-password>), `SMTP_FROM` (pcore.system@gmail.com), `SMTP_TLS=true`, `ADMIN_EMAILS`
+- [x] Feature flag: `ZOLAI_NOTIFICATIONS_ENABLED=true`
+- [x] Integration points: login/logout, provider test/activate, agent run failures, 5xx exceptions
+- [x] 16 tests in `tests/test_notifications.py`
+
+### Login Rate Limit Fix ✅
+- [x] HTTPException headers preserved in exception handler (Retry-After for 429)
+- [x] Fix: `243ab80` — server.py exception handler now preserves headers
+
+### Remaining for P6
+- [ ] P6 7-point verify matrix executed on pcore-server
+- [ ] Database training infrastructure (POS annotation, ZolaiBench v0.1)
+- [ ] Gap closure: backup cron, PG cutover, archive, permission letters, speaker recruitment, enforce flip
+- [ ] Documentation sync: deploy runbook, circuit breaker docs, notifications docs
