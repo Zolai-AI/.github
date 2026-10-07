@@ -1,3 +1,35 @@
+
+
+## Current Status (2026-10-08)
+
+### ✅ COMPLETED (Local Development)
+- P5 Accounts: username/password + revocable sessions
+- Circuit Breaker: 3-state (CLOSED/OPEN/HALF_OPEN) for LLM/SMTP
+- Notifications: Email alerts (error/warning/user/admin/system)
+- P6 Deploy Artifacts: Dockerfile.prod, docker-compose.prod.yml, deploy.sh, .env.production.template
+- Backup (KR2.2): scripts/backup_nightly.py + backup_cron.sh (script ready)
+- CI: Quarantined knowledge promotion/consensus tests
+- Gold Sets: POS 510, Morphology 130, Grammar 198 (in eval DB)
+- POS Tagger: CRF trained (98% test / 100% full gold accuracy)
+- ZolaiBench v0.1: DB-first eval framework (4 tasks, CLI, CI)
+- DB-First Architecture: Enforced across all plans/docs
+- Documentation: All plans, architecture, code-standards, progress-tracker synced
+
+### 🔄 READY (Needs Server/Founder)
+- P6 Deploy to pcore-server + 7-point verify
+- Nightly backup cron install (KR2.2)
+- C1 Corpus clean / C2 Usage-pattern mining / C3 Flash-train
+- L2 Morphology (L1.4/L1.5 POS done)
+
+### ⏳ FOUNDER-GATED
+- PG cutover (Phase 4 DATA_PLATFORM_MIGRATION)
+- Archive execution (KR2.4)
+- Permission letters (KR2.3)
+- Speaker recruitment (KR5.1)
+- Consumer keys → ZOLAI_API_AUTH=enforce flip
+
+### Next Milestone: P6 Deploy to pcore-server
+
 ---
 title: "Zolai-AI Roadmap"
 description: "Strategic roadmap aligned with OKRs and ecosystem audit"

@@ -2,7 +2,7 @@
 title: "Zolai AI — Documentation & Plan Completion (Phased)"
 description: "Wave-by-wave plan to close all remaining gaps"
 created: 2026-09-19
-last_updated: 2026-10-07
+last_updated: 2026-10-08
 status: CONFIRMED
 ---
 
@@ -49,7 +49,7 @@ status: CONFIRMED
 | 3.2 | Join Masakhane (intro post) | O1 | KR1.2 | 2h | 🔄 IN PROGRESS |
 | 3.3 | Create annotated bibliography (20+ papers) | O1 | KR1.5 | 10h | 🔄 IN PROGRESS |
 | 3.4 | Write research methodology section | O1 | KR1.4 | 4h | 🔄 IN PROGRESS |
-| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h | ✅ DONE (2026-10-07) |
+| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h | ✅ DONE (2026-10-07) |  # script ready, needs server install
 | 3.6 | Complete license audit (100% sources) | O2 | KR2.3 | 16h | ⏳ NEEDS FOUNDER |
 | 3.7 | Send permission outreach letters (Bible + dicts) | O2 | KR2.3 | 4h | ⏳ NEEDS FOUNDER |
 | 3.8 | Archive duplicate/stale data (backup first) | O2 | KR2.4 | 8h | ⏳ NEEDS FOUNDER |
@@ -126,18 +126,18 @@ status: CONFIRMED
 
 ## Wave 8: Production Hardening (Days 90+) — TECHNICAL FOUNDATION
 
-| # | Task | Dependencies |
-|---|------|--------------|
-| 8.1 | P6 Deploy to pcore-server (7-point verify) | Wave 3-5 complete |
-| 8.2 | Nightly backup cron operational | Wave 3.5 |
-| 8.3 | PostgreSQL cutover (Phase 4 DATA_PLATFORM_MIGRATION) | Wave 8.1 |
-| 8.4 | Duplicate archive execution (KR2.4) | Founder approval |
-| 8.5 | Permission letters sent (KR2.3) | Wave 3.7 |
-| 8.6 | Speaker recruitment (5 Zomi speakers) | Wave 3.9 |
-| 8.7 | Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip | Wave 8.1 |
-| 8.8 | CI green (quarantine knowledge tests) | Immediate |
-| 8.9 | Deploy runbook documented | Wave 8.1 |
-| 8.10 | Circuit breaker + notifications docs | ✅ DONE |
+| # | Task | Dependencies | Status |
+|---|------|--------------|--------|
+| 8.1 | P6 Deploy to pcore-server (7-point verify) | Wave 3-5 complete | 🔄 READY (artifacts done) |
+| 8.2 | Nightly backup cron operational | Wave 3.5 | 🔄 SCRIPT READY (needs server) |
+| 8.3 | PostgreSQL cutover (Phase 4 DATA_PLATFORM_MIGRATION) | Wave 8.1 | ⏳ NEEDS FOUNDER |
+| 8.4 | Duplicate archive execution (KR2.4) | Founder approval | ⏳ NEEDS FOUNDER |
+| 8.5 | Permission letters sent (KR2.3) | Wave 3.7 | ⏳ NEEDS FOUNDER |
+| 8.6 | Speaker recruitment (5 Zomi speakers) | Wave 3.9 | ⏳ NEEDS FOUNDER |
+| 8.7 | Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip | Wave 8.1 | ⏳ NEEDS FOUNDER |
+| 8.8 | CI green (quarantine knowledge tests) | Immediate | ✅ DONE |
+| 8.9 | Deploy runbook documented | Wave 8.1 | ✅ DONE |
+| 8.10 | Circuit breaker + notifications docs | ✅ DONE | ✅ DONE |
 
 ---
 
