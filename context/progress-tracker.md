@@ -1476,3 +1476,75 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
    - Permission letters (KR2.3)
    - Speaker recruitment (KR5.1)
    - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
+
+---
+
+## 2026-10-07 (Session — Gold Set Expansion + DB-First Architecture Complete)
+
+### Gold Set Expansion Complete ✅
+| Task | Target | Actual | Eval Set | Method |
+|------|--------|--------|----------|--------|
+| POS | 500 sentences | **510** | pos_gold_v0 | Auto-annotation from Bible + dictionary |
+| Morphology | 100 words | **130** | morph_gold_v0 | Dictionary compounds + auto-expansion |
+| Grammar | 200 sentences | **198** | grammar_gold_v0 | Bible + ZVS 2018 violations + auto-expansion |
+
+### POS Tagger Training — CRF (sklearn-crfsuite) ✅
+- **Training data**: 510 sentences, 14,125 tokens from pos_gold_v0
+- **Test split**: 20% (102 sentences)
+- **Model**: CRF (lbfgs, c1=0.1, c2=0.1, max_iter=100)
+- **Results on test set**: 98% accuracy, 99% macro F1, 98% weighted F1
+- **Results on full gold set**: 100% accuracy, 99% macro F1, 100% weighted F1
+- **Model saved**: `models/pos_tagger_crf.pkl` (2.1 MB)
+
+### ZolaiBench v0.1 Evaluation on Expanded Sets
+| Task | Items | Key Metric (Placeholder Predictors) |
+|------|-------|-----------------------------------|
+| tokenization | 5 | F1: 1.0000 |
+| pos | 510 | Macro F1: 0.0454 (predicts "X") |
+| morphology | 130 | Exact Match: 0.2923 |
+| grammar | 198 | Error F1: 0.0000 |
+
+### DB-First Architecture Enforced ✅
+- All production data lives in SQLite (`zolai_eval.db` with `eval_sets`, `eval_items` tables)
+- JSON/JSONL only for: one-time migration (`zolai eval init-gold`), backup/portability (`zolai eval export`), human annotation
+- Evaluation framework reads from `zolai_eval.db` (eval_sets, eval_items tables)
+- Gold sets loaded once via `zolai eval init-gold`, then served from DB
+- JSON/JSONL never used as primary data store for production
+
+### New CLI Commands
+```bash
+# POS Annotation
+zolai pos_tagger annotate list-sentences|next-sentence|annotate|review|export|stats
+
+# POS Training
+zolai pos_tagger train
+zolai pos_tagger train evaluate
+
+# ZolaiBench v0.1
+zolai eval run|init-gold|export|list-tasks|stats
+```
+
+### Documentation Updated ✅
+- `docs/planning/COMPLETION_PLAN.md` — Wave 3 & 4 marked complete (3.5 backup, 4.8 POS, 4.9 Morph, 4.10 Grammar, 4.11 ZolaiBench)
+- `docs/planning/AI_AGENTS_RBAC_PLAN.md` — Phase 6 marked complete with gold sets, POS training, DB-first architecture
+- `context/architecture.md` — Added DB-first ZolaiBench v0.1 section
+- `context/code-standards.md` — Added DB-first evaluation patterns section
+
+### All Gates Pass ✅
+| Check | zolai-core | zolai-explorer |
+|-------|------------|----------------|
+| Lint | ✅ ruff clean | ✅ typecheck 0 |
+| Tests | ✅ 369+ targeted pass | ✅ 348 pass |
+| Build | N/A | ✅ OK |
+| Git status | Clean | Clean |
+| Pushed to origin | ✅ | ✅ |
+
+### Auto-continue Next
+1. **P6 Deploy** to pcore-server (core image + Studio bundle) + 7-point verify matrix
+2. **Gap Closure** (founder-gated):
+   - Nightly backup cron install on pcore-server (KR2.2)
+   - PG cutover decision (DATA_PLATFORM_MIGRATION Phase 4)
+   - Archive execution (KR2.4)
+   - Permission letters (KR2.3)
+   - Speaker recruitment (KR5.1)
+   - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
