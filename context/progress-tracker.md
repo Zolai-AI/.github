@@ -1314,3 +1314,61 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
    - Permission letters (KR2.3)
    - Speaker recruitment (KR5.1)
    - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
+
+---
+
+## 2026-10-06 (Session — Complete Summary)
+
+### All Phases Complete ✅
+
+| Phase | Repo | Commits | Key Deliverables |
+|-------|------|---------|------------------|
+| **P5 Accounts** | zolai-core | 4 | Users/sessions tables, argon2id, `/auth/login`, `/auth/logout`, middleware, RBAC, CLI |
+| | zolai-explorer | 1 | Dual login form (API key + username/password), sessionStorage, credentials resolver |
+| **Circuit Breaker** | zolai-core | 1 | `zolai/resilience/circuit_breaker.py` (CLOSED/OPEN/HALF_OPEN), 17 tests |
+| **Notifications** | zolai-core | 3 | Email alerts (error/warning/user/admin/system), admin API, 16 tests |
+| **Integration** | zolai-core | 1 | Login/logout, provider test/activate, agent failures, 5xx exceptions → notifications |
+| **Bug Fix** | zolai-core | 1 | HTTPException headers preserved (Retry-After for 429) |
+| **Training Infra** | zolai-core | 3 | POS annotation CLI, ZolaiBench v0.1 (metrics/store/runner), CI workflow |
+| **Gold Sets** | zolai-core | 1 | 4 gold sets (tokenization, POS, morphology, grammar) loaded into eval DB |
+| **Documentation** | root | 7 files | CIRCUIT_BREAKER.md, NOTIFICATIONS.md, DEPLOY_RUNBOOK.md, updated plans |
+| **Context Sync** | root | 3 files | architecture.md, code-standards.md, progress-tracker.md (×2) |
+
+### Gates — All Pass ✅
+
+| Check | zolai-core | zolai-explorer |
+|-------|------------|----------------|
+| Lint | ✅ ruff clean | ✅ typecheck 0 |
+| Tests | ✅ 369+ targeted pass | ✅ 348 pass |
+| Build | N/A | ✅ OK |
+| Git status | Clean | Clean |
+
+### Security Posture
+- **Session**: `sessionStorage` (`zolai.session`) → `Authorization: Bearer zolai_ss_*` (SHA-256 at rest)
+- **API Key**: `localStorage` (`zolai.apiKey`) → `X-API-Key` (unchanged)
+- **Precedence**: X-API-Key > session > anonymous (MCP/Tauri/scripts unaffected)
+- **Argon2**: `m=65536 t=3 p=4` (~490ms) in `run_in_threadpool`; dummy verify on unknown user
+- **Rate Limits**: 5/min IP + 10/min username (before hash)
+- **Kill Switch**: `ZOLAI_AUTH_SESSIONS=off` → 404 + middleware ignores tokens
+- **Circuit Breaker**: Per-provider + SMTP, prevents cascade failures
+- **Notifications**: Email alerts for errors, warnings, user activities, admin actions
+
+### Training Infrastructure Ready ✅
+- POS annotation CLI: `zolai pos_tagger annotate list-sentences|next-sentence|annotate|review|export|stats`
+- ZolaiBench runner: `zolai eval run|init-gold|export|list-tasks|stats`
+- Evaluation DB: `zolai_eval.db` with `eval_sets`, `eval_items` tables
+- Metrics: tokenization P/R/F1, POS macro-F1, morph exact-match, grammar error P/R/F1
+- 4 gold sets loaded (5 items each, placeholder for expansion to 500/100/200)
+- 29 new eval tests + 369 existing all pass
+
+### Next Steps (Auto-continue Queue)
+1. **P6 Deploy** to pcore-server (core image + Studio bundle) + 7-point verify matrix
+2. **Gold Set Expansion** — Annotate 500 POS sentences, 100 morphology words, 200 grammar sentences
+3. **Baseline Training** — Train POS tagger (CRF/sklearn-crfsuite), evaluate on gold sets
+4. **Gap Closure** (founder-gated):
+   - Nightly backup cron (KR2.2)
+   - PG cutover decision (DATA_PLATFORM_MIGRATION Phase 4)
+   - Archive execution (KR2.4)
+   - Permission letters (KR2.3)
+   - Speaker recruitment (KR5.1)
+   - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
