@@ -1,3 +1,21 @@
+# PLAN: Zolai Backend Core v1 — PLAN_READY
+
+## Current Status (2026-10-08)
+
+| Phase | Status | Notes |
+|-------|--------|-------|
+| P0 Backup baseline | ✅ DONE | Baseline verified |
+| P1 /api/v1 core surface | ✅ DONE | All routes live + tested |
+| P2 Engine contract harness | ✅ DONE | 16 engines + contract tests |
+| P3 Light training | 🔄 PARTIAL | POS CRF done (98%/100%), tokenizer pending C3 |
+| C1 Corpus clean | ❌ NOT STARTED | Needs server for full corpus access |
+| C2 Usage-pattern mining | ❌ NOT STARTED | Depends on C1 |
+| C3 Flash-train small model | ❌ NOT STARTED | Tokenizer training pending |
+| P4 L1.4/L1.5/L2 | 🔄 PARTIAL | L1.4/L1.5 POS done, L2 morphology pending |
+| P5 Deploy to pcore-server | 🔄 READY | Artifacts done, needs server access |
+
+---
+
 # PLAN: Zolai Backend Core v1 — PLAN_READY (orchestra-planner)
 
 Phases (execution order): P0 backup baseline (S, FIRST, blocks data phases) → P1 /api/v1 core+review/public (L) → P2 engine contract harness (M, ∥P1) → P3 light training tokenizer+CRF POS+ngram (M, NO translation) → P4 L1.4/L1.5/L2 waves (M, ∥P3) → P5 deploy+domain+public (L, LAST; prep ∥ earlier).

@@ -2,8 +2,8 @@
 title: "Data Platform Migration Roadmap (Phases 0–10)"
 description: "Goal/Changes/Risks/Rollback/DoD per phase; Phase 0 backup+checksum baseline blocks all data phases; Phase 4 PG cutover is founder-gated; every data change follows backup→checksum→dry-run→apply→verify (batch 3/3)"
 created: 2026-09-29
-last_updated: 2026-10-01
-status: PROPOSED
+last_updated: 2026-10-08
+status: IN_PROGRESS (Phase 0-1 complete, Phase 2-4 pending)
 ---
 
 # Data Platform Migration Roadmap — Phases 0–10
@@ -46,7 +46,7 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 
 ---
 
-## Phase 0 — Audit + backup baseline 🛑 (BLOCKING)
+## Phase 0 — Audit + backup baseline 🛑 (BLOCKING) — ✅ COMPLETE
 
 | | |
 |---|---|
@@ -54,9 +54,9 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 | **Changes** | ① Full `scripts/backup-zolai.sh` run + `--verify` drill. ② Checksum baseline file: DB file sha256 + row counts for all tables + hashes of key export files (kept under `data/backups/baseline-YYYY-MM-DD.*`, gitignored). ③ Re-audit table count (close G14 drift: 105 live vs 101 documented). ④ Confirm cron line decision (founder installs nightly 02:00 job — PENDING in backup strategy). |
 | **Risks** | Baseline captured while a job is mid-write (nondeterministic counts); backup disk pressure (~562 MB/gz, 7–8 GB steady state); false confidence if `--verify` is skipped. |
 | **Rollback** | No data is modified — only files added. Delete baseline artifacts if wrong; keep at least one verified backup. |
-| **DoD** | ✅ verified backup exists (drill counts match: `dictionary` 84,490 etc.) ✅ baseline checksum + count file written and re-derivable ✅ `tables.md` count drift reconciled or ticketed ✅ cron install decision recorded (installed or explicitly deferred) |
+| **DoD** | ✅ verified backup exists (drill counts match: `dictionary` 84,490 etc.) ✅ baseline checksum + count file written and re-derivable ✅ `tables.md` count drift reconciled ✅ cron install decision: script ready, needs server install |
 
-## Phase 1 — Documentation suite (this series)
+## Phase 1 — Documentation suite (this series) — ✅ COMPLETE
 
 | | |
 |---|---|
@@ -66,7 +66,7 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 | **Rollback** | Docs-only — revert commits. |
 | **DoD** | ✅ all series files exist with frontmatter/status ✅ no contradiction with ADRs/decision table ✅ `docs/README.md` indexed ✅ ZVS + link checks pass ✅ tree clean, atomic commits |
 
-## Phase 2 — Schema mapping + review 🛑
+## Phase 2 — Schema mapping + review 🛑 — 🔄 READY (mapping doc done, needs review)
 
 | | |
 |---|---|
@@ -76,7 +76,7 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 | **Rollback** | Every DDL ships with documented reverse SQL (`DROP TABLE IF EXISTS` on *new* tables only; columns are left in place with `enabled`/unused state — no `DROP COLUMN` on populated tables). |
 | **DoD** | ✅ mapping script reviewed by founder ✅ dry-run counts == baseline ✅ apply + verify pass with FK guard green ✅ `tables.md` updated ✅ archive-plan (KR2.4) referenced, not duplicated — any staging archive still requires its own approval |
 
-## Phase 3 — PostgreSQL bring-up + dual-read 🛑
+## Phase 3 — PostgreSQL bring-up + dual-read 🛑 — ⏳ PENDING (needs founder decision)
 
 | | |
 |---|---|
@@ -86,7 +86,7 @@ triggers) live in the ADRs' Reasons / Rejected alternatives sections.
 | **Rollback** | Disable bridge flag → consumers fall back to SQLite-only path (it never stopped being authoritative). PG volume archived, not deleted. |
 | **DoD** | ✅ PG18 up (compose) ✅ N consecutive mirror runs with identical row counts + spot-hash equality ✅ no consumer traffic moved ✅ rollback flag documented and tested ✅ backup baseline still valid |
 
-## Phase 4 — Cutover (FOUNDER-GATED — UNKNOWN timing) 🛑
+## Phase 4 — Cutover (FOUNDER-GATED — UNKNOWN timing) 🛑 — ⏳ FOUNDER-GATED
 
 | | |
 |---|---|

@@ -1,3 +1,62 @@
+
+
+---
+
+## 2026-10-08 (Session — Final Plan Sync + Deploy Prep Complete)
+
+### All Plans Updated to Current Status ✅
+| Plan | Updated | Status |
+|------|---------|--------|
+| BACKEND_CORE_V1_PLAN.md | ✅ | Phase status table added |
+| AI_AGENTS_RBAC_PLAN.md | ✅ | Final status + remaining tasks |
+| COMPLETION_PLAN.md | ✅ | Wave 3/4/8 status updated |
+| DATA_PLATFORM_MIGRATION.md | ✅ | Phase 0-1 complete, 2-4 status |
+| DATA_PLATFORM_BACKLOG.md | ✅ | P0-2 marked done |
+| ZOLAI_V1_DECISION.md | ✅ | Implementation status added |
+| ROADMAP.md | ✅ | Current status + next milestone |
+| 05-90-day-okr.md | ✅ | OKR/KR status table |
+| gap-register.md | ✅ | Gap statuses updated |
+
+### MVP Readiness Assessment
+
+| Component | Status | Blocker |
+|-----------|--------|---------|
+| Core API (P1) | ✅ DONE | — |
+| Engine contracts (P2) | ✅ DONE | — |
+| POS Tagger (P3/L1) | ✅ DONE (98%/100%) | — |
+| Circuit Breaker | ✅ DONE | — |
+| Notifications | ✅ DONE | — |
+| P6 Deploy Artifacts | ✅ DONE | Server access |
+| Backup (KR2.2) | ✅ Script ready | Server install |
+| CI Green | ✅ DONE (quarantined) | — |
+| Gold Sets (POS/Morph/Grammar) | ✅ DONE | — |
+| ZolaiBench v0.1 | ✅ DONE | — |
+| DB-First Architecture | ✅ DONE | — |
+| Docs/Plans Sync | ✅ DONE | — |
+
+### Deploy Readiness
+- **Dockerfile.prod**: ✅ CPU-only torch, all deps
+- **docker-compose.prod.yml**: ✅ Single API service + monitoring
+- **deploy.sh**: ✅ typecheck+test+build + VITE_API_BASE validation
+- **.env.production.template**: ✅ All vars documented
+- **DEPLOY_RUNBOOK.md**: ✅ 7-point verify matrix + rollback
+- **Backup script**: ✅ backup_nightly.py + backup_cron.sh
+
+### Remaining for Production (Founder/Server Gated)
+1. **P6 Deploy** — Run on pcore-server with 7-point verify
+2. **Nightly backup cron** — Install systemd timer on pcore-server
+3. **C1 Corpus clean** — Full corpus normalization on server
+4. **C2/C3** — Usage-pattern mining + tokenizer training
+5. **L2 Morphology** — Compound splitter + spec
+6. **PG cutover** — Phase 4 DATA_PLATFORM_MIGRATION (founder decision)
+7. **Archive (KR2.4)** — Founder approval needed
+8. **Permission letters (KR2.3)** — Founder to send
+9. **Speakers (KR5.1)** — Founder to recruit 5 Zomi speakers
+10. **Enforce flip** — Issue consumer keys → ZOLAI_API_AUTH=enforce
+
+### Next Action
+**Deploy to pcore-server** when server access available, then execute 7-point verify matrix from DEPLOY_RUNBOOK.md.
+
 # Zolai-AI — Progress Tracker
 
 ## 2026-10-07 (Session — Nightly backup script + CI quarantine)

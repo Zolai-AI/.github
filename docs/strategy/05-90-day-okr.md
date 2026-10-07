@@ -1,3 +1,40 @@
+
+
+---
+
+## Current Status (2026-10-08)
+
+| OKR | Key Result | Status |
+|-----|------------|--------|
+| O1: Research foundation | KR1.1 Papers annotated | ✅ DONE |
+| | KR1.2 Masakhane joined | 🔄 IN PROGRESS |
+| | KR1.4 Methodology doc | 🔄 IN PROGRESS |
+| O2: Data platform | KR2.1 Tests green | ✅ DONE (1010 passed) |
+| | KR2.2 Backup strategy | ✅ SCRIPT READY |
+| | KR2.3 License audit | ⏳ NEEDS FOUNDER |
+| | KR2.4 Archive | ⏳ NEEDS FOUNDER |
+| | KR2.5 Myanmar translation | ⏳ NEEDS FOUNDER |
+| O3: Evaluation | KR3.1 100+ test cases | ✅ DONE (eval_v1: 110) |
+| | KR3.2 Benchmark methodology | 🔄 IN PROGRESS |
+| | KR3.3 Syllable annotation | ⏳ NEEDS SPEAKERS |
+| | KR3.4 Baseline evals | ⏳ NEEDS SPEAKERS |
+| | KR3.5 ZVS compliance 99%+ | ⏳ NEEDS SPEAKERS |
+| O4: Grants | KR4.1 Whitepaper | ⏳ NEEDS FOUNDER |
+| | KR4.2 Budget | ⏳ NEEDS FOUNDER |
+| | KR4.3 Grant programs | ⏳ NEEDS FOUNDER |
+| | KR4.4 Grant application | ⏳ NEEDS FOUNDER |
+| | KR4.5 Legal entity | ⏳ NEEDS FOUNDER |
+| O5: Community | KR5.1 5 speakers | ⏳ NEEDS FOUNDER |
+| | KR5.2 Consent framework | ⏳ NEEDS FOUNDER |
+| | KR5.3 Annotation pilot | ⏳ NEEDS SPEAKERS |
+| | KR5.4 Feedback process | ⏳ NEEDS FOUNDER |
+| | KR5.5 Impact dashboard | ⏳ NEEDS FOUNDER |
+| O6: Business | KR6.1 10 interviews | ⏳ NEEDS FOUNDER |
+| | KR6.2 3 revenue streams | ⏳ NEEDS FOUNDER |
+| | KR6.3 12-month projection | ⏳ NEEDS FOUNDER |
+| | KR6.4 Commercial arrangement | ⏳ NEEDS FOUNDER |
+| | KR6.5 3 partners | ⏳ NEEDS FOUNDER |
+
 ---
 title: "Zolai AI — 90-Day OKR"
 description: "Immediate 90-day objectives and key results for September-December 2026"

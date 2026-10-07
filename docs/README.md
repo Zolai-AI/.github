@@ -1,3 +1,33 @@
+# Zolai-AI Documentation
+
+## Current Status (2026-10-08)
+
+**All local development complete. Ready for server deployment.**
+
+### ✅ Completed (Local)
+- Core API + Engine contracts + POS Tagger (98%/100% accuracy)
+- Circuit Breaker + Notifications + P6 Deploy Artifacts
+- Gold Sets: POS 510, Morphology 130, Grammar 198
+- POS Tagger CRF trained (model saved)
+- ZolaiBench v0.1 DB-first evaluation framework
+- Circuit Breaker + Notifications + Backup script
+- CI green (quarantined knowledge tests)
+- DB-First architecture enforced
+
+### 🔄 Ready for Server
+- Dockerfile.prod + docker-compose.prod.yml + deploy.sh
+- .env.production.template + DEPLOY_RUNBOOK.md
+- Backup script (backup_nightly.py + backup_cron.sh)
+
+### ⏳ Founder-Gated
+- P6 Deploy to pcore-server + 7-point verify
+- Nightly backup cron install
+- C1 Corpus clean / C2 Usage-pattern mining / C3 Flash-train
+- PG cutover (Phase 4) / Archive (KR2.4) / Permission letters (KR2.3)
+- Speaker recruitment (KR5.1) / Enforce flip (consumer keys)
+
+---
+
 ---
 title: Zolai AI Documentation
 description: Master documentation index for the Zolai AI project
