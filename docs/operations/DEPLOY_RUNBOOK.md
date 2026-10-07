@@ -9,7 +9,14 @@
 
 ## Environment Variables (Production)
 
-Create `.env.production` on pcore-server with:
+Create `.env.production` on pcore-server from the template at `.env.production.template`:
+
+```bash
+cp .env.production.template .env.production
+# Edit .env.production with actual secret values
+```
+
+Required variables (see `.env.production.template` for full list with defaults):
 
 ```bash
 # Core
@@ -52,7 +59,7 @@ ZOLAI_DB_PATH=/data/zolai.db
 ### 1. Build Image
 ```bash
 cd /home/peter/Documents/Projects/zolai-ai/zolai-core
-docker build -t zolai-core:latest -f Dockerfile .
+docker build -t zolai-core:latest -f Dockerfile.prod .
 ```
 
 ### 2. Copy to Server
@@ -106,23 +113,54 @@ scp -r dist/* pcore-server:/var/www/zolai-studio/
 ```
 
 ### 3. Verify Nginx Config
+The studio is served from its own host (`studio.zolai.space`) as a static SPA.
+API calls go cross-origin directly to `api.zolai.space` (via Cloudflare Tunnel).
+The nginx vhost only needs to serve the SPA — no API proxy needed.
+
+Reference config (installed at `/etc/nginx/sites-available/zolai-studio`):
 ```nginx
 server {
-    listen 443 ssl;
+    listen 80;
+    listen [::]:80;
     server_name studio.zolai.space;
+
+    location /.well-known/acme-challenge/ { root /var/www/html; }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl;
+
+    server_name studio.zolai.space;
+
+    ssl_certificate     /etc/letsencrypt/live/studio.zolai.space/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/studio.zolai.space/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
     root /var/www/zolai-studio;
     index index.html;
 
+    # SPA: every deep link falls back to index.html
     location / {
-        try_files \$uri \$uri/ /index.html;
+        try_files $uri $uri/ /index.html;
     }
 
-    # Proxy API calls to local core
-    location /api/v1/ {
-        proxy_pass http://127.0.0.1:8001;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
+    # Hashed Vite assets are immutable — cache for a year
+    location /assets/ {
+        add_header Cache-Control "public,max-age=31536000,immutable";
     }
+
+    # Entry document must always be revalidated
+    location = /index.html {
+        add_header Cache-Control "no-cache";
+    }
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 }
 ```
 
