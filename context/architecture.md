@@ -319,6 +319,21 @@ Async email alerts for system events with circuit breaker protection:
 
 See: `docs/architecture/NOTIFICATIONS.md`
 
+## Evaluation: ZolaiBench v0.1 (DB-First)
+
+**Location:** `zolai/eval/`
+
+DB-first evaluation framework for linguistic tasks:
+- **Storage**: SQLite `zolai_eval.db` with `eval_sets`, `eval_items` tables
+- **Gold Sets**: POS (510), Morphology (130), Grammar (198), Tokenization (5) — loaded once via `zolai eval init-gold`
+- **Metrics**: Tokenization P/R/F1, POS macro-F1, Morphology exact-match, Grammar error P/R/F1
+- **CLI**: `zolai eval run|init-gold|export|list|stats`
+- **CI Integration**: Smoke tests on PR via `.github/workflows/eval-smoke.yml`
+
+**DB-First Principle**: All production evaluation data lives in SQLite. JSON/JSONL only for one-time migration (`zolai eval init-gold`), backup/portability (`zolai eval export`), or human annotation. Never used as primary production data store.
+
+See: `docs/architecture/ZOLAIBENCH.md` (to be created)
+
 ## RAG Integration Guide
 
 ### How Knowledge Flows to the AI

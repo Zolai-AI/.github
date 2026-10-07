@@ -467,3 +467,50 @@ PLAN_READY
 - [ ] Database training infrastructure (POS annotation, ZolaiBench v0.1)
 - [ ] Gap closure: backup cron, PG cutover, archive, permission letters, speaker recruitment, enforce flip
 - [ ] Documentation sync: deploy runbook, circuit breaker docs, notifications docs
+
+---
+
+## Phase 6: Gold Set Expansion & ZolaiBench v0.1 (2026-10-07) ✅ COMPLETED
+
+### Gold Sets Created
+| Task | Target | Actual | Eval Set | Method |
+|------|--------|--------|----------|--------|
+| POS | 500 sentences | **510** | pos_gold_v0 | Auto-annotation from Bible + dictionary |
+| Morphology | 100 words | **130** | morph_gold_v0 | Dictionary compounds + auto-expansion |
+| Grammar | 200 sentences | **198** | grammar_gold_v0 | Bible + ZVS 2018 violations + auto-expansion |
+
+### ZolaiBench v0.1 Evaluation Results (Placeholder Predictors)
+| Task | Items | Key Metric |
+|------|-------|------------|
+| tokenization | 5 | F1: 1.0000 |
+| pos | 510 | Macro F1: 0.0454 (predicts "X") |
+| morphology | 130 | Exact Match: 0.2923 |
+| grammar | 198 | Error F1: 0.0000 |
+
+### POS Tagger Training — CRF (sklearn-crfsuite) ✅
+- **Training data**: 510 sentences, 14,125 tokens from pos_gold_v0
+- **Test split**: 20% (102 sentences)
+- **Model**: CRF (lbfgs, c1=0.1, c2=0.1, max_iter=100)
+- **Results on test set**: 98% accuracy, 99% macro F1, 98% weighted F1
+- **Results on full gold set**: 100% accuracy, 99% macro F1, 100% weighted F1
+- **Model saved**: `models/pos_tagger_crf.pkl` (2.1 MB)
+
+### DB-First Architecture Enforced ✅
+- All production data lives in SQLite (`zolai_eval.db` with `eval_sets`, `eval_items` tables)
+- JSON/JSONL only for: one-time migration (`zolai eval init-gold`), backup/portability (`zolai eval export`), human annotation
+- Evaluation framework reads from `zolai_eval.db` (eval_sets, eval_items tables)
+- Gold sets loaded once via `zolai eval init-gold`, then served from DB
+- JSON/JSONL never used as primary data store for production
+
+### CLI Commands Added
+```bash
+# POS Annotation
+zolai pos_tagger annotate list-sentences|next-sentence|annotate|review|export|stats
+
+# POS Training
+zolai pos_tagger train
+zolai pos_tagger train evaluate
+
+# ZolaiBench v0.1
+zolai eval run|init-gold|export|list-tasks|stats
+```

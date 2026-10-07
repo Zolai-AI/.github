@@ -99,6 +99,39 @@ ADMIN_EMAILS=peterpausianlian2020@gmail.com
 ZOLAI_NOTIFICATIONS_ENABLED=true
 ```
 
+## DB-First Evaluation Patterns
+
+### Loading Gold Sets (One-time Migration)
+```python
+# CLI command (run once per gold set)
+zolai eval init-gold pos_gold_v0
+zolai eval init-gold morph_gold_v0
+zolai eval init-gold grammar_gold_v0
+```
+
+### Running Evaluations (Reads from DB)
+```python
+# CLI
+zolai eval run all
+zolai eval run --task pos --smoke
+
+# Programmatic
+from zolai.eval.store import get_eval_items
+items = get_eval_items('pos_gold_v0')
+```
+
+### Exporting for Backup/Portability
+```bash
+zolai eval export pos --output backup/pos_backup.jsonl
+```
+
+### DB-First Rules
+- **Production data**: Always SQLite/PostgreSQL (`zolai_eval.db`)
+- **JSON/JSONL**: Only for one-time migration (`init-gold`), backup/portability (`export`), human annotation
+- **Never**: Use JSON/JSONL as primary production data store
+- **Schema**: `eval_sets` (metadata) + `eval_items` (data with gold_annotation JSON)
+
+
 ## Security
 - No plaintext secrets in code, logs, or audit rows
 - API keys: `X-API-Key` header only (never URL/query)
