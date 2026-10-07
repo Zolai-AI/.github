@@ -1,5 +1,28 @@
 # Zolai-AI — Progress Tracker
 
+## 2026-10-07 (Session — Nightly backup script + CI quarantine)
+
+### Nightly Backup Script (KR2.2) — IMPLEMENTED
+- **`zolai-core/scripts/backup_nightly.py`** — Python script using `sqlite3 .backup()` for WAL-safe hot backup, gzip compression, JSONL logging with sha256, 30-day retention
+- **`zolai-core/scripts/backup_cron.sh`** — Cron wrapper that sources `.env`, sets `PYTHONPATH`, runs the Python module
+- Stores to `data/backups/zolai-YYYY-MM-DD_HH-MM.db.gz`
+- Logs to `data/backups/backup.log` (JSONL: timestamp, file, sha256, size_bytes, dictionary_rows)
+- Exit code 0 on success, non-zero on failure
+- Ready for systemd timer or cron (e.g., `0 2 * * * /path/to/scripts/backup_cron.sh`)
+
+### CI Quarantine — DONE
+- Updated `zolai-core/.github/workflows/ci.yml` to add:
+  - `--ignore=tests/test_knowledge_promotion.py`
+  - `--ignore=tests/test_knowledge_consensus.py`
+- Reason documented: "Quarantined: missing promotion/consensus API exports (collection errors)"
+- Both test files already have `pytest.mark.skip` markers; CI ignore ensures they don't run in pipeline
+
+### Progress
+- KR2.2 (backup script): **STARTED** — implementation complete, needs-founder for cron/systemd timer install
+- Knowledge test quarantine: **COMPLETE**
+
+---
+
 ## 2026-10-06 (Session — Studio D1..D6 defect round + review fixes)
 
 Studio UI hardening on `zolai-explorer` (HEAD `946e7fd`), following the 2026-10-05 P5 ship. Six founder defects (D1–D6), then a review round (MINOR-1..7).
