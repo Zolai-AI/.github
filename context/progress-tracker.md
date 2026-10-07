@@ -1275,3 +1275,42 @@ implement phase for **P1→P4** (P5 Studio UI + P6 deploy remain open).
    - Permission letters (KR2.3)
    - Speaker recruitment (KR5.1)
    - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
+
+---
+
+## 2026-10-06 (Session — Gold Set Population + Baseline Evaluation Complete)
+
+### Gold Sets Created & Loaded
+| Task | Items | Eval Set | Source |
+|------|-------|----------|--------|
+| tokenization | 5 | tokenization_gold_v0 | Bible verses |
+| pos | 5 | pos_gold_v0 | Bible verses |
+| morphology | 5 | morph_gold_v0 | Bible compounds |
+| grammar | 5 | grammar_gold_v0 | Bible + ZVS violations |
+
+### ZolaiBench v0.1 Baseline Results (placeholder predictors)
+| Task | Items | Key Metric |
+|------|-------|------------|
+| tokenization | 5 | F1: 1.0000 (space-based matches) |
+| pos | 5 | Macro F1: 0.0000 (predicts "X") |
+| morphology | 5 | Exact Match: 0.2000 (space-based) |
+| grammar | 5 | Error F1: 0.0000 (predicts no errors) |
+
+### Training Infrastructure Ready ✅
+- POS annotation CLI: `zolai pos_tagger annotate list-sentences|next-sentence|annotate|review|export|stats`
+- ZolaiBench runner: `zolai eval run|init-gold|export|list-tasks|stats`
+- Evaluation DB: `zolai_eval.db` with `eval_sets`, `eval_items` tables
+- Metrics: tokenization P/R/F1, POS macro-F1, morph exact-match, grammar error P/R/F1
+- All tests pass (29 new eval tests + 369 existing)
+
+### Auto-continue Next
+1. **P6 Deploy** to pcore-server (core image + Studio bundle) + 7-point verify matrix
+2. **Gold Set Expansion** — Annotate 500 POS sentences, 100 morphology words, 200 grammar sentences
+3. **Baseline Training** — Train POS tagger (CRF/sklearn-crfsuite), evaluate on gold sets
+4. **Gap Closure** (founder-gated):
+   - Nightly backup cron (KR2.2)
+   - PG cutover decision (DATA_PLATFORM_MIGRATION Phase 4)
+   - Archive execution (KR2.4)
+   - Permission letters (KR2.3)
+   - Speaker recruitment (KR5.1)
+   - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
