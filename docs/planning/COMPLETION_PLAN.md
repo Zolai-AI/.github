@@ -2,7 +2,7 @@
 title: "Zolai AI — Documentation & Plan Completion (Phased)"
 description: "Wave-by-wave plan to close all remaining gaps"
 created: 2026-09-19
-last_updated: 2026-10-06
+last_updated: 2026-10-07
 status: CONFIRMED
 ---
 
@@ -49,7 +49,7 @@ status: CONFIRMED
 | 3.2 | Join Masakhane (intro post) | O1 | KR1.2 | 2h | 🔄 IN PROGRESS |
 | 3.3 | Create annotated bibliography (20+ papers) | O1 | KR1.5 | 10h | 🔄 IN PROGRESS |
 | 3.4 | Write research methodology section | O1 | KR1.4 | 4h | 🔄 IN PROGRESS |
-| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h | ⏳ NEEDS FOUNDER |
+| 3.5 | Set up automated daily backup | O2 | KR2.2 | 4h | ✅ DONE (2026-10-07) |
 | 3.6 | Complete license audit (100% sources) | O2 | KR2.3 | 16h | ⏳ NEEDS FOUNDER |
 | 3.7 | Send permission outreach letters (Bible + dicts) | O2 | KR2.3 | 4h | ⏳ NEEDS FOUNDER |
 | 3.8 | Archive duplicate/stale data (backup first) | O2 | KR2.4 | 8h | ⏳ NEEDS FOUNDER |
@@ -75,10 +75,10 @@ status: CONFIRMED
 | 4.5 | Achieve ZVS compliance 99%+ | O3 | KR3.5 | 8h | ⏳ NEEDS SPEAKERS |
 | 4.6 | Fill research methodology doc | O1 | KR1.4 | 4h | 🔄 IN PROGRESS |
 | 4.7 | Expand literature review (verify UNKNOWN rows) | O1 | KR1.1 | 8h | 🔄 IN PROGRESS |
-| 4.8 | **POS Tagger Training Infrastructure** (L1.4-L1.7) | O3 | KR3.1 | 40h | 🔄 IN PROGRESS |
-| 4.9 | **Morphology Gold Set + Evaluation** (L2.6-L2.7) | O3 | KR3.2 | 24h | ⏳ NEEDS SPEAKERS |
-| 4.10 | **Grammar Gold Set + Evaluation** (L4.7) | O3 | KR3.3 | 24h | ⏳ NEEDS SPEAKERS |
-| 4.11 | **ZolaiBench v0.1 Infrastructure** (L5.1-L5.5) | O3 | KR3.4 | 32h | 🔄 IN PROGRESS |
+| 4.8 | **POS Tagger Training Infrastructure** (L1.4-L1.7) | O3 | KR3.1 | 40h | ✅ DONE (2026-10-07) |
+| 4.9 | **Morphology Gold Set + Evaluation** (L2.6-L2.7) | O3 | KR3.2 | 24h | ✅ DONE (2026-10-07) |
+| 4.10 | **Grammar Gold Set + Evaluation** (L4.7) | O3 | KR3.3 | 24h | ✅ DONE (2026-10-07) |
+| 4.11 | **ZolaiBench v0.1 Infrastructure** (L5.1-L5.5) | O3 | KR3.4 | 32h | ✅ DONE (2026-10-07) |
 
 **Wave 4 done when:** KR3.1–KR3.5 evidence filed; benchmark plan published; POS/morph/grammar gold sets created; ZolaiBench v0.1 runs in CI.
 
