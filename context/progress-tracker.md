@@ -1607,3 +1607,68 @@ zolai eval run|init-gold|export|list-tasks|stats
    - Permission letters (KR2.3)
    - Speaker recruitment (KR5.1)
    - Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip
+
+---
+
+## 2026-10-07 (Session — Server Deployment In Progress — Paused)
+
+### Server Deployment Status (pcore-server: 54.179.157.226)
+
+### ✅ Completed
+- **SSH Connection**: Verified working (Host: pcore-server, IP: 54.179.157.226)
+- **Server Specs**: Ubuntu 24.04, Docker 29.1.3, Compose 2.40.3, nginx 1.24.0
+- **Existing Deployment**: zolai-core-api running on port 8001 (old version)
+- **Nginx Config**: studio.zolai.space configured, api.zolai.space added with SSL (Let's Encrypt)
+- **Code Sync**: zolai-core + zolai-explorer synced to /opt/
+- **SSL Certificates**: api.zolai.space and studio.zolai.space both have valid Let's Encrypt certs
+- **Docker Build**: zolai-core:latest built successfully (3.14GB)
+- **Nginx Config**: api.zolai.space → 127.0.0.1:8001 proxy working
+- **SSL**: Both api.zolai.space and studio.zolai.space have valid HTTPS
+
+### ❌ Current Blockers
+1. **Docker Image Issue**: The auth_session_router.py and session_auth.py files are not being included in the Docker image despite being present in /opt/zolai-core/zolai/api/ on the server
+   - Error: `ImportError: cannot import name 'auth_session_router' from 'zolai.api'`
+   - The `__init__.py` file exists locally and on server but appears empty in the Docker image
+   - COPY zolai/ zolai/ in Dockerfile should include it but the __init__.py appears empty in the container
+
+2. **API Routes Missing**: The new /api/v1/auth/login, /api/v1/auth/logout, /api/v1/auth/me endpoints are not registered
+   - /api/v1/health returns 404
+   - /api/v1/auth/me returns 404
+   - Only /health works (mounted at root level)
+
+3. **Login Form**: Not yet updated to use new session-based auth (still using API key only)
+
+### Root Cause Analysis
+The Dockerfile COPY zolai/ zolai/ should copy the entire zolai directory including the api/__init__.py file. However, in the built image, the __init__.py appears empty. This suggests a Docker layer caching issue or the file wasn't properly copied during the build.
+
+### Files Ready for Deploy
+- **Dockerfile.prod**: Updated with all dependencies
+- **docker-compose.prod.yml**: Configured with .env.production
+- **.env.production**: Created with all required env vars
+- **Nginx**: api.zolai.space proxy → 127.0.0.1:8001 with SSL
+- **SSL**: Both api.zolai.space and studio.zolai.space have valid Let's Encrypt certs
+- **zolexplorer**: Built and deployed to /var/www/zolai-studio
+
+### Next Steps (When Resuming)
+1. **Fix Docker Build**: Ensure auth_session_router.py and session_auth.py are properly included in the Docker image
+   - Check if COPY zolai/ zolai/ includes the new files
+   - May need to force rebuild with --no-cache or verify the COPY command
+
+2. **Verify API Routes**: After fix, verify:
+   - GET /api/v1/health → 200
+   - GET /api/v1/auth/me → 200 (anonymous)
+   - POST /api/v1/auth/login → 200
+   - POST /api/v1/auth/logout → 200
+
+3. **Run 7-Point Verify Matrix** from DEPLOY_COMMANDS.md
+
+4. **Install Backup Cron** (systemd timer)
+
+5. **Issue Consumer Keys** → Flip ZOLAI_API_AUTH=enforce
+
+### Code Status
+All local development complete and pushed to GitHub:
+- zolai-core: auth_session_router.py, session_auth.py, auth_session_router.py, updated __init__.py
+- zolai-explorer: Login form with session storage, credentials resolver
+- All plans/docs updated with current status
+
