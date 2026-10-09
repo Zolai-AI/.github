@@ -2,6 +2,41 @@
 
 ---
 
+## 2026-10-09 (Session — Local dev + backend fixes + AI provider selectors + Studio UI + server deploy)
+
+Full orchestra cycle (plan → implement A/B → implement C → verify PASS → deploy → review ORCHESTRA_COMPLETE).
+
+### zolai-core (3 commits, pushed)
+| Commit | What |
+|--------|------|
+| `a27f9c9` | feat(auth): admin users API (`/api/v1/admin/users` CRUD + role + revoke-sessions, strict user:manage + admin role dual-guard), session exports fix, stale `zolai_toolkit` path fixes |
+| `be5905d` | feat(llm): per-request provider/model override on chat+agent runs (echo `requested_provider`/`requested_model`), blank selected_model → catalog default, seed activates pcore-brain when none active, `POST .../refresh-models` (degrades to catalog, never 500), public `GET /api/v1/providers` (5 fields, zero secrets) |
+| `279fd94` | fix(deps): email-validator for EmailStr in notifications API (image boot fix found during deploy triage) |
+
+### zolai-explorer (1 commit, pushed)
+| `ad42c25` | feat(studio): LogIn icons (vs KeyRound for API-key), admin users panel in Settings (admin-gated), ProviderModelSelect on /assistant + /agent (API-fed from GET /api/v1/providers, default pcore-brain, admin refresh-models button, no hardcoded model ids — guard test), 7 new endpoints.ts records + README rows |
+
+### Verification (local, before deploy)
+- ruff clean · targeted pytest 171 green · full suite 2213 passed / 11 failed + 6 errors ALL pre-existing (A/B stashed proof)
+- bun typecheck 0 · 374/374 tests · build OK
+- Local uvicorn e2e: health, auth/me, providers (pcore-brain, no secrets), login 401/200, admin users, refresh-models, public assistant chat honest retrieval_only fallback with real citations, anonymous admin → 401
+
+### Deploy (pcore-server)
+- Container `zolai-core-api-1` **Up (healthy)** — was CrashLooping (NameError at module-level static block; local HEAD already correct, rsync fixed it)
+- Triage: email-validator missing in image → dep commit; in-container DB path wrong (`/data` orphan) → `ZOLAI_DATA_ROOT=/app/data` env fix (no code divergence)
+- Curl matrix on 127.0.0.1:8001: **0 FAIL** (9 checks incl. superadmin bootstrap via stdin)
+- Studio SPA rebuilt + deployed to /var/www/zolai-studio, nginx reload, TLS origin 200 both hosts, new bundle live
+
+### Founder gates remaining
+1. pcore-brain API key on server (production chat needs it; currently honest retrieval_only)
+2. SMTP from VPS fails (Gmail relay from EC2 IP) — notifications not actually sending
+3. Issue consumer keys → flip `ZOLAI_API_AUTH=enforce`
+4. rag_search thin on definitional queries (index/coverage work)
+5. `/api/v1/health` 404 by design (only legacy `/health`) — consider adding or updating DEPLOY_RUNBOOK
+
+
+---
+
 ## 2026-10-08 (Session — Final Plan Sync + Deploy Prep Complete)
 
 ### All Plans Updated to Current Status ✅
