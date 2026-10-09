@@ -34,7 +34,18 @@ AI_BRAIN_API_KEY=<brain-api-key>
 # OPENROUTER_API_KEY=
 # GEMINI_API_KEY=
 
-# Notifications
+# Notifications — Option A: SendGrid (recommended for production)
+# SENDGRID_API_KEY=SG.xxxxxxxxxxxx
+# SENDGRID_FROM_EMAIL=noreply@zolai.space
+# SENDGRID_FROM_NAME=Zolai AI
+# SMTP_HOST=smtp.sendgrid.net
+# SMTP_PORT=587
+# SMTP_USER=apikey
+# SMTP_PASS=<sendgrid-api-key>
+# SMTP_FROM=noreply@zolai.space
+# SMTP_TLS=true
+
+# Notifications — Option B: Gmail (current fallback)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=peterpausianlian2020@gmail.com
@@ -92,6 +103,27 @@ docker compose -f docker-compose.prod.yml up -d
 curl -f http://localhost:8001/health
 curl -f http://localhost:8001/api/v1/health
 curl -f http://localhost:8001/api/v1/auth/me
+```
+
+### 5b. Enhanced Verify (Post-Deploy)
+```bash
+# Health endpoints
+curl -f https://api.zolai.space/health
+curl -f https://api.zolai.space/api/v1/health
+
+# Authentication
+curl -f https://api.zolai.space/api/v1/auth/me
+
+# Definitional search (≥5 relevant results for core terms)
+curl -f "https://api.zolai.space/api/v1/search" -X POST -H "Content-Type: application/json" -d '{"query":"pasian","limit":10}'
+curl -f "https://api.zolai.space/api/v1/search" -X POST -H "Content-Type: application/json" -d '{"query":"tapa","limit":10}'
+curl -f "https://api.zolai.space/api/v1/search" -X POST -H "Content-Type: application/json" -d '{"query":"vantung","limit":10}'
+
+# Assistant chat (generated response, not retrieval_only)
+curl -f -X POST https://api.zolai.space/api/v1/assistant/chat -H "Content-Type: application/json" -d '{"message":"hello"}'
+
+# Notifications test (admin key required)
+curl -f -X POST -H "Authorization: Bearer <admin_token>" https://api.zolai.space/api/v1/admin/notifications/test-send
 ```
 
 ## Deploy zolai-explorer (Studio)
@@ -182,6 +214,19 @@ Execute on pcore-server after deploy:
 | 5 | Brain adapter: no `tools` key; returns citations or `retrieval_only` | Verified |
 | 6 | Unknown path → 404 | 404 |
 | 7 | Studio: anon public chat works; Settings/Agent/admin-mode hidden; admin key reveals all | Verified |
+| 8 | `/api/v1/health` returns 200 with uptime, version, data_root | 200 OK + JSON |
+
+## Enhanced Verify Matrix (Post-Founder-Gates)
+
+| # | Test | Expected |
+|---|------|----------|
+| 8 | `/api/v1/health` returns 200 with uptime | 200 OK + JSON |
+| 9 | `rag_search` for "pasian" returns ≥5 relevant results | ≥5 results, exact match first |
+| 10 | `rag_search` for "tapa" returns ≥5 relevant results | ≥5 results, exact match first |
+| 11 | `rag_search` for "vantung" returns ≥5 relevant results | ≥5 results, exact match first |
+| 12 | Assistant chat returns generated response (not `retrieval_only`) | AI-generated content |
+| 13 | `ZOLAI_API_AUTH=enforce` + consumer keys (MCP/Tauri/scripts) work | 200 with keys, 401 anon |
+| 14 | Notifications test-send delivers email | Email received |
 
 ### Quick Verify Script
 ```bash
