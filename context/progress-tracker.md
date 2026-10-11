@@ -42,15 +42,26 @@ literal scan. 7 files, +69/−111.
 | `cd06a7d` | honest public assistant chat — catalog selector, `api_key` only, single submit |
 | `596b59c` | honest feedback toast + drop stale own-key on admin switch |
 | `a555d16` | default to the server's own provider target (no auto override) |
+| `de3e557` | honest model placeholder before a provider is chosen |
+
+### Final polish (`de3e557`) — deployed
+Founder asked for the last honesty nit: with **no provider chosen** the model combobox read "No model list published" (misleading — nothing is broken, the user just hasn't picked yet). Fix: pure exported
+`modelPlaceholder(provider, models)` in `src/features/providers/api.ts` → `""` ⇒ **"Select a provider first"**;
+provider with no models ⇒ "No model list published"; provider with models ⇒ "Select a model…".
+`ProviderModelSelect` renders it; `/assistant` + `/agent` carry no copy of their own; the admin Settings
+row editor is deliberately untouched (its row *is* selected, so its text is accurate). 5 files, +38/−9,
++3 specs (`375 → 378`). **Redeployed**: live bundle now **`index-C3MesQ6r.js`**; live probe → `/assistant`
+comboboxes `["Select a provider…","Select a provider first"]`, Send body `{"message":"hi"}` only,
+**1 POST**. `GET /health` 200 · `/assistant` 200.
 
 ### Gates
 - Clean worktree per commit: typecheck **0** · tests **379/379** (`cd06a7d`,`596b59c`) then **375/375**
-  (`a555d16`, 4 `defaultSelection` specs removed) · build OK (pre-existing >900 kB chunk advisory only).
+  (`a555d16`, 4 `defaultSelection` specs removed), **378/378** (`de3e557`) · build OK (pre-existing >900 kB chunk advisory only).
 - Root docs commit: this entry.
 
 ### Residual (not fixed, noted for founder)
-- Model `<Select>` placeholder reads "No model list published" when **no provider** is chosen (should
-  read "Select a provider first") — cosmetic honesty nit.
+- ~~Model `<Select>` placeholder when no provider is chosen~~ — **FIXED** in `de3e557` (now "Select a
+  provider first"); deployed live.
 - The own-key feature still only works for providers whose catalog row the server can reach (the
   server injects your `api_key` into the selected row; it does not build a row from `user_provider`).
 - Foreign WIP in the zolai-explorer working tree is untouched (now also `src/lib/signIn.ts`,
