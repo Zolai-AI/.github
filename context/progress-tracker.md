@@ -2,6 +2,53 @@
 
 ---
 
+## 2026-10-11 (Session — Studio Assistant honesty fix: public composer, provider selector, shadcn)
+
+Founder-reported defects on `/assistant`: "no chat input for public", provider selector used
+wrongly, shadcn misuse. Full orchestra cycle (plan → implement ×2 → verify PASS ×2 → review
+ORCHESTRA_COMPLETE), **zolai-explorer only** — no zolai-core change.
+
+### Root cause (live-probed, not guessed)
+- A puppeteer probe of https://studio.zolai.space/assistant + curl against the live API showed the
+  composer **did** render, but the **public path was misleading**: the catalog selector auto-seeds a
+  server provider (Anthropic) whose row has no key → every public send degraded to an honest
+  `retrieval_only` corpus dump (`provider_error: PROVIDER_KEY_MISSING`). Selecting a catalog provider
+  could never produce a model answer for an anonymous user.
+- The "Use your own API key" panel was **half-wired**: a hard-coded provider Select
+  (`openai|openrouter|gemini|custom` — also a `providerLiterals` violation), a **dead Model `<Input>`**
+  with no `value`/`onChange`, and it sent `user_provider` — which `zolai-core` `make_chat_fn` accepts
+  but **never acts on** (docstring promises a temp row; code injects `user_api_key` into the *selected
+  catalog row*). So "pick OpenAI for your key" was a lie.
+- Hand-rolled `<label className=...>` instead of the vendored shadcn `Field`/`FieldLabel`.
+- One Send click produced **two** `POST /assistant/chat` calls in the probe.
+
+### Commits (zolai-explorer, `main`, **not yet pushed**)
+| Commit | What |
+|--------|------|
+| `cd06a7d` | `fix(studio): honest public assistant chat — catalog selector, api_key only, single submit` — own-key panel = one password `Field` labelled from the catalog row name, clearing on provider change; dead Model input + hard-coded provider Select removed; body is `{message, provider?, model?, api_key?}` only (`user_provider` never sent; `ProviderSelectionSchema.user_provider` removed, `ChatResponse.requested_user_provider` kept for tolerant echo); message `Textarea` wrapped in `Field`; synchronous `useRef` single-flight submit guard; public copy states a catalog provider needs a key; honest feedback toast |
+| `596b59c` | `fix(studio): honest feedback toast + drop stale own-key on admin switch` — toast title no longer claims a local record; own-key cleared when mode → admin AND `user_api_key` only sent when `activeMode === 'public'`; NIT comment on the echo branch |
+
+### Verification (clean worktree of each commit; the main tree carries foreign WIP that is NOT ours)
+- `cd06a7d`: typecheck **0** · `bun run test` **379/379** (21 files) · build OK (only the pre-existing
+  >900 kB chunk advisory) · 7 files exactly · no secrets · live anonymous `POST /assistant/chat` → 200.
+- `596b59c`: typecheck **0** · **379/379** · 1 file (+21/−5) · no secrets.
+- Reviewer found no CRITICAL/MAJOR; the 3 MINORs (toast title, stale key on mode switch, dead echo
+  branch comment) were all fixed in `596b59c`.
+
+### Not done / founder gates
+- **Not pushed** (`main` is 2 ahead of `origin/main`).
+- **Not deployed** — the fix is only user-visible after `bun run deploy` (nginx bundle on
+  pcore-server) + the post-deploy curl checks in `zolai-explorer/AGENTS.md`.
+- **Foreign WIP left untouched** in the zolai-explorer working tree (belongs to another session):
+  `package.json` (better-auth, puppeteer), `bun.lock`, `package-lock.json`, `src/components/Sidebar.tsx`,
+  `src/components/CommandPalette.tsx`, `src/lib/session.ts`, `src/routes/Login.tsx`, `src/routes/Word.tsx`,
+  `src/lib/auth-better.ts`, `.pcore/` (incl. two puppeteer probe scripts). In the dirty tree, typecheck/
+  tests fail on that debt — gates must be run on a clean worktree until it is resolved by its owner.
+- `Assistant.tsx` in `cd06a7d` also carries pre-existing deployed WIP hunks (Copy button, feedback
+  buttons, layout) intentionally kept to avoid desyncing the live bundle.
+
+---
+
 ## 2026-10-09 (Session — Local dev + backend fixes + AI provider selectors + Studio UI + server deploy)
 
 Full orchestra cycle (plan → implement A/B → implement C → verify PASS → deploy → review ORCHESTRA_COMPLETE).
