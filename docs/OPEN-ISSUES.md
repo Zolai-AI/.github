@@ -89,20 +89,36 @@ recreating the container.
 
 ---
 
-## S1 — `/api/v1/rag` never calls a model; the answer is a template
+## FIXED — `/rag` never called a model
 
-`zolai-core/zolai/rag/retrieve.py:640`
+`zolai-core/zolai/rag/retrieve.py` built its answer with a template:
 
 ```python
-"answer": f"Based on {len(search_results)} sources: {context[:500]}...",  # Placeholder
+"answer": f"Based on {len(search_results)} sources: {context[:500]}..."  # Placeholder
 ```
 
-The Studio's `/rag` panel and footer already state this honestly, so no UI fix is
-needed — but it means `/rag` can never answer a question. `/assistant/chat`
-*does* generate (`pcore-brain · nemotron-3-ultra-free`), so this is a separate,
-narrower gap: wire `/rag` to the configured provider, or retire the endpoint.
+No model was ever invoked, so the endpoint could not answer anything and the
+Studio permanently labelled it a placeholder echo.
 
----
+Now it resolves the deployment's provider through the same `make_chat_fn` the
+assistant uses — one resolution path, not two that can disagree. Two further
+defects had to be fixed for it to actually work:
+
+- The context was `[1] dictionary: pasian` — a bare headword with no
+  proposition in it. Evidence lines now carry the row's content columns.
+- `ChatFn` returns `{"text", ...}`, not `{"content"}`. Reading `content` produced
+  an empty reply that looked like a provider fault.
+
+The response states which path produced the answer (`generated`, `retrieval_only`,
+`provider`, `model`, `provider_error`), mirroring the assistant's contract.
+Commits `5454062` (core), `7e546e8` (studio).
+
+Verified on the deployment — and note the second answer is the behaviour that
+matters:
+
+- `What is pasian?` → cites [1], notes the gloss is source-specific (P-ZVS).
+- `What does jesus mean in Zolai?` → reports the evidence as **circular**
+  ("jesus" glossed as "jesus, Jesus") instead of inventing a translation.
 
 ## S2 — Deploy script's final verification step crashed on every run
 
@@ -194,6 +210,8 @@ Recording these so nobody re-investigates them:
 
 ## Fixed this session
 
+- `/rag` now writes its answers with the configured model, grounded in the
+  retrieved rows, with honest `generated` / `retrieval_only` flags.
 - Retrieval: strong passes ran per whole-string instead of per token, so any
   multi-token query degraded to an unordered fallback (see above).
 - `/records` dropped its required `table` param (422) — the endpoint template has
