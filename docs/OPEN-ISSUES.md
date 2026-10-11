@@ -154,3 +154,109 @@ Recording these so nobody re-investigates them:
 - `/api/v1/records` 422 — real, fixed: the required `table` query parameter was
   being dropped because the endpoint template has no `{table}` placeholder.
   `queryLimitPath` now carries required query params (4 tests guard it).
+
+---
+
+## FIXED this session — Feedback system & Tool call improvements
+
+### S2 — Assistant feedback endpoint was missing ("Feedback is not sent to the server yet — nothing was recorded")
+
+**Symptom** — Studio's `/assistant` thumbs up/down showed toast: "Feedback is not sent to the server yet — nothing was recorded."
+
+**Fix** — Implemented complete feedback pipeline:
+
+1. **Database** (`zolai-core/zolai/data/migrations.py`):
+   - Added `assistant_chat_feedback` table with columns: message, response, mode, retrieval_only, provider, model, score (-1/0/1), ip_hash, created_at
+   - Auto-created on API boot via `create_assistant_chat_feedback_table()`
+
+2. **API** (`zolai-core/zolai/api/assistant_router.py`):
+   - `POST /api/v1/assistant/feedback` — public, rate-limited to 10/min/IP
+   - `GET /api/v1/admin/assistant/feedback/stats` — admin only, returns summary (total, positive, negative, unique IPs, positive rate), breakdown by mode/provider, daily trend, recent items
+   - Both endpoints lazily create table if missing (test-friendly)
+
+3. **RBAC** (`zolai-core/zolai/api/rbac.py`):
+   - Added `("POST", "/api/v1/assistant/feedback")` to `PUBLIC_ROUTES`
+
+4. **Client** (`zolai-explorer/`):
+   - Registered `assistant.feedback` endpoint in `src/lib/endpoints.ts`
+   - Updated `src/routes/Assistant.tsx` to call API with message, response, mode, retrieval_only, provider, model, score
+   - Added to `README.md` API reference table
+
+5. **Tests** (`zolai-core/tests/test_assistant_api.py`):
+   - `test_feedback_endpoint_is_public` — verifies PUBLIC_ROUTES
+   - `test_feedback_records_successfully` — verifies DB persistence
+   - `test_negative_feedback_records` — verifies -1 score
+
+### S2 — Assistant & Agent tool calls now use full public tool set + Bible-specific filtering
+
+**Before** — Public assistant used only 2 tools (`rag_search`, `dictionary_lookup`). Agent orchestrator used only 2 research tools. No source filtering.
+
+**After** — Full tool coverage with intelligent source filtering:
+
+1. **Assistant tools** (`zolai-core/zolai/api/assistant_router.py`):
+   - `_retrieval_only()` now uses all 7 public tools:
+     - `rag_search` (with auto `source_filter=['bible_verses']` for Bible queries)
+     - `word_evidence`, `word_related`, `analyze_text`, `grammar_check`
+     - `dictionary_lookup`, `verse_lookup`
+   - Auto-detects Bible queries via keywords (bible, scripture, verse, genesis, psalms, romans, etc.)
+
+2. **Agent orchestrator** (`zolai-core/zolai/agent/orchestrator.py`):
+   - `_research()` auto-detects Bible keywords and adds `source_filter=['bible_verses']` to `rag_search`
+   - Phase-specific prompts: RESEARCH_PHASE_PROMPT, BUILD_PHASE_PROMPT, REVIEW_PHASE_PROMPT
+   - `RESEARCH_PHASE_PROMPT` explicitly instructs: "If the goal mentions Bible/Scripture/verses, USE source_filter=['bible_verses']"
+
+3. **Tool registry** (`zolai-core/zolai/agent/tools/registry.py`):
+   - `rag_search` parameters now include optional `source_filter` array with enum: `dictionary`, `dictionary_en_zo`, `bible_verses`, `phrases`, `grammar_patterns`
+
+4. **Tool executor** (`zolai-core/zolai/agent/tools/executor.py`):
+   - `_rag_search()` handler validates and passes `source_filter` to retriever
+
+5. **Role-specific system prompts** (new):
+   - `PUBLIC_ASSISTANT_PROMPT` — 4-line limit, honest retrieval, ZVS 2018
+   - `ADMIN_ASSISTANT_PROMPT` — full tool access, transparent trace
+   - `AGENT_ORCHESTRATOR_PROMPT` — 4-phase workflow
+   - Phase prompts guide tool selection and citation format
+
+**Verification** — Agent run for "Find all Bible verses containing the word pasian" now:
+- Uses `rag_search` with `source_filter=['bible_verses']`
+- Returns 5 actual Bible verses (ROM 2:14, 1JN 4:21, ROM 8:28, 2SA 15:32, JOB 8:13)
+- Evidence shows bible_verses source with proper citations
+- Before: returned dictionary entries (find, all, bible, pasian, encikin)
+
+### S3 — Tests & Build
+
+- All 535 zolai-core tests pass (agent runs, assistant, RBAC, AI provider selection, engine contract, agent tools, ZVS integration/validator)
+- All 403 zolai-explorer tests pass
+- Typecheck passes, build succeeds
+
+---
+
+## Open Issues (pre-existing, not addressed this session)
+
+### S1 — `/api/v1/rag` never calls a model; the answer is a template
+### S2 — Corpus gaps for common Zolai greetings
+### S3 — Cloudflare challenges headless browsers on `studio.zolai.space`
+### S3 — Mobile sign-out is behind the nav drawer
+
+### S2 — Missing regression test for multi-token retrieval fix
+The retrieval fix (`46c28cb`) lacks tests asserting `"what is pasian"` and `"pasian is god"` rank expected rows first. Single-word tests passed but masked the bug.
+
+### S3 — `sentence-transformers` not available; vector search disabled
+Log warning: `sentence-transformers not available; vector search disabled`. The RAG retriever falls back to lexical search only. Install `sentence-transformers` and a model to enable semantic search.
+
+### S3 — SAWarning: Skipped unsupported reflection of expression-based index `ux_kc_claim_key`
+Appears in test output. SQLite doesn't support CHECK constraints on existing tables. Not a functional issue but clutters test logs.
+
+### S3 — 2901 modules transformed, chunk size 1.3MB (warns at 900kB)
+`zolai-explorer` build warns about large chunks. Consider dynamic imports for code-splitting.
+
+---
+
+## Known-good — verified working (updated)
+
+- Anonymous `/assistant/chat` answers with retrieval + citations (Bible queries now filtered correctly)
+- `/api/v1/agent/runs` with Bible goals returns actual verses, not dictionary noise
+- Assistant feedback (thumbs up/down) records to server, visible in admin stats
+- Password sign-in, session restore, sign-out covered by `bun run e2e`
+- `bun run ui` — no layout defects across routes x viewports
+- Server logs: no tracebacks and no 5xx
