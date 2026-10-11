@@ -1,3 +1,45 @@
+## 2026-10-11 (Session — Open-issue triage: critical command-palette crash fixed + deployed)
+
+Founder directive: **get and fix open issues**. Org-wide inventory: `zolai-explorer` 37 open,
+`zolai-core` 23 open, `zolai-mcp-server` 3, `zolai-landing` 1, plus 2 PRs (core#25 anonymous-chat
+rate-limit bypass from `mikemikimike`, wiki#1 ZVS dialect copy). Begun in severity order.
+
+### Live-probed & fixed first: explorer#29 + #13 (Critical) command palette whitescreen
+- **Symptom** (live, before fix): ⌘K / "Search commands…" on studio.zolai.space threw
+  `TypeError: Cannot read properties of undefined (reading 'subscribe')` and blanked the page
+  (body text width collapsed to ~3 chars).
+- **Root cause** (diagnosed): vendored `src/components/ui/command.tsx` `CommandDialog` rendered
+  `{children}` **without** a cmdk `<Command>` root and put `DialogHeader` outside `DialogContent`;
+  cmdk 1.1.1 `CommandInput/List/Group/Item` read `store.subscribe` from context → undefined.
+  The canonical shadcn form wraps `children` in `<Command>`.
+- **Fix** `9df0538` (zolai-explorer `main`, 3 files, +32/−5): `CommandDialog` now nests
+  `<DialogHeader className="sr-only">` + `<Command>{children}</Command>` inside `DialogContent`;
+  added a node source-guard `src/components/ui/command.test.ts` (regression, non-vacuous — verified
+  against pre-fix source); plus #21 `document.title` per route from the nav registry
+  (`active?.label · Zolai Studio`, fallback `Zolai Studio`).
+- **Gates (clean worktree)**: typecheck 0 · tests **380/380 (22 files)** · build OK. **Pushed** &
+  **deployed**: live bundle `index-vjythQq0.js`. Puppeteer after: no pageerror, body not blank,
+  **14 `[cmdk-item]`s render**, title `Dashboard · Zolai Studio`.
+- Foreign-WIP caution honored: another session's uncommitted edits (Sidebar.tsx, CommandPalette.tsx,
+  Login.tsx, signIn.ts, session.ts, auth-better.ts, Word.tsx, DataTable.tsx, package.json, bun.lock,
+  package-lock.json, tsconfig.app.json, .pcore/) were untouched; gates ran on a clean worktree of
+  `9df0538`.
+
+### Open work queued (founder-gated where noted)
+- **explorer** next: #24/#11 session login not persisted (OVERLAPS foreign WIP on Login.tsx/session.ts
+  — coordinate with its owner first), #32/#18 login stacking + Sign-out-while-anonymous, #15/#30
+  assistant citation/answer quality, #35/#33/#36/#34 `/data`/Analyze timeouts (backend perf),
+  #21-first batch done; then UI nits #14 #19 #25 #20 #10 #4 #9 #8 #7 #6 #5.
+- **core security** (next priority): #14/#25 anonymous-chat LLM cost + rate-limit bypass (PR #25 uses
+  ASGI peer address; MUST pair with trusted-proxy config on pcore-server), #1 CORS echoes arbitrary
+  Origin with credentials:true, #16 /health leaks data_root, #18 /foundation/stats open, #3 gate
+  /metrics /docs /review /openapi in prod, #15 legacy unversioned routes still open under enforce,
+  #17 API security headers, #2 warn→enforce announce.
+- ops/repo-config (#3 discoverability / secret-scanning, #26/#12 tunnel routing, #1 headers) are
+  server/founder-coordinated.
+
+---
+
 
 
 ---
