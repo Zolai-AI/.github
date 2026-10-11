@@ -252,6 +252,63 @@ rsync -av /var/www/zolai-studio.backup/ /var/www/zolai-studio/
 nginx -t && systemctl reload nginx
 ```
 
+## Consumer API Keys (Gate 3)
+
+Issued on pcore-server 2026-10-11 via the `zolai apikey` CLI (in the
+`zolai-core-api` container). **Prefixes only below — the plaintext secret is
+shown once at mint time and lives solely in the 600-mode file.**
+
+| ID | Name | Prefix | Scopes | State |
+|----|------|--------|--------|-------|
+| 1 | `peter-local` | `zolai_sk_5f0C-Cx` | dataset:read, rag:read, source:read, pos:read, audit:read, catalog:read, quality:read | kept — `last_used_at` 2026-10-05 |
+| 15 | `zolai-mcp-server` | `zolai_sk_SddqOwL` | dataset:read, rag:read, catalog:read, source:read, quality:read, audit:read | active |
+| 16 | `zolai-tauri` | `zolai_sk_6qISRMt` | dataset:read, rag:read, catalog:read, source:read, quality:read, audit:read | active |
+| 17 | `zolai-scripts` | `zolai_sk_2pOsd1T` | dataset:read, rag:read, catalog:read, source:read, quality:read, audit:read | active |
+| 2–14 | `test-key-*`, `verify*`, `final-*`, `prod-*` | — | — | **revoked** 2026-10-11 (junk, never used) |
+
+Plaintext store (server only, never in git / chat / tracker):
+
+```bash
+# pcore-server
+ls -l /home/ubuntu/.zolai/consumer-keys.txt   # -rw------- 1 ubuntu ubuntu (600)
+```
+
+### Enforcement checks (run on pcore-server)
+
+```bash
+B=http://127.0.0.1:8001
+K=$(grep -o 'zolai_sk_[A-Za-z0-9_-]\{8,\}' /home/ubuntu/.zolai/consumer-keys.txt | head -1)
+
+# member-class route: 401 anonymous, 200 with a consumer key
+curl -s -o /dev/null -w '%{http_code}\n' "$B/api/v1/records?table=dictionary"                 # 401
+curl -s -o /dev/null -w '%{http_code}\n' -H "X-API-Key: $K" \
+       "$B/api/v1/records?table=dictionary"                                                  # 200
+
+# public surface stays anonymous-open (rbac PUBLIC_ROUTES — by design)
+for p in /health /api/v1/health /api/v1/providers "/api/v1/lexicon/search?q=hello"; do
+  curl -s -o /dev/null -w "$p -> %{http_code}\n" "$B$p"
+done                                                                    # 200 each
+
+# gated-but-unrouted path: middleware answers 401 before routing
+curl -s -o /dev/null -w '%{http_code}\n' -X POST -H 'Content-Type: application/json' \
+       -d '{"query":"hello"}' "$B/api/v1/rag/search"                      # 401 anon / 405 with key
+# public bilingual search is POST /api/v1/search (200 with or without a key)
+
+docker exec zolai-core-api-1 sh -c 'echo $ZOLAI_API_AUTH'                 # enforce
+```
+
+### Rollback
+
+```bash
+# Preferred: revoke the offending key (takes effect on the next request)
+docker exec zolai-core-api-1 zolai apikey revoke <id>
+
+# Emergency only — downgrade enforcement (widens anonymous access):
+#   /opt/zolai-core/.env.production:  ZOLAI_API_AUTH=warn
+#   cd /opt/zolai-core && docker compose -f docker-compose.prod.yml up -d --build api
+# Restore ZOLAI_API_AUTH=enforce and recreate again when done.
+```
+
 ## Database Sync (Bidirectional)
 
 ### Server → Local (after server-side changes)
