@@ -39,53 +39,48 @@ cases asserting the expected row ranks first.
 
 ---
 
-## S1 — Two divergent copies of zolai-core; the live one is not the obvious one
+## FIXED — Two divergent copies of zolai-core; the live one was not the obvious one
 
-**This caused a production outage and it will recur.**
+**This caused a production outage and it would have recurred.**
 
-The server has two checkouts:
+**Root cause**: The server had two checkouts:
+- `/home/ubuntu/zolai-core` — **authoritative** (container built from here)
+- `/opt/zolai-core` — path ops docs pointed at
 
-| path | role |
-|---|---|
-| `/home/ubuntu/zolai-core` | **authoritative** — the running container is built from here |
-| `/opt/zolai-core` | the path ops docs and muscle memory point at |
+Both directories are called `zolai-core`, so `docker compose -f docker-compose.prod.yml`
+targets the same project name but reads different env files. The trees were **40 files apart**.
 
-Evidence — the container's own compose labels:
+**How it bit us**: A fix made in `/opt`, deployed from `/opt`, verified working.
+Later `docker compose up -d --force-recreate` from `/home/ubuntu` recreated
+the container from *that* tree and the fix silently disappeared.
 
-```
-com.docker.compose.project.working_dir    /home/ubuntu/zolai-core
-com.docker.compose.project.config_files  /home/ubuntu/zolai-core/docker-compose.prod.yml
-```
+**Second instance**: `/home/ubuntu/.../.env.production` had `ZOLAI_API_AUTH=warn`
+and no `ZOLAI_ENGINE_MODE` → `engine_mode()` fell back to `rule`. Assistant
+answered `retrieval_only` while provider was healthy. Fixed by setting
+`ZOLAI_ENGINE_MODE=hybrid` and `ZOLAI_API_AUTH=enforce`.
 
-`docker compose -f docker-compose.prod.yml` takes a *relative* config file, and
-the project name comes from the directory basename — and **both directories are
-called `zolai-core`**. So a deploy from `/opt` silently targets the same Docker
-project, while the env file actually in force is
-`/home/ubuntu/zolai-core/.env.production`. The two trees are **40 files apart**.
+**Fix implemented**:
 
-**How it bit us.** The retrieval fix was made in `/opt`, deployed from `/opt`,
-and verified working. A later `docker compose up -d --force-recreate` run from
-`/home/ubuntu` recreated the container from *that* tree and the fix silently
-disappeared — the endpoint reverted to alphabetical noise, with no error anywhere.
+1. **deploy.sh now refuses to run from the wrong directory** (scripts/deploy.sh):
+   - Adds an `AUTHORITATIVE_DIR="/home/ubuntu/zolai-core"` check
+   - Prints current directory and authoritative directory on mismatch
+   - Exits with error before any Docker operations
 
-**Second, worse instance.** `/home/ubuntu/…/.env.production` had
-`ZOLAI_API_AUTH=warn` and **no** `ZOLAI_ENGINE_MODE`, so `engine_mode()` fell back
-to its `rule` default. The assistant answered `retrieval_only` for every request
-while the provider was healthy and reachable — `mode: "rule"` was the only clue,
-and the container's own env was the only place it was visible. Fixed by setting
-`ZOLAI_ENGINE_MODE=hybrid` and `ZOLAI_API_AUTH=enforce` there (backup taken) and
-recreating the container.
+2. **sync-and-deploy.sh updated** (scripts/sync-and-deploy.sh):
+   - Changed `REMOTE_PATH` from `/opt/zolai-core` to `/home/ubuntu/zolai-core`
+   - Now syncs to the authoritative path
 
-**Fix direction**
+3. **Engine mode exposed on `/health`** (zolai/api/server.py):
+   - Added `engine_mode` and `llm_allowed` to HealthResponse
+   - Both `/health` and `/api/v1/health` now expose these fields
+   - Visible from outside: `curl https://api.zolai.space/health`
 
-1. Delete `/opt/zolai-core`, or replace it with a symlink to the authoritative
-   path, so there is exactly one. Deletion is an ops decision — not done here
-   unilaterally.
-2. Make `scripts/deploy.sh` resolve and print its own working directory, and
-   refuse to run when it is not the directory the running container was built
-   from. That single check would have caught both incidents.
-3. Consider exposing the engine mode on `/health`, so `rule` mode is visible
-   from outside instead of inferred from an assistant answer.
+4. **Deploy script verifies engine config** (scripts/deploy.sh):
+   - Post-deploy check asserts `llm_allowed() == True` in hybrid mode
+   - Assistant chat test warns if `retrieval_only` is still true
+
+**Ops action still needed**: Delete `/opt/zolai-core` or replace with symlink
+to authoritative path to eliminate the hazard entirely.
 
 ---
 
