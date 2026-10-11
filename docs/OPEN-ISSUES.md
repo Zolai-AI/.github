@@ -125,6 +125,20 @@ production.
 
 ---
 
+## S3 — Notification email fails on every send (SMTP disconnects)
+
+Observed in the live logs after every deploy:
+
+```
+Failed to send email to peterpausianlian2020@gmail.com
+aiosmtplib.errors.SMTPServerDisconnected: Unexpected EOF received
+```
+
+Non-fatal — it is caught, and the request that triggered it still returns 200 —
+but it means sign-in / notification emails are silently not being delivered.
+Worth checking the SMTP credentials and whether the port requires an implicit
+TLS (465) rather than STARTTLS (587).
+
 ## S2 — Corpus gaps for common Zolai greetings
 
 `nang`, `bang`, `hih`, `thei`, `dam`, `maw` are absent from the dictionary
