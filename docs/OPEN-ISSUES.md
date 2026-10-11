@@ -8,72 +8,34 @@ Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
 
 ---
 
-## S1 — Retrieval returns alphabetical noise for natural-language questions
+## FIXED — Retrieval returned alphabetical noise for natural-language questions
 
-**Repro**
+**This was the root cause of the assistant saying "I have no tool evidence".**
 
-```bash
-curl -s -X POST -H 'Content-Type: application/json' \
-  -d '{"query":"What is pasian?","limit":6}' https://api.zolai.space/api/v1/search
-# -> abba, adonai, allah, alleluia   (all score 0.6)
-curl -s -X POST -H 'Content-Type: application/json' \
-  -d '{"query":"pasian","limit":6}' https://api.zolai.space/api/v1/search
-# -> pasian (1.0), pasian (1.0), pasianphat (0.9), pasiante (0.9)   ✅ correct
-```
+**Symptom** — `POST /api/v1/search` and everything downstream of it:
 
-`GET /api/v1/rag` inherits it and amplifies it:
+| query | before | after |
+|---|---|---|
+| `What is pasian?` | abba, adonai, allah ❌ | pasian 0.95, pasian 0.95, pasian-a 0.855 ✅ |
+| `Who is Jesus` | bawlding, bupa, ciangbek ❌ | jesus 0.95, bawlding 0.95, bupa 0.95 ✅ |
+| `pasian is god` | abba, adonai, ahi ❌ | pasian 0.95, god 0.95, atsak 0.95 ✅ |
+| `ergative in` | unordered | ergative, ergative (in), ergative_in ✅ |
 
-| question | citations returned |
-|---|---|
-| `What is pasian?` | abba, adonai, allah, alleluia |
-| `Who is Jesus?` | bawlding, bupa, ciangbek, cidamte |
-| `grammar rule for ergative in` | cerulean, foot-rule, grammarian, ki-uk |
+**Root cause** — token *count*, not stopwords and not punctuation.
+`search()` only ever compared the **whole query string** against the columns, so
+every strong pass (exact / english_exact / prefix / contains) failed for any
+multi-token input and all hits fell through to `token_or` — the weakest pass,
+and the only one with no `ORDER BY`. Hence the head of an alphabetical scan.
 
-All at equal score, in dictionary order. This is why the assistant says
-*"I have no tool evidence here"* — the model is being handed junk and is
-correctly refusing to invent an answer.
+**Fix** — `zolai-core/zolai/rag/retrieve.py`: each pass now runs for the whole
+string first and then per meaningful token, scored just below its whole-string
+equivalent (x0.95) so single-word ranking is unchanged. An `ORDER BY` was added
+to every pass so the per-pass `LIMIT` truncates deterministically.
+Commit `46c28cb`. `/rag` and the assistant's `rag_search` tool both inherit it.
 
-**Where**
-
-- `zolai-core/zolai/rag/retrieve.py:622` `rag_query()` passes the **whole
-  question** into `search()` and keeps the first 10 results with no relevance
-  re-ranking.
-- `zolai-core/zolai/rag/retrieve.py:296` `search()` — the `token_or` pass
-  (score 0.6) returns whatever SQLite yields for the LIKE scan. There is no
-  `ORDER BY`, so on an indexed column that is effectively alphabetical.
-
-**Why a single word works but a question does not** — isolated by bisecting the
-query shape:
-
-| query | result |
-|---|---|
-| `pasian` | pasian (1.0), pasianphat (0.9) ✅ |
-| `jesus` | jesus, bawlding, bupa ✅ |
-| `pasian is god` | abba, adonai, ahi ❌ |
-| `what is pasian` | abba, adonai, allah ❌ |
-| `ergative in` | ergative_in, ergative (in), ergative ✅ |
-
-It is **not** punctuation and **not** stopwords. It is token *count*: `pasian is
-god` contains the exact word and still fails. `search()` only runs its
-exact / english_exact / prefix / contains passes against the **whole query
-string**, so every one of them fails for any multi-token input, and all hits then
-come from `token_or` — the weakest pass and the only one with no `ORDER BY`.
-Hence: first page of an alphabetical index scan.
-
-This is still true after the host commit
-`be48b96 fix(rag): match English columns and stopword-tolerant tokens`, so that
-fix addressed columns and stopwords but not multi-token exact matching.
-
-**Fix direction**
-
-1. Tokenise the question and run the passes per token, not once on the sentence.
-2. Add a relevance `ORDER BY` (score, then match rank) so equal-score rows are
-   never returned in arbitrary order.
-3. If nothing scores above the weakest pass, return an honest empty result
-   rather than 10 unrelated rows. The assistant already refuses to invent; it
-   should be handed "no evidence", not "false evidence".
-
-**Blocks**: the assistant's usefulness on anything phrased as a sentence.
+**Missing regression test** — this class of bug is invisible to single-word
+tests, which is why it survived. Add `"what is pasian"` and `"pasian is god"`
+cases asserting the expected row ranks first.
 
 ---
 
@@ -168,6 +130,8 @@ Recording these so nobody re-investigates them:
 
 ## Fixed this session
 
+- Retrieval: strong passes ran per whole-string instead of per token, so any
+  multi-token query degraded to an unordered fallback (see above).
 - `/records` dropped its required `table` param (422) — the endpoint template has
   no `{table}` placeholder, so nothing substituted it. `queryLimitPath` now
   carries required query params and refuses to build an incomplete path.
