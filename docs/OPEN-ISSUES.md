@@ -39,6 +39,56 @@ cases asserting the expected row ranks first.
 
 ---
 
+## S1 — Two divergent copies of zolai-core; the live one is not the obvious one
+
+**This caused a production outage and it will recur.**
+
+The server has two checkouts:
+
+| path | role |
+|---|---|
+| `/home/ubuntu/zolai-core` | **authoritative** — the running container is built from here |
+| `/opt/zolai-core` | the path ops docs and muscle memory point at |
+
+Evidence — the container's own compose labels:
+
+```
+com.docker.compose.project.working_dir    /home/ubuntu/zolai-core
+com.docker.compose.project.config_files  /home/ubuntu/zolai-core/docker-compose.prod.yml
+```
+
+`docker compose -f docker-compose.prod.yml` takes a *relative* config file, and
+the project name comes from the directory basename — and **both directories are
+called `zolai-core`**. So a deploy from `/opt` silently targets the same Docker
+project, while the env file actually in force is
+`/home/ubuntu/zolai-core/.env.production`. The two trees are **40 files apart**.
+
+**How it bit us.** The retrieval fix was made in `/opt`, deployed from `/opt`,
+and verified working. A later `docker compose up -d --force-recreate` run from
+`/home/ubuntu` recreated the container from *that* tree and the fix silently
+disappeared — the endpoint reverted to alphabetical noise, with no error anywhere.
+
+**Second, worse instance.** `/home/ubuntu/…/.env.production` had
+`ZOLAI_API_AUTH=warn` and **no** `ZOLAI_ENGINE_MODE`, so `engine_mode()` fell back
+to its `rule` default. The assistant answered `retrieval_only` for every request
+while the provider was healthy and reachable — `mode: "rule"` was the only clue,
+and the container's own env was the only place it was visible. Fixed by setting
+`ZOLAI_ENGINE_MODE=hybrid` and `ZOLAI_API_AUTH=enforce` there (backup taken) and
+recreating the container.
+
+**Fix direction**
+
+1. Delete `/opt/zolai-core`, or replace it with a symlink to the authoritative
+   path, so there is exactly one. Deletion is an ops decision — not done here
+   unilaterally.
+2. Make `scripts/deploy.sh` resolve and print its own working directory, and
+   refuse to run when it is not the directory the running container was built
+   from. That single check would have caught both incidents.
+3. Consider exposing the engine mode on `/health`, so `rule` mode is visible
+   from outside instead of inferred from an assistant answer.
+
+---
+
 ## S1 — `/api/v1/rag` never calls a model; the answer is a template
 
 `zolai-core/zolai/rag/retrieve.py:640`
