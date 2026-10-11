@@ -42,9 +42,27 @@ correctly refusing to invent an answer.
   (score 0.6) returns whatever SQLite yields for the LIKE scan. There is no
   `ORDER BY`, so on an indexed column that is effectively alphabetical.
 
-**Why a single word works but a question does not** *(code reading)*: the exact
-/ english_exact / prefix / contains passes all fail on a whole sentence, so every
-hit comes from `token_or`, the weakest pass, which is also the unordered one.
+**Why a single word works but a question does not** — isolated by bisecting the
+query shape:
+
+| query | result |
+|---|---|
+| `pasian` | pasian (1.0), pasianphat (0.9) ✅ |
+| `jesus` | jesus, bawlding, bupa ✅ |
+| `pasian is god` | abba, adonai, ahi ❌ |
+| `what is pasian` | abba, adonai, allah ❌ |
+| `ergative in` | ergative_in, ergative (in), ergative ✅ |
+
+It is **not** punctuation and **not** stopwords. It is token *count*: `pasian is
+god` contains the exact word and still fails. `search()` only runs its
+exact / english_exact / prefix / contains passes against the **whole query
+string**, so every one of them fails for any multi-token input, and all hits then
+come from `token_or` — the weakest pass and the only one with no `ORDER BY`.
+Hence: first page of an alphabetical index scan.
+
+This is still true after the host commit
+`be48b96 fix(rag): match English columns and stopword-tolerant tokens`, so that
+fix addressed columns and stopwords but not multi-token exact matching.
 
 **Fix direction**
 
@@ -71,6 +89,27 @@ The Studio's `/rag` panel and footer already state this honestly, so no UI fix i
 needed — but it means `/rag` can never answer a question. `/assistant/chat`
 *does* generate (`pcore-brain · nemotron-3-ultra-free`), so this is a separate,
 narrower gap: wire `/rag` to the configured provider, or retire the endpoint.
+
+---
+
+## S2 — Deploy script's final verification step crashed on every run
+
+`scripts/deploy.sh` minted an admin token with `create_session_token`, which no
+longer exists in `zolai/api/auth.py`. The step raised `ImportError` *after* the
+app had already been verified and was serving, so a green deploy still ended in a
+traceback and a non-zero exit — easy to mistake for a failed deploy, or to ignore.
+
+Fixed to sign in through the real `POST /auth/login` with `ADMIN_USER`/
+`ADMIN_PASS` from the environment (no password committed), skipping the provider
+test with a warning when they are absent. Verified: a full deploy now ends with
+`Provider connection verified` and `All done!`.
+
+**Also fixed this session**: the container was crash-looping on
+`ImportError: cannot import name 'NotificationPreferenceRecord'` — the *image*
+held a mismatched `zolai/data/models.py` while the source on both the host and
+the repo were correct. `--no-cache` rebuild resolved it. Worth a CI check that
+the image can import the app, so a stale layer fails the build rather than
+production.
 
 ---
 
