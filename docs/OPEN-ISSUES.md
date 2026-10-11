@@ -136,19 +136,35 @@ production.
 
 ---
 
-## S3 — Notification email fails on every send (SMTP disconnects)
+## S2 — Notification email fails on every send (diagnosed, needs a provider)
 
-Observed in the live logs after every deploy:
+Every notification has failed with `SMTPServerDisconnected` — for days — logged
+as a bare 12-line traceback that said nothing actionable, so a permanent failure
+read as transient noise.
 
-```
-Failed to send email to peterpausianlian2020@gmail.com
-aiosmtplib.errors.SMTPServerDisconnected: Unexpected EOF received
-```
+**Diagnosed, not assumed.** The raw socket sequence is healthy: TCP connect,
+EHLO, `STARTTLS` and the TLS handshake all succeed (AES-256-GCM), then it dies
+at AUTH. The decisive test:
 
-Non-fatal — it is caught, and the request that triggered it still returns 200 —
-but it means sign-in / notification emails are silently not being delivered.
-Worth checking the SMTP credentials and whether the port requires an implicit
-TLS (465) rather than STARTTLS (587).
+| attempt | result |
+|---|---|
+| configured password | `SMTPServerDisconnected` |
+| deliberately wrong password | `SMTPServerDisconnected` |
+| non-existent account | `SMTPServerDisconnected` |
+
+Identical. Gmail refuses **this host** at AUTH regardless of credentials, so
+**rotating the password or adding an App Password cannot fix it.** A consumer
+mailbox is the wrong tool for server-side sending.
+
+**Fix direction** — move to a transactional relay (Amazon SES / SendGrid /
+Resend). That is an account and billing decision, so it is not made here.
+
+Done regardless:
+- `classify_smtp_failure()` now names this exact distinction, because the
+  default advice for an AUTH failure is "rotate your credentials" — which
+  would send an operator the wrong way entirely.
+- `SMTP_FROM` pointed at a different mailbox than `SMTP_USER`; Gmail rejects
+  that independently of the above. Fixed.
 
 ## S2 — Corpus gaps for common Zolai greetings
 
