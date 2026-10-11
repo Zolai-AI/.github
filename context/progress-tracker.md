@@ -2,6 +2,62 @@
 
 ---
 
+## 2026-10-11 (Session — Studio Assistant follow-up: server-default target + LIVE deploy)
+
+Continuation of the same-day assistant-honesty cycle. Pushed + **deployed to studio.zolai.space** and
+found one more real defect during post-deploy probing (fixed in `a555d16`).
+
+### Deploy (studio.zolai.space, via `scripts/deploy.sh`, clean worktree of the shipped commit)
+- `596b59c` deployed first → bundle `index-T_ea3-6o.js`; then `a555d16` → **live bundle
+  `index-De1zLuHA.js`**. Remote dir backed up before each rsync
+  (`/var/www/zolai-studio.bak-20261011-124922`, `-131015`). `nginx -t` OK, reload OK.
+- Origin checks: `studio.zolai.space/` `/assistant` `/word/pasian` → 200; GET `/health` and
+  `/api/v1/health` → 200; anon `POST /api/v1/assistant/chat` → 200.
+- Deployed from a clean worktree because `deploy.sh` runs typecheck+tests first and the main tree is
+  dirty with another session's WIP (deploy of the committed state is the honest ship).
+
+### New defect found live → `a555d16` (`fix(studio): default to the server's own provider target`)
+`ProviderModelSelect` auto-seeded the **first catalog row** as a request override. The live catalog is
+alphabetical, so the default became `provider:"anthropic"` (a row with **no server key**) — which
+*overrode* the server's own working default. Live proof:
+- no override → 200 `provider:"pcore-brain"`, `retrieval_only:false` (real model answer);
+- `provider:"anthropic"` → 200 but `retrieval_only:true`, `PROVIDER_KEY_MISSING`;
+- `provider:"openrouter"` + its `selected_model:"openrouter/auto"` → **400 PROVIDER_MODEL_UNKNOWN**
+  (that `selected_model` is not in the row's own `models[]`), so seeding it could 400 outright.
+So the auto-seed made anonymous chat *worse*. Fix: **explicit-only target** — an empty selection is a
+real "no override" state; a "Use server default" control returns to it; `pickProvider` prefers a row's
+`selected_model` only when the row publishes it (else `models[0] ?? ''`, killing the 400);
+`defaultSelection` removed; the own-key control is disabled until a provider is chosen (the key is
+used against the selected catalog row's base URL); guard test updated without weakening the
+literal scan. 7 files, +69/−111.
+
+### Live verification after redeploy (puppeteer, anonymous)
+- Default comboboxes show **"Select a provider…"** (no auto-pick); typing + Send sends
+  **`{"message":…}` only** (no `provider`/`model` override) → 200; **POST count = 1** (single submit).
+- Own-key button present but disabled until a provider is chosen.
+
+### Commits (zolai-explorer `main`, **pushed**)
+| Commit | What |
+|--------|------|
+| `cd06a7d` | honest public assistant chat — catalog selector, `api_key` only, single submit |
+| `596b59c` | honest feedback toast + drop stale own-key on admin switch |
+| `a555d16` | default to the server's own provider target (no auto override) |
+
+### Gates
+- Clean worktree per commit: typecheck **0** · tests **379/379** (`cd06a7d`,`596b59c`) then **375/375**
+  (`a555d16`, 4 `defaultSelection` specs removed) · build OK (pre-existing >900 kB chunk advisory only).
+- Root docs commit: this entry.
+
+### Residual (not fixed, noted for founder)
+- Model `<Select>` placeholder reads "No model list published" when **no provider** is chosen (should
+  read "Select a provider first") — cosmetic honesty nit.
+- The own-key feature still only works for providers whose catalog row the server can reach (the
+  server injects your `api_key` into the selected row; it does not build a row from `user_provider`).
+- Foreign WIP in the zolai-explorer working tree is untouched (now also `src/lib/signIn.ts`,
+  `tsconfig.app.json`) — its owner must resolve it before a normal `bun run deploy` from the main tree.
+
+---
+
 ## 2026-10-11 (Session — Studio Assistant honesty fix: public composer, provider selector, shadcn)
 
 Founder-reported defects on `/assistant`: "no chat input for public", provider selector used
