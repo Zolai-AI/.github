@@ -456,62 +456,68 @@ in consecutive runs; `bun run ui` clean across 4 viewports; 407 specs pass.
 
 ---
 
-## S1 — No LLM provider credential exists on the server; the assistant is permanently retrieval-only
+## S1 — The active AI provider has no secret, so the assistant is permanently retrieval-only
 
 **The assistant cannot generate.** Every answer falls back to `retrieval_only`
-with the server's honest message *"no active LLM provider — honest fallback"*.
-This is **not** a regression in the grounding fixes and **not** a UI defect: the
-Studio renders it exactly as the honesty rules require (`Retrieval (no model)`,
-`retrieval_only` badge, citations still shown). The deployment has no usable key.
+("no active LLM provider — honest fallback"). This is not a regression in the
+grounding work and not a UI defect: the Studio renders it exactly as the honesty
+rules require (`Retrieval (no model)`, `retrieval_only` badge, citations still
+shown). Each row's own probe endpoint was used to diagnose it:
 
-**Evidence** — no provider key exists in the container at all:
+| catalog_id | active | mode | ref | configured | probe |
+|---|---|---|---|---|---|
+| `openrouter` | **yes** | **none** | — | false | 401 `Missing Authentication header` |
+| `anthropic` | no | env | `env:ANTHROPIC_API_KEY` | true | **401 `Invalid Anthropic API Key`** |
+| `openai` | no | encrypted | `enc:v1:********HMM=` | true | **`PROVIDER_KEY_MISSING`** |
+| `google-gemini`, `groq`, `ollama`, `pcore-brain` | no | none | — | false | — |
 
-```
-OPENAI_API_KEY         ABSENT
-ANTHROPIC_API_KEY      ABSENT
-OPENROUTER_API_KEY     ABSENT
-GEMINI_API_KEY         ABSENT
-GROQ_API_KEY           ABSENT
-```
+**Three distinct faults, not one:**
 
-`.env.production` likewise defines none of them (only `AI_BRAIN_API_KEY=` and
-`SENDGRID_API_KEY=`), and `docker-compose.prod.yml` references `env_file`
-without naming any.
+1. **The active row has no secret at all.** `openrouter` is the single active
+   provider and its `api_key_ref` is empty, so every request 401s. Activating it
+   guarantees 100% `retrieval_only`. This alone explains the symptom.
+2. **`openai`'s encrypted secret cannot be decrypted.** `ZOLAI_PROVIDER_SECRET_KEY`
+   *is* present in the container, yet the probe reports `PROVIDER_KEY_MISSING` —
+   which `_decrypt()` returns when Fernet decryption fails. That is what happens
+   when the secret key was rotated, or the ciphertext was migrated/copied from a
+   database encrypted under a different key. The key value itself is not
+   recoverable; the row must be re-keyed.
+3. **`anthropic`'s key is present but rejected** by the provider (401). It needs
+   replacing, not re-declaring.
 
-**And the active provider cannot work anyway** — `/admin/ai-providers`:
+**Needed from the operator** (deliberately not guessed here — fabricating a key
+or weakening the checks that report this would hide an outage):
 
-| catalog_id | active | enabled | `secret.configured` | probe result |
-|---|---|---|---|---|
-| `openrouter` | **yes** | yes | false | 401 `Missing Authentication header` |
-| `openai` | no | yes | **true** | `PROVIDER_KEY_MISSING` |
-| `anthropic` | no | yes | **true** | 401 `Invalid Anthropic API Key` |
-| `google-gemini`, `groq`, `ollama`, `pcore-brain` | no | yes | false | — |
+- set a **valid** key — `ANTHROPIC_API_KEY` in `/home/ubuntu/zolai-core/.env.production`,
+  or re-store `openai`'s secret through `PUT /admin/ai-providers/openai`; then
+  `POST /admin/ai-providers/{id}/activate` for that row.
+- The probe is the check: `POST /admin/ai-providers/{id}/test` must return
+  `ok: true` before the assistant can generate.
 
-So the one row marked active has no secret, and the two rows that *report* a
-configured secret do not resolve to a working key at runtime.
+**Two code gaps this exposed** (worth fixing separately from the credential):
 
-**Two consequences worth fixing separately from the credential itself:**
+- **Activating a row with no resolvable secret is allowed.** `POST
+  .../{id}/activate` should refuse (409) when the target cannot authenticate,
+  instead of silently guaranteeing a fallback for every request.
+- **`configured: true` does not mean "can answer".** `openai` reports
+  `configured: true` because a ciphertext exists, while its probe says the key is
+  missing; `anthropic` reports `configured: true` on a key the vendor rejects.
+  The Studio renders that mask on `/settings`, so an operator reads "configured"
+  for a row that cannot answer. The flag should say *declared*, not *verified*.
 
-1. **`secret.configured` is misleading.** `openai` and `anthropic` report
-   `configured: true` (the row records `mode: env`, `ref: env:NAME`) while the
-   process holds no such variable. The Studio renders that mask on `/settings`,
-   so an operator reads "configured" for a row that cannot answer. The flag
-   should reflect what the runtime resolves, or be labelled as
-   "declared, not verified".
-2. **The active row points at a provider with no secret.** Activating a row with
-   `configured: false` should be refused or warned about, since it guarantees a
-   silent `retrieval_only` for every request.
+**Meanwhile** `bun run e2e` fails exactly two checks — *"answered by a real model
+(not retrieval_only)"* and *"answer names provider · model"*. That is the suite
+correctly reporting this condition and it should stay failing until a key works.
 
-**Needed from the operator** (not fixable in code, and deliberately not guessed):
-provision one real key — e.g. set `OPENAI_API_KEY` in
-`/home/ubuntu/zolai-core/.env.production`, recreate the container, then
-`POST /admin/ai-providers/openai/activate`. The probe above is the check: it
-must return `ok: true` before the assistant can generate.
+### S2 — The server tree is missing fixes that exist only in the local repo
 
-**Meanwhile** `bun run e2e` fails exactly two checks — *"answered by a real
-model (not retrieval_only)"* and *"answer names provider · model"*. That is the
-suite correctly reporting this condition, and it should stay failing until a key
-exists; weakening it would hide the outage.
+`/health` returns `{status, version, uptime_s}` — no `engine_mode`, no
+`llm_allowed` — and the authoritative server checkout has **zero** occurrences of
+`engine_mode` in `zolai/api/server.py`. Those fields (and the deploy-time
+assertion that `llm_allowed()` is true in hybrid mode) exist only in the local
+clone. The container matches the host tree, so this is a **sync** gap, not a
+stale-image one: the fixes were never rsynced/deployed. See the diverged-histories
+entry below; this is the same root cause producing a second, silent symptom.
 
 ---
 
