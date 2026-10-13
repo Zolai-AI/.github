@@ -598,6 +598,31 @@ test-source marker.
 
 ---
 
+## FIXED — the multi-agent learning work broke the package it was extending
+
+A concurrent agent rewrote `zolai/learning/__init__.py` to add the agent system
+and in doing so replaced the module's export list, dropping **12 of the 14 names
+the package had always published** (`ContextValidator`, `DataManager`,
+`DictionaryManager`, `GrammarEditor`, `OnlineSearch`, `ProgressTracker`,
+`SentenceBuilder`, `get_sentence_builder`, `CorrectionTrainer`,
+`TranslationEngine`). The helpers themselves were untouched — only the exports
+were.
+
+`tests/test_bible_learning.py` imports `get_sentence_builder` from the package,
+so it failed at collection, and any consumer importing those names got an
+`ImportError`. Restored additively: the agent imports are untouched and nothing
+was removed. 14 passed in that module; 184 passed across the learning / context /
+progress / trainer / translation selection.
+
+Full suite at the time: **2313 passed, 1 failed** (that one test), 13 skipped,
+1 xfailed. Commit `5231d39`.
+
+The agent work itself is still unreviewed and uncommitted-by-anyone-else; it is
+not deployed, and `scripts/sync-and-deploy.sh` now refuses to run with a dirty
+tree so it cannot reach production by accident.
+
+---
+
 ## Open Issues (pre-existing, not addressed this session)
 
 ### S2 — Corpus gaps for common Zolai greetings (see closed entry above)
