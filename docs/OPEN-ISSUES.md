@@ -542,6 +542,14 @@ is now on the wire and paging is a **stack**, the only correct way to walk an
 opaque cursor backwards. `recordsPath` is a pure builder; 3 of its 7 tests fail
 against the old transport.
 
+**`/rag` never sent the override it was given.** `RAGRequest` has carried an
+optional `provider`/`model` since it was documented as *resolved exactly as the
+assistant resolves them*, but the binding sent only `{question, limit}` — so the
+panel could only ever answer with whatever the deployment happened to have
+configured, and there was no control to choose otherwise. The assistant and agent
+both already offered the selector; `/rag` now matches, with the override still
+omitted when unset and no `user_provider` ever sent.
+
 Also in the same commit: shadcn `Tabs` + shared `DataTable` replace two
 hand-rolled tables and a `role="tablist"` of plain buttons; the correction dialog
 stages only fields that were touched *and* differ; `/links` links GET routes only
@@ -554,6 +562,39 @@ Browser evidence: review pages advance `103304 → 103387` and Previous restores
 the page exactly; tabs switch with one visible table; `bun run ui` passes 4
 viewports with the role-gated pages now genuinely signed in (they were being
 checked signed-out before, so `/review` was never actually verified).
+
+---
+
+## FIXED — `sync-and-deploy.sh` still targeted the checkout that serves nothing
+
+The guard that stops `deploy.sh` running outside the authoritative tree had no
+counterpart in the script that *feeds* it, and the doc claimed otherwise. Both
+the local and the server copy read:
+
+```bash
+REMOTE_PATH="/opt/zolai-core"      # stale, divergent copy
+rsync -av --delete ... zolai/       # --delete into it
+```
+
+That is the exact mechanism of the recorded outage: code lands in a tree nothing
+serves, and the next `docker compose up` from `/home/ubuntu/zolai-core` silently
+rolls it back. Three fixes:
+
+- target `/home/ubuntu/zolai-core`;
+- **stop syncing `.env.production`** — it holds server secrets, does not exist in
+  a developer checkout at all, so with `set -e` that step aborted the script
+  before it deployed anything;
+- **refuse to run with a dirty tree** (uncommitted or untracked files), so a
+  half-written module cannot reach a production image unnoticed.
+
+### S3 — Three leftover test rows in the contributions queue
+
+`contributions` holds `testword`, `test`, and a `pasian` improve-meaning row from
+earlier manual probes. They surface in the editorial queue as genuine pending
+submissions. One `e2econtrib` row created while verifying the Contribute fix was
+deleted immediately; these three pre-date that and were left in place rather than
+deleted unilaterally — they should be cleared or the table should carry a
+test-source marker.
 
 ---
 
