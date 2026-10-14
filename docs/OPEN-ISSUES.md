@@ -661,6 +661,55 @@ tree so it cannot reach production by accident.
 
 ---
 
+## S1 — FIXED — every agent run returned HTTP 524; the budget was documented but never applied
+
+**Symptom** — `POST /api/v1/agent/runs` through the public edge answered **524**
+after ~125s, with no application error. The Studio's Agent page was unusable.
+
+**The run was not failing.** Bypassing Cloudflare and calling the origin
+directly:
+
+```
+status: succeeded | provider: pcore-brain | model: opencode/space-bunny-free
+turns: 2 | latency_ms: 218353.82
+phases: {research: ok, build: ok, review: ok, shipped: ok}
+tools:  [rag_search, kb_research, dictionary_lookup]   evidence: 5
+```
+
+219 seconds for a run the route documents as **≤60s**.
+
+**Root cause** — there was no time limit anywhere on the path. `max_turns` bounds
+how much *work* a run does, not how long it takes, and `AGENT_TIMEOUT_S` was
+only ever echoed in a health payload, never applied. Cloudflare answers 524 at
+~100s, so any run slower than that could never reach the caller — the contract
+was a comment.
+
+**Fix** (`70d5076`) — `run_agent_loop` takes an optional `timeout_s`, checked at
+the turn boundary, and returns the trace it gathered with an explicit
+`timed_out` flag instead of running past the caller's budget. `run_agent_goal`
+forwards it; the route passes the `AGENT_TIMEOUT_S` it already advertised.
+`timeout_s=None` preserves the old unbounded behaviour.
+
+**Still worth doing** — 60s now fits inside Cloudflare's window, but it is close.
+The durable fix is what the Studio client was already written for: `POST` should
+return an id immediately and the run execute in the background, with
+`GET /agent/runs/{id}` polled while status is `running`. `useAgentRun` already
+does exactly that polling — only the server side never became asynchronous. A
+goal that genuinely needs more than 60s will now get an honest timeout instead
+of an answer.
+
+### S1 — concurrent learning work broke `zolai.learning` import (not fixed here)
+
+`zolai/learning/agents/base_agent.py:24` imports `..data.repositories`, which does
+not exist. That breaks `import zolai.learning` → `zolai.cli.main`, so
+`tests/test_agent_cli.py` fails at **collection**, not assertion. The file is
+modified-but-uncommitted in-flight work, so it was left alone rather than
+half-fixed; whoever owns it needs to add the `data` subpackage or correct the
+import. This is the second time this package's exports were changed out from
+under committed code (see the 12 dropped exports below).
+
+---
+
 ## Open Issues (pre-existing, not addressed this session)
 
 ### S2 — Corpus gaps for common Zolai greetings (see closed entry above)
