@@ -456,7 +456,7 @@ in consecutive runs; `bun run ui` clean across 4 viewports; 407 specs pass.
 
 ---
 
-## S1 — The active AI provider has no secret, so the assistant is permanently retrieval-only
+## S1 — RESOLVED — the active AI provider had no secret; the assistant now answers via P-Core Brain
 
 **The assistant cannot generate.** Every answer falls back to `retrieval_only`
 ("no active LLM provider — honest fallback"). This is not a regression in the
@@ -485,6 +485,31 @@ shown). Each row's own probe endpoint was used to diagnose it:
 3. **`anthropic`'s key is present but rejected** by the provider (401). It needs
    replacing, not re-declaring.
 
+**Resolution — the Brain was the answer, and it was never active.** `pcore-brain`
+was fully working the whole time: the container holds a 64-character
+`AI_BRAIN_API_KEY`, and the Brain completed a chat on `opencode/space-bunny-free`
+(1.9s) and `opencode/nemotron-3-ultra-free` (2.2s). Meanwhile the *active* row was
+`openrouter`, which has no secret at all, so every request 401'd.
+
+Two changes, both no-ops for the vendor-key rows:
+
+1. **Activated `pcore-brain` and set `selected_model`.** Nine models published,
+   `opencode/space-bunny-free` selected. The assistant immediately returned
+   `retrieval_only: false`, `provider: pcore-brain`, 4 citations, 21.5s, and a
+   grounded answer for *pasian* citing dictionary tier 2, a KG node and corpus
+   frequency. `POST /admin/ai-providers/pcore-brain/test` reports `ok: true`.
+2. **Fixed why the Brain only showed four models** — it was excluded from model
+   discovery on two stale beliefs (see the fix below), so the picker could never
+   show more than the hardcoded seed while the Brain served nine.
+
+`bun run e2e` is now **ALL PASS** for the first time this session, including the
+two checks that had been reporting the outage
+(*"answered by a real model"* and *"answer names provider · model"*).
+
+The vendor rows stay as they are — `anthropic`'s key is still rejected and
+`openai`'s ciphertext still will not decrypt — so a future key rotation still
+wants doing, but nothing is degraded while it is pending.
+
 **Needed from the operator** (deliberately not guessed here — fabricating a key
 or weakening the checks that report this would hide an outage):
 
@@ -508,6 +533,19 @@ or weakening the checks that report this would hide an outage):
 **Meanwhile** `bun run e2e` fails exactly two checks — *"answered by a real model
 (not retrieval_only)"* and *"answer names provider · model"*. That is the suite
 correctly reporting this condition and it should stay failing until a key works.
+
+### FIXED — the Brain showed 4 models because model discovery was disabled for it
+
+`pcore-brain` was excluded from remote model discovery by
+`_REMOTE_FETCH_ADAPTERS`, documented as having "no stable listing endpoint" — it
+does. And even when attempted, the fetch read `base_url` off the row, which the
+Brain is seeded with **blank on purpose** (its URL resolves from `AI_BRAIN_URL`
+at request time), so it raised `has no base_url` and degraded to the catalog list
+on every call. Both fixed; the seed list was also refreshed from the Brain's
+real catalogue, and the seed test now asserts properties rather than a count.
+Commit `132d51e`.
+
+---
 
 ### S2 — The server tree is missing fixes that exist only in the local repo
 
