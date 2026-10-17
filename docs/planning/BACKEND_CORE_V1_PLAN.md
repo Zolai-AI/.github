@@ -41,9 +41,10 @@ L1.4: docs/linguistics/ANNOTATION_GUIDE_POS.md + JSONL schema (sentence_id,token
 Commits: docs(linguistics): POS annotation format v0.1 → feat(pos): annotation CLI scaffold → feat(morphology): analyzer + compound splitter.
 
 ## P5 — Deploy + domain + public (L, LAST)
-Smallest stack: one VPS, compose with API ONLY (drop Redis), api 127.0.0.1:8001, host nginx vhost api.zolai.space → Cloudflare proxied DNS (Full strict + Origin Cert), --workers 2, data/ volume, monitoring internal-only. Security: nginx allowlist public = /api/v1/* (key-gated) + safe legacy GETs + /health; DENY all legacy mutations (POST /crawl /clean /chat/* /settings /dictionary/add /learning/*, /desktop/jsonl/*) + DENY /metrics /api/metrics*; limit_req anonymous. Base-only API image (no torch).
+*(R2 2026-10-18: the stack shipped **native** — one VPS, the API as a systemd unit, no containers. The nginx / port / public-surface / security parts of this paragraph still hold; «compose with API ONLY» does not. Verified live today: `https://api.zolai.space/health` → 200 `{"status":"ok","version":"1.0.0","engine_mode":"hybrid","llm_allowed":true}`.)*
+Smallest stack: one VPS, systemd unit running the API ONLY (no Redis), api 127.0.0.1:8001, host nginx vhost api.zolai.space → Cloudflare proxied DNS (Full strict + Origin Cert), --workers 2, data/ volume, monitoring internal-only. Security: nginx allowlist public = /api/v1/* (key-gated) + safe legacy GETs + /health; DENY all legacy mutations (POST /crawl /clean /chat/* /settings /dictionary/add /learning/*, /desktop/jsonl/*) + DENY /metrics /api/metrics*; limit_req anonymous. Base-only API image (no torch).
 Steps: P0 baseline → provision → build → up → smoke (200 w/key, 401 enforce, 429, legacy POST 403, /metrics blocked) → issue consumer keys (mcp ZOLAI_CORE_URL, tauri, scripts) → FOUNDER GATE flip ZOLAI_API_AUTH=enforce → CF cache rules → rollback drill.
-Files: deploy/{nginx.conf,.env.production.example,deploy.sh}, docs/DEPLOYMENT.md runbook, docker-compose.prod.yml cleanup, optional workflow_dispatch deploy job (model zolai-web).
+Files: deploy/{nginx.conf,.env.production.example,deploy.sh}, docs/DEPLOYMENT.md runbook, optional workflow_dispatch deploy job (model zolai-web). *(R2: the «docker-compose.prod.yml cleanup» item is void — the runtime is native; the runbook is now `docs/operations/DEPLOY_RUNBOOK.md`.)*
 Commits: chore(deploy): compose+nginx stack → docs(deploy): runbook+rollback → chore(env): .env.production.example.
 needs-founder: server SSH/IP+specs, CF DNS control, enforce flip, backup cron, ZOLAI_CORE_URL secret.
 
@@ -56,11 +57,54 @@ P1 routes live+tested w/ audit; P2 registry+green suites+findings; P3 artifacts 
 
 # PLAN REVISION R1 (2026-10-01) — founder directives (authoritative over original sections where they conflict)
 
-## D1. Deployment = pcore-server + Docker (replaces original P5 target)
+> **[R2, 2026-10-18]** R1-D1's «Deployment = pcore-server + Docker» is **SUPERSEDED** by
+> [PLAN REVISION R2](#plan-revision-r2-2026-10-18--the-runtime-is-native-supersedes-r1-d1s-docker-recommendation)
+> below. Read R2 before acting on anything Docker/Compose in this file.
+
+# PLAN REVISION R2 (2026-10-18) — the runtime is NATIVE (supersedes R1-D1's Docker recommendation)
+
+**Measured on pcore-server 2026-10-18:** there is no container runtime in play —
+`docker ps -a` returns **nothing** — and every service is a systemd unit:
+
+| Unit | ExecStart | Listens |
+|---|---|---|
+| `zolai-core-dev.service` | `.venv-dev/bin/uvicorn zolai.api.server:app --host 127.0.0.1 --port 8001`, `WorkingDirectory=/home/ubuntu/zolai-core`, `EnvironmentFile=/home/ubuntu/zolai-core/.env.dev`, `User=ubuntu` | `127.0.0.1:8001` |
+| `zolai-studio-dev.service` | `bun run dev --host 127.0.0.1 --port 5173` in `/home/ubuntu/zolai-explorer` | `127.0.0.1:5173` |
+
+Public routing is nginx: `api.zolai.space` → `8001`; `studio.zolai.space` → the
+**built bundle** in `/var/www/zolai-studio` (not the dev server); `mcp.zolai.space`
+→ `8021`.
+
+Consequences for this plan:
+
+- **"Docker is the recommended deployment method" (D1) is SUPERSEDED.** `Dockerfile`,
+  `Dockerfile.prod` and `docker-compose*.yml` are not the runtime; kept for history only.
+- **Deploy is git-based.** The server checkout is a clone on branch
+  `preserve/server-working-tree-20261014`, **12 commits ahead of `origin/main`**,
+  holding server-only fixes (RAG grounding `5454062`, notification honesty
+  `702089b`, deploy guard `a07492e`). Deploy = `git fetch && git merge --no-edit origin/main`,
+  `sudo systemctl restart zolai-core-dev`, then **POLL** `/health` — the core needs
+  **~13 s** to answer after a restart, so a bare `sleep` reports a false outage.
+- **`zolai-core/scripts/sync-and-deploy.sh` is unsafe**: Docker-based **and**
+  `rsync --delete` over `/home/ubuntu/zolai-core/zolai/`, which would **erase those
+  server-only commits**. Do not run it until rewritten.
+- **Day-to-day command:** root `scripts/native-deploy.sh` (`core | studio | mcp-landing | status`).
+  Runbooks: `docs/operations/DEPLOY_RUNBOOK.md`, `docs/operations/DEPLOY_COMMANDS.md`.
+- **The drift needs reconciling back to `main`** — push the server-only commits, then
+  reset the server checkout to `origin/main`. Owner action; **not done**.
+
+**Not claimed:** the P5 verify matrix was **not** re-run on 2026-10-18. Only
+`https://api.zolai.space/health`, `/api/v1/health`, `https://studio.zolai.space/` and
+`https://mcp.zolai.space/{health,/}` were probed (all 200), plus two anonymously
+probeable MCP JSON-RPC methods.
+
+---
+
+## D1. Deployment = pcore-server + Docker (replaces original P5 target) — **SUPERSEDED by R2 (native systemd)**
 - **Host:** `pcore-server` SSH alias → 54.251.217.180 (Lightsail, ap-southeast-1, ubuntu, LightsailDefaultKey-ap-southeast-1.pem). Ubuntu 24.04.5, 2 vCPU, 7.6GB RAM (≈3.8 free), 154GB disk (100GB free), **Docker 29.8.1 + Compose v5.5.1 preinstalled**.
-- Docker is the **recommended deployment method**: prod compose (SQLite stays canonical until founder-gated PG cutover; container mounts data/ volume read-write for WAL, read-only for code image layers), nginx/Caddy TLS reverse proxy, healthchecks, restart policies, log rotation. Existing `Dockerfile` + `docker-compose.prod.yml` + `ops/` (Prometheus/Grafana) reused/extended — monitoring stack runs on pcore-server too (fits RAM budget: API + metrics + Grafana ≈ well under 4GB).
+- *(SUPERSEDED by R2: the runtime is systemd, not containers.)* Docker is the **recommended deployment method**: prod compose (SQLite stays canonical until founder-gated PG cutover; container mounts data/ volume read-write for WAL, read-only for code image layers), nginx/Caddy TLS reverse proxy, healthchecks, restart policies, log rotation. Existing `Dockerfile` + `docker-compose.prod.yml` + `ops/` (Prometheus/Grafana) reused/extended — monitoring stack runs on pcore-server too (fits RAM budget: API + metrics + Grafana ≈ well under 4GB).
 - Domain: api.zolai.space (or subdomain the founder prefers) → Cloudflare DNS → pcore-server. Public data + review endpoints exposed; metrics/auth admin stay internal (existing P5 posture unchanged).
-- Phase 0 backup baseline MUST exist on the server too (rsync backup dir + sha256 before go-live); backup cron still needs-founder.
+- *(R2: still true, and still needs-founder — the nightly backup timer is not installed.)* Phase 0 backup baseline MUST exist on the server too (rsync backup dir + sha256 before go-live); backup cron still needs-founder.
 
 ## D2. Engine: works WITH and WITHOUT AI; data-driven — NO hardcoded tags/headwords/sentences
 - Every learned artifact (POS tags, syllable compounds, collocations, phrase patterns, n-gram successors/predecessors) must be **derived from DB tables + trained artifacts**, never Python dict/set literals of words/tags. Sweep for hardcode: any `{word: tag}` style literal or `KNOWN_WORDS = {...}` constant in engine paths → replace with DB/config-table lookup + versioned artifact load (JSON/pickle/ONNX in `data/artifacts/`, rebuildable via CLI).
@@ -71,6 +115,8 @@ P1 routes live+tested w/ audit; P2 registry+green suites+findings; P3 artifacts 
 - **C2 Usage-pattern learning:** mine per-word context features into proper tables: predecessor/successor n-grams (n=1..4) with counts+probabilities, collocations (PMI, expand word_collocations 5,000 rows), phrase patterns (multiword expressions beyond phrases 10,722), order patterns (SOV/ergative attestations per frame). Research online (websearch primary sources: statistical collocation methods, n-gram LM for morphologically-rich SOV languages, KenLM/sentencepiece practices for low-resource) before choosing estimators (additive smoothing/backoff). No hardcoded pattern lists — all rows derived from corpus.
 - **C3 Flash-train small model:** lightweight trainable artifact — candidate stack (verify latest stable): sentencepiece unigram/BPE tokenizer (small vocab ~8-16k) on cleaned corpus; CRF/linear-chain POS tagger (sklearn-crfsuite in base deps) on auto-labeled + any gold data; interpolated n-gram LM (KenLM or pure-Python backoff) for predictions/next replacing hardcoded backoff; all exported to `data/artifacts/` with metadata JSON (corpus hash, params, metrics). Training = `zolai train` CLI (CPU minutes, fits 2 vCPU server — local training primary, server inference). NO translation model (master prompt §1).
 - Engine consumes C2 tables + C3 artifacts at runtime (replaces hardcoded tags/headwords/sentences — D2 enforcement point). Eval harness (eval_v1) extended: POS tag-accuracy on held-out auto+gold slice, next-token top-k acc, perplexity — gate improvements vs baseline.
+
+*(R2 2026-10-18: the deploy step below shipped and the runtime is now **native systemd** — read «via Docker» as superseded; `api.zolai.space` is live.)*
 
 ## Revised phase order
 P0 ✅ · P1 ✅ · P2 ✅ · **C1 corpus clean** · **C2 usage-pattern mining** · **C3 flash-train** · P3 (light training — folded into C3 where natural) · P4 (L1.4/L1.5 gold + L2 morphology — overlaps C2/C3) · **P5 deploy to pcore-server via Docker + domain + public access** (LAST, after engine upgrades so server ships the new engine).

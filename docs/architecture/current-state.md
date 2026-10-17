@@ -12,6 +12,15 @@ source: "live DB query + zolai-core/pyproject.toml + zolai-web/prisma/schema.pri
 > **Batch 1/3** of the Data Platform docs series. Companion docs:
 > [Tool matrix](../research/data-platform-tool-matrix.md) · [ADR-001..015](../adr/ADR-001.md)
 > **Scope:** docs-only audit. No code was changed for this document.
+>
+> **Runtime correction (2026-10-18):** this audit was written when the deploy target was
+> assumed to be Docker/Compose. **The runtime is native**: on pcore-server `docker ps -a`
+> returns nothing; the services are systemd units (`zolai-core-dev.service` on
+> `127.0.0.1:8001`, `zolai-studio-dev.service` on `5173`) behind nginx. The Prometheus /
+> Grafana stack below is packaged as `docker-compose.monitoring.yml` but is **not running
+> in containers today** (no container runtime in play — operator-measured 2026-10-18).
+> Read every "container/compose" phrase in this document as *historical packaging*; the
+> operating runbook is [`docs/operations/DEPLOY_RUNBOOK.md`](../operations/DEPLOY_RUNBOOK.md).
 
 ## 0. Canonical exec verdict (repeat across the series)
 

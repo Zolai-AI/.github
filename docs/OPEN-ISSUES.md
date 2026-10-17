@@ -8,6 +8,109 @@ Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
 
 ---
 
+## 2026-10-18 (Session — the runtime was already native; Docker removed from the deploy artifacts)
+
+**Goal** — make the day-to-day deploy command correct for the thing that is actually running.
+It turned out the thing that is actually running is not what almost every artifact described.
+
+### What is running (measured on pcore-server, 2026-10-18)
+
+`docker ps -a` returns **nothing** — there is no container runtime in play, and there has not
+been for some time. Every service is a systemd unit:
+
+| Unit | ExecStart | Listens |
+|---|---|---|
+| `zolai-core-dev.service` | `.venv-dev/bin/uvicorn zolai.api.server:app --host 127.0.0.1 --port 8001` — `WorkingDirectory=/home/ubuntu/zolai-core`, `EnvironmentFile=.env.dev`, `User=ubuntu` | `127.0.0.1:8001` |
+| `zolai-studio-dev.service` | `bun run dev --host 127.0.0.1 --port 5173` in `/home/ubuntu/zolai-explorer` | `127.0.0.1:5173` |
+
+nginx fronts all three hostnames: `api.zolai.space` → `8001`; `studio.zolai.space` → the
+**built bundle** in `/var/www/zolai-studio` (a Studio change needs a build plus a `dist/`
+install, not a restart); `mcp.zolai.space` → `8021`.
+
+**The ~13-second startup is the trap.** Restarting the core and checking once — or sleeping a
+fixed two seconds — reports an outage that is not one (start `18:01:02` → "Application startup
+complete" `18:01:15`). Every readiness check written today **polls** `/health`.
+
+### What changed in this repository
+
+| Change | Where |
+|---|---|
+| New `scripts/native-deploy.sh` (`core`, `studio`, `mcp-landing`, `status`; plus `--dry-run`, `--force`, `--host`, `--local`) — git-based core deploy, polled health, backup-before-replace, no secret ever read or printed | root `scripts/` |
+| `DEPLOY_RUNBOOK.md` + `DEPLOY_COMMANDS.md` rewritten native: no Docker command survives in the deploy path, and the retired artifacts are listed in one place instead of scattered | `docs/operations/` |
+| Plans and status corrected rather than deleted — R1-D1 "Deployment = pcore-server + Docker" is marked **SUPERSEDED** by a new revision R2 | `docs/planning/`, `docs/ROADMAP.md`, `docs/README.md`, `docs/architecture/current-state.md`, `docs/architecture/overview.md`, `docs/audit/phase0/dependency_map.md`, `docs/INFRASTRUCTURE.md` |
+
+### S2 — the server checkout is 12 commits ahead of `origin/main`
+
+`/home/ubuntu/zolai-core` is a git clone on branch `preserve/server-working-tree-20261014`
+carrying **12 commits that exist nowhere else**, including server-only fixes: RAG grounding
+`5454062`, notification honesty `702089b`, deploy guard `a07492e`. `main` does not contain the
+one file that diverges server-side (`zolai/data/notification_models.py`), which is why
+`merge origin/main` still applies cleanly — but the drift only grows with every deploy written
+this way.
+
+`scripts/native-deploy.sh status` prints the head, the `ahead-of-origin/main` count and any
+uncommitted paths, and warns while the count is non-zero. **Reconciling is an owner action and
+was NOT done here:** push the server-only commits to GitHub, then reset the server checkout to
+`origin/main`.
+
+### S1 — `zolai-core/scripts/sync-and-deploy.sh` would erase those commits
+
+Flagged as dangerous, and the flag now lives in the docs and in the new script's header. It is
+Docker-based **and** it does:
+
+```bash
+rsync -av --delete --exclude __pycache__ --exclude '*.pyc' "$STAGE/zolai/" "$REMOTE:/home/ubuntu/zolai-core/zolai/"
+```
+
+`--delete` into the *authoritative* tree, from a `git archive HEAD` of a checkout that does not
+contain the 12 server-only commits → the files those commits changed are deleted from the
+server tree. The guard that exists only checks the *local* tree is clean; it cannot see the
+server's divergence. `zolai-core/scripts/deploy.sh` is Compose-based on the same retired
+premise. Neither should be used until rewritten for the git+native flow (that repo belongs to
+another session today, so it was not edited).
+
+### Live probes, from a workstation (2026-10-18)
+
+| probe | result |
+|---|---|
+| `GET https://api.zolai.space/health` | 200 `{"status":"ok","version":"1.0.0","uptime_s":1411.258,"engine_mode":"hybrid","llm_allowed":true}` |
+| `GET https://api.zolai.space/api/v1/health` | 200 |
+| `GET https://studio.zolai.space/` | 200 |
+| `GET https://mcp.zolai.space/health` | 200 |
+| `POST https://mcp.zolai.space/mcp` `initialize` (2025-11-25) | 200 `serverInfo: zolai-mcp 1.2.0` |
+| `POST https://mcp.zolai.space/mcp` `server/discover` | `-32601 Method not found: server/discover` |
+
+The last two say `mcp.zolai.space` is **still the Cloudflare Worker**; the DNS cutover is
+PENDING, exactly as the MCP entry above records.
+
+**One correction to that entry's probe table:** it lists `GET /` → `200 application/json` as the
+pre-cutover signature. Measured today, `mcp.zolai.space/` answers **`content-type: text/html`** —
+the Worker's own landing is HTML now. Content-type therefore no longer distinguishes the two
+surfaces, so `native-deploy.sh mcp-landing` discriminates by **behaviour** (does
+`server/discover` answer, or return `-32601`?) instead.
+
+### Not done, and not claimed
+
+- **Not deployed.** No `core`, `studio` or `mcp-landing` run was executed — only `--dry-run`
+  and the refusal path were exercised.
+- **The 7-point verify matrix was not re-run.** Only the six probes above.
+- `zolai mcp landing` **is not on `main`** (verified 2026-10-18 against the committed tree:
+  `zolai/cli/main.py` as tracked in git has no `mcp` subcommand), so the landing page cannot
+  be generated from `main`; the subcommand fails loudly and writes nothing rather than
+  hand-writing the page. **Correction (same session, after re-probing):** an earlier draft said
+  the string "landing" appeared *nowhere* in `zolai-core`. That was true of `main` but is **not**
+  true of the working tree — an uncommitted implementation has since appeared
+  (`zolai/cli/mcp.py` with a `landing` command, `zolai/mcp/landing.py`, `zolai/mcp/protocol.py`,
+  `zolai/api/mcp_router.py`, wired in `zolai/cli/main.py`, plus `tests/test_mcp_api.py`). All of
+  it is **untracked WIP owned by another session**, not part of `main`, and gone from any clean
+  checkout. It cannot be relied on by this deploy path until it lands.
+- Whether `ubuntu` has passwordless `sudo` for `/var/www` writes, the current on-disk nginx
+  vhosts, and the native unit's real `ZOLAI_DATA_ROOT`/`ZOLAI_DB_PATH` are all **(not verified)**.
+- Container-era wording survives in `context/` and in `.pcore/specs/client-setup-and-deploy.md`
+  (untracked working notes, left alone).
+
+---
+
 ## 2026-10-18 (Session — MCP surface: the provider-compat decision and a staged cutover)
 
 **Goal** — make zolai-core's tool / function-calling stack callable from ChatGPT, Gemini and

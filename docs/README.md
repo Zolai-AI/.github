@@ -1,23 +1,27 @@
 # Zolai-AI Documentation
 
-## Current Status (2026-10-08)
+## Current Status (2026-10-18)
 
-**All local development complete. Ready for server deployment.**
+**Deployed and live — running NATIVELY (systemd, no containers).**
 
-### ✅ Completed (Local)
-- Core API + Engine contracts + POS Tagger (98%/100% accuracy)
-- Circuit Breaker + Notifications + P6 Deploy Artifacts
-- Gold Sets: POS 510, Morphology 130, Grammar 198
-- POS Tagger CRF trained (model saved)
-- ZolaiBench v0.1 DB-first evaluation framework
-- Circuit Breaker + Notifications + Backup script
-- CI green (quarantined knowledge tests)
+### ✅ Done
+- Core API + Studio live: `api.zolai.space/health` 200 (`engine_mode: hybrid`),
+  `studio.zolai.space/` 200, `mcp.zolai.space/health` 200 (probed 2026-10-18)
+- **Runtime is native systemd** — `docker ps -a` is empty on pcore-server; Docker is
+  retired from the runtime (`Dockerfile*` / `docker-compose*.yml` are history only)
+- Deploy = `scripts/native-deploy.sh core|studio|mcp-landing|status` (git fetch + merge
+  + unit restart + **polled** health, ~13 s startup)
+- Engine contracts + POS Tagger CRF (98%/100%) + Gold Sets (POS 510, Morph 130, Grammar 198)
+- Circuit Breaker + Notifications + Backup **script** (not scheduled)
+- ZolaiBench v0.1 DB-first evaluation framework + quarantined knowledge tests
 - DB-First architecture enforced
 
-### 🔄 Ready for Server
-- Dockerfile.prod + docker-compose.prod.yml + deploy.sh
-- .env.production.template + DEPLOY_RUNBOOK.md
-- Backup script (backup_nightly.py + backup_cron.sh)
+### ⚠️ Open (2026-10-18)
+- `zolai-core/scripts/sync-and-deploy.sh` is **unsafe** (Docker + `rsync --delete` over
+  the server checkout → would erase the server-only commits)
+- Server checkout is **12 commits ahead of `origin/main`** — needs reconciling back to `main`
+- 7-point verify matrix not re-run; MCP DNS cutover still PENDING (Worker still live)
+- Nightly backup timer not installed
 
 ### ⏳ Founder-Gated
 - P6 Deploy to pcore-server + 7-point verify

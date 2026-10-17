@@ -286,21 +286,30 @@ provider (`resolve_assistant_ai`), builds the restricted/full tool set, runs the
 
 ### F. Deployment (P6)
 
-- **zolai-core (pcore-server):** `docker compose -f docker-compose.prod.yml build api && up -d`;
-  `.env.production` gains `AI_BRAIN_URL`/`AI_BRAIN_API_KEY` (+other provider keys, placeholders
-  only in `.env.example`) and optional `ZOLAI_PROVIDER_SECRET_KEY`; `seed_catalog()` runs in the
-  lifespan; `ZOLAI_API_AUTH` stays `warn` (flip is founder-gated) — enforce exercised via a
-  temporary env only.
-- **Studio:** `bun run typecheck && bun run test && bun run build && bash scripts/deploy.sh`.
+- **zolai-core (pcore-server), NATIVE — amended 2026-10-18:** the runtime is systemd, not
+  containers (`docker ps -a` is empty on the host). Deploy is `scripts/native-deploy.sh core`
+  = `git -C /home/ubuntu/zolai-core fetch && git merge --no-edit origin/main`,
+  `sudo systemctl restart zolai-core-dev`, then **poll** `/health` (startup is ~13 s — never a
+  bare `sleep`). *(The original `docker compose -f docker-compose.prod.yml build api && up -d`
+  is retired.)* The core reads `/home/ubuntu/zolai-core/.env.dev`, which gains
+  `AI_BRAIN_URL`/`AI_BRAIN_API_KEY` (+other provider keys, placeholders only in `.env.example`)
+  and optional `ZOLAI_PROVIDER_SECRET_KEY`; `seed_catalog()` runs in the lifespan;
+  `ZOLAI_API_AUTH` stays `warn` (flip is founder-gated) — enforce exercised via a temporary env only.
+- **Studio:** build + install the bundle — `scripts/native-deploy.sh studio` (= `bun run build`,
+  back up `/var/www/zolai-studio`, rsync `dist/`, verify the served `assets/*.js` matches the
+  build). *(The old Docker-based `bash scripts/deploy.sh` is retired.)*
 - **DB sync after every update (bidirectional):** one direction per update — the side that
   changed is the source, never a merge.
+  - *(2026-10-18: both helpers still call `docker` — re-cut them for systemd before use. The
+    native equivalent is `systemctl stop|start zolai-core-dev` around a WAL-safe `sqlite3 .backup`;
+    see `docs/operations/DEPLOY_RUNBOOK.md` § Database sync.)*
   - server-side change (P6 deploy, migrations, catalog seed, observation build, review/learn
     writes) → `zolai-core/scripts/sync-db-from-server.sh` (server → local: WAL-safe
     `sqlite3 .backup` on pcore-server → rsync → integrity_check → local backup first →
     atomic replace, stale `-wal`/`-shm` dropped).
   - local data work → `zolai-core/scripts/sync-db-to-server.sh` (local → server: local
-    snapshot + integrity → rsync up → **stop api container** → server backup first → remote
-    integrity check → atomic replace → start container → **/health 200 gate**).
+    snapshot + integrity → rsync up → **stop the unit** (`sudo systemctl stop zolai-core-dev`) → server backup first → remote
+    integrity check → atomic replace → start the unit → **/health 200 gate (poll; ~13 s startup)**).
   - Both support `--dry-run`; runbooks in `docs/governance/backup-strategy.md` →
     “Sync server ↔ local”.
 - **Verify matrix:** (1) enforce: public word/search/analyze/rag + **`POST /assistant/chat` →
@@ -463,6 +472,15 @@ PLAN_READY
 - [x] Fix: `243ab80` — server.py exception handler now preserves headers
 
 ### Remaining for P6
+
+> **2026-10-18 amendment.** The deploy happened and the API is live
+> (`https://api.zolai.space/health` → 200, `engine_mode: hybrid`, `llm_allowed: true`), but it
+> runs **natively (systemd)** and the *standing 7-point verify matrix was not re-run today* —
+> only the three public health endpoints and two anonymous MCP probes were. Treat the matrix
+> below as still open. `zolai-core/scripts/sync-and-deploy.sh` is unsafe (Docker **and**
+> `rsync --delete` over the server checkout: it would erase the server-only commits); use root
+> `scripts/native-deploy.sh` instead.
+
 - [ ] P6 7-point verify matrix executed on pcore-server
 - [ ] Database training infrastructure (POS annotation, ZolaiBench v0.1)
 - [ ] Gap closure: backup cron, PG cutover, archive, permission letters, speaker recruitment, enforce flip
@@ -538,7 +556,7 @@ zolai eval run|init-gold|export|list-tasks|stats
 ### Remaining (Founder-Gated)
 | Task | Blocker | Priority |
 |------|---------|----------|
-| P6 Deploy + 7-point verify | Server access | HIGH |
+| P6 Deploy + 7-point verify | **Deployed natively and live**; the 7-point matrix is still un-run | HIGH |
 | Nightly backup cron install | Server access | HIGH |
 | PG cutover (Phase 4) | Founder decision | HIGH |
 | Archive execution (KR2.4) | Founder approval | MEDIUM |
