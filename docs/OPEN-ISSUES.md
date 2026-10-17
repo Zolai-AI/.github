@@ -1,10 +1,115 @@
 # Open issues — Zolai platform (Studio + Core API)
 
-Last updated: 2026-10-13. Every item below was reproduced against the live
+Last updated: 2026-10-18. Every item below was reproduced against the live
 deployment unless marked *(code reading)*. Evidence is the command output that
 led to it, so anyone can re-check rather than take this file's word for it.
 
 Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
+
+---
+
+## 2026-10-18 (Session — MCP surface: the provider-compat decision and a staged cutover)
+
+**Goal** — make zolai-core's tool / function-calling stack callable from ChatGPT, Gemini and
+any MCP-capable client, without standing up a second implementation of the query logic.
+
+**Status of this entry:** the audit, the decision and the route contract are settled; the
+**MCP layer itself is not implemented, not deployed, and the DNS cutover has not been made.**
+Every claim below is either a command output reproduced here or marked *(code reading)* /
+*(operator-reported)*. Nothing is marked done that was not seen working.
+
+### The audit walked six layers; only two needed work
+
+| Layer | What was found |
+|---|---|
+| Provider adapters | `zolai/llm/adapter.py` dispatches `brain`, `openai`, `openrouter` — enough, once the compat path was verified |
+| Tool contract | 12 agent tools, each a `ToolSpec`; published in **one** wire shape (OpenAI `tools[]`) |
+| Registry / executor | 12 tools, bare names, allow-listed executor, DB-first handlers — sound |
+| Agent loop | marker-protocol loop + grounding + `retrieval_only` honesty — sound |
+| Transport | **no MCP endpoint existed**: `/mcp` is not in `zolai/api/server.py`, `zolai/mcp/` does not exist *(code reading)* |
+| Auth / role mapping | `rbac.py` already models anonymous < member < admin and is reusable as-is |
+
+So the work is a **second adapter over the same singletons and the same SQLite DB**, not a new
+service — which is also why `zolai-mcp-server` (the Cloudflare Worker) is not being extended.
+
+### Decision — keep the OpenAI-compatibility path and *prove* it, do not write vendor adapters
+
+`anthropic` and `google-gemini` are reachable today as `adapter="openai"`, through those vendors'
+own OpenAI-compatibility endpoints. Two options were available: native per-vendor adapters, or
+proving function calling works over the compat path. **The compat path was chosen and proven**
+(zolai-core `cf25e3b`).
+
+The cost is stated rather than hidden: a compatibility endpoint is *the vendor's* promise, not
+ours — anything it does not translate is unavailable to us — and it is one more place where a
+vendor can change behaviour without us changing a line. Accepted for now, because one wire format
+also means one tool definition and one set of tests.
+
+### The larger gap — the tools existed in one wire shape, and the protocol moved under us
+
+1. **The 12 tools published only as OpenAI schemas.** MCP needs `tools/list` entries with
+   `inputSchema`; a hand-maintained second copy would drift on the first edit. Fixed by making the
+   `ToolSpec` canonical and *rendering* both wires from it (zolai-core `71a1a7e`; `render.py`
+   defines `FORMATS = ("openai", "mcp")` and is pure — no DB, no network).
+2. **`2026-07-28` removed the `initialize` handshake** in favour of per-request version
+   negotiation plus a mandatory `server/discover`. A server that only speaks the new era breaks
+   every client on `2025-11-25` and earlier, so the surface has to be **dual-era**: `server/discover`
+   and version negotiation for the new era, `initialize` retained for the old one.
+
+### What the live Worker actually answers today (probe, before any cutover)
+
+`mcp.zolai.space` is still the Worker — zone route `mcp.zolai.space/*`, DNS CNAME →
+`zolai-mcp.peterpausianlian.workers.dev` *(operator-reported; the probes below are mine)*.
+Probed 2026-10-18:
+
+| probe | result |
+|---|---|
+| `POST /mcp` `initialize` with `protocolVersion: 2025-11-25` | **200**, `serverInfo: zolai-mcp 1.2.0` |
+| `POST /mcp` `initialize` requesting `2026-07-28` | **200** answering **`protocolVersion: 2025-11-25`** |
+| `POST /mcp` `server/discover` | **`-32601 Method not found`** |
+| `GET /` | **200 `application/json`** — the Worker's own landing, not the core's HTML page |
+| `POST /mcp` `tools/list` | **8** tools: `list_zolai_docs`, `fetch_zolai_doc`, `search_zolai_context`, `get_ecosystem_status`, `update_progress_tracker`, `add_architecture_note`, `lookup_zolai_word`, `search_bible_parallel` |
+
+The second row is the one worth reading twice: a `2026-07-28` request receives a **silent downgrade**
+rather than the specified refusal. The new surface must answer `UnsupportedProtocolVersionError`
+(JSON-RPC **`-32022`**, with `data.supported` and `data.requested`) so a client can decide, instead
+of being told the wrong era without being told so.
+
+### Access model — the key *is* the role
+
+Anonymous callers get the **public** set; a presented API key is mapped to **member** or **admin**
+by the existing role model. A tool name that is unknown, or known but not permitted for the
+caller's role, answers **`-32602`** — *identically in both cases*, so an anonymous caller cannot
+enumerate which admin-class tools exist by watching error codes diverge.
+
+### Cutover — staged, and visibly incomplete
+
+| # | Step | Status |
+|---|---|---|
+| 1 | Design + route contract (`/mcp` beside `/api/v1`, no change to any REST route) | ✅ zolai-core `2edb1d9`, `docs/planning/MCP_LAYER_PLAN.md` |
+| 2 | Typed foundation contracts (11 endpoints off `request: dict`) | ✅ `77173ad`, tests `da554b3` |
+| 3 | One canonical tool definition rendered to OpenAI **and** MCP | ✅ `71a1a7e` |
+| 4 | OpenAI-compat function calling proven and hardened | ✅ `cf25e3b` |
+| 5 | `zolai/mcp/` package + `POST /mcp` + `/api/v1/mcp` + `GET /` landing | ❌ **not written** |
+| 6 | nginx vhost on `127.0.0.1:8021`, serving the landing page | ⚠️ installed *(operator-reported — not verifiable from this checkout)* |
+| 7 | Tunnel ingress entry for `mcp.zolai.space` → `127.0.0.1:8021` | ⚠️ added *(operator-reported)* |
+| 8 | **DNS flip** to `3e45cb07-a713-4319-9791-9a3fc4ceda21.cfargotunnel.com` | ❌ **PENDING** |
+| 9 | **Delete the Worker route** `mcp.zolai.space/*` | ❌ **PENDING** (deleting it before step 8 would take the hostname down) |
+| 10 | Deploy + verify matrix on the new surface | ❌ **PENDING** |
+
+Steps 6–7 ahead of step 5 is deliberate: the edge can be prepared and proven to serve while the
+application still 404s, and that is reversible. Steps 8–9 are the ones that change what the public
+hostname means, and they are ordered that way for the same reason.
+
+### Not done, and not claimed
+
+- No MCP endpoint exists in `main` at the time of writing. `POST /mcp` cannot be exercised because
+  there is nothing to mount it.
+- No deploy, no end-to-end verify, no dual-era probe against a real server.
+- The Worker is still the live surface, so `mcp.zolai.space` today is the **8-tool, single-era**
+  surface described above — not the 12 agent tools and not the `foundation_*` contracts.
+
+The reference for the intended surface (transport, error shapes, tool groups, access model, cutover
+order, and the probes to run) is [`mcp-surface.md`](mcp-surface.md).
 
 ---
 
