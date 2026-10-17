@@ -128,7 +128,7 @@ status: CONFIRMED
 
 | # | Task | Dependencies | Status |
 |---|------|--------------|--------|
-| 8.1 | P6 Deploy to pcore-server (7-point verify) | Wave 3-5 complete | 🔄 READY (artifacts done) |
+| 8.1 | P6 Deploy to pcore-server (7-point verify) | Wave 3-5 complete | 🔄 **LIVE natively** (systemd; `api.zolai.space/health` 200 on 2026-10-18) — 7-point matrix **not** re-run |
 | 8.2 | Nightly backup cron operational | Wave 3.5 | 🔄 SCRIPT READY (needs server) |
 | 8.3 | PostgreSQL cutover (Phase 4 DATA_PLATFORM_MIGRATION) | Wave 8.1 | ⏳ NEEDS FOUNDER |
 | 8.4 | Duplicate archive execution (KR2.4) | Founder approval | ⏳ NEEDS FOUNDER |
@@ -136,7 +136,7 @@ status: CONFIRMED
 | 8.6 | Speaker recruitment (5 Zomi speakers) | Wave 3.9 | ⏳ NEEDS FOUNDER |
 | 8.7 | Consumer keys issued → `ZOLAI_API_AUTH=enforce` flip | Wave 8.1 | ⏳ NEEDS FOUNDER |
 | 8.8 | CI green (quarantine knowledge tests) | Immediate | ✅ DONE |
-| 8.9 | Deploy runbook documented | Wave 8.1 | ✅ DONE |
+| 8.9 | Deploy runbook documented | Wave 8.1 | ✅ DONE — **rewritten native 2026-10-18** (`docs/operations/DEPLOY_RUNBOOK.md`, `DEPLOY_COMMANDS.md`) |
 | 8.10 | Circuit breaker + notifications docs | ✅ DONE | ✅ DONE |
 
 ---

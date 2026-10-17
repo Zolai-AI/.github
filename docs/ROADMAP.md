@@ -1,25 +1,41 @@
 
 
-## Current Status (2026-10-08)
+## Current Status (2026-10-18)
 
-### ✅ COMPLETED (Local Development)
-- P5 Accounts: username/password + revocable sessions
-- Circuit Breaker: 3-state (CLOSED/OPEN/HALF_OPEN) for LLM/SMTP
-- Notifications: Email alerts (error/warning/user/admin/system)
-- P6 Deploy Artifacts: Dockerfile.prod, docker-compose.prod.yml, deploy.sh, .env.production.template
-- Backup (KR2.2): scripts/backup_nightly.py + backup_cron.sh (script ready)
-- CI: Quarantined knowledge promotion/consensus tests
-- Gold Sets: POS 510, Morphology 130, Grammar 198 (in eval DB)
-- POS Tagger: CRF trained (98% test / 100% full gold accuracy)
-- ZolaiBench v0.1: DB-first eval framework (4 tasks, CLI, CI)
-- DB-First Architecture: Enforced across all plans/docs
-- Documentation: All plans, architecture, code-standards, progress-tracker synced
+### ✅ DONE — and live
+- **The deployment is done and serving.** `https://api.zolai.space/health` → 200
+  `{"status":"ok","version":"1.0.0","engine_mode":"hybrid","llm_allowed":true}`;
+  `https://studio.zolai.space/` → 200; `https://mcp.zolai.space/health` → 200 (probed 2026-10-18).
+- **The runtime is NATIVE.** There are no containers — `docker ps -a` is empty on
+  pcore-server. Every service is a systemd unit (`zolai-core-dev.service` on
+  `127.0.0.1:8001`, `zolai-studio-dev.service` on `5173`); the public Studio is a
+  **built bundle** in `/var/www/zolai-studio`; nginx fronts all three hostnames.
+  Docker is **retired from the runtime**; `Dockerfile*` / `docker-compose*.yml` are
+  history only.
+- Day-to-day deploy: **`scripts/native-deploy.sh core|studio|mcp-landing|status`**
+  (root repo). Runbooks rewritten native: `docs/operations/DEPLOY_RUNBOOK.md`,
+  `docs/operations/DEPLOY_COMMANDS.md`.
+- P5 Accounts (username/password + revocable sessions) · Circuit Breaker · Notifications
+- Backup **script** (KR2.2): `scripts/backup_nightly.py` + `backup_cron.sh` — **not scheduled yet**
+- CI: knowledge promotion/consensus tests quarantined · Gold Sets: POS 510, Morph 130, Grammar 198
+- POS Tagger: CRF trained (98% test / 100% full gold) · ZolaiBench v0.1 (DB-first, 4 tasks)
+- DB-First Architecture enforced · plans/docs synced
 
-### 🔄 READY (Needs Server/Founder)
-- P6 Deploy to pcore-server + 7-point verify
-- Nightly backup cron install (KR2.2)
-- C1 Corpus clean / C2 Usage-pattern mining / C3 Flash-train
-- L2 Morphology (L1.4/L1.5 POS done)
+### ⚠️ OPEN — state recorded 2026-10-18
+- **`zolai-core/scripts/sync-and-deploy.sh` is UNSAFE.** It is Docker-based **and**
+  `rsync --delete`s a committed tree over `/home/ubuntu/zolai-core/zolai/`, which
+  would **erase the server-only commits**. Do not run it until rewritten.
+- **The server checkout drifts from `main`:** branch
+  `preserve/server-working-tree-20261014`, **12 commits ahead of `origin/main`**
+  (server-only fixes: RAG grounding `5454062`, notification honesty `702089b`, deploy
+  guard `a07492e`). It **needs reconciling back to `main`** — owner action, not done.
+- **7-point verify matrix not re-run** on 2026-10-18 (only the three public health
+  endpoints + two MCP probes were).
+- **MCP cutover still PENDING:** `mcp.zolai.space` is still the Cloudflare Worker
+  (`serverInfo zolai-mcp 1.2.0`; `server/discover` → `-32601`). `zolai mcp landing`
+  does not exist yet, so the native landing page cannot be generated.
+- Nightly backup timer **not installed** (needs-founder).
+- C1 Corpus clean / C2 Usage-pattern mining / C3 Flash-train · L2 Morphology (L1.4/L1.5 POS done)
 
 ### ⏳ FOUNDER-GATED
 - PG cutover (Phase 4 DATA_PLATFORM_MIGRATION)
@@ -28,7 +44,9 @@
 - Speaker recruitment (KR5.1)
 - Consumer keys → ZOLAI_API_AUTH=enforce flip
 
-### Next Milestone: P6 Deploy to pcore-server
+### Next milestone
+Reconcile the server checkout back to `main`, then re-run the 7-point verify matrix
+from `docs/operations/DEPLOY_RUNBOOK.md` on the native runtime.
 
 ---
 title: "Zolai-AI Roadmap"

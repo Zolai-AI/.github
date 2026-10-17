@@ -46,6 +46,7 @@ llm  →  config                 (only reachable via engines gate)
 
 ## E. System/infra deps
 - Docker 29.8.1 + Compose v5.5.1 on **pcore-server** (54.251.217.180, Ubuntu 24.04, 2 vCPU/7.6GB) — P5 deploy target (R1-D1)
+  - **Corrected 2026-10-18:** the runtime did **not** end up containerised. `docker ps -a` on pcore-server is empty; the services are systemd units (`zolai-core-dev`, `zolai-studio-dev`) behind nginx, and deploy is git-based (`scripts/native-deploy.sh`). Docker is retired from the runtime.
 - Cloudflare: zolai.space (Pages), mcp.zolai.space (Worker) — Phase 7/8 boundary
 - No k8s, no Redis (compose-only, smallest stack invariant)
 

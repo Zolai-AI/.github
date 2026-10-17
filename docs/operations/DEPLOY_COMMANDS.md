@@ -1,125 +1,164 @@
-# P6 Deploy Commands for pcore-server
-# Run these on pcore-server when ready
+# pcore-server deploy commands (NATIVE)
+
+**Rewritten 2026-10-18.** Copy-paste sheet for the native runtime. The narrative
+version, with the evidence and the rollback reasoning, is
+[`DEPLOY_RUNBOOK.md`](DEPLOY_RUNBOOK.md). Every command here is either verified or
+marked; nothing here uses Docker, because Docker is not the runtime
+(`docker ps -a` is empty on pcore-server, operator-measured 2026-10-18).
 
 ## 1. Prerequisites
-# - SSH access to pcore-server (ubuntu@54.251.217.180)
-# - Docker 29.8.1 + Compose v5.5.1 preinstalled
-# - Cloudflare Tunnel configured (named tunnel `zolai-production`)
-# - Domain DNS: api.zolai.space → tunnel, studio.zolai.space → tunnel
 
-## 2. Copy code to server
+- `ssh pcore-server true` works **non-interactively** (the script's preflight uses `BatchMode`).
+- `systemctl` on the host; `zolai-core-dev.service` + `zolai-studio-dev.service` exist.
+- `sudo` for `/var/www` — `sudo -n true` must succeed. **(not verified whether NOPASSWD is configured)**
+- `bun` where the Studio is built. `git` on the server checkout.
+- No Docker. No Compose. No container runtime.
+
+## 2. The one command
+
 ```bash
-# From local machine
-cd /home/peter/Documents/Projects/zolai-ai
-rsync -av --exclude='.git' --exclude='data' --exclude='.venv' --exclude='__pycache__'   zolai-core/ pcore-server:/opt/zolai-core/
-rsync -av --exclude='.git' --exclude='node_modules' --exclude='.venv' --exclude='dist'   zolai-explorer/ pcore-server:/opt/zolai-explorer/
+# run from this root checkout; add --dry-run to print instead of run
+scripts/native-deploy.sh core          # zolai-core: fetch+merge origin/main, restart, poll /health
+scripts/native-deploy.sh studio        # Studio: bun run build, backup, rsync dist/, verify HTTPS
+scripts/native-deploy.sh mcp-landing   # landing page generator -> /var/www/zolai-mcp/index.html
+scripts/native-deploy.sh status        # unit state + /health for all three hosts
+scripts/native-deploy.sh --help
 ```
 
-## 3. On pcore-server - Setup zolai-core
+Flags: `--host <ssh-host>` · `--local` · `--force` · `--dry-run` · `--no-verify`.
+
+## 3. zolai-core (manual equivalent)
+
 ```bash
-cd /opt/zolai-core
+ssh pcore-server
+cd /home/ubuntu/zolai-core
 
-# Copy production env template
-cp .env.production.template .env
-# EDIT .env with production values:
-# - AI_BRAIN_URL, AI_BRAIN_API_KEY
-# - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM, ADMIN_EMAILS
-# - ZOLAI_API_AUTH=warn (enforce flip is founder-gated)
-# - ZOLAI_AUTH_SESSIONS=on, ZOLAI_SESSION_TTL_HOURS=12
-# - ZOLAI_CB_ENABLED=true, ZOLAI_CB_FAILURE_THRESHOLD=5, ZOLAI_CB_TIMEOUT=30
-# - ZOLAI_NOTIFICATIONS_ENABLED=true
+# backup point before replacing anything
+git update-ref refs/backup/native-deploy/$(date +%Y%m%d-%H%M%S) HEAD
 
-# Run migrations (additive only)
-docker run --rm -v /opt/zolai-core/data:/data -v /opt/zolai-core/.env:/app/.env zolai-core:latest python -c "
-from zolai.data.migrations import run_all_migrations
-from zolai.data.database import get_manager
-from zolai.config import settings
-mgr = get_manager()
-results = run_all_migrations(mgr)
-print('Migrations:', results)
-"
+git fetch --prune origin
+git merge --no-edit origin/main
 
-# Build and start
-docker build -t zolai-core:latest -f Dockerfile.prod .
-docker compose -f docker-compose.prod.yml up -d
+sudo systemctl restart zolai-core-dev
 
-# Verify
-curl -f http://localhost:8001/health
-curl -f http://localhost:8001/api/v1/health
-curl -f http://localhost:8001/api/v1/auth/me
+# POLL — the core needs ~13 s to answer; a bare sleep reports a false outage
+for i in $(seq 1 60); do
+  curl -fsS -o /dev/null http://127.0.0.1:8001/health && break
+  sleep 1
+done
+curl -sS http://127.0.0.1:8001/health
+curl -sS http://127.0.0.1:8001/api/v1/health
+systemctl is-active zolai-core-dev
 ```
 
-## 4. On pcore-server - Setup zolai-explorer (Studio)
-```bash
-cd /opt/zolai-explorer
+If the merge conflicts, it stops mid-merge:
 
-# Build
-bun run typecheck
-bun run test
+```bash
+git -C /home/ubuntu/zolai-core merge --abort
+git -C /home/ubuntu/zolai-core reset --hard <PRE_SHA>     # the SHA native-deploy.sh printed
+sudo systemctl restart zolai-core-dev
+```
+
+## 4. Studio (manual equivalent)
+
+```bash
+cd /home/peter/Documents/Projects/zolai-ai/zolai-explorer
 bun run build
 
-# Deploy to nginx
-sudo mkdir -p /var/www/zolai-studio
-sudo cp -r dist/* /var/www/zolai-studio/
-sudo chown -R www-data:www-data /var/www/zolai-studio
+ssh pcore-server 'sudo cp -a /var/www/zolai-studio /var/www/zolai-studio.bak-$(date +%Y%m%d-%H%M%S)'
+rsync -a --delete -e ssh --rsync-path="sudo rsync" dist/ pcore-server:/var/www/zolai-studio/
 
-# Verify nginx config (should already exist)
-# server {
-#     listen 443 ssl;
-#     server_name studio.zolai.space;
-#     root /var/www/zolai-studio;
-#     index index.html;
-#     location / { try_files $uri $uri/ /index.html; }
-# }
-
-sudo nginx -t && sudo systemctl reload nginx
+# prove the new bundle is the one being served
+grep -o 'assets/[^"]*\.js' dist/index.html | head -1
+curl -fsS https://studio.zolai.space/ | grep -o 'assets/[^"]*\.js' | head -1
 ```
 
-## 5. 7-Point Verify Matrix (execute on pcore-server)
+The public Studio is the **built bundle** in `/var/www/zolai-studio`. The dev unit
+(`zolai-studio-dev`, port 5173) is not the public site. Nginx reload is only needed
+for a **vhost change**: `sudo nginx -t && sudo systemctl reload nginx`.
+
+## 5. MCP landing page
+
 ```bash
-# 1. Public endpoints no key
-curl -f https://api.zolai.space/api/v1/word/test
-curl -f -X POST https://api.zolai.space/api/v1/assistant/chat -H "Content-Type: application/json" -d '{"message":"hello"}'
-
-# 2. Member key access, admin denied
-curl -f -H "X-API-Key: <member-key>" https://api.zolai.space/api/v1/agent/runs -H "Content-Type: application/json" -d '{}'
-curl -f -H "X-API-Key: <member-key>" https://api.zolai.space/api/v1/admin/assistant/chat -H "Content-Type: application/json" -d '{}'  # should 403
-
-# 3. Admin key: providers masked, PUT, activate, test
-curl -f -H "X-API-Key: <admin-key>" https://api.zolai.space/api/v1/admin/ai-providers
-curl -f -X PUT -H "X-API-Key: <admin-key>" -H "Content-Type: application/json" -d '{"model":"..."}' https://api.zolai.space/api/v1/admin/ai-providers/<id>
-curl -f -X POST -H "X-API-Key: <admin-key>" https://api.zolai.space/api/v1/admin/ai-providers/<id>/activate
-curl -f -X POST -H "X-API-Key: <admin-key>" https://api.zolai.space/api/v1/admin/ai-providers/<id>/test
-
-# 4. auth/me roles
-curl -f https://api.zolai.space/api/v1/auth/me                    # anonymous
-curl -f -H "X-API-Key: <member-key>" https://api.zolai.space/api/v1/auth/me
-curl -f -H "X-API-Key: <admin-key>" https://api.zolai.space/api/v1/auth/me
-
-# 5. Brain adapter: no tools key + citations or retrieval_only
-curl -f -X POST -H "X-API-Key: <admin-key>" -H "Content-Type: application/json" -d '{"message":"test"}' https://api.zolai.space/api/v1/admin/assistant/chat
-
-# 6. Unknown path → 404
-curl -f https://api.zolai.space/api/v1/nonexistent  # should 404
-
-# 7. Studio: anon public chat works, admin features with key
-# Open https://studio.zolai.space/ in browser
+scripts/native-deploy.sh mcp-landing
 ```
 
-## 6. Rollback Plan
+- Requires `/home/ubuntu/zolai-core/.venv-dev/bin/zolai` with an `mcp landing`
+  subcommand. **It does not exist today** (verified 2026-10-18), so this fails
+  loudly and writes nothing. Do **not** hand-write `/var/www/zolai-mcp/index.html`.
+- Manual equivalent, once the generator exists:
+
 ```bash
-# zolai-core rollback
-cd /opt/zolai-core
-docker compose -f docker-compose.prod.yml down
-docker compose -f docker-compose.prod.yml up -d  # previous image
-
-# zolai-explorer rollback
-sudo rsync -av /var/www/zolai-studio.backup/ /var/www/zolai-studio/
-sudo nginx -t && systemctl reload nginx
+ssh pcore-server
+TMP=$(mktemp /tmp/zolai-mcp-landing.XXXXXX.html)
+/home/ubuntu/zolai-core/.venv-dev/bin/zolai mcp landing --out "$TMP"
+grep -qi '<html' "$TMP"                       # must be real HTML
+sudo cp -a /var/www/zolai-mcp/index.html /var/www/zolai-mcp/index.html.bak-$(date +%Y%m%d-%H%M%S) 2>/dev/null || true
+sudo install -m 0644 "$TMP" /var/www/zolai-mcp/index.html
 ```
 
-## 7. Post-Deploy
-- Record results in context/progress-tracker.md
-- Install backup cron: `sudo systemctl enable --now backup-zolai.timer` (create timer from backup_cron.sh)
-- Issue consumer keys for mcp/tauri/scripts
-- Founder decision: flip ZOLAI_API_AUTH=enforce
+## 6. Verify
+
+```bash
+# origin (on pcore-server)
+ssh pcore-server '
+  systemctl is-active zolai-core-dev zolai-studio-dev
+  curl -sS http://127.0.0.1:8001/health
+  curl -sS http://127.0.0.1:8001/api/v1/health'
+
+# public (from anywhere) — measured 2026-10-18: all 200
+curl -sS https://api.zolai.space/health
+curl -sS https://api.zolai.space/api/v1/health
+curl -sS -o /dev/null -w '%{http_code}\n' https://studio.zolai.space/
+curl -sS -o /dev/null -w '%{http_code}\n' https://mcp.zolai.space/health
+
+# public reads (anonymous, by design)
+curl -sS -X POST https://api.zolai.space/api/v1/search \
+  -H 'Content-Type: application/json' -d '{"query":"pasian","limit":10}'
+curl -sS -X POST https://api.zolai.space/api/v1/assistant/chat \
+  -H 'Content-Type: application/json' -d '{"message":"hello"}'
+
+# MCP: still the Cloudflare Worker as of 2026-10-18 (cutover pending)
+curl -sS -X POST https://mcp.zolai.space/mcp -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{}}'
+#   -> {"error":{"code":-32601,"message":"Method not found: server/discover"}}  = Worker, not the native core
+```
+
+Standing verify matrix (roles, admin keys, 404s, Studio gating): see
+[`DEPLOY_RUNBOOK.md`](DEPLOY_RUNBOOK.md#verify-matrix). Rows not re-run on
+2026-10-18 are marked there.
+
+## 7. Rollback
+
+```bash
+# zolai-core — one reset + restart, then poll
+ssh pcore-server 'cd /home/ubuntu/zolai-core && git reset --hard <PRE_SHA> && sudo systemctl restart zolai-core-dev'
+# list the automatic backup refs:
+git -C /home/ubuntu/zolai-core for-each-ref refs/backup/native-deploy
+
+# Studio — restore the bundle backup directory
+ssh pcore-server 'sudo rsync -a --delete /var/www/zolai-studio.bak-<ts>/ /var/www/zolai-studio/'
+
+# MCP landing
+ssh pcore-server 'sudo cp -a /var/www/zolai-mcp/index.html.bak-<ts> /var/www/zolai-mcp/index.html'
+
+# Consumer key (preferred rollback for an enforcement problem)
+ssh pcore-server 'cd /home/ubuntu/zolai-core && .venv-dev/bin/zolai apikey revoke <id>'
+```
+
+## 8. Post-deploy
+
+- Record the result in `context/progress-tracker.md` (and `docs/OPEN-ISSUES.md` if something was wrong).
+- Nightly backup timer is **still not installed** (needs-founder) — verify before assuming a backup exists.
+- Founder-gated, unchanged: `ZOLAI_API_AUTH=enforce` flip, PG cutover, archive (KR2.4), permission letters, speaker recruitment.
+
+## 9. Do not use
+
+- **`zolai-core/scripts/sync-and-deploy.sh`** — Docker-based **and** `rsync --delete`
+  over `/home/ubuntu/zolai-core/zolai/`: it would erase the server-only commits
+  (the checkout is 12 ahead of `origin/main`). Unsafe until rewritten.
+- `zolai-core/scripts/deploy.sh` — Compose-based.
+- `Dockerfile.prod`, `docker-compose.prod.yml` — not the runtime.
+- Any `docker exec` recipe from an older doc, including
+  `.pcore/specs/client-setup-and-deploy.md` (untracked working notes, not updated here).

@@ -175,6 +175,7 @@ tables**, never separate services — modular monolith, not microservices.
 | MCP proxy (stateless) | `zolai-mcp-server` | zolai-core HTTP API | open the SQLite DB or hold state |
 | Learner app + admin v1 + RBAC models | `zolai-web` | Prisma PG + zolai-core HTTP | bypass RBAC for data actions |
 | Monitoring stack (`zolai/monitoring/`, `ops/grafana/`, compose file) | `zolai-core` | prometheus-client (pinned) | add alert rules without the parity test |
+| — runtime note (2026-10-18) | — | the deployment is native systemd (`zolai-core-dev`, `zolai-studio-dev`); the compose file is packaging history, not the runtime | assume a container runtime exists |
 | Knowledge source content | `zolai-wiki` | — | write canonical tables directly (flows through ingestion) |
 
 Cross-cutting libraries (`zvs/`, `syllable/`, `pos_normalize.py`, quality harness) live inside
@@ -188,6 +189,9 @@ Cross-cutting libraries (`zvs/`, `syllable/`, `pos_normalize.py`, quality harnes
    ([ADR-010](../adr/ADR-010.md), [ADR-014](../adr/ADR-014.md)). No anonymous write paths.
 3. **Secrets live in `.env` only** — never committed; push protection active.
 4. **Compose-only, no Kubernetes.** Docker Compose for services; v1 must not grow orchestrator debt.
+   *(2026-10-18 correction: the intent — no Kubernetes, no orchestrator debt — stands. The
+   **runtime** on pcore-server is native systemd, not Compose; `docker ps -a` is empty. Compose
+   files remain as packaging history only. See [`docs/operations/DEPLOY_RUNBOOK.md`](../operations/DEPLOY_RUNBOOK.md).)*
 5. **Large data never in Git.** `data/`, `node_modules/`, `.venv/` stay git-ignored; only code,
    config, and small speaker-validated gold slices (CSV/JSONL) may live in repos.
 6. **RAG-first, no raw fine-tuning** as the main line — AIs consume Zolai knowledge as injected context.
