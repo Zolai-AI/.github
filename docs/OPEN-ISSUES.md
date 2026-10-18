@@ -8,6 +8,90 @@ Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
 
 ---
 
+## 2026-10-18 (Session — the MCP surface the *core* serves is now usable by other people's clients)
+
+`mcp.zolai.space/mcp` is still answered by the **Cloudflare Worker** (the route cutover is the last
+step), but core now serves the whole surface at `POST /api/v1/mcp` **and** `POST /mcp`. This session
+made that surface something a *foreign* client can actually use — Claude, ChatGPT, Cursor, OpenCode
+— rather than one that only the SDK agrees with.
+
+### Transport and handshake
+
+| change | why a foreign client cares |
+|---|---|
+| `GET` **and** `DELETE` on both MCP paths answer **405 + `Allow: POST`** | the streamable-HTTP binding *requires* 405 from a server offering no SSE stream. Without a declared route `GET /mcp` fell through to `serve_static`'s `GET /{path:path}` catch-all and answered **404** — from which a client learns nothing |
+| `initialize` returns `result.instructions` | legacy clients render that field; an empty one wastes the handshake |
+| `resources/list`, `resources/templates/list`, `prompts/list` answer their **empty list**; `logging/setLevel` is a no-op | several clients probe beyond `tools/*` before rendering, and treat `-32601` as a broken server. `-32601` is still the answer for a method genuinely unknown, and `capabilities` still advertises **only** `tools` — the leniency is not a claim |
+| a dict result also carries `structuredContent` | a client may read the result structurally instead of re-parsing the text block |
+
+### Failures: typed and human-readable, never a raw exception
+
+Founder-reported. What a caller saw for a broken retrieval was
+`TypeError: Pooling.__init__() missing 1 required positional argument: 'embedding_dimension'` — an
+internal type name, rendered in a chat window.
+
+- New `zolai/agent/tools/errors.py`: `ToolErrorCode` (`invalid_argument` · `not_found` · `forbidden` ·
+  `unavailable` · `timeout` · `internal`), `classify_failure`, and `safe_message` as the publishing
+  boundary.
+- `ToolError` gained a `code`, **defaulted** to `invalid_argument` so no pre-existing raise site
+  changes meaning; `ToolResult` gained `error_code`, carried into `to_dict()` and into MCP's
+  `structuredContent.error`. A dependency outage is `unavailable`/`internal`, never mislabelled as
+  the caller's mistake.
+- Every `{exc}` interpolation in the tool executor was replaced with a human sentence; the traceback
+  now goes to the log only (`logger.warning(..., exc_info=...)`).
+- **The same leak existed in the agent run record** — `orchestrator.py` stored
+  `error=f"{type(exc).__name__}: {exc}"`, which the Studio Agent page rendered. It now stores
+  `classify_failure(exc).message`; the raw text stays in `logger.exception` and the admin email
+  (both operator-facing).
+- `safe_message` re-checks at the boundary, so a hand-built result, or a handler that interpolated an
+  exception into its own `ToolError`, is substituted rather than trusted. Verified against an 11-case
+  truth table: raw forms (`TypeError: …`, `KeyError: …`, traceback header, `File "…", line N`) are
+  caught, while authored messages such as `PhonologyAnalysisRequest: text: Field required` survive
+  **verbatim** — the specific ones are the actionable ones.
+
+### Corrected: the docs claimed `GET` returns 406
+
+`docs/mcp-surface.md` said "a client sending no `Accept` gets **406**". That was the **Worker's**
+behaviour, and 406 is what a server that *does* offer SSE answers ("I have a stream, ask for it").
+The core offers none, so 405 is the binding-correct answer and the 406 claim was a false promise.
+The file now carries the corrected transport contract, a new **Failures** section (the code
+vocabulary and the no-raw-exception rule) and a new **Client compatibility** section (the leniency
+table, plus the point that `/mcp` being a public `rbac.PUBLIC_ROUTES` entry is what makes Claude's
+connector detect this server as *authless* rather than starting a sign-in). Verify-probe 1 was
+asserting the wrong status and was corrected with it.
+
+### ⚠ Another writer was editing `zolai/agent/tools/` at the same time
+
+While this session worked, `zolai/agent/tools/{types,registry,render,foundation}.py` **and a new**
+`zolai/agent/tools/family.py` were written by a *second* process — mtimes well after this session's
+own edits to the same files. It briefly left the package un-importable (`NameError: build_family`,
+then `ModuleNotFoundError: No module named 'zolai.agent.api'`). Both were transient — the writer
+repaired them, and this session's edits survived — but **two agents on one package is a coordination
+failure, not a merge to repeat**. The refactor moved the family coverage guard into
+`family.build_family`; the five `TestCoverageGuard` tests in `test_mcp_agent_namespace.py` were
+repointed at `family.assert_tables_cover` so they still mutate and drive the live tables.
+
+### Also fixed
+
+- `review_queue_submit` declared `destructive=True`. The MCP hint is *factual* — `false` means
+  "performs only additive updates" — and the handler only calls `add_to_queue`. It is now `False`
+  (`writes=True` already carries "this is not a read"), and the policy comment above the registry was
+  corrected from "required for anything that writes" to "reserved for a tool that can destroy state
+  that already exists". A false destructive hint makes every client confirm an action that cannot
+  lose data, and leaves nothing to say about a tool that genuinely can.
+- The claim in `zolai-core/.pcore/session-claims.json` is from **2026-10-10** ("close founder gates
+  2,3,4,5"), has never been released, and does not describe current work.
+
+### Still open
+
+1. **Push + deploy.** The core is ahead of `origin/main` and the running unit has not been
+   restarted, so everything above is *local* — `mcp.zolai.space` still reaches the Worker.
+2. **The Worker route is still live** and answers `server/discover` with `-32601` (cutover pending,
+   and it is still the only thing serving `mcp.zolai.space`).
+3. Server drift (`preserve/server-working-tree-20261014`, 12 commits ahead of `main`) unreconciled.
+
+---
+
 ## 2026-10-18 (Session — the runtime was already native; Docker removed from the deploy artifacts)
 
 **Goal** — make the day-to-day deploy command correct for the thing that is actually running.
