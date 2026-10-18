@@ -31,8 +31,19 @@ duplicated query logic, and no per-call state to trust.
   `tools/call`, `initialize`; there is no per-session endpoint;
 - **no `Mcp-Session-Id`** is issued or required in the `2026-07-28` era, so a request may land on
   any worker;
-- responses are `application/json`, or `text/event-stream` when asked for; a client sending no
-  `Accept` gets **406** — the transport asking what you can read, not an application error.
+- every `POST` is answered `application/json`. There is **no `Accept` negotiation and no SSE**: a
+  client that asks for `text/event-stream` still gets JSON (which the binding permits), and a client
+  that sends no `Accept` at all is **not** refused — nothing on this surface can produce a **406**;
+- `GET` and `DELETE` are **`405 Method Not Allowed`** with `Allow: POST`. That is the binding's
+  required answer from a server offering no SSE stream, and statelessness means there is no session
+  for `DELETE` to terminate. Both are *declared* routes, not a fall-through: without them
+  `GET /mcp` reached the static `GET /{path:path}` catch-all and answered a **404**, which tells a
+  client nothing about whether this is an MCP endpoint.
+
+  > **Corrected 2026-10-18.** This section previously read "a client sending no `Accept` gets
+  > **406**". That was the Cloudflare Worker's behaviour, and 406 is what a server that *does* offer
+  > SSE answers — it means "I have a stream; ask for it". The core offers no stream, so 405 is the
+  > binding-correct answer and 406 would be a false promise. Probe 1 below is the check.
 
 ## Protocol versioning
 
@@ -131,6 +142,64 @@ Rate limiting and scopes reuse `zolai/api/rate_limit.py` and `zolai/api/rbac.py`
 introducing a second policy. Admin-class calls re-check the caller's claims on **every** request,
 because the transport keeps no session to trust.
 
+## Failures
+
+A tool that fails answers `isError: true` with **two renderings of one failure** — a human sentence
+and a stable machine code — and never a third:
+
+```json
+{"content": [{"type": "text",
+              "text": "rag_search: this tool could not complete the request; please try again."}],
+ "isError": true,
+ "structuredContent": {"error": {"code": "internal",
+                                 "message": "rag_search: this tool could not complete the request; please try again.",
+                                 "tool": "rag_search"}}}
+```
+
+| field | for |
+|---|---|
+| `content[0].text` | the human sentence a chat client renders to a person |
+| `structuredContent.error.code` | a client branching without parsing prose — a **stable vocabulary**: `invalid_argument` · `not_found` · `forbidden` · `unavailable` · `timeout` · `internal` (`ToolErrorCode`, `zolai/agent/tools/types.py`) |
+
+**A raw exception never crosses this boundary.** What a caller used to see was
+`TypeError: Pooling.__init__() missing 1 required positional argument: 'embedding_dimension'` — an
+internal type name, and the kind of string that also carries SQL, file paths or provider payloads.
+Every failure is now classified in `zolai/agent/tools/errors.py`: the code and a human sentence go
+on the wire, the traceback goes to the server log (`logger.warning(..., exc_info=...)`). Two causes
+are never conflated:
+
+| cause | code | message says |
+|---|---|---|
+| the caller's fault — a missing or ill-typed argument | `invalid_argument` | which field, because that is actionable |
+| the server's fault — a dependency down, or an internal error | `unavailable` / `internal` | so, plainly, with no internals |
+
+The classification runs on the executor's *unexpected* branch, so no handler can leak by omission;
+and a message a handler wrote for a person (e.g. `PhonologyAnalysisRequest: text: Field required`)
+is preserved verbatim. `errors.safe_message` is the publishing boundary and re-checks anyway — a
+hand-built result, or a handler that interpolated an exception into its own `ToolError`, is
+substituted with the canonical sentence for its code rather than trusted.
+
+## Client compatibility
+
+The surface is lenient wherever leniency costs nothing, because real clients probe beyond
+`tools/*` and a hard error makes them give up on the server:
+
+| a client sends | answered | why |
+|---|---|---|
+| `resources/list` · `resources/templates/list` · `prompts/list` | the matching **empty list** | Claude and Cursor ask before rendering, even of a tools-only server |
+| `logging/setLevel` | `{}` — a no-op | a logging preference, not a request this server has an answer to |
+| `ping` | `{}` | `2026-07-28` removed it; answering a liveness probe can only help |
+| `initialize` | `result.instructions` **set** | legacy clients render that field; leaving it empty wastes the slot |
+
+`-32601` is still the answer to a method this server genuinely does not know. The leniency is **not
+a claim**: `capabilities` advertises `tools` and nothing else, so a client that reads capabilities
+learns the truth, and one that probes anyway is not punished for it.
+
+Auth is **none by default**: `/mcp` is a public route in `rbac.PUBLIC_ROUTES`, so an anonymous caller
+is never `401`ed — which is what makes Claude's connector detect this server as *authless* (the
+default supported mode) rather than trying to start a sign-in. A presented key still widens the tool
+set server-side; a client-supplied `scope` still cannot.
+
 ## Cutover
 
 `mcp.zolai.space` today is a Cloudflare Worker: zone route `mcp.zolai.space/*`, DNS CNAME →
@@ -163,8 +232,10 @@ the same call.
 mcp() { curl -sS -X POST https://mcp.zolai.space/mcp -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' -d "$1"; }
 
-# 1. transport alive — 406 is correct, it is asking for an Accept
-curl -sS -o /dev/null -w '%{http_code}\n' https://mcp.zolai.space/mcp
+# 1. transport alive — the binding's 405 + Allow: POST (NOT 406; no SSE is offered)
+curl -sS -D- -o /dev/null https://mcp.zolai.space/mcp | grep -Ei '^(HTTP|allow)'
+# 1b. a client that asks for SSE anyway still gets JSON, never a 406
+mcp '{"jsonrpc":"2.0","id":9,"method":"ping"}' 
 # 2. landing page is HTML, not JSON — a POST-CUTOVER check: today this answers
 #    200 application/json (the Worker's own landing), which is the failure signature
 curl -sSI https://mcp.zolai.space/ | grep -i content-type
