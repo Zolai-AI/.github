@@ -31,9 +31,10 @@
   guard `a07492e`). It **needs reconciling back to `main`** — owner action, not done.
 - **7-point verify matrix not re-run** on 2026-10-18 (only the three public health
   endpoints + two MCP probes were).
-- **MCP cutover still PENDING:** `mcp.zolai.space` is still the Cloudflare Worker
-  (`serverInfo zolai-mcp 1.2.0`; `server/discover` → `-32601`). `zolai mcp landing`
-  does not exist yet, so the native landing page cannot be generated.
+- ~~**MCP cutover still PENDING**~~ — **DONE 2026-10-18.** `mcp.zolai.space` is served by
+    zolai-core (`serverInfo zolai-core 1.0.0`; `server/discover` answers); the Worker route
+    `0201a2a820ea46f8a4fc0157d36dd61c` was deleted. `zolai mcp landing` exists and the landing is
+    generated from the registry. `scripts/verify-mcp-cutover.sh` → 14 PASS · 0 FAIL · 0 PENDING.
 - Nightly backup timer **not installed** (needs-founder).
 - C1 Corpus clean / C2 Usage-pattern mining / C3 Flash-train · L2 Morphology (L1.4/L1.5 POS done)
 

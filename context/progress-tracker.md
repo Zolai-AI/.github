@@ -1,3 +1,54 @@
+## 2026-10-18 (Session — the MCP surface left the Worker; `mcp.zolai.space` is the native core)
+
+**The cutover is done.** `mcp.zolai.space` is answered by `zolai-core`, not the Cloudflare Worker.
+
+### Cutover (measured, not assumed)
+
+- The Worker's binding was a **zone route** — `mcp.zolai.space/mcp*` → script `zolai-mcp`
+  (`0201a2a820ea46f8a4fc0157d36dd61c`), *not* `mcp.zolai.space/*` as two plans said (which is why
+  `/` had been reaching nginx all along), and *not* a DNS record: `mcp.zolai.space` was **already** a
+  proxied CNAME to the tunnel `3e45cb07-a713-4319-9791-9a3fc4ceda21.cfargotunnel.com`. So the "DNS
+  flip" that plans listed as step 8 was never needed, and deleting that one route **was** the cutover.
+- Deployed core `88ce003` (`git fetch && git merge --no-edit origin/main` into the server's
+  `preserve/` branch, then `systemctl restart` + **polled** `/health` → 200 after 14 s).
+- Deleted the route through the Cloudflare API. Note for next time: the server's
+  `/etc/cloudflared/cf-api-token` can read DNS but **not** Worker routes, and `wrangler` v4 dropped
+  the `routes`/`domains` commands — the route was removed with wrangler's OAuth token from the
+  workstation. The `journey.zolai.space/*` route was left untouched.
+- Regenerated the landing from the registry (`zolai mcp landing` → `/var/www/zolai-mcp/index.html`).
+
+### Verified — `scripts/verify-mcp-cutover.sh`: **14 PASS · 0 FAIL · 0 PENDING** (`served by: CORE`)
+
+`initialize` → `serverInfo zolai-core 1.0.0` + `instructions` · `GET /mcp` → **405 + `allow: POST`** ·
+`tools/list` → **exactly the 8 anonymous tools**, every name matching `[A-Za-z0-9_-]{1,64}`, every
+`inputSchema.type == "object"` · `dictionary_lookup(word=pasian)` →
+`[{"zolai":"pasian","english":"God","pos":"unknown"}]` (**`pasian`, not the forbidden `pathian`**) ·
+a missing argument → `structuredContent.error = {"code":"invalid_argument","message":"word is
+required","tool":"dictionary_lookup"}` — typed, human-readable, no raw exception · an admin tool and
+a nonsense name are refused **identically** (`-32602`) · `resources/list` → `{"resources":[]}`,
+`prompts/list` → `{"prompts":[]}` · an asked-for `2026-07-28` is never downgraded, and a declared
+`2024-10-07` is refused `-32022` (both the `_meta` and the header path) · landing served = the
+generated page (26 registry markers).
+
+Member/admin tiers **SKIP** — there is no key to probe them with (the last two rows).
+
+### Docs corrected (they had drifted the other way)
+
+`docs/mcp-surface.md` § Cutover (all ten rows resolved, and the two wrong facts above),
+`docs/OPEN-ISSUES.md`, `docs/ROADMAP.md`, `docs/README.md`, `docs/INFRASTRUCTURE.md`,
+`docs/operations/DEPLOY_RUNBOOK.md` (rows 10–13 re-probed; 12–13 are new),
+`docs/operations/DEPLOY_COMMANDS.md`, and `zolai-core/docs/planning/MCP_LAYER_PLAN.md`.
+
+### Still open
+
+1. **Member/admin tier probes** need `ZOLAI_MEMBER_KEY` / `ZOLAI_ADMIN_KEY` to close the last two rows.
+2. The `zolai-mcp` Worker script is deployed but **unreferenced** — kept deliberately because it *is*
+   the one-line rollback; deleting it is the founder's call.
+3. The server checkout is still on `preserve/server-working-tree-20261014` (now with `origin/main`
+   merged in), not `main`.
+
+---
+
 ## 2026-10-18 (Session — the runtime is NATIVE; Docker removed from the deploy artifacts)
 
 Root-repo only (no `zolai-core/` edits — another session owns it). Found while writing the
@@ -46,12 +97,15 @@ startup complete `18:01:15`) — every readiness check must **poll**, never slee
 | `GET /api.zolai.space/api/v1/health` | 200 |
 | `GET /studio.zolai.space/` | 200 |
 | `GET /mcp.zolai.space/health` | 200 |
-| `POST /mcp/... initialize` | 200 `serverInfo: zolai-mcp 1.2.0` → **still the Cloudflare Worker** |
-| `POST /mcp/... server/discover` | `-32601 Method not found` → cutover still PENDING |
+| `POST /mcp/... initialize` | 200 `serverInfo: zolai-mcp 1.2.0` → **still the Cloudflare Worker** ⚠️ *superseded the same day — see the entry above* |
+| `POST /mcp/... server/discover` | `-32601 Method not found` → cutover still PENDING ⚠️ *superseded — the core answers this now* |
 
 Correction to the MCP entry's probe table: the Worker's own `GET /` now answers
 `content-type: text/html`, so content-type no longer identifies the surface — discriminate by
 `server/discover` behaviour instead.
+
+**Both MCP rows above were superseded later the same day**, when the `mcp.zolai.space` cutover
+completed: the core is what answers the hostname now (see the entry at the top of this file).
 
 ### Open (recorded, not fixed)
 
@@ -62,14 +116,12 @@ Correction to the MCP entry's probe table: the Worker's own `GET /` now answers
    **12 commits ahead of `origin/main`** (RAG grounding `5454062`, notification honesty `702089b`,
    deploy guard `a07492e`). Needs reconciling back to `main` (push, then reset the server).
 3. **7-point verify matrix not re-run** — only the six probes above + the script's tests.
-4. **MCP landing cannot be generated from `main`** — `zolai/cli/main.py` as tracked in git has
-   no `mcp` subcommand (verified 2026-10-18 against the committed tree). An uncommitted
-   implementation has since appeared in a developer working tree (`zolai/cli/mcp.py` with a
-   `landing` command, `zolai/mcp/landing.py`, `zolai/mcp/protocol.py`, `zolai/api/mcp_router.py`,
-   wired into `zolai/cli/main.py`, plus `tests/test_mcp_api.py`) — all **untracked WIP owned by
-   another session**, absent from any clean checkout, not to be relied on until it lands. An
-   earlier draft of this entry said the string "landing" appeared nowhere in `zolai-core`; that
-   held for `main`, not for the working tree.
+4. ~~**MCP landing cannot be generated from `main`**~~ — **RESOLVED 2026-10-18** in `41ba7f1`:
+   `zolai/cli/mcp.py` (a `landing` command), `zolai/mcp/landing.py`, `zolai/mcp/protocol.py`,
+   `zolai/api/mcp_router.py` and `tests/test_mcp_api.py` are committed and deployed, so a clean
+   checkout of `main` can generate the landing. (The note below was accurate when written: as
+   *tracked* then, `zolai/cli/main.py` had no `mcp` subcommand — the implementation existed only
+   as untracked WIP in another session's tree.)
 5. Nightly backup timer still not installed (needs-founder). Not verified: passwordless `sudo`
    for `/var/www`, on-disk nginx vhosts, the native unit's real `ZOLAI_DATA_ROOT`/`ZOLAI_DB_PATH`.
 

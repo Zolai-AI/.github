@@ -10,10 +10,13 @@ Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
 
 ## 2026-10-18 (Session — the MCP surface the *core* serves is now usable by other people's clients)
 
-`mcp.zolai.space/mcp` is still answered by the **Cloudflare Worker** (the route cutover is the last
-step), but core now serves the whole surface at `POST /api/v1/mcp` **and** `POST /mcp`. This session
-made that surface something a *foreign* client can actually use — Claude, ChatGPT, Cursor, OpenCode
-— rather than one that only the SDK agrees with.
+**The cutover is done.** `mcp.zolai.space/mcp` is served by **zolai-core**, not the Cloudflare
+Worker: the zone route `mcp.zolai.space/mcp*` → `zolai-mcp`
+(`0201a2a820ea46f8a4fc0157d36dd61c`) was deleted, core `88ce003` was deployed to pcore-server, and
+`scripts/verify-mcp-cutover.sh` reports **14 PASS · 0 FAIL · 0 PENDING** (`served by: CORE`). The
+same surface is reachable at `POST /api/v1/mcp` on the api host. This session made it something a
+*foreign* client can actually use — Claude, ChatGPT, Cursor, OpenCode — rather than one that only
+the SDK agrees with.
 
 ### Transport and handshake
 
@@ -73,22 +76,33 @@ repointed at `family.assert_tables_cover` so they still mutate and drive the liv
 
 ### Also fixed
 
-- `review_queue_submit` declared `destructive=True`. The MCP hint is *factual* — `false` means
-  "performs only additive updates" — and the handler only calls `add_to_queue`. It is now `False`
-  (`writes=True` already carries "this is not a read"), and the policy comment above the registry was
-  corrected from "required for anything that writes" to "reserved for a tool that can destroy state
-  that already exists". A false destructive hint makes every client confirm an action that cannot
-  lose data, and leaves nothing to say about a tool that genuinely can.
+- **`destructiveHint`: settled the other way — this entry must not claim a change the shipped tree
+  does not contain.** This session briefly made `review_queue_submit` `destructive=False`, on the
+  reading that the hint is *factual* (`false` ⟺ "performs only additive updates") and the handler
+  only calls `add_to_queue`. The concurrent writer below reverted it **and made the rule
+  enforceable**: `assert_specs_are_publishable` now refuses, at import, any spec with `writes=True`
+  but not `destructive=True` — so a writing tool *must* be advertised destructive, and the shipped
+  tree has `review_queue_submit` at `destructive=True`. A gate that refuses the forbidden
+  combination is stronger than the prose it replaced, so it was conceded rather than argued:
+  `tests/test_tool_render.py::test_annotations_are_honest_about_writes` was rewritten to assert the
+  *enforced* rule (every spec declares `destructive`; `readOnlyHint is not writes`;
+  `destructiveHint is is_destructive`) instead of the MCP-spec reading.
 - The claim in `zolai-core/.pcore/session-claims.json` is from **2026-10-10** ("close founder gates
   2,3,4,5"), has never been released, and does not describe current work.
 
 ### Still open
 
-1. **Push + deploy.** The core is ahead of `origin/main` and the running unit has not been
-   restarted, so everything above is *local* — `mcp.zolai.space` still reaches the Worker.
-2. **The Worker route is still live** and answers `server/discover` with `-32601` (cutover pending,
-   and it is still the only thing serving `mcp.zolai.space`).
-3. Server drift (`preserve/server-working-tree-20261014`, 12 commits ahead of `main`) unreconciled.
+1. **The member and admin tiers have never been probed over the wire.** The verifier's
+   `mcp.tier.member` / `mcp.tier.admin` rows SKIP without `ZOLAI_MEMBER_KEY` / `ZOLAI_ADMIN_KEY`.
+   The anonymous tier (8 tools, exactly the expected set) and
+   `mcp.access.refusal_indistinguishable` both PASS, so the *shape* of the access model is proven —
+   but the 21- and 26-tool views have not been seen from a client. Two keys close those rows.
+2. **The `zolai-mcp` Worker script is deployed but unreferenced.** Nothing serves it (the route is
+   gone); it is kept deliberately because it *is* the one-line rollback. Deleting it is the
+   founder's call.
+3. **Server drift.** `/home/ubuntu/zolai-core` is on `preserve/server-working-tree-20261014` with
+   `origin/main` merged into it (now `88ce003`). The merge is what deployed this work; the branch
+   itself is still not `main`, which is what a future `git pull` on the server will trip over.
 
 ---
 

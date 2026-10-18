@@ -118,11 +118,13 @@ curl -sS -X POST https://api.zolai.space/api/v1/search \
 curl -sS -X POST https://api.zolai.space/api/v1/assistant/chat \
   -H 'Content-Type: application/json' -d '{"message":"hello"}'
 
-# MCP: still the Cloudflare Worker as of 2026-10-18 (cutover pending)
+# MCP: served by the NATIVE CORE since 2026-10-18
 curl -sS -X POST https://mcp.zolai.space/mcp -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{}}'
-#   -> {"error":{"code":-32601,"message":"Method not found: server/discover"}}  = Worker, not the native core
+#   -> {"jsonrpc":"2.0","id":1,"result":{"supportedVersions":["2026-07-28",...]}}
+#   -> -32601 "Method not found: server/discover" would still mean the OLD Worker is serving;
+#      rollback is one PUT of the route (docs/mcp-surface.md, section Cutover).
 ```
 
 Standing verify matrix (roles, admin keys, 404s, Studio gating): see

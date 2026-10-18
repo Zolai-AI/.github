@@ -35,7 +35,7 @@ status: CONFIRMED
 | Landing page | Cloudflare Pages | https://zolai.space/ |
 | Core API | **native systemd on pcore-server** (`zolai-core-dev`, `127.0.0.1:8001`) behind nginx | https://api.zolai.space/health |
 | Studio | **native static bundle** in `/var/www/zolai-studio` behind nginx | https://studio.zolai.space/ |
-| MCP server | Cloudflare Workers — being replaced by the native core behind nginx `127.0.0.1:8021` (cutover PENDING) | https://mcp.zolai.space/mcp |
+| MCP server | **native core** behind nginx `127.0.0.1:8021` (cut over 2026-10-18; the `zolai-mcp` Worker script is deployed but unreferenced) | https://mcp.zolai.space/mcp |
 | GitHub Pages | GitHub Pages | https://zolai-ai.github.io/ |
 
 *Updated 2026-10-18: the runtime is native systemd; there is no container runtime on
