@@ -20,7 +20,8 @@
 - `zolai-core/scripts/sync-and-deploy.sh` is **unsafe** (Docker + `rsync --delete` over
   the server checkout → would erase the server-only commits)
 - Server checkout is **12 commits ahead of `origin/main`** — needs reconciling back to `main`
-- 7-point verify matrix not re-run; MCP DNS cutover still PENDING (Worker still live)
+- 7-point verify matrix not re-run; ~~MCP DNS cutover still PENDING~~ — **cut over 2026-10-18**
+  (core serves `mcp.zolai.space`; verifier 14 PASS · 0 FAIL · 0 PENDING)
 - Nightly backup timer not installed
 
 ### ⏳ Founder-Gated

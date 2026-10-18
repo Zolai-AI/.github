@@ -195,13 +195,15 @@ scripts/native-deploy.sh mcp-landing
    `/var/www/zolai-mcp/index.html` to `index.html.bak-<ts>`, installs it `0644`.
 5. Verification discriminates by **behaviour, not content-type**: a `POST
    /mcp` `server/discover` that answers `-32601 Method not found` means the
-   hostname is still the Cloudflare Worker (DNS cutover pending). The Worker's own
-   landing is *also* HTML (verified 2026-10-18), so content-type alone proves nothing.
+   hostname is still the Cloudflare Worker. **Cut over 2026-10-18** — this probe now answers
+   with a `result`. The Worker's own landing is *also* HTML (verified 2026-10-18), so
+   content-type alone proves nothing; assert the registry markers instead.
 
 ## Verify matrix
 
-Rows marked **✅ live** were probed from a workstation on 2026-10-18; the rest are
-the standing matrix and were **not** re-run this session.
+Rows marked **✅ live** were probed from a workstation on 2026-10-18. Rows 10–13 were re-probed
+**after the MCP cutover** the same day (12–13 are new); the rest are the standing matrix and were
+**not** re-run.
 
 | # | Test | Expected | Status |
 |---|------|----------|--------|
@@ -214,8 +216,10 @@ the standing matrix and were **not** re-run this session.
 | 7 | Enforce-mode roles: public 200 no key; `/agent/runs` 401 anon; admin chat 403 member | as stated | not re-run |
 | 8 | Unknown path → 404 | 404 | not re-run |
 | 9 | Studio: public chat works signed out; Settings/Agent hidden; admin key reveals all | as stated | not re-run |
-| 10 | `POST /mcp` `initialize` | 200 | ✅ live — **still the Worker**: `serverInfo zolai-mcp 1.2.0` |
-| 11 | `POST /mcp` `server/discover` | new-era answer | ✅ live — **`-32601 Method not found`** (Worker; cutover PENDING) |
+| 10 | `POST /mcp` `initialize` | 200 | ✅ live — **zolai-core**: `serverInfo zolai-core 1.0.0` + `instructions` |
+| 11 | `POST /mcp` `server/discover` | new-era answer | ✅ live — a `result` with `supportedVersions` |
+| 12 | `GET /mcp` | 405 + `Allow: POST` | ✅ live (a streamless server must answer 405) |
+| 13 | `POST /mcp` `tools/call` (anonymous) | `isError:false`; only the 8 public tools | ✅ live — `dictionary_lookup(word=pasian)` → `[{"zolai":"pasian","english":"God"}]` |
 
 Quick origin-side check after any core deploy:
 

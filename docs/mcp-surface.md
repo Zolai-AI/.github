@@ -202,9 +202,13 @@ set server-side; a client-supplied `scope` still cannot.
 
 ## Cutover
 
-`mcp.zolai.space` today is a Cloudflare Worker: zone route `mcp.zolai.space/*`, DNS CNAME →
-`zolai-mcp.peterpausianlian.workers.dev`. It is being replaced by the native core behind an nginx
-vhost on `127.0.0.1:8021` via the named tunnel `3e45cb07-a713-4319-9791-9a3fc4ceda21`.
+**Done — `mcp.zolai.space` is served by the native core** (2026-10-18). Two facts this section used
+to assert were both wrong in the direction of being *out of date*: the zone route was
+`mcp.zolai.space/mcp*` (not `/*`, which is why `/` had been reaching nginx all along) and the DNS
+record was **already** a CNAME to the tunnel — never to `zolai-mcp.peterpausianlian.workers.dev`.
+That left exactly one thing holding the hostname on the Worker, and deleting it was the whole
+cutover. The core is now behind the nginx vhost on `127.0.0.1:8021` via the named tunnel
+`3e45cb07-a713-4319-9791-9a3fc4ceda21`.
 
 | # | Step | Status |
 |---|---|---|
@@ -212,16 +216,21 @@ vhost on `127.0.0.1:8021` via the named tunnel `3e45cb07-a713-4319-9791-9a3fc4ce
 | 2 | Typed foundation contracts (11 routes) | ✅ |
 | 3 | One canonical tool definition, two renderings | ✅ |
 | 4 | OpenAI-compat function calling proven | ✅ |
-| 5 | `zolai/mcp/` + `POST /mcp` + `/api/v1/mcp` + `GET /` landing | ❌ not written |
-| 6 | nginx vhost `127.0.0.1:8021`, serving the landing page | ⚠️ installed *(operator-reported)* |
-| 7 | Tunnel ingress entry for `mcp.zolai.space` | ⚠️ added *(operator-reported)* |
-| 8 | DNS flip → `3e45cb07-a713-4319-9791-9a3fc4ceda21.cfargotunnel.com` | ❌ **PENDING** |
-| 9 | Delete the Worker route `mcp.zolai.space/*` | ❌ **PENDING** |
-| 10 | Deploy + verify matrix | ❌ **PENDING** |
+| 5 | `zolai/mcp/` + `POST /mcp` + `/api/v1/mcp` + `GET /` landing | ✅ |
+| 6 | nginx vhost `127.0.0.1:8021`, serving the landing page | ✅ *(measured)* |
+| 7 | Tunnel ingress entry for `mcp.zolai.space` | ✅ *(measured: `/` already reached nginx)* |
+| 8 | DNS → `3e45cb07-a713-4319-9791-9a3fc4ceda21.cfargotunnel.com` | ✅ *(already correct)* |
+| 9 | Delete the Worker route | ✅ `0201a2a820ea46f8a4fc0157d36dd61c` (`mcp.zolai.space/mcp*` → `zolai-mcp`) |
+| 10 | Deploy + verify matrix | ✅ core `88ce003`; verifier **14 PASS · 0 FAIL · 0 PENDING** |
 
-**Order matters.** Steps 6–7 are harmless while 5 is missing — a vhost serving a 404 is not a
-cutover. Step 8 is the only step that changes what the hostname *means*, and 9 must follow it,
-never precede it, or every current client loses the name. Both are one-line reverts.
+`scripts/verify-mcp-cutover.sh` is the observation-only harness for this — it never performs the
+cutover. Its discriminator is **`server/discover`**, not the content-type: the Worker's own `GET /`
+already answers `text/html`, so content-type no longer separates the two, while `-32601 Method not
+found` to `server/discover` unambiguously identifies the legacy Worker.
+
+Rollback is one `PUT` of the route (`{"pattern":"mcp.zolai.space/mcp*","script":"zolai-mcp"}`). The
+`zolai-mcp` script is still deployed but **unreferenced and inert**; deleting it is a further,
+optional step that trades that one-line rollback away, so it is left to the founder.
 
 ## Verify
 
@@ -236,9 +245,9 @@ mcp() { curl -sS -X POST https://mcp.zolai.space/mcp -H 'Content-Type: applicati
 curl -sS -D- -o /dev/null https://mcp.zolai.space/mcp | grep -Ei '^(HTTP|allow)'
 # 1b. a client that asks for SSE anyway still gets JSON, never a 406
 mcp '{"jsonrpc":"2.0","id":9,"method":"ping"}' 
-# 2. landing page is HTML, not JSON — a POST-CUTOVER check: today this answers
-#    200 application/json (the Worker's own landing), which is the failure signature
-curl -sSI https://mcp.zolai.space/ | grep -i content-type
+# 2. the landing page is the GENERATED one, not the Worker's hand-drafted page. Since
+#    the cutover both are text/html, so assert the registry markers, not the content-type
+curl -sS https://mcp.zolai.space/ | grep -c 'data-tool'   # expect the registry's count
 # 3. new era: discover must answer
 mcp '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{}}'
 # 4. old era: initialize still answers for 2025-11-25
