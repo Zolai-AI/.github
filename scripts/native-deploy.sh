@@ -121,7 +121,13 @@ capture() {
 }
 
 # A public HTTPS check always runs from wherever this script runs.
-public_code() { curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null || echo "000"; }
+# curl -w ALWAYS prints a status, and prints 000 itself when no reply arrived — so the
+# old trailing `|| echo 000` appended a second one and a dead host reported "000000".
+public_code() {
+  local c
+  c="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$1" 2>/dev/null)" || true
+  printf '%s' "${c:-000}"
+}
 public_body() { curl -fsS --max-time 10 "$1" 2>/dev/null || true; }
 
 # ---------------------------------------------------------------------------

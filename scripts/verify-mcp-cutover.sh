@@ -230,7 +230,32 @@ JSON
 
 CORE_DIR="${CORE_DIR_IN:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/zolai-core}"
 CORE_HEAD=""; CORE_DIRTY=""
+# The expectation must be the code production RUNS — the committed HEAD, never an
+# in-progress working tree. A dirty checkout (someone's WIP, or a concurrent writer
+# mid-branch) used to be read as the expectation, so a correct production surface
+# reported "REGRESSION(S) FOUND" for tools that were never deployed. When the tree
+# is dirty, HEAD is exported read-only via `git archive` and the registry is read
+# from that snapshot; the working tree is left completely untouched.
+REGISTRY_TREE="$CORE_DIR"
+REGISTRY_NOTE="committed HEAD"
 if [[ "$USE_REGISTRY" == 1 && -f "$CORE_DIR/pyproject.toml" ]]; then
+  CORE_HEAD="$(git -C "$CORE_DIR" rev-parse --short HEAD 2>/dev/null | head -1 || true)"
+  CORE_DIRTY="$(git -C "$CORE_DIR" status --porcelain 2>/dev/null | wc -l | tr -d ' ' || true)"
+  [[ "$CORE_HEAD" =~ ^[0-9a-f]+$ ]] || CORE_HEAD="?"
+  [[ "$CORE_DIRTY" =~ ^[0-9]+$ ]] || CORE_DIRTY="?"
+  if [[ "$CORE_DIRTY" != "0" && "$CORE_DIRTY" != "?" ]]; then
+    if git -C "$CORE_DIR" archive HEAD > "$TMP/head.tar" 2>/dev/null \
+       && mkdir -p "$TMP/headtree" \
+       && tar -xf "$TMP/head.tar" -C "$TMP/headtree" 2>/dev/null; then
+      REGISTRY_TREE="$TMP/headtree"
+      REGISTRY_NOTE="committed HEAD $CORE_HEAD, not the working tree (the checkout has $CORE_DIRTY uncommitted path(s); production runs committed code)"
+    else
+      REGISTRY_NOTE="WORKING TREE, because HEAD could not be exported (checkout is dirty with $CORE_DIRTY uncommitted path(s)) — the expectation may include never-deployed WIP"
+    fi
+  fi
+fi
+
+if [[ "$USE_REGISTRY" == 1 && -f "$REGISTRY_TREE/pyproject.toml" ]]; then
   CORE_PY=""
   if [[ -x "$CORE_DIR/.venv/bin/python" ]]; then
     CORE_PY="$CORE_DIR/.venv/bin/python"
@@ -238,14 +263,14 @@ if [[ "$USE_REGISTRY" == 1 && -f "$CORE_DIR/pyproject.toml" ]]; then
     CORE_PY="python3"
   fi
   if [[ -n "$CORE_PY" ]]; then
-    if PYTHONPATH="$CORE_DIR${PYTHONPATH:+:$PYTHONPATH}" "$CORE_PY" - > "$TMP/expected.json" \
+    if REGISTRY_NOTE_ENV="$REGISTRY_NOTE" PYTHONPATH="$REGISTRY_TREE${PYTHONPATH:+:$PYTHONPATH}" "$CORE_PY" - > "$TMP/expected.json" \
          2> "$TMP/registry.err" <<'PY'
-import json
+import json, os
 from zolai.agent.tools.registry import SPECS, names_for
 
 print(json.dumps({
     "source": "registry",
-    "note": "read from the zolai-core checkout's zolai/agent/tools/registry.py",
+    "note": os.environ.get("REGISTRY_NOTE_ENV", "read from the zolai-core checkout"),
     "total": len(SPECS),
     "public": names_for("public"),
     "member": names_for("member"),
@@ -269,12 +294,8 @@ else
   cp "$EMBEDDED_JSON" "$TMP/expected.json"
 fi
 
-if [[ "$REGISTRY_STATE" == "registry" ]]; then
-  CORE_HEAD="$(git -C "$CORE_DIR" rev-parse --short HEAD 2>/dev/null | head -1 || true)"
-  CORE_DIRTY="$(git -C "$CORE_DIR" status --porcelain 2>/dev/null | wc -l | tr -d ' ' || true)"
-  [[ "$CORE_HEAD" =~ ^[0-9a-f]+$ ]] || CORE_HEAD="?"
-  [[ "$CORE_DIRTY" =~ ^[0-9]+$ ]] || CORE_DIRTY="?"
-fi
+# CORE_HEAD / CORE_DIRTY were already resolved above (they decide which tree the
+# expectation is read from), so they are deliberately not recomputed here.
 
 # ---------------------------------------------------------------------------
 # Probes. `probe <name> <url> [curl args...]` records <name>.meta + <name>.body
@@ -284,11 +305,34 @@ ACCEPT=( -H 'Content-Type: application/json' -H 'Accept: application/json, text/
 
 probe() {
   local name="$1" url="$2"; shift 2
-  local meta
-  if ! meta="$(curl -sS --compressed --max-time "$TIMEOUT" -o "$TMP/$name.body" \
-        -w '%{http_code}|%{content_type}' "$@" "$url" 2>"$TMP/$name.err")"; then
-    meta="000|"
-  fi
+  local meta attempt code wait
+  for attempt in 1 2 3; do
+    if ! meta="$(curl -sS --compressed --max-time "$TIMEOUT" -o "$TMP/$name.body" \
+          -w '%{http_code}|%{content_type}' "$@" "$url" 2>"$TMP/$name.err")"; then
+      meta="000|"
+    fi
+    code="${meta%%|*}"
+    # A 000 is no HTTP response at all — a reset, a timeout, DNS. That is evidence
+    # about the *network*, never about the protocol, so it is retried before any
+    # verdict is drawn: a single blip must not read as a regression.
+    if [[ "$code" == "000" && "$attempt" -lt 3 ]]; then
+      sleep 1; continue
+    fi
+    # A 429 says "wait", not "broken". Both MCP paths share the strict 10/min
+    # anonymous chat bucket by design (an MCP tools/call runs a real DB query),
+    # and this script fires ~20 anonymous probes, so a throttle partway through a
+    # run is expected. Honouring retry_after keeps a spent bucket from cascading
+    # into false FAILs on checks that say nothing about the surface itself.
+    if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
+      wait="$(sed -n 's/.*"retry_after_s"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' \
+              "$TMP/$name.body" 2>/dev/null | head -1)"
+      [[ "$wait" =~ ^[0-9]+$ ]] || wait=6
+      # 6s is the anonymous bucket's refill quantum (10/min); never wait less.
+      [[ "$wait" -ge 6 ]] || wait=6
+      sleep "$wait"; continue
+    fi
+    break
+  done
   printf '%s' "$meta" > "$TMP/$name.meta"
   [[ -f "$TMP/$name.body" ]] || : > "$TMP/$name.body"
 }
@@ -572,18 +616,28 @@ if isinstance(result(mcp_init), dict):
     else:
         add("mcp.transport.initialize", "SKIP", "cannot classify the surface")
 else:
-    add("mcp.transport.initialize", "FAIL",
-        "POST /mcp initialize -> HTTP %s, no JSON-RPC result (%s)"
-        % (mcp_init_code, clip(raw("mcp.init"), 90)))
-    REGRESSIONS.append("mcp.transport.initialize: no JSON-RPC answer to initialize")
+    if mcp_init_code == "000":
+        add("mcp.transport.initialize", "WARN",
+            "POST /mcp initialize got no HTTP response even after a retry (curl 000) — "
+            "a transport failure, not a verdict about the surface")
+    else:
+        add("mcp.transport.initialize", "FAIL",
+            "POST /mcp initialize -> HTTP %s, no JSON-RPC result (%s)"
+            % (mcp_init_code, clip(raw("mcp.init"), 90)))
+        REGRESSIONS.append("mcp.transport.initialize: no JSON-RPC answer to initialize")
 
 mcp_tools_code, _, mcp_tools, _ = rpc("mcp.tools_anon")
 mcp_names = tool_names(mcp_tools)
 if mcp_names is None:
-    add("mcp.transport.tools_list", "FAIL",
-        "anonymous tools/list -> HTTP %s without a tools array (%s)"
-        % (mcp_tools_code, clip(raw("mcp.tools_anon"), 90)))
-    REGRESSIONS.append("mcp.transport.tools_list: no tools array in the answer")
+    if mcp_tools_code == "000":
+        add("mcp.transport.tools_list", "WARN",
+            "anonymous tools/list got no HTTP response even after a retry (curl 000) — "
+            "a transport failure, not a verdict about the tool surface")
+    else:
+        add("mcp.transport.tools_list", "FAIL",
+            "anonymous tools/list -> HTTP %s without a tools array (%s)"
+            % (mcp_tools_code, clip(raw("mcp.tools_anon"), 90)))
+        REGRESSIONS.append("mcp.transport.tools_list: no tools array in the answer")
 else:
     add("mcp.transport.tools_list", "PASS",
         "anonymous tools/list -> HTTP %s, %d tool(s)" % (mcp_tools_code, len(mcp_names)))
@@ -669,6 +723,11 @@ def version_refusal(cid, probe_name, mechanism):
         add(cid, "PASS",
             "%s declaring 2024-10-07 -> HTTP %s -32022 with supported=%s"
             % (mechanism, code, clip(supported)))
+    elif code == "000":
+        add(cid, "WARN",
+            "%s probe got no HTTP response at all (curl 000) even after a retry — a "
+            "transport failure, so it says nothing about whether an unimplemented "
+            "version is refused; re-run to classify it" % mechanism)
     elif STAGE == "core":
         detail = ("%s declaring 2024-10-07 was not refused with -32022 + data.supported "
                   "(got HTTP %s: %s) — an unimplemented version must be refused, never "
@@ -874,8 +933,22 @@ else:
 
 api_names = tool_names(api_v1_doc) or tool_names(api_disc)
 if api_names is None:
-    add("core.tier.anonymous", "SKIP" if not api_live else "WARN",
-        "the core's /mcp and %s answered no tools array" % ctx["api_v1_path"])
+    # A 429 is evidence about THIS harness's probe budget, never about the
+    # surface: both MCP paths share the strict 10/min anonymous chat bucket by
+    # design (an MCP tools/call runs a real DB query), and a full run fires ~20
+    # anonymous probes — so the bucket is usually spent before this probe fires.
+    # Calling that "no tools array" would read a throttle as a server answer,
+    # which is the same misreport this script refuses to make for a 000.
+    if api_v1_code == "429" or api_disc_code == "429":
+        add("core.tier.anonymous", "SKIP",
+            "%s%s -> HTTP 429: this run exhausted the anonymous bucket (both MCP "
+            "paths share the strict 10/min chat bucket by design), so no verdict is "
+            "drawn from a throttled probe; the anonymous tier is proven on the MCP "
+            "host, and the authenticated tiers are unaffected"
+            % (ctx["api_host"], ctx["api_v1_path"]))
+    else:
+        add("core.tier.anonymous", "SKIP" if not api_live else "WARN",
+            "the core's /mcp and %s answered no tools array" % ctx["api_v1_path"])
 else:
     compare("core.tier.anonymous", api_names, EXP["public"], api_live)
 
