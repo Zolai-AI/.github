@@ -1055,3 +1055,46 @@ settle delay. Residual flake is upstream latency: this API answers `/auth/me` in
 1–2s and a page whose identity query is still in flight cannot show the role-gated
 controls, so very slow moments still surface as a login timeout rather than a
 false pass.
+
+## 2026-10-18 — Two ops scripts reported things that were not true
+
+Found by re-running them after the cutover, both in the same genre as the raw-exception leak:
+a tool printing a confident conclusion the evidence did not support.
+
+- `scripts/verify-mcp-cutover.sh` recorded **FAIL/REGRESSION** for
+  `mcp.protocol.version_meta_refused` because curl answered **`HTTP 000`** — *no response
+  arrived at all* — and the message built from it asserted "an unimplemented version must
+  be refused, never silently served". That is a **protocol** conclusion drawn from a
+  **transport** failure, and it is exactly what this session spent its day removing
+  elsewhere. The check was run again 3/3 times and answers `400 -32022` with
+  `data.supported` every time, so the verdict was wrong twice over. Fixed at both ends:
+  `probe()` now **retries once** before any verdict is drawn from a 000, and
+  `version_refusal` / the `initialize` and `tools/list` branches report a surviving 000
+  as **WARN — transport failure, says nothing about the protocol; re-run to classify**
+  rather than as a regression. (`STAGE_WHY` already treated 000 honestly for
+  `server/discover`; the gap was the three probes added later.)
+
+- The same script hit the **10/min anonymous chat bucket** (both MCP paths share this
+  bucket by design — MCP `tools/call` runs a real DB query). The ~20 anonymous probes
+  in a full run exhaust it, so `api.v1_tools_anon` returned 429 and the script called
+  that "no tools array" — again reading a *harness* condition as a *server* answer.
+  `probe()` now honours `retry_after` on 429 (as it already did for 000), so the bucket
+  refills and the check passes; the `core.tier.anonymous` message now explicitly names
+  the throttle as the cause and says no verdict is drawn from it.
+
+- The script's registry expectation used to import the **working tree**, so any
+  uncommitted WIP (or a concurrent writer mid-branch) became the hard expectation.
+  Correct production surfaces then reported "REGRESSION(S) FOUND" for tools never
+  deployed. Now, when the checkout is dirty, the script exports `HEAD` via `git archive`
+  and reads the registry from that snapshot; the dirty tree is untouched. The report
+  note records which tree was used.
+
+- `scripts/native-deploy.sh` reported `https://mcp.zolai.space/health` as **`000000`**.
+  curl's `-w '%{http_code}'` already prints `000` when no reply arrived, so the trailing
+  `|| echo "000"` appended a *second* one — a dead host looked like six digits.
+  `public_code()` now takes the code curl printed and falls back to a single `000` only
+  if it printed nothing.
+
+Both scripts still `bash -n` clean, and the verifier reports **16 PASS · 0 FAIL · 0 SKIP
+· 0 WARN · 0 PENDING** against the deployed core (all three tiers proven: anonymous 8,
+member 21, admin 26).
