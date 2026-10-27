@@ -10,7 +10,7 @@ Implement structured retrieval (dictionary, word attestations, sentences, gramma
 - **Architecture invariants**: Local learns, Cloudflare serves (§22); additive DB only; ZVS 2018 single-source; network=True for RAG (embeddings/LLM allowed).
 - **API stability**: Extend existing 44 /api/v1 paths — add new /api/v1/word/*, /api/v1/analyze/*, /api/v1/search, /api/v1/rag, /api/v1/knowledge/* per §24.
 - **Knowledge graph reuse**: Use `scripts/kg/` extraction + embed.py pipeline; support §21 relations (has_form, has_pos, derived_from, contains_morpheme, occurs_with, occurs_in, participates_in, similar_to, variant_of, attested_by).
-- **Current gaps**: knowledge_vectors table empty (0 rows); KG in separate kg.db not integrated; RAG contracts exist (rag_contract.py) but not exposed via stable API.
+- **Current gaps**: KG in separate kg.db not integrated; RAG contracts exist (rag_contract.py) but not exposed via stable API. (`knowledge_vectors` was populated on 2026-10-27 by `zolai rag build` — 7 tables, 8 specs.)
 
 ## Architecture — 6 Components
 
@@ -21,7 +21,7 @@ Implement structured retrieval (dictionary, word attestations, sentences, gramma
 - Relation types per §21: `has_form`, `has_pos`, `derived_from`, `contains_morpheme`, `occurs_with`, `occurs_in`, `participates_in`, `similar_to`, `variant_of`, `attested_by`.
 
 ### 2. Vector Index Population (`zolai/rag/build.py` + `scripts/kg/embed.py`)
-- Populate `knowledge_vectors` (id, source_type, source_id, vector, text, metadata JSON, version, created_at) — already exists, 0 rows.
+- Populate `knowledge_vectors` (id, source_type, source_id, vector, text, metadata JSON, version, created_at) — **done 2026-10-27** (`zolai rag build`, resumable, base64 float32 embeddings).
 - Standardize on 384-dim (sentence-transformers all-MiniLM-L6-v2).
 - Embed all canonical sources: dictionary (84k), Bible verses (31k), phrases (10k), grammar_patterns (13k), observations (2k), word_observation_stats (2k), knowledge_claims (172), hypotheses (612), kg_nodes.
 - Incremental build via Phase 5 pipeline (changed records only).

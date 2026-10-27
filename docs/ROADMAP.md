@@ -53,7 +53,7 @@ from `docs/operations/DEPLOY_RUNBOOK.md` on the native runtime.
 title: "Zolai-AI Roadmap"
 description: "Strategic roadmap aligned with OKRs and ecosystem audit"
 created: 2026-09-07
-last_updated: 2026-09-19
+last_updated: 2026-10-27
 maintainer: "Peter Pau Sian Lian (@peterlianpi)"
 source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
 status: CONFIRMED
@@ -73,7 +73,7 @@ Every major item links: OKR · Owner · Dependency · Evidence · Repository · 
 
 | Area | Score | Status |
 |------|:-----:|--------|
-| Data Assets | 8/10 | Strong — ~3.3M rows, ~99 tables (verify via audit/DB) |
+| Data Assets | 8/10 | Strong — ~4.17M rows, 151 tables (verify via audit/DB) |
 | Code Quality | 7/10 | Good — 466+ tests, ruff linting |
 | NLP Pipeline | 6/10 | Syllable strong; others Experimental / incomplete |
 | Documentation | 6/10 | Architecture v2 canonical paths added 2026-09-18 |
@@ -182,8 +182,8 @@ Every major item links: OKR · Owner · Dependency · Evidence · Repository · 
 
 ### Data Quality
 - Dictionary coverage: 84K → 150K+ entries
-- Evaluation cases: 33 → 500+
-- Verified entries: 0 → 50,000+
+- Evaluation cases: 273 → 500+
+- Verified entries: 0 (canonical_words) / 28,478 (verified vocabulary) → UNKNOWN (target)
 
 ### Community
 - Active contributors: 0 → 25+
