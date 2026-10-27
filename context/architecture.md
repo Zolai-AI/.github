@@ -324,13 +324,23 @@ See: `docs/architecture/NOTIFICATIONS.md`
 **Location:** `zolai/eval/`
 
 DB-first evaluation framework for linguistic tasks:
-- **Storage**: SQLite `zolai_eval.db` with `eval_sets`, `eval_items` tables
-- **Gold Sets**: POS (510), Morphology (130), Grammar (198), Tokenization (5) — loaded once via `zolai eval init-gold`
-- **Metrics**: Tokenization P/R/F1, POS macro-F1, Morphology exact-match, Grammar error P/R/F1
-- **CLI**: `zolai eval run|init-gold|export|list|stats`
+- **Storage**: `eval_sets`, `eval_cases` in the canonical `data/zolai.db` — the
+  same database as everything else (`zolai/eval/store.py` resolves
+  `config.paths.db`). The former side store `zolai_eval.db` is retired.
+- **Lanes**: `eval_cases.kind` is either a metric lane (`zvs`, `qa`,
+  `translation`) or a gold annotation lane (`tokenization`, `pos`, `morph`,
+  `grammar`). Gold sets: POS (510), Morphology (130), Grammar (198),
+  Tokenization (5) — imported by `zolai-core/scripts/migrate_eval_store.py`
+  (or `zolai eval --import`), loaded once, not per run.
+- **Metrics**: two families — annotation scoring (tokenization/POS/morphology/
+  grammar P/R/F1) and release lanes (`zvs_compliance_rate`, `translation_bleu`,
+  `translation_chrf`, `qa_term_recall`).
+- **CLI**: `zolai-eval run|init-gold|export|import|list|stats`
 - **CI Integration**: Smoke tests on PR via `.github/workflows/eval-smoke.yml`
 
-**DB-First Principle**: All production evaluation data lives in SQLite. JSON/JSONL only for one-time migration (`zolai eval init-gold`), backup/portability (`zolai eval export`), or human annotation. Never used as primary production data store.
+**DB-First Principle**: All production evaluation data lives in the canonical
+SQLite database. JSON/JSONL is interchange only — import/export
+(`zolai eval --import|--export`) and human annotation, never a primary store.
 
 See: `docs/architecture/ZOLAIBENCH.md` (to be created)
 

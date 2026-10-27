@@ -68,9 +68,9 @@ No cross-repo globbing was performed from the workspace root (per `AGENTS.md` sc
 | Property | Value | Evidence |
 |---|---|---|
 | Engine | SQLite, WAL mode, `busy_timeout=30000` | `docs/database/tables.md` |
-| Disk size | ~2.4 GB | `tables.md` / `MONITORING.md` |
-| Rows | ~3.3M across all tables | `tables.md` |
-| Tables | **106 live (incl. FTS5 shadows, reconciled 2026-09-30)**; `tables.md` documents 101 excluding the 5 `wiki_content_fts*` shadows (107 raw `sqlite_master`) | count conventions defined in `tables.md` — drift closed |
+| Disk size | ~3.0 GB | `tables.md` (census 2026-10-27) |
+| Rows | ~4.41M across all tables (150 user tables) | `tables.md` |
+| Tables | **150 user tables** (145 excluding the 5 `wiki_content_fts*` shadows; 151 raw `sqlite_master`) | `tables.md` census 2026-10-27 |
 | Access pattern | `config.paths.data / "zolai.db"` — reads from DB, never raw JSONL | `tables.md` §7 |
 | Integrity hardening | FK guard at startup, integrity checks, migrations (27 constraints, 50+ indexes) | `zolai-core/zolai/data/{integrity,migrations}.py` |
 | Change tracking | `data_audit_log` — 30,745 rows (who/why/when, old→new) | `tables.md` §2.11 |

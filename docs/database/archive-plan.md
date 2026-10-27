@@ -74,10 +74,10 @@ sqlite3 data/backups/zolai-import-archive-$(date +%F).db "
 | bible_verses_enhanced | 0 | DROP | superseded |
 | proverbs_idioms | 0 | DROP | zolai_proverbs_idioms has data |
 | ngram | 0 | DEFER | may be planned for ngram feature |
-| knowledge_vectors | 0 | DEFER | may be planned for RAG vectors |
+| knowledge_vectors | populated 2026-10-27 | KEEP | RAG vector index — built by `zolai rag build` |
 | gemini_model_results | 0 | KEEP | history table per architecture docs |
 
-**DROP 6 · DEFER 2 · KEEP 1**
+**DROP 6 · DEFER 1 · KEEP 2**
 
 ## Phase 3 — Canonical table inventory (KEEP)
 

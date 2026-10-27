@@ -46,9 +46,38 @@ When documents conflict, prefer the **canonical** path below. Older files become
 | Data governance | [`docs/governance/data-governance.md`](data-governance.md) | `context/DATA_GOVERNANCE.md` |
 | Public vs private | [`docs/governance/public-vs-private.md`](public-vs-private.md) | — |
 | Architecture | [`docs/architecture/status.md`](../architecture/status.md) · [`01-architecture-overview.md`](../architecture/01-architecture-overview.md) | per-repo `AGENTS.md` / `context/` |
-| Database | [`docs/database/README.md`](../database/README.md) + live `data/zolai.db` | `docs/audits/`, `docs/reports/DATABASE_INTEGRITY_REPORT.md`, `docs/reports/SOURCE_OF_TRUTH_MATRIX.md` |
+| Database | [`docs/database/README.md`](../database/README.md) + [`tables.md`](../database/tables.md) + live `data/zolai.db` (**single source of truth**) | `docs/audits/`, `docs/reports/DATABASE_INTEGRITY_REPORT.md`, `docs/reports/SOURCE_OF_TRUTH_MATRIX.md` |
 | Org profile (GitHub) | [`profile/README.md`](../../profile/README.md) | — |
 | Nested repos | Each repo’s `AGENTS.md` + README | Do not glob `**/` from monorepo root |
+
+## Single database (single source of truth)
+
+There is **one** canonical data DB: `data/zolai.db` (SQLite WAL, ~3.0 GB, 150 user
+tables, 4,413,250 rows as of 2026-10-27). Every engine resolves to it through
+`zolai/config.py` `db` (env `ZOLAI_DB_PATH`, default `$ZOLAI_DATA_ROOT/zolai.db`);
+`zolai_db` is an alias, not a second path. Duplicate/dev DBs were archived to
+`data/archive/duplicate-dbs/2026-10-27/` (reversible). Evaluation data — the
+ZolaiBench metric sets **and** the gold annotation lanes — lives in the
+`eval_sets` / `eval_cases` tables of that same database; `eval_cases.kind` carries
+the lane. PostgreSQL in `zolai-web` is a separate application store, not a data
+source of truth for the toolkit. Counts and the full catalog live in
+[`../database/tables.md`](../database/tables.md).
+
+`data/zolai_eval.db` is **retired** (DEPRECATED, 2026-10-27). Nothing in
+`zolai/eval/` reads or writes it; JSONL under `data/eval/` is interchange format
+only, not a store. The 848 gold items still sitting in the retired file are moved
+by the one-shot, idempotent, preflight-backed
+`zolai-core/scripts/migrate_eval_store.py` (`--dry-run` first). Do not delete the
+retired file until that script reports the lanes present in `data/zolai.db`.
+
+The database also records its own state in `knowledge_versions`, and that record
+is checkable — a counts-only manifest cannot tell two same-sized databases apart,
+so snapshots hash table content:
+
+```bash
+zolai knowledge version v2026.10.27 --pipeline-version phase5
+zolai knowledge verify-version v2026.10.27   # exit 1 on drift
+```
 
 ## Status labels (required on important claims)
 

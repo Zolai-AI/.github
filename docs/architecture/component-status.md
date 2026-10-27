@@ -2,7 +2,7 @@
 title: "Zolai AI — Component Status Matrix"
 description: "Implemented / Experimental / Planned labels for all components"
 created: 2026-09-19
-last_updated: 2026-09-19
+last_updated: 2026-10-27
 status: CONFIRMED
 source: "docs/architecture/status.md + docs/audits/05-v2-claims-audit.md + context/progress-tracker.md"
 ---
@@ -59,7 +59,7 @@ source: "docs/architecture/status.md + docs/audits/05-v2-claims-audit.md + conte
 |---------|--------|----------|-------|
 | Online bilingual search | **Implemented** | Tests passing | ZO↔EN with context-aware ranking + fuzzy matching |
 | Grammar validation (ZVS 2018) | **Implemented** | Tests passing | Real-time ZVS 2018 compliance on user input |
-| Polysemy disambiguation | **Implemented** | Tests passing | Per-book frequency scoring via word_usage (269K records) |
+| Polysemy disambiguation | **Implemented** | Tests passing | Per-book frequency scoring via word_usage (485,360 records) |
 | Streak tracking | **Implemented** | Tests passing | Daily/weekly learning streaks + SM-2 spaced repetition |
 | Error categorization | **Implemented** | Tests passing | Grammar, vocabulary, tone, spelling tracked separately |
 | Vocabulary quiz (8 types) | **Implemented** | Tests passing | Bible, phrases, reverse, frequency, etc. |
@@ -84,7 +84,7 @@ source: "docs/architecture/status.md + docs/audits/05-v2-claims-audit.md + conte
 
 | Component | Status | Evidence | Notes |
 |-----------|--------|----------|-------|
-| Canonical DB (`data/zolai.db`) | **Implemented** | 99 tables, ~3.3M rows, ~2.3GB | SQLite WAL + busy_timeout=30000 |
+| Canonical DB (`data/zolai.db`) | **Implemented** | 151 tables, ~4,172,608 rows, ~2.4GB | SQLite WAL + busy_timeout=30000 |
 | MCP server (Cloudflare Workers) | **Implemented / Live** | https://mcp.zolai.space/mcp | 8 tools, Bearer auth, EdgeFastMCP |
 | Landing page (Cloudflare Pages) | **Implemented / Live** | https://zolai.space/ | React 19 + Vite + Three.js |
 | CI (GitHub Actions) | **Implemented** | lint.yml + pytest subsets | Org ruff, datasets manifests, web testing, wiki ZVS gates |

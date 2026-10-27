@@ -101,35 +101,47 @@ ZOLAI_NOTIFICATIONS_ENABLED=true
 
 ## DB-First Evaluation Patterns
 
-### Loading Gold Sets (One-time Migration)
-```python
-# CLI command (run once per gold set)
-zolai eval init-gold pos_gold_v0
-zolai eval init-gold morph_gold_v0
-zolai eval init-gold grammar_gold_v0
+Two entry points share the same store: `zolai-eval` (`zolai/eval/cli.py`, offline,
+dependency-free, the one CI and the release gate call) and `zolai eval`
+(`zolai/eval/runner.py`, Typer, human-facing). Prefer `zolai-eval` in scripts.
+
+### Loading Gold Sets (one-time migration from JSONL)
+```bash
+zolai-eval --import data/eval/pos_gold_v0.jsonl --as pos_gold_v0
+python scripts/migrate_eval_store.py --dry-run   # then without --dry-run
 ```
 
-### Running Evaluations (Reads from DB)
-```python
-# CLI
-zolai eval run all
-zolai eval run --task pos --smoke
+### Running Evaluations (reads from the canonical DB)
+```bash
+zolai-eval --set db:pos_gold_v0            # one set
+zolai-eval --set db                        # every active set
+zolai-eval --set smoke --baseline b.json --gate
+zolai eval run all                         # Typer surface
+```
 
-# Programmatic
-from zolai.eval.store import get_eval_items
-items = get_eval_items('pos_gold_v0')
+```python
+from zolai.eval.store import get_eval_items, fetch_cases
+items = get_eval_items('pos_gold_v0')      # legacy EvalItem shape
+cases = fetch_cases('pos_gold_v0', 'pos')  # rows with the lane resolved
 ```
 
 ### Exporting for Backup/Portability
 ```bash
-zolai eval export pos --output backup/pos_backup.jsonl
+zolai-eval --set db:pos_gold_v0 --export backup/pos_backup.jsonl
 ```
 
 ### DB-First Rules
-- **Production data**: Always SQLite/PostgreSQL (`zolai_eval.db`)
-- **JSON/JSONL**: Only for one-time migration (`init-gold`), backup/portability (`export`), human annotation
-- **Never**: Use JSON/JSONL as primary production data store
-- **Schema**: `eval_sets` (metadata) + `eval_items` (data with gold_annotation JSON)
+- **Production data**: the canonical SQLite database `data/zolai.db`, via
+  `config.paths.db`. One resolver — a module must not re-read `ZOLAI_DB_PATH`.
+- **JSON/JSONL**: only for one-time import (`--import`), backup/portability
+  (`--export`), and human annotation. Never a primary store.
+- **Schema**: `eval_sets` (catalogue) + `eval_cases` (one case per row, JSON
+  `payload`, `kind` = lane). The retired side DB `zolai_eval.db` and the old
+  `eval_items` table name are DEPRECATED.
+- **Reads must not DDL.** `ensure_schema()` runs only on write paths
+  (`_connect(create=True)`); a SELECT against a missing table is zero rows.
+- **Tests never touch the corpus** — use the `scratch_db` fixture
+  (`tests/conftest.py`); the canonical write fence fails the test otherwise.
 
 
 ## Security
