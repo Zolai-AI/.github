@@ -138,3 +138,63 @@ zolai eval export pos --output backup/pos_backup.jsonl
 - Session tokens: `Authorization: Bearer zolai_ss_*` (SHA-256 at rest)
 - Argon2id password hashing (m=65536, t=3, p=4) in `run_in_threadpool`
 - Feature flags for graceful degradation: `ZOLAI_AUTH_SESSIONS`, `ZOLAI_CB_ENABLED`, `ZOLAI_NOTIFICATIONS_ENABLED`
+
+## Secret Hygiene — Prevention (operational)
+
+Canonical short rules: root `AGENTS.md` § Secret Hygiene (always-on). This section is the
+full procedure. Loadable checklist: the `secret-hygiene` skill. Read-only scan gate: the
+`secret-scan` subagent (`07-security`). Repo-specific hazards are noted only in each repo's
+`AGENTS.md`. This is **prevention** — a separate read-only audit handles detection.
+
+### What counts as a leak surface
+Any tracked content: source, tests/fixtures, docs/wiki, comments, commit messages, log
+statements, error strings/exceptions, CI output, screenshots/terminal captures, notebooks
+(including saved cell outputs), dataset JSONL/manifests, and `wrangler.toml`/`tauri.conf.json`/
+CI YAML. If a human or tool would transmit it, it is a surface.
+
+### Tracked vs ignored — verify, never assume
+- Authority: `git ls-files`. `.gitignore` only stops *future* tracking; it never untracks a
+  file already in the index.
+- Check: `git ls-files | grep -iE '(^|/)\.env($|\.)'` — expect only placeholder templates
+  (`.env.example`, `.env.production.template`). Anything else is tracked and therefore
+  public-if-pushed.
+- To place a new env file under ignore **first** (never `git add` it), then re-run the check.
+  Ignore-rule changes are a separate, reviewed decision — not part of this procedure.
+
+### Placeholder policy (tracked files)
+Tracked files carry references, never values:
+- Shell/YAML: `${GEMINI_API_KEY}` / `$SMTP_PASS`
+- Python: `os.getenv("SMTP_PASS")`
+- TS/JS: `process.env.VITE_API_BASE`
+- Doc/test examples must be unmistakably fake and below detection thresholds
+  (e.g. `sk-aaaa…`, `${MY_API_KEY}`).
+
+### Pre-commit check procedure (run before every `git commit`)
+```bash
+# 1. Staged-diff scan (secret-shaped patterns; extend as new providers appear)
+git diff --cached -U0 | grep -inE \
+  '(sk-[A-Za-z0-9]{8,}|AKIA[0-9A-Z]{12}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,}|xox[baprs]-|BEGIN [A-Z ]*PRIVATE KEY|[Aa][Pp][Ii][_-]?[Kk][Ee][Yy].{0,3}[=:])'
+
+# 2. Tracked env files (expect templates only)
+git ls-files | grep -iE '(^|/)\.env($|\.)'
+
+# 3. The commit message itself (messages are scanned by providers too)
+git log -1 --format=%B | grep -inE '(sk-[A-Za-z0-9]{8,}|AKIA[0-9A-Z]{12}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,})'
+```
+If installed, `gitleaks detect --staged --no-banner` (or `trufflehog git detect-...`) is a
+fine substitute for step 1 — but only if already present; do not add dependencies for this.
+For a hard gate in the agent loop, spawn the `secret-scan` subagent (read-only, masks output).
+
+### If a secret was committed — ordering is mandatory
+1. **Rotate/revoke first** (provider console, server `.env`, GitHub Secrets, `wrangler secret`).
+   A pushed secret is public regardless of what the tree looks like.
+2. **Then** purge history (`git filter-repo`, force-push coordination) and clean caches.
+3. **Never purge without rotating** — purging alone only removes the evidence trail while the
+   live credential keeps working.
+4. Report the incident with **masked** evidence only.
+
+### Masking rule (always)
+Anything printed — tool output, reports, toasts, tickets — masks the value:
+first 6 + last 4 (`sk-aaaa…1234`) or a sha256 prefix (`sha256:9f86d0…`). A report that
+reproduces a secret is itself a leak. This applies to scanners too: `secret-scan` reports
+`file:line` + classification + confidence, never values.

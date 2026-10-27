@@ -55,6 +55,32 @@ from search, watchers, and indexing. Respect them — do not override with `--no
 
 When a task spans multiple repos, read each repo's `AGENTS.md` individually rather than globbing from here.
 
+## Secret Hygiene (canonical rules — every repo, every session)
+
+Prevention only. These are structural rules, not advice:
+
+1. **Never write a real secret** into any tracked file, commit message, test fixture, doc,
+   comment, log line, error string, or screenshot. **Commit messages are scanned too.**
+2. **"Untracked" must be verified, not assumed from `.gitignore`:** run
+   `git ls-files | grep -iE '(^|/)\.env($|\.)'` — `git ls-files` is the authority; an
+   ignore rule does NOT untrack an already-tracked file.
+3. **Tracked files carry placeholders only:** `${GEMINI_API_KEY}`, `os.getenv("SMTP_PASS")`,
+   `process.env.VITE_API_BASE` — never a value. Doc examples use unmistakable fakes
+   (`sk-aaaa…`).
+4. **Pre-commit check (before every commit):** scan the staged diff, e.g.
+   `git diff --cached -U0 | grep -inE '(sk-[A-Za-z0-9]{8,}|AKIA[0-9A-Z]{12}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,}|xox[baprs]-|BEGIN [A-Z ]*PRIVATE KEY|[Aa][Pp][Ii][_-]?[Kk][Ee][Yy].{0,3}[=:])'`
+   — full procedure in `context/code-standards.md` § Secret Hygiene.
+5. **If a secret was committed: rotate FIRST, then purge history. Never purge without
+   rotating** — once pushed, the value is already public; purging hides the evidence,
+   rotation kills it.
+6. **Mask everything you print:** first 6 + last 4 (`sk-aaaa…1234`) or a sha256 prefix. A
+   report that reproduces a secret is itself a leak.
+
+Layers: this block is always-on. Loadable checklist: the `secret-hygiene` skill.
+Read-only scan gate: the `secret-scan` subagent (07-security). Operational detail:
+`context/code-standards.md` § Secret Hygiene. Repo-specific notes live only in each
+repo's `AGENTS.md` — do not duplicate this block per repo.
+
 ## Learned user preferences
 
 - Use **free models only** for OpenCode (e.g. `mimo-v2.5-free`, `opencode/x-preview-f-free`); keep the free-model fallback chain intact.
