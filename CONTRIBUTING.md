@@ -29,7 +29,7 @@ Preserve and revitalize Tedim Zolai (ZVS 2018) through community-owned, cultural
 ### Developers
 - Next.js web platform (zolai-web)
 - Tauri desktop app (zolai-tauri)
-- MCP server (zolai-mcp-server)
+- MCP server (native route in zolai-core; zolai-mcp-server is the legacy Worker)
 - Mobile learning apps
 
 ### Educators
@@ -234,7 +234,7 @@ zolai-ai/
 ├── zolai-datasets/      # Data + build scripts
 ├── zolai-wiki/          # Knowledge base
 ├── zolai-training/      # LoRA/QLoRA fine-tuning
-├── zolai-mcp-server/    # MCP server for AI assistants
+├── zolai-mcp-server/    # Legacy MCP Worker (live MCP is a route in zolai-core)
 ├── zolai-landing/       # Org landing page
 ├── zolai-ai.github.io/  # GitHub Pages
 ├── .github/             # Org profile + community
