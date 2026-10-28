@@ -74,7 +74,7 @@ See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestric
 | `zolai-datasets` | Bilingual corpora & datasets | Active |
 | `zolai-training` | LoRA/QLoRA + GGUF (later-stage focus) | Early |
 | `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | Active |
-| `zolai-mcp-server` | MCP for ChatGPT / Gemini / Claude | Live |
+| `zolai-mcp-server` | Legacy MCP wrapper — the live MCP server is a route in `zolai-core` | Legacy |
 | `zolai-landing` | Org landing (zolai.space) | Live |
 
 ## Bible corpus

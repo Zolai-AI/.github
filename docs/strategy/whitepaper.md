@@ -14,7 +14,7 @@ version: 0.1
 
 ## Abstract
 
-Of the world's approximately 7,000 languages, nearly 40% are endangered, with Tibeto-Burman languages among those facing digital extinction. Tedim Zolai (ZVS 2018 orthography) — spoken by over 200,000 people in Myanmar and the diaspora — has virtually no NLP tools, digital corpora, or language technology. This paper introduces Zolai AI, a RAG-first bilingual AI toolkit designed to preserve and teach Tedim Zolai through a community-owned, culturally grounded approach. We present the largest existing Zolai language dataset: a canonical SQLite database containing 99 tables, 3.3 million rows, and 2.3 GB of cleaned, ZVS-2018-aligned linguistic data, including 84,490 dictionary entries, 31,102 parallel Bible verses, 207,623 translation pairs, and 269,903 word usage records. Our RAG-first architecture avoids raw fine-tuning, instead routing queries through a four-tier pipeline — dictionary lookup, phrase matching, Bible parallel retrieval, and AI fallback — with ZVS 2018 orthography enforced at every stage. We report 98.49% accuracy on syllable segmentation (1,725-word evaluation set) and 100% accuracy on multi-syllable words. An MCP server deployed on Cloudflare Workers integrates our toolkit with ChatGPT, Gemini, and Claude. All code, data schemas, and evaluation scripts are released under MIT license. Zolai AI demonstrates that community-driven, RAG-first approaches can produce functional NLP tools for low-resource languages without requiring massive parallel corpora or large-scale fine-tuning.
+Of the world's approximately 7,000 languages, nearly 40% are endangered, with Tibeto-Burman languages among those facing digital extinction. Tedim Zolai (ZVS 2018 orthography) — spoken by over 200,000 people in Myanmar and the diaspora — has virtually no NLP tools, digital corpora, or language technology. This paper introduces Zolai AI, a RAG-first bilingual AI toolkit designed to preserve and teach Tedim Zolai through a community-owned, culturally grounded approach. We present the largest existing Zolai language dataset: a canonical SQLite database containing 99 tables, 3.3 million rows, and 2.3 GB of cleaned, ZVS-2018-aligned linguistic data, including 84,490 dictionary entries, 31,102 parallel Bible verses, 207,623 translation pairs, and 269,903 word usage records. Our RAG-first architecture avoids raw fine-tuning, instead routing queries through a four-tier pipeline — dictionary lookup, phrase matching, Bible parallel retrieval, and AI fallback — with ZVS 2018 orthography enforced at every stage. We report 98.49% accuracy on syllable segmentation (1,725-word evaluation set) and 100% accuracy on multi-syllable words. An MCP server, served natively by the toolkit at `mcp.zolai.space` with OAuth 2.1 and 39 tiered tools, integrates our toolkit with ChatGPT, Gemini, Claude, Cursor, VS Code, and any standard MCP client. All code, data schemas, and evaluation scripts are released under MIT license. Zolai AI demonstrates that community-driven, RAG-first approaches can produce functional NLP tools for low-resource languages without requiring massive parallel corpora or large-scale fine-tuning.
 
 ## 1. Introduction
 
@@ -39,7 +39,7 @@ This paper makes the following contributions:
 1. **The largest existing Zolai language dataset** — a canonical SQLite database containing 99 tables, 3.3 million rows, and 2.3 GB of cleaned, ZVS-2018-aligned linguistic data.
 2. **A 98.49% accurate syllable segmentation engine** — rule-based with compound awareness, validated on 1,725 clean Zolai words.
 3. **A RAG-first translation pipeline** — dictionary-first → phrase match → Bible parallel → corpus → AI fallback, with ZVS 2018 orthography enforced at every stage.
-4. **An MCP server for AI assistant integration** — deployed on Cloudflare Workers, providing 8 tools for ecosystem context to ChatGPT, Gemini, and Claude.
+4. **An MCP server for AI assistant integration** — served natively by the core toolkit at `mcp.zolai.space`, providing 39 tiered tools with OAuth 2.1 for ChatGPT, Gemini, Claude, Cursor, VS Code, and any MCP client.
 5. **An open-source, community-owned toolkit** — released under MIT license, designed for Zolai speaker ownership.
 
 ## 2. Related Work
@@ -144,7 +144,7 @@ Zolai AI implements a comprehensive NLP pipeline:
 
 ### 4.3 MCP Server
 
-A Model Context Protocol (MCP) server is deployed on Cloudflare Workers at `https://mcp.zolai.space/mcp`. The server provides 8 tools for ecosystem context:
+A Model Context Protocol (MCP) server runs natively inside `zolai-core` and is published at `https://mcp.zolai.space/mcp` (and `https://api.zolai.space/mcp`). It is **two-way**: assistants read the corpus and can contribute corrections and usage examples back. Tools are tiered by authentication — 8 public (no key), 31 member, 39 admin — with **OAuth 2.1** (RFC 9728 protected-resource metadata, RFC 8414 authorization-server metadata, RFC 7591 dynamic client registration, mandatory PKCE S256, refresh tokens) alongside API keys. The public tier includes:
 
 - Dictionary lookup (ZO→EN and EN→ZO)
 - Bible verse search
@@ -155,7 +155,7 @@ A Model Context Protocol (MCP) server is deployed on Cloudflare Workers at `http
 - Word usage analysis
 - System health check
 
-The MCP server integrates with ChatGPT, Gemini, and Claude, enabling any AI assistant to access Zolai language knowledge through standard MCP protocol.
+Signed-in tiers add the generated `foundation_*` contracts, the bilingual `language` family, and the `learning` family (quiz/SRS scheduling, ngram prediction, review logging, corpus contributions). The server speaks both current and legacy MCP protocol eras, so it integrates with ChatGPT, Gemini, Claude, Cursor, VS Code, and any standard MCP client.
 
 ### 4.4 Evaluation Framework
 
