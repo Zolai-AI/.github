@@ -114,7 +114,7 @@ The following are **not** considered security vulnerabilities:
 
 - **Web:** NextAuth.js (OAuth2 + JWT)
 - **API:** Bearer tokens
-- **MCP:** Token-based auth
+- **MCP:** OAuth 2.1 (PKCE + dynamic client registration) or API-key bearer tokens
 - **CI/CD:** GitHub Actions secrets
 
 ### Network Security

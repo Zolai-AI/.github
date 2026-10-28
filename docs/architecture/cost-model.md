@@ -42,7 +42,7 @@ Columns: **CPU** / **RAM** = steady-state load · **Disk** = footprint & growth 
 | **zolai-web** (Next.js + Prisma) | MED | MED | MED | MED | MED | MED | learner app + admin v1; own host/process ([ADR-009](../adr/ADR-009.md)) |
 | **Prisma PostgreSQL** (app/metadata) | LOW | MED | MED | MED | LOW | MED | separate store from canonical ([overview §5 invariant 8](overview.md#5-invariants-standing-rules--violations-block-merge)); never holds corpus rows |
 | **GitHub Actions CI** | n/a³ | n/a³ | n/a³ | LOW | MED | LOW | SaaS — tests, alert parity, eval smoke |
-| **zolai-mcp-server** (Cloudflare Workers) | n/a³ | n/a³ | n/a³ | LOW | MED | LOW | external SaaS edge; stateless proxy |
+| **MCP surface** (route in zolai-core) | LOW | LOW | LOW | LOW | LOW² | LOW | served in-process since 2026-10-18; the `zolai-mcp-server` Worker is legacy (n/a³) |
 
 ¹ burst during enrichment jobs (POS/syllable backfills) — bounded by job window.² loopback scrape / local UI by default; no public infra exposure (invariant 11).³ runs off-host.
 

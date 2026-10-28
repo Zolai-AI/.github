@@ -7,7 +7,7 @@ consumed by `zolai-web` (online) and `zolai-tauri` (offline, bundled Ollama/GGUF
 `zolai-datasets` (corpora) → `zolai-training` (LoRA/QLoRA → GGUF) → offline desktop.
 
 ## MCP & Landing
-- `zolai-mcp-server` (Cloudflare Workers): serves ecosystem context + proxies dictionary/bible lookups to zolai-core API.
+- **MCP**: native route inside `zolai-core` (`/api/v1/mcp`) — OAuth 2.1, 39 tiered tools, live at mcp.zolai.space and api.zolai.space. `zolai-mcp-server` (Cloudflare Workers) is the legacy wrapper: deployed but unreferenced.
 - `zolai-landing` (Cloudflare Pages): React 19 + Vite + Three.js org landing at zolai.space.
 - `zolai-journey` (Cloudflare Pages): React 19 + Vite + Framer Motion scene timeline at journey.zolai.space.
 - `zolai-explorer` (studio.zolai.space): React + Vite + shadcn/ui studio workbench for the zolai-core API.

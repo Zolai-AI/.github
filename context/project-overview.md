@@ -16,7 +16,7 @@ Eleven independent repos under one org. Workspace root coordinates but is NOT a 
 | `zolai-training` | LoRA/QLoRA fine-tuning + GGUF export |
 | `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) |
 | `zolai-ai.github.io` | GitHub Pages landing site |
-| `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
+| `zolai-mcp-server` | Legacy MCP Worker — the live MCP server is a route inside `zolai-core` |
 | `zolai-landing` | Org landing page for zolai.space (React + Vite + Three.js) |
 | `zolai-journey` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 | `zolai-explorer` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
@@ -34,7 +34,7 @@ Eleven independent repos under one org. Workspace root coordinates but is NOT a 
 ```
 zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web + zolai-tauri
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
-zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
+zolai-core (/api/v1/mcp, OAuth 2.1) → mcp.zolai.space (nginx) → ChatGPT, Gemini, Claude, Cursor, VS Code (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 zolai-explorer → studio.zolai.space (API studio workbench)
@@ -143,7 +143,7 @@ for full attribution.
 ```
 zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web + zolai-tauri
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
-zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
+zolai-core (/api/v1/mcp, OAuth 2.1) → mcp.zolai.space (nginx) → ChatGPT, Gemini, Claude, Cursor, VS Code (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 zolai-explorer → studio.zolai.space (API studio workbench)

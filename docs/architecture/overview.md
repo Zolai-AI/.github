@@ -44,14 +44,14 @@ flowchart TB
     L["Zomi learner (web / desktop)"]
     F["Founder / operator"]
     S["Zomi speaker / annotator (L1 gold sets)"]
-    X["MCP consumer apps — ChatGPT · Gemini · Claude"]
+    X["MCP consumer apps — ChatGPT · Gemini · Claude · Cursor · VS Code"]
   end
 
   subgraph Repos["Git repos (10, workspace root)"]
     WEB["zolai-web<br/>Next.js + Prisma (admin v1 home)"]
     CORE["zolai-core<br/>FastAPI · RAG · eval · pipelines"]
     TAURI["zolai-tauri<br/>offline desktop"]
-    MCP["zolai-mcp-server<br/>Cloudflare Workers (stateless proxy)"]
+    MCP["MCP surface — route in zolai-core<br/>/api/v1/mcp · OAuth 2.1 · 39 tiered tools"]
     DS["zolai-datasets<br/>corpora build + publish"]
     TR["zolai-training<br/>LoRA/QLoRA → GGUF"]
     WIKI["zolai-wiki<br/>knowledge source"]
@@ -63,7 +63,7 @@ flowchart TB
   F --> WEB
   S -.->|"gold sets: CSV/JSONL (Git) today; annotation tool DEFERRED"| DS
   X --> MCP
-  MCP -->|"HTTP /api/v1 + API key"| CORE
+  MCP -->|"in-process services + data/zolai.db"| CORE
   WEB -->|"HTTP /api/v1"| CORE
   TAURI -->|"offline bundle / sync"| CORE
   WIKI -->|"content ingestion"| CORE
@@ -104,7 +104,7 @@ flowchart LR
   subgraph Consumers["Consumers"]
     WEB2["zolai-web learners"]
     TAURI2["zolai-tauri offline"]
-    MCP2["zolai-mcp-server"]
+    MCP2["MCP clients (ChatGPT · Gemini · Claude · Cursor · VS Code)"]
     TRAIN["zolai-training (pinned dataset versions)"]
   end
 
@@ -172,7 +172,7 @@ tables**, never separate services — modular monolith, not microservices.
 | Raw corpora + build scripts + publish artifacts | `zolai-datasets` | shared `data/` (git-ignored) | commit bulk data to Git |
 | Training datasets (pinned published versions) | `zolai-training` | published snapshots only | read `*_import` staging or scratch tables |
 | RAG/eval API surface (`/api/v1`, metrics REST) | `zolai-core` | canonical DB | expose routes without version + auth plan |
-| MCP proxy (stateless) | `zolai-mcp-server` | zolai-core HTTP API | open the SQLite DB or hold state |
+| MCP surface (`/api/v1/mcp`, route in core) | `zolai-core` | in-process services + canonical DB | run as a separate service or hold session state |
 | Learner app + admin v1 + RBAC models | `zolai-web` | Prisma PG + zolai-core HTTP | bypass RBAC for data actions |
 | Monitoring stack (`zolai/monitoring/`, `ops/grafana/`, compose file) | `zolai-core` | prometheus-client (pinned) | add alert rules without the parity test |
 | — runtime note (2026-10-18) | — | the deployment is native systemd (`zolai-core-dev`, `zolai-studio-dev`); the compose file is packaging history, not the runtime | assume a container runtime exists |

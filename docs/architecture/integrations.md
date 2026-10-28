@@ -26,7 +26,7 @@ flowchart TB
   DBX[("data/zolai.db (SQLite, transitional canonical)")]
 
   WEBX["zolai-web — Next.js + Prisma PG<br/>learner app + admin v1 + RBAC"]
-  MCPX["zolai-mcp-server — Cloudflare Workers<br/>stateless MCP proxy"]
+  MCPX["MCP surface — route inside zolai-core<br/>mcp.zolai.space · OAuth 2.1 · 39 tiered tools"]
   TAURIX["zolai-tauri — offline desktop"]
   TRX["zolai-training — LoRA/QLoRA → GGUF"]
 
@@ -34,7 +34,7 @@ flowchart TB
   CORP -->|"published dataset versions (immutable)"| CORE2
   CORE2 <--> DBX
   WEBX -->|"HTTP /api/v1 + session/API key"| CORE2
-  MCPX -->|"HTTPS /api/v1 + API key"| CORE2
+  MCPX -.->|"in-process — same services + DB"| CORE2
   TAURIX -->|"bundled/offline reads + sync"| CORE2
   TRX -->|"reads pinned published versions"| CORP
   CORE2 -.->|"metrics scrape"| PROM3["Prometheus 3.15 → Grafana 13.2.3"]
@@ -46,7 +46,7 @@ Direction rules:
    `data/zolai.db` for write; zolai-web does not touch it at all (it has its own Prisma PG).
 2. **Knowledge flows inward:** zolai-wiki and zolai-datasets feed ingestion; they never serve
    queries.
-3. **Consumers are stateless or pinned:** MCP proxies; tauri bundles an offline snapshot and
+3. **Consumers are stateless or pinned:** MCP runs in-process in zolai-core; tauri bundles an offline snapshot and
    re-syncs; training pins an immutable dataset version.
 4. **Landing / GitHub Pages** have no data-plane role (marketing only).
 
@@ -97,7 +97,7 @@ flowchart LR
   EV -.-> GF3["Grafana eval dashboard"]
 ```
 
-- MCP path: ChatGPT/Gemini/Claude → `https://mcp.zolai.space/mcp` → Workers → core `/api/v1`.
+- MCP path: ChatGPT/Gemini/Claude/Cursor/VS Code → `https://mcp.zolai.space/mcp` → nginx → core `/api/v1/mcp` (in-process; OAuth 2.1 + API keys).
 - Observability of retrieval is **DB-first** ([ADR-012](../adr/ADR-012.md)); no vendor tracer.
 - Corpus invariants feed the flow: ZVS 2018 orthography, SOV, ergative `in` are enforced on
   stored data (quality rules) and re-checked on output.

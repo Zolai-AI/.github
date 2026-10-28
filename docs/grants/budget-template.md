@@ -18,7 +18,7 @@ last_updated: 2026-09-19
 | **Personnel** | Founder stipend / salary (PT) | $18,000–36,000 | 20–40% FTE for 12 months; research + engineering |
 | **Personnel** | Linguist consultant (native speaker) | $3,000–6,000 | Annotation + validation (200–400 hrs @ $15/hr) |
 | **Equipment** | Compute (training/eval) | $1,200–2,400 | GPU hours for baselines (Wave 4.4) |
-| **Software** | Cloud hosting (CF Workers + DB) | $600–1,200 | MCP server + backup storage |
+| **Software** | Cloud hosting (VPS + DB) | $600–1,200 | API/MCP server + backup storage |
 | **Travel** | Community workshops (2) | $1,000–2,000 | Local events; speaker recruitment |
 | **Services** | Legal (entity setup) | $1,000–3,000 | KR4.5 fiscal sponsor or registration |
 | **Services** | Grant writing support (optional) | $0–2,000 | Founder-written preferred |
