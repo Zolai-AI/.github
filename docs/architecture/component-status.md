@@ -25,7 +25,7 @@ source: "docs/architecture/status.md + docs/audits/05-v2-claims-audit.md + conte
 | `zolai-tauri` | **Experimental / Early** | Repo status | Offline desktop (Tauri 2); early build stage |
 | `zolai-datasets` | **Implemented** | Repo + CI | Build/publish bilingual corpora; manifests CI green |
 | `zolai-training` | **Experimental / Later-stage** | Early; not strategic priority | LoRA/QLoRA + GGUF export; deferred per DEC-001 |
-| `zolai-mcp-server` | **Implemented / Live** | https://mcp.zolai.space/mcp | Cloudflare Workers; 8 tools; Bearer auth |
+| `zolai-mcp-server` | **Legacy / Superseded** | Worker unreferenced | Legacy wrapper; live MCP is a route in `zolai-core` (OAuth 2.1, 39 tiered tools) |
 | `zolai-landing` | **Implemented / Live** | https://zolai.space/ | React + Vite + Three.js; Cloudflare Pages |
 | `zolai-ai.github.io` | **Implemented** | GitHub Pages | Org profile site |
 | `.github` | **Implemented** | Repo + CI | Org profile + community + workflows (lint.yml) |
@@ -85,7 +85,7 @@ source: "docs/architecture/status.md + docs/audits/05-v2-claims-audit.md + conte
 | Component | Status | Evidence | Notes |
 |-----------|--------|----------|-------|
 | Canonical DB (`data/zolai.db`) | **Implemented** | 151 tables, ~4,172,608 rows, ~2.4GB | SQLite WAL + busy_timeout=30000 |
-| MCP server (Cloudflare Workers) | **Implemented / Live** | https://mcp.zolai.space/mcp | 8 tools, Bearer auth, EdgeFastMCP |
+| MCP server (zolai-core, native) | **Implemented / Live** | https://mcp.zolai.space/mcp | 39 tiered tools (8 public / 31 member / 39 admin), OAuth 2.1 + API keys, dual-era protocol |
 | Landing page (Cloudflare Pages) | **Implemented / Live** | https://zolai.space/ | React 19 + Vite + Three.js |
 | CI (GitHub Actions) | **Implemented** | lint.yml + pytest subsets | Org ruff, datasets manifests, web testing, wiki ZVS gates |
 | Security cleanup | **Implemented** | P0 resolved | .env removed from git history, .gitignore patterns in all repos |

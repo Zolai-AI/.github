@@ -24,7 +24,7 @@ that causes heavy disk I/O and memory usage.
 | `zolai-training` | `zolai-training/` | LoRA/QLoRA fine-tuning + GGUF export |
 | `zolai-wiki` | `zolai-wiki/` | Knowledge base (grammar, vocab, curriculum) |
 | `zolai-ai.github.io` | `zolai-ai.github.io/` | GitHub Pages org site |
-| `zolai-mcp-server` | `zolai-mcp-server/` | MCP server for ChatGPT/Gemini/Claude (Cloudflare Workers) |
+| `zolai-mcp-server` | `zolai-mcp-server/` | Legacy MCP wrapper (Cloudflare Worker) — the live MCP server is a route inside `zolai-core` |
 | `zolai-landing` | `zolai-landing/` | Org landing page for zolai.space (React + Vite + Three.js) |
 | `zolai-journey` | `zolai-journey/` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 | `zolai-explorer` | `zolai-explorer/` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
@@ -42,7 +42,7 @@ that causes heavy disk I/O and memory usage.
 ```
 zolai-wiki (knowledge) → zolai-core (RAG ingest/retrieve/ngram) → zolai-web + zolai-tauri
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
-zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
+zolai-core (/api/v1/mcp, OAuth 2.1) → mcp.zolai.space (nginx) → ChatGPT, Gemini, Claude, Cursor, VS Code (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 zolai-explorer → studio.zolai.space (API studio workbench)
@@ -91,7 +91,7 @@ repo's `AGENTS.md` — do not duplicate this block per repo.
 - Canonical docs map: `docs/governance/source-of-truth.md`. Local/gitignored: `docs/prompts/` (master restructuring prompt) and `docs/private/`.
 - **Cursor models:** prefer role table in `docs/context/model-routing.md`; on usage limits use **Auto**, then task-fit alternates — never block the task on one model.
 - **Use `bun`** (not npm/yarn) for all JS/TS repos.
-- MCP server: `https://mcp.zolai.space/mcp` — 8 tools for ecosystem context.
+- MCP server: served **by zolai-core** at `https://mcp.zolai.space/mcp` (and `api.zolai.space/mcp`) — 39 tiered tools (8 public / 31 member / 39 admin), OAuth 2.1 (RFC 9728 + 8414 + 7591, PKCE, DCR), two-way: read tools + contribution/write-back tools. `zolai-mcp-server` (Worker) is legacy.
 
 ## Learned Workspace Facts
 

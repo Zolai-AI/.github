@@ -19,7 +19,7 @@ status: CONFIRMED
 | `zolai-datasets` | Bilingual corpora & datasets | — |
 | `zolai-training` | LoRA/QLoRA fine-tuning + GGUF export | — |
 | `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | — |
-| `zolai-mcp-server` | MCP server for ChatGPT/Gemini/Claude | https://mcp.zolai.space/mcp |
+| `zolai-mcp-server` | Legacy MCP wrapper (Worker) — live MCP runs inside `zolai-core` | https://mcp.zolai.space/mcp |
 | `zolai-landing` | Org landing page (React + Vite + Three.js) | https://zolai.space/ |
 | `zolai-ai.github.io` | GitHub Pages org site | https://zolai-ai.github.io/ |
 
