@@ -4,6 +4,10 @@
 **Baseline Type:** Read-only audit
 **Auditor:** OpenCode orchestra conductor
 
+> **Note (2026-10-29):** dated baseline snapshot, kept as history. Since generated: the MCP
+> moved into `zolai-core` on 2026-10-18 (OAuth 2.1, 39 tiered tools); the Cloudflare Worker and
+> "8 tools" lines below are superseded.
+
 ---
 
 ## 1. REPOSITORIES (10 total)

@@ -65,8 +65,9 @@ An unknown version is **refused, not downgraded** — JSON-RPC **`-32022`**, car
            "data": {"supported": ["2026-07-28", "2025-11-25"], "requested": "2024-10-07"}}}
 ```
 
-**Why this is spelt out:** the Worker serving the hostname today does the opposite. Probed
-2026-10-18 with `protocolVersion: "2026-07-28"` it answered **HTTP 200** and
+**Why this is spelt out:** the legacy Cloudflare Worker that served this hostname before the
+2026-10-18 cutover did the opposite. Probed that day with `protocolVersion: "2026-07-28"` it
+answered **HTTP 200** and
 `protocolVersion: "2025-11-25"` — a silent downgrade, after which the client believes it
 negotiated a version it never got.
 

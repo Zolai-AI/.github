@@ -60,7 +60,7 @@ zolai-wiki (knowledge) → zolai-core (RAG retrieval + n-gram prediction)
 
 /data (4GB shared) → zolai-datasets (build/publish) → zolai-training (LoRA/QLoRA)
 
-zolai-mcp-server → Cloudflare Workers → ChatGPT, Gemini, Claude (MCP protocol)
+zolai-core (/api/v1/mcp, OAuth 2.1) → mcp.zolai.space (nginx) → ChatGPT, Gemini, Claude, Cursor, VS Code (MCP protocol)
 zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 ```
 
