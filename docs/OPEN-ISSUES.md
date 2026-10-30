@@ -1,10 +1,410 @@
 # Open issues — Zolai platform (Studio + Core API)
 
-Last updated: 2026-10-18. Every item below was reproduced against the live
+Last updated: 2026-10-30. Every item below was reproduced against the live
 deployment unless marked *(code reading)*. Evidence is the command output that
 led to it, so anyone can re-check rather than take this file's word for it.
 
 Severity: **S1** blocks a core promise · **S2** visibly wrong · **S3** polish.
+
+---
+
+## 2026-10-30 (Session — hierarchical learning applied to every local corpus)
+
+`zolai learn levels` (and cycle step `bible_levels`) now studies four sources at
+four grains and stores the result instead of discarding it: line 413,085,
+paragraph 193,456, document 12,133, corpus 4 — **618,678 rows** in
+`corpus_learning_layers`, plus **401 paragraph openers** in
+`grammar_patterns` (`book='PARAGRAPH_OPENER'`) with 401 matching
+`foundation_evidence` rows. Applied to `data/zolai.db` 2026-10-30 after a
+verified backup; every source stored exactly what it built (401 = 401), and a
+second dry-run reproduces the same totals.
+
+### Closed (code + data)
+
+| item | evidence |
+|---|---|
+| **S2** — Bible learning was single-grain and hardcoded | `zolai/learning/hierarchy.py`: explicit `Line`/`DocUnit`, TextTiling paragraphs (TF-IDF cosine dips, adaptive mean + 0.5σ, min 2 lines, >12-sentence blocks re-segmented), clauses via `classify_clause` with the precedence question → negation → quotative → past → future → ergative → sov. 18 tests in `tests/test_bible_hierarchy.py` |
+| **S2** — split chapter imports duplicated unit ids | First canonical apply built 624,254 layers but stored 622,145: `1CH 1:1–53` and `1CH 1:54` arrive as two import blocks, so `1CH\|1` was emitted twice. `_iter_bible` now groups all rows of a `(book, chapter)` before yielding one `DocUnit`; the re-apply matched exactly |
+| **S2** — zomidaily site chrome became the top "opener" | 2,332 articles embed `More: <link>`; `more` led every list at 2,341 paragraphs. `_CHROME_RE`/`_is_site_chrome` drops `more:`/`read more` blocks (zomidaily line count −2,424, paragraphs −2,339) |
+| **S2** — opener list inflated by Zipf tail | Raw line-start frequency favoured function words; scoring now uses corpus lift (`p_para / p_corpus`) with count ≥5, share ≥0.1 % of paragraphs and lift ≥2×; single-paragraph documents cannot contribute. 6,232 → 401 |
+| **S2** — accented Zolai letters were not word characters | `zolai/shared/text.py` started at U+0100, dropping `à ê ô ì ù`; the class now covers Latin-1 Supplement (`masà`, `diangkhià`) |
+| **S3** — trailing hyphen counted as part of a word | `TDM-2010` tokenised as `tdm-`, which then collided with `tdm` under the opener id slug (142 wiki openers built, 141 stored). `tokenize_words` now strips leading/trailing `-'`, so the boundary is a delimiter; the collision is gone and `tdm` carries the merged 303 paragraphs. `_write_openers` also keeps the stronger marker and reports `collisions` when two distinct markers still share a slug (`test_opener_slug_collision_keeps_one_row_and_reports_it`) |
+| **S3** — classifier contradicted its docstring on hyphens | `_WORD_CH` included `-`, so `ding-in` matched as one token and `"A hong pai ding-in ka ngak hi."` classified `sov` instead of `future`; hyphen removed (it stays a delimiter, `nadingin` still does not match) |
+| **S3** — empty generated wiki page counted as a document | `zolai-wiki/grammar/bible_directional_reference.md` is a header with no body; it only cleared the 10-token floor because `---` counted as a word. Now skipped (wiki 210 → 209 documents) |
+
+### Open
+
+- **~34 `articles`/`translations_news` rows marked `language='zolai'` are English
+  or mixed interview transcripts.** They are valid content with a wrong language
+  tag, so they contribute English unigram openers (`the`, `context`) under
+  `disc_p_zomidaily_*`. Relabelling is an owner decision; the learner deliberately
+  does not guess language.
+- **Template openers from wiki `reference` guides.** 34 prose guides are
+  templated, so `verse` (1,011), `new` (958), `new vocabulary` (708), `themes`
+  (692), `key` (506) are page-template phrasing. They are honest corpus
+  statistics; excluding the whole category would also drop legitimate guides, so
+  this stays reported, not silently filtered.
+- **`canonical_sentences` / `canonical_paragraphs` are still 0** while
+  193,456 paragraph layers now exist. A paragraph-level promotion path is the
+  obvious next step but needs an evidence rule (what makes a learned paragraph
+  canonical?) before writing.
+- **The baseline snapshot is now drifted by design of this pass.**
+  `verify-version v2026.10.29.3` reports `ok: false` with drift on exactly
+  `grammar_patterns` and `foundation_evidence` — the two tables the hierarchy
+  pass rewrote. `learn levels` is a standalone additive command and does not
+  snapshot; the next `zolai learn run --apply` creates the new baseline. Not
+  to be confused with the permanent `.1` drift (concurrent `word_usage` write).
+- **The 781 duplicate discovery rows** in `grammar_patterns` (2026-10-29
+  section below) are untouched by this pass; opening counts above are disjoint
+  (`disc_p_*`), and the collapse is still one owner-approved migration.
+
+---
+
+## 2026-10-29 (Session — discovery inserted a fresh copy of every pattern on each run)
+
+The discovery lane (`zolai discovery`, `zolai learn run`) is supposed to be
+idempotent: it checks `get_by_pattern_id()` before inserting. It never matched,
+because the id itself was random:
+
+```python
+phenomenon_id = f"disc_g_{ptype}_{marker}_{abs(hash(text)) % 100000}"
+```
+
+`hash()` of a `str` is salted per process (`PYTHONHASHSEED`), so the same
+phenomenon produced a different id in every run. `data/zolai.db` holds the
+receipts: **268 `disc_g_*` rows** for 37 distinct phenomena — 10 phenomena have
+**22 copies each** (22 runs), 22 have 2, 4 have 1 — and **513 `disc_sp_*` rows**,
+**500 of them `sov`**. Matching evidence duplicated too: 265
+`grammar_phenomenon_extraction` rows and 500 `bible_parallel_lookup` rows point
+at those throwaway ids. Across the whole table that is **48 duplicate `pattern`
+groups / 5,048 rows** (`tense_ding` 2,319 is the `pat_*` learner, a separate
+pre-existing duplication).
+
+`tests/test_discovery_patterns.py` made it worse: its fixture called
+`get_engine()` (the live DB), so each suite run wrote another 10 `disc_g_*` rows
+plus evidence into the corpus.
+
+### Closed (code)
+
+| item | evidence |
+|---|---|
+| **S2** — grammar ids salted per process | `_phenomenon_id(ptype, marker)` → `disc_g_<type>_<marker>`; `tests/test_discovery_ids.py::test_extracted_ids_do_not_depend_on_the_sentence` proves two different verses yield the same id |
+| **S2** — sentence ids keyed on the example, then on the verse ref | `_pattern_id(pattern_type, structure)` → `disc_sp_<type>_<sha1(structure)[:10]>`, used by both the Bible and translation paths, so one structure maps to one row; `test_sentence_id_depends_on_structure_not_example_or_ref` |
+| **S2** — tests wrote discovery output into the canonical corpus | fixture is now `DatabaseManager(sqlite:///<tmp>)` + `init_db()` seeded with 2 verses, 2 translations, 1 legacy row; it asserts the legacy row count is unchanged |
+| **S3** — `patterns_written` counted existing rows | writers return `created`; summaries carry `already_present`, and `zolai discovery` prints it |
+| **S2** — every discovery pattern was written with `evidence_ids: []` | `278 of 781` live `disc_*` rows have no evidence link. The writers re-queried `fact_key = 'pattern:<id>'` while `upsert_evidence_bulk` stores the normalised `'grammar:pattern:<id>'`, so the lookup always missed; they now use the ids the upsert returns (and one fewer connection round-trip) |
+| durable gate | `tests/test_discovery_patterns.py::test_a_second_grammar_run_writes_no_new_patterns` and `…sentence…` assert a re-run reports `patterns_written == 0` and writes no rows; 11 passed with `tests/test_discovery_ids.py` |
+
+### Open (needs an owner-approved migration)
+
+The existing copies are still there, and the first non-dry run after the fix
+will add the **26 grammar + 6 sentence canonical ids** (none of them exist yet —
+the old rows all carry hash or ref suffixes). Collapsing the legacy
+`disc_g_*`/`disc_sp_*` rows, their evidence rows and their `knowledge_vectors`
+entries is one migration, not a discovery run; it must be planned against the
+`v2026.10.29.3` snapshot first.
+
+---
+
+## 2026-10-28 (Session — one timestamp format, and the clock that chooses it)
+
+The claim under test was the database's own: a `created_at` column should order
+and bound correctly. It did not, because **18 different functions had each picked
+a timestamp serialisation**, and they disagreed. `data/zolai.db` shows the cost:
+`hypotheses.created_at` held 853 `+00:00` rows, 10 space-separated, and 2 naive
+`T` rows in the same TEXT column — and `" "` (0x20) sorts before `"T"` (0x54), so
+`ORDER BY created_at` and any `WHERE created_at >= :since` bound are wrong across
+those formats. This session collapsed every writer onto `zolai/shared/clock.py`.
+
+### Closed
+
+| item | evidence |
+|---|---|
+| **S1** — 16 local `_now()` / `_utc_now()` / `_stamp()` helpers, each choosing a format | every one removed or (2, the auth lane) named-exempt; `rg "def _(now\|utc_now\|stamp)\(" zolai` returns only `oauth.py` + `session_auth.py`. Call sites now import `clock.stamp` |
+| **S2** — 47 deprecated `datetime.utcnow()` calls | `rg "utcnow" zolai` returns only `clock.py`'s own docstring |
+| **S2** — 10 `default_factory=datetime.utcnow` dataclass fields | → `default_factory=now` (aware), across `learning/{websocket,agents,finetuning,consensus,feedback_store}` |
+| **S2** — 44 SQL-side `datetime('now')` column DEFAULTs and UPDATEs (space format, no offset) | `zolai/data/migrations.py` (33) + `schema_v2.py` (4) + `models.py` (7) now use `strftime('%Y-%m-%dT%H:%M:%f+00:00','now')` = `clock.SQL_NOW`; `rg -i "datetime\('now'\)\|CURRENT_TIMESTAMP" zolai` returns only clock.py's comment |
+| **S1** — inline `strftime("%Y-%m-%d %H:%M:%S")` — the class the helper scan did not see | `rg "strftime\(['\"]%Y-%m-%d %H:%M:%S['\"]" zolai` returned **13 sites across 9 files**. This is exactly how `data_audit_log.changed_at` reached 5,977 space rows beside 40,067 canonical ones. Four writers changed to `clock.stamp()` — `contributions_router.py:75`, `record_review_router.py:140`, `assistant_router.py:481` (the same column `agent_runs.finished_at` was written canonical by `orchestrator.py` and space by this site), `agent/tools/learning.py:249` (mirrors the REST twin, both now use `stamp()`). Five (`auth.py`) joined the auth lane (see below). |
+| **S2** — a live naive/aware crash | `monitoring/server_monitor.py` parsed a log timestamp as **naive** then compared it to an **aware** `since` → `TypeError` (Python refuses to guess). Now `clock.parse()`, which attaches UTC |
+| **S2** — exporter nanos silently shifted by the UTC offset | `learning/metrics/exporter.py` did `datetime.fromisoformat(naive).timestamp()` — local wall-clock epoch, off by 6.5 h for Asia/Yangon. Now `clock.parse()` |
+| **S3** — legacy `except A, B:` in `scripts/maintenance/r2a_lib.py:233` | parenthesized tuple (Py2 syntax that 3.14 still accepts as "catch either", so it was a landmine, not a crash) |
+
+### Durable, not just fixed — `tests/test_timestamp_clock.py`
+
+Scanning raw source text is how a format check becomes a placebo: it flags the
+*docstring* that mentions `datetime('now')` and misses a default buried in a
+multi-line string. The gate instead masks each file through AST + tokenize (blank
+only docstring and comment spans, keep string literals visible — destructive SQL
+hides in `text("…")`), then asserts, over code lines only:
+
+- no local `_now`/`_utc_now`/`_stamp`/`_timestamp` def outside the named
+  `AUTH_LANE` exempt set;
+- no **inline** `strftime("%Y-%m-%d %H:%M:%S")` (either quote form) outside the
+  auth lane — the class that dodged the helper-def scan;
+- no `datetime.utcnow` anywhere but clock.py;
+- no `datetime('now')` / `CURRENT_TIMESTAMP` SQL expression;
+- every inlined `strftime(...,'now')` in DDL **equals `clock.SQL_NOW`** (drift
+  check — if the constant changes and a literal does not, the test fails);
+- a fresh `:memory:` DB built from each shipped `*_DDL` constant evaluates its
+  `PRAGMA table_info` default against the canonical regex.
+
+Result: **28 passed, 0 xfailed** (a combined run across clock + DB-SoT +
+agent-runs lanes reports 70 passed). The last xfail — the live-schema DEFAULT
+check — went green on 2026-10-29 when the 50-table rebuild shipped, so no
+marker is left behind. Ruff clean on `zolai` and `tests/`; the rule is
+now prose in `context/code-standards.md` § Timestamps and
+`docs/database/README.md` § Timestamp rule, with the clock lane added to
+`SOURCE_OF_TRUTH_MATRIX.md` and `governance/source-of-truth.md`.
+
+### Pre-existing failure the full-suite run surfaced (fixed)
+
+`tests/test_agent_runs.py::TestLearnIsProposalOnly::test_agent_package_has_no_raw_writes_outside_agent_runs`
+was already red at HEAD — `agent/tools/learning.py` (added by another session)
+contains `INSERT INTO contributions` (the sanctioned admin-only write-back
+channel) at line 253 **and** the same phrase in a docstring at line 239, and the
+regex is IGNORECASE, so the docstring matched. Rewritten honestly, not `noqa`'d:
+
+- AST-mask each file the same way the clock test does (blank docstring spans,
+  keep code) so prose can't trip the scan;
+- a `SANCTIONED_WRITE_TABLES = {"agent_runs", "contributions"}` allow-list,
+  documented as the write-back channel that the tool description calls out.
+
+Separately, `learning.py:13-14` had two 122-char docstring table rows that made
+ruff E501 red on `main` — shortened by dropping the `zolai.` prefix from
+`zolai.knowledge.ngram.*` to `knowledge.ngram.*`.
+
+### Shipped this session (2026-10-29 — auth lane closed)
+
+The three auth-lane files (`oauth.py`, `session_auth.py`, `api/auth.py`) no
+longer stamp in the space format, and the reader sites that used string compare
+against a formatted "now" — `api/auth.py:354`, `session_auth.py:918`,
+`oauth.py:709/824/909` — now compare **aware datetimes** through
+`clock.parse()`, which is format-tolerant. `AUTH_LANE` in
+`test_timestamp_clock.py` is empty; the whole tree is scanned with the same
+rules that used to exempt these files. Ruff clean, tests green (see combined
+run below).
+
+A backup was taken first: `data/backups/zolai.db.pre-timestamp-migration-20261029T0030Z`
+(2,389,454,848 bytes, sha256 `d2cc6019…bf49f0e`).
+
+### Shipped this session (2026-10-29 — DDL rebuilt, stored rows normalised)
+
+Owner approved all four migrations. Everything below is applied to the live DB
+and revertible; a full backup was taken first
+(`data/backups/zolai-pre-ddl-20261029T124025Z.db`, 2,405,126,144 bytes,
+`PRAGMA integrity_check` = ok).
+
+**1. 84 column DEFAULTs across 50 tables → `clock.SQL_DEFAULT`.** SQLite has no
+`ALTER COLUMN DEFAULT`, so `scripts/migration/rebuild_timestamp_defaults.py`
+does create-with-correct-default → `INSERT … SELECT` → drop → rename →
+recreate indexes → restore `sqlite_sequence` (the original value, not
+`max(rowid)`, so AUTOINCREMENT never reuses an id). Three edge cases it had to
+get right: `wiki_content` is the external-content parent of `wiki_content_fts`
+(reindexed with `INSERT INTO wiki_content_fts(wiki_content_fts) VALUES('rebuild')`,
+row count verified 1,687 = 1,687); `PRAGMA legacy_alter_table=ON` around the
+swap so the rename does not try to fix up FK references to the transient name;
+and generated columns excluded from the copy column list. Verified afterwards:
+**0 stale defaults**, 125 tables before and after, `foreign_key_check` empty,
+`quick_check` ok, `sqlite_sequence` never lower than recorded, no `__rebuild`
+leftovers. Ledger: `data/backups/ddl_default_rebuild.jsonl` (original DDL,
+indexes, triggers, row counts per table).
+
+**2. 1,427,855 row values across 18 columns → canonical** via
+`scripts/normalize_timestamps.py --apply`. The dry-run ten minutes earlier
+predicted 12 columns / 346,045 rows; the gap is itself the fix working — once
+the rebuilt tables had a canonical DEFAULT, the concurrent `learn run` inserted
+a handful of canonical rows into columns that had been 100 % space
+(`word_usage`, `data_audit_log`, `grammar_patterns`), which made them MIXED and
+so eligible for the full-column rewrite. Verified: **0 mixed columns** remain,
+1,400 sampled values across 7 columns parse to the *same instant* as the
+pre-migration value, `quick_check` ok. Ledger:
+`data/backups/timestamp_normalization.jsonl` (per-row old → new, `--revert`-able).
+
+The normalizer commits in 5,000-row chunks rather than one long transaction.
+Its old `locking_mode=EXCLUSIVE` gate refused whenever *any* PID held the file —
+including a read-only `rag search` — and its single transaction would have
+outlived the learning cycle's 60 s busy timeout. Both writers survive a
+migration now; the write lock is released every few hundred milliseconds.
+
+**3. `xfail` removed** from
+`test_live_schema_has_no_space_format_defaults`; `test_timestamp_clock.py` is
+**28 passed, 0 xfailed** against the live DB.
+
+**Collateral, found and repaired:** the concurrent `learn run --apply`
+(`lr_20261029T124047Z_1f85eb`) failed its step 11 `version_snapshot` with
+`VersionDriftError` — it had hashed `word_usage` before the rewrite and saw a
+different hash after. Steps 1–10 (study, bible, discovery, promote, regression,
+rag) had already committed and succeeded; only the baseline snapshot was lost.
+A fresh snapshot `v2026.10.29.3` was recorded from the stable DB and verified
+green. This is the drift guard doing its job, not corruption — the checkpoint
+refused to accept a baseline it could not re-verify. `_step_version_snapshot`
+now re-allocates the tag and re-snapshots (up to 3 attempts, 3 s apart) when
+verification reports drift, so a long `--apply` run no longer ends without a
+verifiable baseline.
+
+### Still open — needs the owner's say-so (nothing below was changed in stored data)
+
+1. **74 pure-space columns (~1.76 M rows across the whole corpus)** —
+   `articles`, `dictionary`, `syllable_data`, `translations`,
+   `bible_verses`, `vocabulary`, `dictionary_en_zo`, `attestation_index`, plus
+   66 more. These never had a canonical writer, so within a column they sort
+   correctly; they mis-sort only when compared to canonical values in a
+   *different* column. The normaliser will not touch them (its definition of
+   MIXED requires >1 format) — and now that their DEFAULTs are canonical, each
+   one flips to MIXED the first time a writer inserts into it, at which point a
+   normalise pass repairs the whole column. Rewriting them wholesale is a
+   broader decision than "one timestamp format for the canonical DB"; its own
+   conversation.
+
+2. **`knowledge_versions` row 39** (`v2026.10.29.1`) is an `OBSERVED` snapshot
+   that failed verification during the migration window. It is an honest record
+   of an instant that no longer matches the live tables — kept as evidence, not
+   used as a baseline. Rows 40 (`.2`) and 41 (`.3`) re-verify `ok: true`
+   (`checked 19`, `drift {}`), and `.3` is the baseline. Pruning row 39 is
+   cosmetic; leave unless the ledger is meant to hold only verifiable rows.
+
+### Single-source-DB: what closed today, and the one split that did not
+
+Closed:
+- `data/zolai_eval.db` was the retired eval side store. It had already been
+  migrated on 2026-10-27 (all five legacy sets — grammar 198, morph 130,
+  pos 510, tokenization 5, tokenization_gold_v0 5 = 848 items — match
+  `eval_cases` exactly), so it held no unique data. Moved to
+  `data/archive/duplicate-dbs/2026-10-29/zolai_eval.db` (sha256 `e9aea06b…`).
+  `data/*.db` is now exactly one file: `zolai.db`.
+- `zolai-core/zolai.db-shm` + `zolai.db-wal` were orphan sidecars (the main file
+  was gone; no process held them) left by the relative-path bug documented in
+  `scripts/kg/extract_zsp.py`. Moved to
+  `data/archive/orphan-sqlite-sidecars-20261029/`. `.gitignore` now covers
+  `*.db-shm`, `*.db-wal`, `*.db-journal` — only `*.db` was listed, so these
+  showed up as untracked.
+
+**Still open — three copies of the gold eval sets, and two live code paths.**
+`zolai/pos_tagger/annotate.py:22` reads `config.paths.root/"data"/"eval"` (the
+repo, `zolai-core/data/eval/`); `zolai/eval/runner.py:382,405` reads
+`config.paths.data/"eval"` (the shared folder, `../data/eval/`). They hold
+different corpora:
+
+| set | shared `data/eval` | repo `zolai-core/data/eval` | `eval_cases` in DB |
+|---|---:|---:|---:|
+| pos_gold_v0 | 500 | 1,713 | 510 |
+| grammar_gold_v0 | 35 | 153 (superset) | 198 |
+| morph_gold_v0 | 25 | 100 (24/25 shared) | 130 |
+
+`pos` is the problem case: only 35 of the 500 shared rows appear in the repo's
+1,713, so these are two different annotation passes, not one stale copy. The DB
+numbers match neither (they came from the legacy store). Nothing was changed —
+picking the authoritative set is an owner decision. Once picked, one path
+constant should serve both call sites.
+
+### Archive governance gap (carried, not closed)
+
+Phase 1 of the archive plan **executed** on 2026-10-27 — `data/backups/
+zolai-import-archive-2026-10-27.db` (572 MB, 26 `*_import` tables, 1,925,577 rows)
+— but the recorded approval predates it and does not name this action. The live
+census therefore dropped **150 → 125 tables** and the doc figures were stale until
+this session. `archive-plan.md` and `tables.md` are corrected and the gap is flagged
+there; **founder approval for the executed Phase 1 is still unrecorded**, and Phase 2
+is only **PROPOSED**. Reversible (archive, not delete) but the process step was missed.
+
+---
+
+## 2026-10-27 (Session — one database, and the eval lane that could never run now runs)
+
+The claim under test was "single source DB". It was not true: `zolai/eval/store.py`
+wrote a second store (`data/zolai_eval.db`), five API analyzers and the QA/MT/NER
+loaders each re-derived `data/zolai.db` from `Path(__file__).parents[3]`, and two
+maintenance scripts re-read `ZOLAI_DB_PATH` by hand before trying the package. Each
+of those is a second resolver, and a second resolver answers a different question
+than the toolkit about which database it just touched.
+
+### Closed
+
+| item | evidence |
+|---|---|
+| **S1** — 848 gold eval items lived in a store no code read | `python scripts/migrate_eval_store.py` → preflight dump `data/backups/eval_store_preflight.json`, then `eval_cases` **273 → 1,121** and `eval_sets` **3 → 8** in `data/zolai.db`, EXIT 0. Re-running with `--dry-run` reports *no writes issued*, so the path is idempotent. `SELECT kind, COUNT(*) FROM eval_cases GROUP BY kind` → pos 515, grammar 198, qa 179, morph 130, zvs 52, translation 42, tokenization 5 (sums to 1,121) |
+| **S1** — the gold lane had never been executed end-to-end | `zolai eval run all` now scores all 843 gold items: tokenization 5 · F1 1.0000, pos 510 · Macro F1 0.0454, morphology 130 · Exact Match 0.2923, grammar 198 · Error F1 0.0000 |
+| **S2** — those numbers read as model quality | `zolai/eval/runner.py` predictors are `placeholder:*` (whitespace-split / all-`X` / no-errors). Every `EvaluationResult` now carries a `system` label, the summary table has a **System** column, and the run prints the warning. Macro F1 0.045 was the harness, not a 4%-quality tagger: the gold payloads use UD tags (`PROPN`, `ADP`) while `predict_pos()` returns `["X"] * len(text.split())`. **No trained POS tagger, segmenter, or grammar model exists** — these are floors to beat |
+| **S2** — morphology printed `N/A` | the summary matched `r.task == "morph"` while the task string is `"morphology"`; now `r.task in ("morph", "morphology")` |
+| **S2** — `zolai eval list` printed 8 rows for 4 gold sets | `GOLD_SETS` is keyed by both task name *and* set name; new `GOLD_TASKS` filter in `zolai/eval/store.py` |
+| **S2** — the LLM circuit breaker never opened against a dead provider | `CircuitBreaker.call()` scores what the callable *returns*, and the HTTP status was checked afterwards — a provider answering 503 to every request recorded only successes. 429/5xx now raise `_UnhealthyProvider` *inside* the callable; a genuine 4xx still surfaces verbatim (our payload or key is wrong, the provider is not down). `tests/test_llm_adapter_transport.py` → 34 passed, including repeated-5xx-opens-circuit (`status=circuit_open`, zero further calls) and 3×400-does-not-trip |
+| **S2** — the agent silently dropped parallel tool calls | a native turn asking for two tools executed one and echoed both ids, violating the wire invariant that every echoed id gets a `role:"tool"` reply. The extras now get an explicit refusal (`ToolErrorCode.BUDGET_EXCEEDED`) on the wire and in the trace (`status: "declined"`). `tests/test_agent_runs.py` → 37 passed |
+| **S2** — the status route advertised `max_steps: 16` for a run that stops at 3 | `AGENT_MAX_STEPS` deleted; ≤1 tool per turn means turns *are* the step count. `assistant_router.py` now passes `timeout_s=AGENT_TIMEOUT_S` — a 219 s run behind a ≤60 s route is a Cloudflare 524 |
+| **S3** — deprecation warning on every breaker import | `asyncio.iscoroutinefunction` (gone in 3.16) → `inspect.iscoroutinefunction` |
+
+### Durable, not just fixed
+
+Re-reading the env var or re-deriving the path from `__file__` is invisible in review
+— it works right up to someone moving the file. So the rule is now machine-enforced:
+`zolai-core/tests/test_db_source_of_truth.py` AST-scans every package module for (1) an
+`os.environ`/`os.getenv` read of `ZOLAI_DB_PATH`/`ZOLAI_DATA_ROOT`, (2) a division
+subtree containing both `"zolai.db"` and `__file__`, and (3) any module other than
+`zolai/config.py` naming the canonical file. Two more tests retarget `config.paths.db`
+at a seeded copy and assert the loaders and the eval store follow it. The gate is not a
+placebo: on a deliberately bad snippet it reports the env reads and the file-derived
+path. `ZOLAI_EVAL_DB_PATH` is deliberately absent from the guarded set — only the
+one-shot migration reads it, and that is the point.
+
+`tests/conftest.py` additionally fences writes to the corpus (statement-level
+`set_trace_callback` on `sqlite3.connect` and `sqlite3.dbapi2.connect`), so a test that
+resolves to the real database fails rather than polluting it.
+
+### Three things the fence caught once it was standing
+
+| finding | evidence |
+|---|---|
+| **S1 — `tests/test_learning_agents_api.py` wrote to the live corpus on every run.** The file redirected *no* database; it only set `ZOLAI_API_AUTH`. `POST /run` creates `learning_signals` and inserts a task row, `GET /overview` seeds the agent registry — so 39 writes per parametrized case landed in `data/zolai.db`, and the fence reported them at teardown, *after* they had happened. | Before: `ERROR ... test issued 39 write(s) against the canonical corpus ... CREATE TABLE IF NOT EXISTS learning_signals`. Now an autouse `scratch_corpus` fixture creates the ORM schema and seeds two verses, and the module is clean: 44 passed, zero fence errors. **This is where the polluted `hypotheses`/`data_audit_log` rows came from.** |
+| **S1 — those tests could only pass against the corpus.** Once pinned to a scratch DB, 5 failed with `no such table: bible_verses`. They were green by reading production data, not by testing anything. | Same run, before seeding: `FAILED test_validate_grammar`, `test_unknown_task_is_400`, 3 × `TestAnonymousBehaviour`. |
+| **S2 — the trained POS model was unreachable from the library.** `train.py` is run as a script, so its `POSTaggerModel` pickled as `__main__.POSTaggerModel` — a module no importer has. Loading it from anywhere else raised `AttributeError: module '__main__' has no attribute 'POSTaggerModel'`, which is a plausible reason the eval harness stayed a placeholder for a model that existed. | `zolai eval run pos --system crf` → `CRF model unreadable: module '__main__' has no attribute 'POSTaggerModel'`. Fixed with a `pickle.Unpickler.find_class` redirect (no retrain needed) plus `POSTaggerModel.__module__` rebinding on save. Now scores **Macro F1 0.9937, tagged coverage 48.4%**. |
+
+### The in-sample POS claim
+
+`docs/planning/AI_AGENTS_RBAC_PLAN.md` reported "**Results on full gold set: 100%
+accuracy**" for the CRF tagger. `train.py` fits `pos_gold_v0` and `evaluate_on_gold()`
+re-reads `pos_gold_v0` — the same 510 sentences. Measured on the artifact: 0.9961
+accuracy / 0.9937 macro F1 over 14,125 tokens, so the number is real but it is a
+memorization score, and it had been quoted as generalization. The legitimate figure is
+the held-out **sentence** split (98% accuracy). Two caveats now printed by the code
+rather than buried in this file:
+
+- `--system crf` labels itself `crf:pos_tagger_crf.pkl(in-sample)` and `zolai eval run`
+  prints why. `--system placeholder` stays the default so a published floor is never
+  silently swapped for a real number.
+- **51.6% of the POS lane is `X`** — 7,289 of 14,125 tokens were never tagged by the
+  auto-annotation pass. Macro F1 averages over classes that appear, so a coverage
+  number is reported alongside it. And the split is over sentences from the same
+  Bible + dictionary auto-pass that produced the features: **no independently annotated
+  text has ever been scored.**
+
+### Timestamps: one clock, and the 49 sites that were not using it
+
+`zolai/shared/clock.py` was added to give the toolkit one UTC format. `data/zolai.db`
+already showed the cost of not having it: `hypotheses.created_at` holds **853 rows with
+`+00:00`, 10 space-separated, 2 naive-`T`** in one TEXT column — and a space (`0x20`)
+sorts before a `T` (`0x54`), so `ORDER BY created_at` and any `WHERE created_at >=
+:since` bound are wrong across those formats. Converting every `datetime.utcnow()` in
+`zolai/` (49 sites, 16 files, all of `learning/` plus `monitoring/`) to `clock.now()` /
+`clock.stamp()` removes the deprecated call and the naive stamps; `datetime.utcnow()`
+now appears nowhere in the package outside `clock.py`'s own docstring. The 12 legacy
+`hypotheses` rows are **not** rewritten — that is a corpus write and needs the owner.
+
+### Still open — needs the owner's say-so (nothing below was deleted)
+1. **`data/zolai_eval.db` (1.9 MB)** — read by no code, kept only as the pre-migration
+   snapshot. Ready to archive to `data/archive/duplicate-dbs/` now that the lanes are
+   confirmed present in the canonical DB.
+2. **120 polluted rows in `hypotheses` / `data_audit_log`** — written by earlier
+   un-fenced test runs. Deleting rows from the corpus is not mine to decide.
+3. **5 `tokenization` cases keyed `kind='pos'`** — migrated faithfully rather than
+   guessed, but they need human re-review before being trusted as gold. Until then the
+   `pos` count is 515, of which 5 are mis-tagged.
+4. ~41 unreviewed WIP files and `server.py.bak` in the working tree.
+
+Two stray databases reappeared after the 10:14 archive — `zolai-core/zolai.db` (12 KB,
+containing only my own `sa_probe`/`probe_sa` rows) and `zolai-core/data/zolai.db` (0 B).
+No repo code produces either name (`rg` for the literals and for relative `sqlite:///`
+URLs both return nothing), so they are my scratch artifacts; I moved them to
+`/tmp/zolai-scratch-db-2026-10-27/` rather than delete them, and the full suite is being
+re-run to see whether something in it still creates the 0-byte file. *(open — cause not yet identified)*
 
 ---
 

@@ -2,9 +2,9 @@
 title: "Zolai Data Platform — Current-State Audit"
 description: "Inventory audit of data stores, repos, monitoring, API surface, jobs, and gaps as of 2026-09-29 (batch 1/3)"
 created: 2026-09-29
-last_updated: 2026-10-01
+last_updated: 2026-10-29
 status: CONFIRMED
-source: "live DB query + zolai-core/pyproject.toml + zolai-web/prisma/schema.prisma + docs/database/tables.md + zolai-core/docs/MONITORING.md"
+source: "live DB query 2026-10-29 + zolai-core/pyproject.toml + zolai-web/prisma/schema.prisma + docs/database/tables.md + zolai-core/docs/MONITORING.md"
 ---
 
 # Zolai Data Platform — Current-State Audit (2026-09-29)
@@ -68,19 +68,21 @@ No cross-repo globbing was performed from the workspace root (per `AGENTS.md` sc
 | Property | Value | Evidence |
 |---|---|---|
 | Engine | SQLite, WAL mode, `busy_timeout=30000` | `docs/database/tables.md` |
-| Disk size | ~3.0 GB | `tables.md` (census 2026-10-27) |
-| Rows | ~4.41M across all tables (150 user tables) | `tables.md` |
-| Tables | **150 user tables** (145 excluding the 5 `wiki_content_fts*` shadows; 151 raw `sqlite_master`) | `tables.md` census 2026-10-27 |
+| Disk size | 2.80 GB main file + WAL (`pragma_page_count 684,086 × 4096 B`; 551 free pages) | `tables.md` census 2026-10-30 |
+| Rows | **3,266,049** across all tables | `tables.md` census 2026-10-30 |
+| Tables | **126 user tables** (121 excluding the 5 `wiki_content_fts*` shadows) | `tables.md` census 2026-10-30 |
 | Access pattern | `config.paths.data / "zolai.db"` — reads from DB, never raw JSONL | `tables.md` §7 |
 | Integrity hardening | FK guard at startup, integrity checks, migrations (27 constraints, 50+ indexes) | `zolai-core/zolai/data/{integrity,migrations}.py` |
-| Change tracking | `data_audit_log` — 30,745 rows (who/why/when, old→new) | `tables.md` §2.11 |
-| Import bookkeeping | `import_log` — 92 runs. `jsonl_import_log` exists but is **empty (0 rows)** — duplicate/legacy (the `jsonl_pipeline*.py` models write `import_log`) | live `sqlite3` query 2026-09-30; `tables.md` reconciled 2026-09-30 (correct) |
-| Eval store (DB-first) | `eval_sets` (3), `eval_cases` (273), `eval_runs` (gate history) | `tables.md` §2.12; `zolai/data/migrations.py:1347` |
-| Staging | 26 `*_import` tables = **1,517,212** intermediate rows (~1.52M, 2026-09-30); reconciled 2026-09-30 (0e6dbac); archive plan PROPOSED, nothing deleted | live `sqlite3` query 2026-09-30 |
+| Change tracking | `data_audit_log` — 49,241 rows (who/why/when, old→new) | `tables.md` §2.11 |
+| Import bookkeeping | `import_log` — 191 rows (import runs + R2-A consolidation batches). `jsonl_import_log` exists but is **empty (0 rows)** — duplicate/legacy | live `sqlite3` query 2026-10-29 |
+| Eval store (DB-first) | `eval_sets` (8), `eval_cases` (1,121), `eval_runs` (266) | `tables.md` §2.12 |
+| Staging | **None left in the live file** — 26 `*_import` tables (1,925,577 rows) archived to `data/backups/zolai-import-archive-2026-10-27.db` and dropped by R2-A | `tables.md` §3; `archive-plan.md` |
 
-**Role today:** transitional canonical store for everything linguistic
-(dictionary 84,490 · bible_verses 31,102 · translations 207,623 · word_usage 269,903 ·
-training_exercises 82,159 · syllable_data 189,563 · …).
+**Role today:** canonical store for everything linguistic
+(dictionary 84,490 · bible_verses 31,102 · `translations` 56,658 + `translations_news`
+150,965 · word_usage 485,360 · training_exercises 82,159 · syllable_data 189,563 ·
+canonical_words 28,445 · corpus_learning_layers 618,678 · grammar_patterns 6,749 ·
+knowledge_vectors 269,425 · …).
 
 ### 2.2 Application store — Prisma/PostgreSQL (zolai-web)
 
@@ -195,7 +197,7 @@ Role/Permission-style models — see [ADR-010](../adr/ADR-010.md).
 
 | Job class | What exists | Bookkeeping |
 |---|---|---|
-| JSONL ingestion | `zolai/core/jsonl_pipeline.py` + `_v2` + `_v3` → `*_import` staging → canonical promotion | `import_log` (92 rows; `jsonl_import_log` = 0 rows, empty legacy) |
+| JSONL ingestion | `zolai/core/jsonl_pipeline.py` + `_v2` + `_v3` → `*_import` staging → canonical promotion (`*_import` staging retired 2026-10-28; promotions now run evidence-gated from `attestation_index`) | `import_log` (191 rows; `jsonl_import_log` = 0 rows, empty legacy) |
 | Pipeline scripts | `zolai-core/scripts/pipelines/`: `ingest_v2.py`, `clean.py`, `align.py`, `deduplicate.py`, `export.py`, `collect.py`, `convert_linguistics.py`, `convert_usx.py`, `run.py` | **no `pipeline_runs` table** (gap §7) |
 | Batch/maintenance | `scripts/maintenance/`, `scripts/data_pipeline/`, `scripts/dictionary/`, `scripts/cleaner/`, `scripts/eval/` (e.g. `seed_eval_sets.py`) | ad-hoc |
 | CLI entry points | `zolai`, `zolai-zvs`, `zolai-eval` (`pyproject.toml [project.scripts]`) | eval writes `eval_runs` |
