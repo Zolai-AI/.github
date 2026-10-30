@@ -2,7 +2,7 @@
 title: "Zolai AI — Source of Truth Matrix"
 description: "Canonical document owners by domain; resolve conflicts by authority, not overwrite"
 created: 2026-09-18
-last_updated: 2026-09-18
+last_updated: 2026-10-28
 status: CONFIRMED
 ---
 
@@ -52,8 +52,10 @@ When documents conflict, prefer the **canonical** path below. Older files become
 
 ## Single database (single source of truth)
 
-There is **one** canonical data DB: `data/zolai.db` (SQLite WAL, ~3.0 GB, 150 user
-tables, 4,413,250 rows as of 2026-10-27). Every engine resolves to it through
+There is **one** canonical data DB: `data/zolai.db` (SQLite WAL, 2.80 GB,
+**126 user tables** / 3,266,049 rows as of 2026-10-30; the prior 150-table figure
+predates the archival of the 26 `*_import` staging tables and the 125-table figure
+predates `corpus_learning_layers`). Every engine resolves to it through
 `zolai/config.py` `db` (env `ZOLAI_DB_PATH`, default `$ZOLAI_DATA_ROOT/zolai.db`);
 `zolai_db` is an alias, not a second path. Duplicate/dev DBs were archived to
 `data/archive/duplicate-dbs/2026-10-27/` (reversible). Evaluation data — the
@@ -65,10 +67,12 @@ source of truth for the toolkit. Counts and the full catalog live in
 
 `data/zolai_eval.db` is **retired** (DEPRECATED, 2026-10-27). Nothing in
 `zolai/eval/` reads or writes it; JSONL under `data/eval/` is interchange format
-only, not a store. The 848 gold items still sitting in the retired file are moved
+only, not a store. Its 848 gold items were moved into `data/zolai.db` on 2026-10-27
 by the one-shot, idempotent, preflight-backed
-`zolai-core/scripts/migrate_eval_store.py` (`--dry-run` first). Do not delete the
-retired file until that script reports the lanes present in `data/zolai.db`.
+`zolai-core/scripts/migrate_eval_store.py` (dump: `data/backups/eval_store_preflight.json`;
+re-`--dry-run` reports no writes). The file stays on disk only as that
+pre-migration snapshot — archive it, do not delete it, and never re-run the
+migration against a `data/zolai.db` whose `eval_cases` count you have not read.
 
 The database also records its own state in `knowledge_versions`, and that record
 is checkable — a counts-only manifest cannot tell two same-sized databases apart,
@@ -78,6 +82,26 @@ so snapshots hash table content:
 zolai knowledge version v2026.10.27 --pipeline-version phase5
 zolai knowledge verify-version v2026.10.27   # exit 1 on drift
 ```
+
+## Timestamp format (single source of truth)
+
+Every timestamp — Python-side write, SQL DEFAULT, or stored value — has one
+serialisation and one owner: **ISO-8601 UTC with an explicit `+00:00` offset**,
+chosen only in `zolai-core/zolai/shared/clock.py` (`stamp()`, `now()`, `parse()`,
+`SQL_NOW`).
+
+| Domain | Canonical source | Enforcement |
+|--------|------------------|-------------|
+| Timestamp serialisation | `zolai/shared/clock.py` | `zolai-core/tests/test_timestamp_clock.py` |
+| Timestamp rule (prose) | [`../database/README.md`](../database/README.md) §Timestamp rule | — |
+| Data-domain read of it | [`../reports/SOURCE_OF_TRUTH_MATRIX.md`](../reports/SOURCE_OF_TRUTH_MATRIX.md) §Timestamp lane | — |
+
+Forbidden: a local `_now()` / `_utc_now()` / `_stamp()`, an inline
+`strftime("%Y-%m-%d %H:%M:%S")`, `datetime.utcnow()`, `datetime('now')`,
+`CURRENT_TIMESTAMP` in a DEFAULT or UPDATE. Exempt (must change writer + rows
+atomically, tracked separately): `zolai/auth/oauth.py`,
+`zolai/api/session_auth.py`, `zolai/api/auth.py` — they compare stored session
+and API-key expiry values as TEXT.
 
 ## Status labels (required on important claims)
 
