@@ -168,8 +168,7 @@ CI YAML. If a human or tool would transmit it, it is a surface.
 - Authority: `git ls-files`. `.gitignore` only stops *future* tracking; it never untracks a
   file already in the index.
 - Check: `git ls-files | grep -iE '(^|/)\.env($|\.)'` — expect only placeholder templates
-  (`.env.example`, `.env.production.template`). Anything else is tracked and therefore
-  public-if-pushed.
+  (e.g. `.env.example`). Anything else is tracked and therefore public-if-pushed.
 - To place a new env file under ignore **first** (never `git add` it), then re-run the check.
   Ignore-rule changes are a separate, reviewed decision — not part of this procedure.
 

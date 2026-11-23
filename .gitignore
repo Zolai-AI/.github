@@ -63,3 +63,10 @@ zolai-tts/
 .pcore/
 .qoder/
 .wrangler/
+
+# Local-only / untracked repo utilities (kept on disk, not in git)
+scripts/
+.env.production.template
+ruff.toml
+opencode.json
+.github/workflows/lint.yml
