@@ -57,6 +57,7 @@ tmp/
 
 # VS Code workspace file (local IDE config)
 zolai-ai.code-workspace
+zolai-tts/
 
 # Local tool/runtime dirs
 .pcore/

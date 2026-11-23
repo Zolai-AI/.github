@@ -12,7 +12,7 @@ that causes heavy disk I/O and memory usage.
 - The org profile + community files live at root (this repo IS the `.github` org profile repo).
 - **Use `bun`** as the package manager for all JS/TS repos.
 
-## Repos (12)
+## Repos (13)
 
 | Repo | Path | Purpose |
 |------|------|---------|
@@ -28,6 +28,7 @@ that causes heavy disk I/O and memory usage.
 | `zolai-landing` | `zolai-landing/` | Org landing page for zolai.space (React + Vite + Three.js) |
 | `zolai-journey` | `zolai-journey/` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 | `zolai-explorer` | `zolai-explorer/` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
+| `zolai-tts` | `zolai-tts/` | Text-to-speech research and tooling (separate git repo, ignored by root) |
 
 ## Live URLs
 
