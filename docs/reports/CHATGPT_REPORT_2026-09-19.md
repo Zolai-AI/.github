@@ -22,7 +22,6 @@ status: CONFIRMED
 
 **Founder:** Peter Pau Sian Lian (@peterlianpi)
 **Advisor:** Vacant (pending confirmation)
-**Whitepaper ideas:** External Advisor Candidate (contributor)
 **Live:** https://zolai.space/ · https://mcp.zolai.space/mcp
 
 ---

@@ -38,7 +38,6 @@ Canonical agent context: `docs/context/project-context.md` + `model-routing.md` 
 
 - Founder: Peter Pau Sian Lian
 - Advisor: Vacant (pending confirmation)
-- Whitepaper ideas: External Advisor Candidate (not in an advisory role)
 - Commercial arrangement: undefined, private
 - Decisions: DEC-001 … DEC-006
 

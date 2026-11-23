@@ -16,7 +16,6 @@ Do **not** assign ownership, equity, or executive authority based solely on cont
 |------|-----------------|-----------|
 | Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) | Technical architecture, engineering, product execution, documentation, partnerships prep |
 | Strategic Advisor & Business/Impact Mentor | **Vacant — pending confirmation** | Position not confirmed |
-| Whitepaper Ideas Contributor | External Advisor Candidate | Ideas for whitepaper only; not advisor/mentor |
 
 ## Role definitions
 
@@ -35,7 +34,7 @@ Do **not** assign ownership, equity, or executive authority based solely on cont
 
 ## Explicit non-roles (unless documented otherwise)
 
-External Advisor Candidate is a **whitepaper ideas contributor** (whitepaper only) and is **not** classified as an advisor or mentor, nor as Co-Founder, Co-Owner, Investor, Executive, Business Partner, or Equity Holder. The advisor/mentor position is vacant — pending confirmation.
+The advisor/mentor position is vacant — pending confirmation. No individuals are classified as non-roles unless explicitly documented.
 
 ## Organizational snapshot
 

@@ -49,7 +49,6 @@ status: current
 **Period:** 2026-09-18 to 2026-12-18
 **Founder:** Peter Pau Sian Lian (@peterlianpi)
 **Advisor:** Vacant (pending confirmation)
-**Whitepaper ideas:** External Advisor Candidate
 
 ---
 

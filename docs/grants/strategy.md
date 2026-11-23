@@ -34,7 +34,6 @@ last_updated: 2026-09-18
 | License / data rights completeness | OPEN |
 | Academic / community partnerships | OPEN |
 | Advisor / mentoring | **OPEN** — position vacant, pending confirmation; legacy “no advisors” is outdated |
-| Whitepaper ideas | External Advisor Candidate contributes whitepaper ideas only — not in an advisory role |
 | Publications / track record | OPEN |
 
 ## Phased approach (from legacy — still PROPOSED)

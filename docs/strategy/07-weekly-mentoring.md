@@ -9,12 +9,11 @@ status: PLANNED
 
 # Zolai AI — Weekly Mentoring System
 
-> **STATUS: NOT CONFIRMED — mentoring relationship not yet established. External Advisor Candidate contributes whitepaper ideas only.**
+> **STATUS: NOT CONFIRMED — mentoring relationship not yet established.**
 > This file is a **PLANNED** template kept for use if/when a mentoring relationship is confirmed.
 
 **Mentee:** Peter Pau Sian Lian (@peterlianpi)
 **Mentor:** [TBD — position vacant, pending confirmation]
-**Whitepaper ideas contributor:** External Advisor Candidate (ideas only; not confirmed in a mentoring role)
 **Cadence:** Not yet scheduled — PLANNED weekly, 60 minutes
 **Platform:** Video call (Zoom/Google Meet) or in-person
 
@@ -22,13 +21,13 @@ status: PLANNED
 
 ## Role Boundaries
 
-### External Advisor Candidate IS:
+### Mentor IS (when confirmed):
 - **Strategic Advisor** — provides business strategy, impact measurement, grant readiness guidance
 - **Business & Impact Mentor** — helps Peter Pau Sian Lian think through commercialization, partnerships, sustainability
 - **Accountability Partner** — keeps Peter Pau Sian Lian focused on high-impact work
 - **Network Connector** — introduces Peter Pau Sian Lian to relevant contacts
 
-### External Advisor Candidate is NOT:
+### Mentor is NOT:
 - **Co-founder** — unless a separate formal agreement is made (see 08-25-percent-arrangement.md)
 - **Technical co-lead** — technical decisions remain with Peter Pau Sian Lian
 - **Employee** — this is advisory, not employment
@@ -36,7 +35,7 @@ status: PLANNED
 
 ### Decision Authority:
 - **Peter Pau Sian Lian decides:** All technical, product, and day-to-day operational decisions
-- **External Advisor Candidate advises:** Business strategy, grant applications, partnerships, community engagement
+- **Mentor advises:** Business strategy, grant applications, partnerships, community engagement
 - **Both decide:** Strategic direction (discussed, Peter Pau Sian Lian has final say)
 - **Formal agreement needed:** Any equity, revenue sharing, or commercial arrangement
 
@@ -91,7 +90,7 @@ status: PLANNED
 - [ ] Evidence collected for any KRs completed this week
 - [ ] Top 3 priorities for next week identified
 - [ ] One specific topic for Deep Dive segment
-- [ ] Any decisions needing External Advisor Candidate's input
+- [ ] Any decisions needing mentor input
 - [ ] Questions or concerns written down
 
 ### Peter Pau Sian Lian Should Review:
@@ -109,7 +108,7 @@ status: PLANNED
 
 ## Attendees
 - Peter Pau Sian Lian
-- External Advisor Candidate
+- [Mentor]
 
 ## Duration
 - [Start time] – [End time]
@@ -126,8 +125,8 @@ status: PLANNED
 ## Action Items
 | # | Action | Owner | Due Date | Status |
 |---|--------|-------|----------|--------|
-| 1 | [Action] | [External Advisor Candidate] | [Date] | [ ] |
-| 2 | [Action] | [External Advisor Candidate] | [Date] | [ ] |
+| 1 | [Action] | [Owner] | [Date] | [ ] |
+| 2 | [Action] | [Owner] | [Date] | [ ] |
 
 ## OKR Updates
 - [Any KRs that moved from red→yellow or yellow→green]
@@ -139,7 +138,7 @@ status: PLANNED
 
 ## Session Rating
 - Peter Pau Sian Lian: [1-5]
-- External Advisor Candidate: [1-5]
+- Mentor: [1-5]
 ```
 
 ---
@@ -149,24 +148,24 @@ status: PLANNED
 ### When Peter Pau Sian Lian Faces a Decision:
 
 1. **Is this a technical decision?**
-   - Yes → Peter Pau Sian Lian decides (External Advisor Candidate provides input only if asked)
+   - Yes → Peter Pau Sian Lian decides
    - No → Continue to step 2
 
 2. **Is this a business/strategy decision?**
-   - Yes → Discuss with External Advisor Candidate, Peter Pau Sian Lian decides
+   - Yes → Discuss with mentor when confirmed, Peter Pau Sian Lian decides
    - No → Continue to step 3
 
 3. **Is this a partnership/funder decision?**
-   - Yes → External Advisor Candidate advises, Peter Pau Sian Lian decides
+   - Yes → Seek advisor input when confirmed, Peter Pau Sian Lian decides
    - No → Peter Pau Sian Lian decides independently
 
-4. **Does this affect the undefined commercial arrangement?** (see stub `08-25-percent-arrangement.md` — no public terms)
-   - Yes → Both must agree, document in 08-25-percent-arrangement.md
+4. **Does this affect an undefined commercial arrangement?** (see stub `08-25-percent-arrangement.md` — no public terms)
+   - Yes → All parties must agree, document in 08-25-percent-arrangement.md
    - No → Peter Pau Sian Lian decides
 
 ### Escalation Rules:
-- **If Peter Pau Sian Lian is stuck on a decision for > 1 week:** Escalate to External Advisor Candidate
-- **If External Advisor Candidate disagrees with Peter Pau Sian Lian's direction:** External Advisor Candidate states concern, Peter Pau Sian Lian decides
+- **If Peter Pau Sian Lian is stuck on a decision for > 1 week:** Seek external input
+- **If mentor disagrees with Peter Pau Sian Lian's direction:** Mentor states concern, Peter Pau Sian Lian decides
 - **If there's a conflict of interest:** Disclose immediately, recuse from decision
 - **If a decision requires legal/expert advice:** Refer to qualified professional
 
@@ -196,14 +195,14 @@ status: PLANNED
 ### Preferred Channels:
 - **Urgent questions:** WhatsApp/SMS (response within 24 hours)
 - **Non-urgent questions:** Email or GitHub comment (response within 48 hours)
-- **Updates:** Weekly email summary (Peter Pau Sian Lian sends to External Advisor Candidate every Friday)
+- **Updates:** Weekly email summary
 - **Documents:** GitHub repo (all docs version-controlled)
 
 ### Weekly Update Email Template:
 ```
 Subject: Zolai AI Weekly Update — [DATE]
 
-Hi External Advisor Candidate,
+Hi [Mentor],
 
 ## This Week
 - [Key achievement 1]

@@ -17,7 +17,6 @@ status: CONFIRMED
 | Orthography ground truth | ZVS 2018; SOV; ergative `in` |
 | Founder & Technical Lead | Peter Pau Sian Lian |
 | Strategic Advisor | **Vacant — pending confirmation** |
-| Whitepaper Ideas | External Advisor Candidate (contributor) |
 
 **What Zolai AI is:** a research and technology initiative building reliable language data, NLP tools, RAG systems, language intelligence, literacy technologies, educational resources, and — when the foundation is reliable enough — specialized AI models and applications for Zomi/Tedim language users.
 

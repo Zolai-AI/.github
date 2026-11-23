@@ -486,7 +486,7 @@ Both pre-date the D1–D6 round and are **not** credited to any commit above:
 - **Wave 1 DONE:** broken links fixed (0 remaining), 14 missing `status:` + 27 missing `last_updated:` frontmatter added, 14 orphan docs linked, `governance/README.md` completed. (commits `d6fd12a`, `b832155`)
 - **Wave 3 pre-staged:** `business/hypotheses.md` (BH1-6 + validation plan), `research/methodology.md` (KR1.4 DRAFT), `governance/backup-strategy.md` (KR2.2), `community/target-users.md` (4 personas), `license-audit-checklist.md` (4-phase), `grants/budget-template.md` (KR4.2), `community/interview-scripts.md` (KR5.1). (commits `3badc18`, `bf7859c`)
 - **Gap register refreshed:** KR2.1 CLOSED (1010 passed); statuses aligned; wave mapping added.
-- **Advisor sweep:** External Advisor Candidate reclassified as whitepaper ideas contributor; advisor position vacant across 22+ files. (commits `7849319`, `b832155`)
+- **Advisor sweep:** advisor position reclassified as vacant across 22+ files. (commits `7849319`, `b832155`)
 - **Completion plan:** `docs/planning/COMPLETION_PLAN.md` — 7 waves, Days 1–90.
 - **All repos pulled + fixed:** corrupted objects removed, upstreams set.
 
@@ -503,7 +503,7 @@ Both pre-date the D1–D6 round and are **not** credited to any commit above:
 ## 2026-09-19 (Session — Master Prompt v2.5 + v2.6 + name fix + ChatGPT report)
 
 - **Documentation Architecture v2.5** (commit `dec5ad2`): component status matrix (§15), DB table catalog (§16), business strategy (§26), roadmap OKR enrichment (§25), project-context update (§22), final A–L restructuring report (§33).
-- **Name fix** (commit `58d838d`): founder "Peter Lianpi" → **Peter Pau Sian Lian** (117 occurrences); advisor "Peter" → **External Advisor Candidate** (17 occurrences); 22 files updated; `07-weekly-mentoring.md` disambiguated.
+- **Name fix** (commit `58d838d`): founder "Peter Lianpi" → **Peter Pau Sian Lian** (117 occurrences); 22 files updated; `07-weekly-mentoring.md` disambiguated.
 - **Documentation Architecture v2.6** (commit `eda9493`): README index updates for v2.5 docs; business/grants/whitepaper README fixes; theory-of-change OKR alignment table; community interview + consent templates (PLANNED).
 - **ChatGPT context report v3.0** (commit `9ff76f5`): `docs/reports/CHATGPT_REPORT_2026-09-19.md` — 13 sections, 295 lines, replaces Sep 12 reports.
 - **Master Prompt coverage:** all 34 sections now have corresponding documents; remaining PLANNED items need human/community input (interviews, gold sets, methodology, grant drafts, legal entity).

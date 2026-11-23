@@ -23,9 +23,9 @@ status: current
 | 4. Data & Resources | Database description, corpus, methodology | O2 (Data), O3 (Evaluation) | Peter Pau Sian Lian | 6h | Not started |
 | 5. Methods | RAG pipeline, NLP tools, approach | O1 (Research), O2 (Data) | Peter Pau Sian Lian | 8h | Not started |
 | 6. Evaluation | Benchmark results, metrics, comparison | O3 (Evaluation) | Peter Pau Sian Lian | 6h | Not started |
-| 7. Community Impact | Engagement plan, literacy strategy, cultural grounding | O5 (Community), O6 (Business) | Peter Pau Sian Lian + External Advisor Candidate | 4h | Not started |
+| 7. Community Impact | Engagement plan, literacy strategy, cultural grounding | O5 (Community), O6 (Business) | Peter Pau Sian Lian | 4h | Not started |
 | 8. Ethical Considerations | Data sovereignty, CARE principles, governance | O4 (Grants), O5 (Community) | Peter Pau Sian Lian | 3h | Not started |
-| 9. Future Work | Roadmap, grant plans, scaling | O4 (Grants), O6 (Business) | Peter Pau Sian Lian + External Advisor Candidate | 3h | Not started |
+| 9. Future Work | Roadmap, grant plans, scaling | O4 (Grants), O6 (Business) | Peter Pau Sian Lian | 3h | Not started |
 | 10. References | 20+ citations | O1 (Research) | Peter Pau Sian Lian | 2h | Not started |
 | **TOTAL** | | | | **46h** | |
 

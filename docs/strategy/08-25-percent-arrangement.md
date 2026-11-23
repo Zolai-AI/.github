@@ -16,7 +16,6 @@ Sensitive details and open questions are kept in **local private governance** (`
 ### Public facts only
 
 - Founder & Technical Lead: Peter Pau Sian Lian
-- Whitepaper Ideas Contributor: External Advisor Candidate (ideas only; advisor role NOT confirmed)
 - Any commercial terms require a formal written agreement before they affect grants, public materials, or product claims
 
 ### Related

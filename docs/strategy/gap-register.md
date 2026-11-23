@@ -47,7 +47,7 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 | Speaker interviews (5) | High | OPEN | KR5.1 — template ready in `../community/README.md` |
 | Consent framework | Medium | DRAFTED | KR5.2 — templates in `../community/README.md` |
 | Annotation pilot | Medium | OPEN | KR5.4 — brief drafted; needs speakers |
-| Advisor position vacant | Medium | OPEN | Not confirmed; External Advisor Candidate = whitepaper ideas only |
+| Advisor position vacant | Medium | OPEN | Not confirmed; advisor position vacant |
 
 ## Business
 

@@ -52,7 +52,7 @@ Status
 |-------|---------|
 | Decision ID | DEC-002 |
 | Date | 2026-09-18 |
-| Decision | The advisor/mentor role is **NOT confirmed** — position vacant, pending confirmation. External Advisor Candidate contributes **whitepaper ideas only**; not co-founder/owner |
+| Decision | The advisor/mentor role is **NOT confirmed** — position vacant, pending confirmation. |
 | Context | Weekly mentoring; informal commercial discussion exists separately |
 | Options considered | Co-founder labeling vs advisor labeling |
 | Evidence | Mentoring doc; master restructuring prompt |

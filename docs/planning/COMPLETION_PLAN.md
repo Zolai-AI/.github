@@ -22,7 +22,7 @@ status: CONFIRMED
 | 1.3 | Link orphan docs from indexes | Fix | ✅ this batch |
 | 1.4 | Create governance/README.md index | Fix | ✅ this batch |
 | 1.5 | Fix name references (founder + advisor) | Fix | ✅ done |
-| 1.6 | Reclassify External Advisor Candidate role | Fix | ✅ done |
+| 1.6 | Reclassify advisor role status | Fix | ✅ done |
 | 1.7 | Git pull + fix all repos | Fix | ✅ done |
 
 ## Wave 2: Founder Review (Days 3–5) — NEEDS FOUNDER

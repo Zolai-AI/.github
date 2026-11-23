@@ -70,7 +70,6 @@ version: "Documentation Architecture v2.5"
 |------|--------|-------|
 | Founder | Peter Pau Sian Lian — unchanged | Solo founder |
 | Advisor | Vacant (pending confirmation) | Position not filled |
-| Whitepaper Ideas | External Advisor Candidate | Contributor only — not an advisor |
 | Contributors | Limited active | Solo founder risk (HIGH) |
 | Commercial arrangement | Undefined, private (DEC-003) | Not resolved |
 | Legal entity | Not established | Blocker for grants (KR4.5) |
