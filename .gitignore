@@ -57,3 +57,8 @@ tmp/
 
 # VS Code workspace file (local IDE config)
 zolai-ai.code-workspace
+
+# Local tool/runtime dirs
+.pcore/
+.qoder/
+.wrangler/
