@@ -1,6 +1,24 @@
+---
+title: "Zolai-AI Roadmap"
+description: "Strategic roadmap aligned with OKRs and ecosystem audit"
+created: 2026-09-07
+last_updated: 2026-11-24
+last_reviewed: 2026-11-24
+maintainer: "Peter Pau Sian Lian (@peterlianpi)"
+source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
+status: canonical
+canonical_source: true
+owner: workspace-governance
+---
 
+# Zolai-AI Roadmap
 
-## Current Status (2026-10-18)
+> **Canonical status.** This file is the workspace's canonical roadmap. The block
+> below is a dated historical record; current evidence lives in
+> [`OPEN-ISSUES.md`](OPEN-ISSUES.md) and the live URL probes recorded there.
+> Engineering stage order and exit tokens: [`SDLC.md`](SDLC.md).
+
+## Historical status — 2026-10-18 (marked historical 2026-11-24)
 
 ### ✅ DONE — and live
 - **The deployment is done and serving.** `https://api.zolai.space/health` → 200
@@ -50,16 +68,6 @@ Reconcile the server checkout back to `main`, then re-run the 7-point verify mat
 from `docs/operations/DEPLOY_RUNBOOK.md` on the native runtime.
 
 ---
-title: "Zolai-AI Roadmap"
-description: "Strategic roadmap aligned with OKRs and ecosystem audit"
-created: 2026-09-07
-last_updated: 2026-10-27
-maintainer: "Peter Pau Sian Lian (@peterlianpi)"
-source: "docs/strategy/01-strategic-audit.md + docs/strategy/okr.md"
-status: CONFIRMED
----
-
-# Zolai-AI Roadmap
 
 > Horizons: **Immediate 0–30d** · **Near-term 31–90d** · **Medium 3–12m** · **Long-term 1–3y**  
 > Canonical OKRs: [`strategy/05-90-day-okr.md`](strategy/05-90-day-okr.md) · Execution: [`strategy/15-execution-plan.md`](strategy/15-execution-plan.md)  
@@ -73,7 +81,7 @@ Every major item links: OKR · Owner · Dependency · Evidence · Repository · 
 
 | Area | Score | Status |
 |------|:-----:|--------|
-| Data Assets | 8/10 | Strong — ~4.17M rows, 151 tables (verify via audit/DB) |
+| Data Assets | 8/10 | Canonical `data/zolai.db`: 126 user tables / 2.80 GB / 3,266,049 rows (as of 2026-10-30) |
 | Code Quality | 7/10 | Good — 466+ tests, ruff linting |
 | NLP Pipeline | 6/10 | Syllable strong; others Experimental / incomplete |
 | Documentation | 6/10 | Architecture v2 canonical paths added 2026-09-18 |
@@ -129,10 +137,22 @@ Every major item links: OKR · Owner · Dependency · Evidence · Repository · 
 ## DO NOT DO
 
 - Premature model training
-- Expanding repos beyond 10
+- Adding repos without governance approval (13 tracked org repos + one local-only workspace; see root `README.md`)
 - Building for imagined users (validate first)
 - Ignoring evaluation
 - Excessive architecture (43 submodules, many stubs)
+
+## Architecture questions — issues only (recorded 2026-11-24, not adopted)
+
+These are recorded as open questions for issue tracking only. No migration or
+decoupling has been performed; the current stacks stay in place until a signed-off
+plan and tests exist.
+
+- **Next.js → Vite** — candidate migration for `zolai-web`; issue only. `zolai-web`
+  remains Next.js (Next.js + Hono + Prisma).
+- **React + Vite + API decoupling** — candidate separation for the frontend/API
+  boundary; issue only. No repository, package, or dependency was changed to
+  implement it.
 
 ---
 
@@ -219,8 +239,8 @@ Every major item links: OKR · Owner · Dependency · Evidence · Repository · 
 
 ---
 
-**Last review:** 2026-09-18
-**Next review:** 2026-10-18
+**Last review:** 2026-11-24
+**Next review:** founder-scheduled
 **Feedback:** Open a GitHub Discussion or issue
 
 ---

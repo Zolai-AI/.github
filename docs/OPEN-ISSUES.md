@@ -1498,3 +1498,96 @@ a tool printing a confident conclusion the evidence did not support.
 Both scripts still `bash -n` clean, and the verifier reports **16 PASS · 0 FAIL · 0 SKIP
 · 0 WARN · 0 PENDING** against the deployed core (all three tiers proven: anonymous 8,
 member 21, admin 26).
+
+---
+
+## 2026-11-24 (Workspace alignment — dated issue evidence)
+
+Every command in this section is read-only: no issue was opened, closed or edited,
+no deployment was run, and no database migration was executed. Dates below are the
+`createdAt` values returned by `gh`.
+
+### Dated issue evidence — `.github` #9–#16
+
+`gh issue list -R Zolai-AI/.github --state all --limit 100 --json number,title,state,createdAt,url`
+
+| # | createdAt (verbatim) | Title (verbatim) | State |
+|---:|---|---|---|
+| 16 | `2026-10-30T02:50:34Z` | `Gap tracking: define the linguistic core specifications and gold data` | OPEN |
+| 15 | `2026-10-30T02:50:26Z` | `Gap tracking: establish sustainable founder research and communication cadence` | OPEN |
+| 14 | `2026-10-30T02:50:08Z` | `Gap tracking: resolve legal, commercial, and funding readiness gaps` | OPEN |
+| 13 | `2026-10-30T02:50:00Z` | `Gap tracking: validate customer discovery and revenue model` | OPEN |
+| 12 | `2026-10-30T02:49:42Z` | `Gap tracking: complete remaining community research and governance work` | OPEN |
+| 11 | `2026-10-30T02:49:40Z` | `Gap tracking: establish Masakhane community membership` | OPEN |
+| 10 | `2026-10-30T02:49:40Z` | `Gap tracking: publish benchmark methodology and results` | OPEN |
+| 9 | `2026-10-30T02:49:30Z` | `Gap tracking: publish a reviewed Zolai research literature review` | OPEN |
+
+### Dated issue evidence — `zolai-core`
+
+`gh issue view <n> -R Zolai-AI/zolai-core --json number,title,state,createdAt,url`
+
+| # | createdAt (verbatim) | Title (verbatim) | State |
+|---:|---|---|---|
+| 29 | `2026-10-30T16:15:00Z` | `main is red: learning tests import create_learning_run_tables, which migrations.py never defines` | OPEN |
+| 26 | `2026-10-29T19:52:21Z` | `analyze_sentence is a placeholder: /api/v1/analyze/sentence always returns empty pos, grammar and entities` | OPEN |
+| 10 | `2026-10-11T04:59:19Z` | `prod: SMTP send times out (SMTPReadTimeoutError) — outbound email fails` | OPEN |
+
+### Dated issue evidence — `zolai-explorer`
+
+`gh issue view <n> -R Zolai-AI/zolai-explorer --json number,title,state,createdAt,url`
+
+| # | createdAt (verbatim) | Title (verbatim) | State |
+|---:|---|---|---|
+| 38 | `2026-10-30T16:37:55Z` | `Unknown routes answer HTTP 200 with the SPA shell (split out of #23 item 7)` | OPEN |
+| 37 | `2026-10-11T05:03:36Z` | `Word page for pasian: conflicting frequency/evidence and grammar vs Patterns` | OPEN |
+| 16 | `2026-10-11T04:47:01Z` | `UX: Word entry Grammar empty while Patterns has rows; frequency figures disagree` | OPEN |
+| 9 | `2026-10-07T01:00:27Z` | `Hide raw API endpoint paths behind a developer toggle` | OPEN |
+
+### Other repos — none found (open)
+
+`gh issue list -R Zolai-AI/<repo> --state all --limit 100 --json number`
+
+- `zolai-web`, `zolai-tauri`, `zolai-datasets`, `zolai-training`, `zolai-wiki`,
+  `zolai-ai.github.io`, `zolai-journey`, `zolai-tts`: `[]` — **none found**.
+- `zolai-mcp-server`: #1–#4 returned with `"state":"CLOSED"` — no open issues found.
+- `zolai-landing`: #1 returned with `"state":"CLOSED"` — no open issues found.
+- `zolai-ai-local` is not a GitHub org repo (`GraphQL: Could not resolve to a Repository with the name 'Zolai-AI/zolai-ai-local'.`); none found.
+
+## Full audit evidence — 2026-11-24
+
+| # | Subject | Check performed | Command / source | Result | Verdict |
+|---:|---|---|---|---|---|
+| 1 | Live URLs (5) | Non-mutating GET probes, 20 s timeout | `curl -sS -o /dev/null -w 'HTTP %{http_code} type=%{content_type} time=%{time_total}s\n' --max-time 20 <url>` | `https://zolai.space/ -> HTTP 200 type=text/html; charset=utf-8 time=0.499706s`; `https://mcp.zolai.space/mcp -> HTTP 405 type=application/json time=6.711102s`; `https://api.zolai.space/health -> HTTP 200 type=application/json time=1.275749s`; `https://studio.zolai.space/ -> HTTP 200 type=text/html time=0.492901s`; `https://journey.zolai.space/ -> curl: (6) Could not resolve host: journey.zolai.space` / `HTTP 000 type= time=0.063680s` | 4 reachable, journey UNVERIFIED (DNS) |
+| 2 | Dated issue evidence | Read-only GitHub issue queries | `gh issue list -R Zolai-AI/.github ...`; `gh issue view <n> -R Zolai-AI/zolai-core ...`; `gh issue view <n> -R Zolai-AI/zolai-explorer ...` | `.github #9–#16` created `2026-10-30T02:49:30Z`–`2026-10-30T02:50:34Z`, all OPEN; core #29 `2026-10-30T16:15:00Z`, #26 `2026-10-29T19:52:21Z`, #10 `2026-10-11T04:59:19Z`, all OPEN; explorer #38 `2026-10-30T16:37:55Z`, #37 `2026-10-11T05:03:36Z`, #16 `2026-10-11T04:47:01Z`, #9 `2026-10-07T01:00:27Z`, all OPEN | CONFIRMED — dated evidence above |
+| 3 | Other repos | Read-only issue list across remaining repos | `gh issue list -R Zolai-AI/<repo> --state all --limit 100 --json number` | `[]` for web/tauri/datasets/training/wiki/github.io/journey/tts; mcp-server #1–#4 and landing #1 all `"state":"CLOSED"`; local repo does not exist on GitHub | none found (open) |
+| 4 | Python import check | Read-only import, no DB write | `zolai-core/.venv/bin/python -c 'import zolai; print("import zolai: OK"); print("module:", zolai.__file__)'` | `import zolai: OK` / `module: /home/peter/Documents/Projects/zolai-ai/zolai-core/zolai/__init__.py` | PASS |
+| 5 | Knowledge snapshot | Read-only `verify-version` (no migration, no snapshot write) | `zolai-core/.venv/bin/zolai knowledge verify-version v2026.10.31.2` | `{"ok": true, "version": "v2026.10.31.2", "mode": "content", "checked": 19, "drift": {}}` | PASS |
+| 6 | Eval migration dry-run | Read-only dry-run, no writes issued | `zolai-core/.venv/bin/python scripts/migrate_eval_store.py --dry-run` | `canonical database: /home/peter/Documents/Projects/zolai-ai/data/zolai.db`; `eval_cases lanes before: 12 sets, 1121 cases`; `legacy store not present at /home/peter/Documents/Projects/zolai-ai/data/zolai_eval.db — nothing to copy`; `dry run: no writes issued` | PASS — no migration run |
+| 7 | Frontend manifests / no new deps | Read-only manifest diff + package counts | `git -C <repo> diff -- package.json \| wc -c`; `jq -r '"\(.name) deps=\(.dependencies\|length) devDeps=\(.devDependencies\|length)"' <pkg>` | `zolai-web package.json diff bytes: 0`; `zolai-explorer: 0`; `zolai-landing: 0`; `zolai-journey: 0`; `zolai-language-hub deps=79 devDeps=16`; `zolai-explorer deps=20 devDeps=11`; `zolai-landing deps=14 devDeps=9`; `zolai-journey deps=8 devDeps=9` | PASS — no component/UI-kit deps added |
+| 8 | No NestJS / no new Rust service | Read-only manifest + Cargo scan | `grep -ioE '"?@nestjs/[^"]+\|nestjs' <manifests>`; `find <repos> -maxdepth 2 -name Cargo.toml -not -path '*/node_modules/*' -print` | No `@nestjs` hit in web/explorer/landing/journey/tts manifests; `zolai-tauri/src-tauri/Cargo.toml` is the only Cargo manifest found | PASS — Cargo is Tauri native layer only |
+| 9 | Deletions / new files | Read-only git status across 14 repos | `git -C <repo> status --short` | `0` entries matching `^( D\|D )`; `?? docs/SDLC.md` is the only new file created by this pass; no new `AGENTS.md`, `ROADMAP`, `roadmap`, or `package.json` | PASS — zero deleted files, exactly one new file |
+| 10 | Alignment coverage | Read-only grep of existing entry docs | `grep -rlF '### ALIGNMENT RECORD' <13 docs>` etc. | `ALIGNMENT RECORD files: 13`; `FRONTEND files: 5`; `REUSE-FIRST files with literal: 5`; `BACKEND/CORE files: 7`; `nestjs literal files: 7` | PASS |
+| 11 | Secret hygiene | Pre-commit scan of intended diff (placeholder values only) | `git diff -- <explicit paths> \| grep -inE '(sk-[A-Za-z0-9]{8,}\|AKIA...\|BEGIN [A-Z ]*PRIVATE KEY\|[Aa][Pp][Ii][_-]?[Kk][Ee][Yy].{0,3}[=:])'`; `git ls-files \| grep -iE '(^\|/)\.env($\|\.)'` | `NO_MATCH` for root and all 13 subrepos; `(none tracked)` for `.env*` | PASS |
+| 12 | License / permission status | Documented owner-gated areas checked, not resolved | `docs/governance/credits-license-inventory.md`, `profile/README.md` § Bible corpus, `docs/ROADMAP.md` § FOUNDER-GATED | Permission letters and license/provenance decisions remain owner-gated | UNKNOWN — checked: `docs/governance/credits-license-inventory.md`, `profile/README.md` § Bible corpus, `docs/ROADMAP.md` § FOUNDER-GATED |
+
+### Per-repo dirty path counts (after this pass, before commits)
+
+| Repo | Count |
+|------|---:|
+| `.` (root) | 6 |
+| `zolai-core` | 4 |
+| `zolai-web` | 2 |
+| `zolai-tauri` | 2 |
+| `zolai-datasets` | 28 |
+| `zolai-training` | 2 |
+| `zolai-wiki` | 3 |
+| `zolai-ai.github.io` | 1 |
+| `zolai-mcp-server` | 7 |
+| `zolai-landing` | 7 |
+| `zolai-journey` | 7 |
+| `zolai-explorer` | 8 |
+| `zolai-tts` | 5 |
+| `zolai-ai-local` | 5 |
+
+These counts include pre-existing uncommitted work owned by other sessions; this pass
+stages and commits only the explicit paths listed in its commit messages.

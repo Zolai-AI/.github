@@ -42,6 +42,7 @@ When documents conflict, prefer the **canonical** path below. Older files become
 | Domain | Canonical source | Legacy / detail |
 |--------|------------------|-----------------|
 | Governance index | [`docs/governance/`](./) | — |
+| SDLC (7 stages, exit tokens, ordered workflow) | [`docs/SDLC.md`](../SDLC.md) | pcore-orchestra `context/ai-workflow-rules.md:24-26`, `bundle/agents/orchestra.md:280-290,292-315,321-327,329-338` |
 | Contributors / roles | [`docs/governance/contributors.md`](contributors.md) | — |
 | Data governance | [`docs/governance/data-governance.md`](data-governance.md) | `context/DATA_GOVERNANCE.md` |
 | Public vs private | [`docs/governance/public-vs-private.md`](public-vs-private.md) | — |

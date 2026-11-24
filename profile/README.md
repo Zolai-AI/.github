@@ -10,15 +10,11 @@ model training as a later stage when the foundation is reliable.
 
 ---
 
-## Mission
+## Mission / Vision
 
-Create practical, evidence-based language technology and knowledge infrastructure that help
-Tedim Zolai speakers and learners access information, learn language, and participate digitally.
-
-## Vision
-
-A durable Zomi language-technology ecosystem: community-informed tools, open research,
-measurable literacy impact, and sustainable operations.
+Short form: practical, evidence-based Zolai language technology and a durable,
+community-informed Zomi language-technology ecosystem. Canonical text:
+[Mission & vision](https://github.com/Zolai-AI/.github/blob/main/docs/strategy/mission-vision.md).
 
 ---
 
@@ -42,7 +38,8 @@ code but many claims remain only partially verified — see
 
 We credit **source materials** used to build the Zolai learning system. Source corpora
 (Bible translations, TongDot/TongSan dictionaries, and other corpora) are processed into a
-cleaned, ZVS-2018-aligned database (`data/zolai.db`, SQLite WAL, ~99 tables / ~2.3GB / ~3.3M rows).
+cleaned, ZVS-2018-aligned canonical database (`data/zolai.db`, SQLite WAL) —
+**126 user tables / 2.80 GB / 3,266,049 rows (as of 2026-10-30)**.
 See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestricted reuse.
 
 ### Key resources
@@ -58,11 +55,14 @@ See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestric
 
 ## Live URLs
 
-| Service | URL |
-|---------|-----|
-| Landing | https://zolai.space/ |
-| MCP Server | https://mcp.zolai.space/mcp |
-| Documentation | https://github.com/Zolai-AI/.github/tree/main/docs |
+| Service | URL | Probe (2026-11-24) |
+|---------|-----|-------------------|
+| Landing | https://zolai.space/ | HTTP 200 |
+| MCP Server | https://mcp.zolai.space/mcp | HTTP 405 for GET (POST-only endpoint) |
+| Core API health | https://api.zolai.space/health | HTTP 200 |
+| Studio workbench | https://studio.zolai.space/ | HTTP 200 |
+| Journey timeline | https://journey.zolai.space/ | UNVERIFIED — DNS did not resolve |
+| Documentation | https://github.com/Zolai-AI/.github/tree/main/docs | — |
 
 ## Repos
 
@@ -76,6 +76,13 @@ See `zolai-datasets` CREDITS for attribution. Public accessibility ≠ unrestric
 | `zolai-wiki` | Knowledge base (grammar, vocab, curriculum) | Active |
 | `zolai-mcp-server` | Legacy MCP wrapper — the live MCP server is a route in `zolai-core` | Legacy |
 | `zolai-landing` | Org landing (zolai.space) | Live |
+| `zolai-tts` | Text-to-speech research and tooling | Early |
+| `zolai-journey` | Cinematic history timeline (React + Vite) | Early |
+| `zolai-explorer` | Studio workbench at studio.zolai.space (React + Vite + shadcn/ui) | Live |
+| `zolai-ai.github.io` | GitHub Pages org site | Live |
+| `zolai-ai-local` (local-only) | Local Gemini research workspace; not an org repo | Local |
+
+13 repos are listed above; `zolai-ai-local` is local-only (not published under the org).
 
 ## Bible corpus
 
@@ -88,7 +95,8 @@ or commercial reuse.
 | Role | Name | Notes |
 |------|------|-------|
 | Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) | Architecture, engineering, execution |
-| Whitepaper Ideas Contributor |  | Ideas for whitepaper only — role vacant |
+| Advisor / mentor |  | **VACANT** — pending confirmation |
+| Whitepaper Ideas Contributor |  | Ideas for whitepaper only — **role vacant** |
 
 ## Research & documentation
 

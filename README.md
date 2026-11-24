@@ -2,7 +2,7 @@
 title: "Zolai-AI Organization"
 description: "Open-source language technology for Tedim Zolai (ZVS 2018)"
 created: 2026-09-04
-last_updated: 2026-09-18
+last_updated: 2026-11-24
 maintainer: "Peter Pau Sian Lian (@peterlianpi)"
 license: MIT
 ---
@@ -15,16 +15,11 @@ Zolai AI builds trustworthy language data, knowledge infrastructure, NLP tools, 
 resources, and community-oriented applications for Tedim Zolai (ZVS 2018). Specialized model
 training is later-stage when the foundation is reliable.
 
-## Mission
+## Mission / Vision
 
-Create practical, evidence-based language technology and knowledge infrastructure
-that help Tedim Zolai (ZVS 2018) speakers and learners access information, learn
-language, and participate digitally — grounded in verified data and responsible use.
-
-## Vision
-
-A durable Zomi language-technology ecosystem: community-informed tools, open research,
-measurable literacy impact, and sustainable operations.
+Short form: practical, evidence-based Zolai language technology and a durable,
+community-informed Zomi language-technology ecosystem. Canonical text:
+[`docs/strategy/mission-vision.md`](docs/strategy/mission-vision.md).
 
 > Data, evaluation, research, and community impact first; specialized model training
 > follows when the foundation is reliable.
@@ -39,17 +34,26 @@ measurable literacy impact, and sustainable operations.
 | [`zolai-datasets`](https://github.com/Zolai-AI/zolai-datasets) | Bilingual corpora & datasets (HF/Kaggle) | ✅ Active | — |
 | [`zolai-training`](https://github.com/Zolai-AI/zolai-training) | LoRA/QLoRA fine-tuning + GGUF export | 🔄 Early | — |
 | [`zolai-wiki`](https://github.com/Zolai-AI/zolai-wiki) | Knowledge base (grammar, vocab, curriculum) | ✅ Active | — |
-| [`zolai-mcp-server`](https://github.com/Zolai-AI/zolai-mcp-server) | MCP server for ChatGPT/Gemini/Claude | ✅ Live | — |
+| [`zolai-mcp-server`](https://github.com/Zolai-AI/zolai-mcp-server) | Legacy MCP wrapper (Cloudflare Worker); live MCP is a route in `zolai-core` | 🗄️ Legacy | — |
 | [`zolai-landing`](https://github.com/Zolai-AI/zolai-landing) | Org landing page for zolai.space | ✅ Live | — |
 | [`zolai-ai.github.io`](https://github.com/Zolai-AI/zolai-ai.github.io) | GitHub Pages org landing | ✅ Live | — |
 | [`.github`](https://github.com/Zolai-AI/.github) | Org profile + community + workflows | ✅ Complete | — |
+| [`zolai-journey`](https://github.com/Zolai-AI/zolai-journey) | Cinematic history timeline (React + Vite) | 🔄 Early | — |
+| [`zolai-explorer`](https://github.com/Zolai-AI/zolai-explorer) | Studio workbench at studio.zolai.space (React + Vite + shadcn/ui) | ✅ Live | — |
+| [`zolai-tts`](https://github.com/Zolai-AI/zolai-tts) | Text-to-speech research and tooling | 🔄 Early | — |
+| `zolai-ai-local` (local-only) | Local Gemini research workspace; not an org repo | 🖥️ Local | — |
+
+13 tracked org repos are listed above; `zolai-ai-local` is a local-only workspace.
 
 ## Live URLs
 
 | Service | URL | Status |
 |---------|-----|:------:|
-| Landing page | https://zolai.space/ | ✅ LIVE |
-| MCP server | https://mcp.zolai.space/mcp | ✅ LIVE |
+| Landing page | https://zolai.space/ | ✅ LIVE (probed 2026-11-24: HTTP 200) |
+| MCP server | https://mcp.zolai.space/mcp | ✅ LIVE (probed 2026-11-24: HTTP 405 for GET — POST-only endpoint) |
+| Core API health | https://api.zolai.space/health | ✅ LIVE (probed 2026-11-24: HTTP 200) |
+| Studio workbench | https://studio.zolai.space/ | ✅ LIVE (probed 2026-11-24: HTTP 200) |
+| Journey timeline | https://journey.zolai.space/ | ⚠️ UNVERIFIED (2026-11-24 probe: DNS did not resolve) |
 
 ## Ecosystem Architecture
 
@@ -66,7 +70,7 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 
 ## Data
 
-All data lives in `data/zolai.db` (SQLite WAL, ~2.3GB, 99 tables, ~3.3M rows).
+All data lives in the canonical `data/zolai.db` (SQLite WAL): **126 user tables / 2.80 GB / 3,266,049 rows (as of 2026-10-30)**. Canonical counts: [`docs/database/tables.md`](docs/database/tables.md).
 
 | Table | Rows | Purpose |
 |-------|------|---------|
@@ -96,6 +100,14 @@ See [`zolai-datasets/data/CREDITS.md`](https://github.com/Zolai-AI/zolai-dataset
 | Advisors | [`docs/strategy/advisors-and-mentors.md`](docs/strategy/advisors-and-mentors.md) | Advisor position vacant; pending confirmation |
 | Documentation Index | [`docs/README.md`](docs/README.md) | Master documentation index |
 | AI Tools & Attribution | [`docs/AI_TOOLS_AND_ATTRIBUTION.md`](docs/AI_TOOLS_AND_ATTRIBUTION.md) | AI toolchain documentation |
+
+## Roles
+
+| Role | Status |
+|------|--------|
+| Founder & Technical Lead | Peter Pau Sian Lian (`@peterlianpi`) |
+| Advisor / mentor | **VACANT** — see [`docs/strategy/advisors-and-mentors.md`](docs/strategy/advisors-and-mentors.md) |
+| Whitepaper ideas contributor | **VACANT** |
 
 ## AI-Assisted Development
 
