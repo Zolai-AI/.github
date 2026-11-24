@@ -83,7 +83,7 @@ All data lives in the canonical `data/zolai.db` (SQLite WAL): **126 user tables 
 | `training_exercises` | 82,159 | 5 exercise types |
 | `word_alignments` | 385,120 | Word-level ZO↔EN alignment |
 
-See [`zolai-datasets/data/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/data/CREDITS.md) for full attribution.
+See [`zolai-datasets/docs/CREDITS.md`](https://github.com/Zolai-AI/zolai-datasets/blob/main/docs/CREDITS.md) for full attribution.
 
 ## Documentation
 
