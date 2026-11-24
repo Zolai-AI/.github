@@ -59,6 +59,9 @@ tmp/
 zolai-ai.code-workspace
 zolai-tts/
 
+# Local shared TS package (ADR-020, not yet published)
+zolai-ai-kit/
+
 # Local tool/runtime dirs
 .pcore/
 .qoder/

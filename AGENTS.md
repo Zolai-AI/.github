@@ -12,7 +12,7 @@ that causes heavy disk I/O and memory usage.
 - The org profile + community files live at root (this repo IS the `.github` org profile repo).
 - **Use `bun`** as the package manager for all JS/TS repos.
 
-## Repos (13)
+## Repos (14)
 
 | Repo | Path | Purpose |
 |------|------|---------|
@@ -29,6 +29,7 @@ that causes heavy disk I/O and memory usage.
 | `zolai-journey` | `zolai-journey/` | Cinematic history timeline at journey.zolai.space (React + Vite + Framer Motion) |
 | `zolai-explorer` | `zolai-explorer/` | Studio workbench for the zolai-core API at studio.zolai.space (React + Vite + shadcn/ui) |
 | `zolai-tts` | `zolai-tts/` | Text-to-speech research and tooling (separate git repo, ignored by root) |
+| `zolai-ai-kit` | `zolai-ai-kit/` | Shared TS client/types (`@zolai/ai-kit`) — linked into zolai-explorer (ADR-020, local-only) |
 
 ## Live URLs
 
@@ -48,6 +49,60 @@ zolai-landing → Cloudflare Pages → zolai.space (org landing page)
 zolai-journey → Cloudflare Pages → journey.zolai.space (cinematic history timeline)
 zolai-explorer → studio.zolai.space (API studio workbench)
 ```
+
+## Data Layer Standard (every repo, every session)
+
+**Storage is selected by configuration, never by code.** SQLite is the local/dev
+and offline default; PostgreSQL is the server default. Switching engines must
+not require editing source.
+
+| Repo | Data layer | Engine switch |
+|------|-----------|---------------|
+| `zolai-core` | SQLAlchemy `DatabaseManager` + Prisma schema of record (`prisma/schema.prisma`) | `ZOLAI_POSTGRES_URL` / `ZOLAI_PG_URL` set → Postgres; unset → SQLite |
+| `zolai-web` | Prisma (`provider = "postgresql"`) + `@prisma/adapter-pg` | `prisma/schema.prisma` + `DATABASE_URL` |
+| `zolai-tts` | `src/zolai_tts/db/drivers.py` (`Driver` protocol) | `ZOLAI_TTS_DB_URL` (`sqlite:///…` \| `postgresql://…`) |
+| `zolai-datasets` | `scripts/db.py` (drop-in `sqlite3.connect` replacement) | `ZOLAI_DB_URL` (`sqlite:///…` \| `postgresql://…`) |
+| `zolai-tauri` | Rust: `rusqlite` (bundled, embedded offline store). Python: `src-tauri/db/drivers.py` | `ZOLAI_DB_URL` / `--db-url` (server-mode migration) |
+| `zolai-explorer` / `zolai-landing` / `zolai-journey` | No direct DB — API/static | n/a |
+
+**Shared portability rules** (so one SQL string runs on both engines):
+placeholders written `?` (translated to `%s` for Postgres); booleans as
+`INTEGER` 0/1; timestamps as ISO-8601 UTC `TEXT` — never `strftime()`,
+`datetime('now')`, or `CURRENT_TIMESTAMP`; JSON as `TEXT` (no `jsonb` /
+JSON1); upserts via `INSERT … ON CONFLICT (…) DO UPDATE SET …`; only
+`substr()` / `COALESCE` / aggregates as SQL expressions; SQLite `PRAGMA`s
+applied on the SQLite path only. Where a statement genuinely needs a
+SQLite-only feature (FTS5, virtual tables, `PRAGMA` inspection), keep it on the
+SQLite path with an explicit `# sqlite-only` comment instead of half-porting it.
+
+**Prisma policy:** use Prisma where the repo is TypeScript (schema of record,
+`prisma migrate`, typed `PrismaClient`). Python repos keep SQLAlchemy as the
+runtime ORM and mirror the schema in `prisma/schema.prisma` — they do **not**
+dependency-invert onto a JS client.
+
+## Frontend Data Layer Standard (every React repo)
+
+**No raw `fetch()` in components.** Client code goes through TanStack React
+Query hooks over a feature transport module:
+
+- **`zolai-web`** — routes mounted in `app/api/[[...route]]/route.ts` are typed
+  via the Hono RPC client (`hc<AppType>` from `lib/api/client.ts`):
+  `client.api.zolai.$get()`. Non-Hono/edge-proxied endpoints go through
+  `lib/api/http.ts` (`apiJson`). Transports live in `features/<area>/api/`,
+  hooks in `features/<area>/hooks/`.
+- **`zolai-explorer`** — one source of truth per concern: endpoints in
+  `src/lib/endpoints.ts`, one TanStack hook per endpoint in
+  `src/features/<area>/api.ts`, shared client primitives from `@zolai/ai-kit`.
+- **`zolai-tts` (web)** — hooks in `web/src/hooks/use-api.ts` over the thin
+  `web/src/lib/api.ts` transport.
+- **`zolai-landing`** — `useGitHubRepos` wraps the GitHub call in `useQuery`.
+
+Server-side code (Hono routers, route handlers) may call external APIs with
+`fetch` directly. SSE/streaming keeps a raw `fetch` for the `ReadableStream`
+reader, but only inside a transport module (e.g.
+`features/zolai/lib/stream.ts`) consumed from a `useMutation` — never inline in
+a component. Every repo with React Query needs a `QueryClientProvider` at the
+app root.
 
 ## Tool scoping
 
