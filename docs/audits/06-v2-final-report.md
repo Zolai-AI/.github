@@ -80,7 +80,7 @@ Completed security cleanup, database reconciliation, and claims verification for
 
 | Problem | Details |
 |---------|---------|
-| zolai-core local DB empty | Must set `ZOLAI_DATA_ROOT=/home/peter/Documents/Projects/zolai-ai` |
+| zolai-core local DB empty | Must set `ZOLAI_DATA_ROOT=$ZOLAI_WORKSPACE` |
 | MT/QA/Summarizer AI integration | Currently rule-based fallbacks only |
 | No regression test suite | Linguistic bugs not captured as tests |
 | Data provenance | Generated vs verified data not distinguished |
@@ -103,7 +103,7 @@ Completed security cleanup, database reconciliation, and claims verification for
 ### P0 — Immediate (This Week)
 1. **Fix ZVS validator**: Make historical exceptions context-aware (only suppress in historical/scripture text, not globally)
 2. **Create independent syllable test set**: 500+ human-annotated words for true evaluation
-3. **Point zolai-core to shared DB**: Set `ZOLAI_DATA_ROOT=/home/peter/Documents/Projects/zolai-ai` in deployment
+3. **Point zolai-core to shared DB**: Set `ZOLAI_DATA_ROOT=$ZOLAI_WORKSPACE` in deployment
 
 ### P1 — Week 1-2
 1. **Integrate Gemini ensemble**: Connect MT/QA/Summarizer to multi-model ensemble voter

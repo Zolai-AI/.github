@@ -86,7 +86,7 @@ The script does **NOT** auto-install a crontab — that is a system change the f
 ```bash
 crontab -e
 # add:
-0 2 * * * /home/peter/Documents/Projects/zolai-ai/scripts/backup-zolai.sh >> /home/peter/Documents/Projects/zolai-ai/data/backups/backup.log 2>&1
+0 2 * * * $ZOLAI_WORKSPACE/scripts/backup-zolai.sh >> $ZOLAI_WORKSPACE/data/backups/backup.log 2>&1
 ```
 
 Expected run: nightly 02:00, ~562 MB `.gz` per night → ≈ 3.9 GB/week before rotation; steady-state with 7 daily + 4 weekly ≈ **7–8 GB**. Disk budget at implementation: 32 GB free — sufficient, but re-check after any big data import.

@@ -52,9 +52,36 @@ zolai-explorer → studio.zolai.space (API studio workbench)
 
 ## Data Layer Standard (every repo, every session)
 
+**No personal paths.** Never hardcode `/home/<user>/…` (or a specific username) in
+code, scripts, tests, docs, commit messages, or generated reports — a public repo
+that names one developer's home directory is both unrunnable elsewhere and a
+privacy leak. Use, and define the variable near first use:
+
+| Placeholder | Means | Resolve with |
+|---|---|---|
+| `$ZOLAI_WORKSPACE` | the `zolai-ai/` checkout root (holds the shared `data/`) | `Path(__file__).resolve().parents[N]`, or `ZOLAI_DATA_ROOT` / `${ZOLAI_ROOT:-../..}` |
+| `$ZOLAI_PROJECTS` | the parent `Projects/` dir | `WORKSPACE_ROOT.parent` |
+| `$ZOLAI_BACKUPS` | scratch backup staging, outside the repo | `ZOLAI_BACKUP_DIR` env |
+| `~` / `$HOME` | a user's own home (dotfiles, `~/.local/bin`) | `Path.home()`, `os.path.expanduser` |
+
+Binaries come from `PATH` (`command -v kaggle`), not `~/.local/bin`. Test fixtures
+use obviously synthetic paths (`/srv/model-store/…`, `/workspace`) rather than
+resembling a real machine. Exception: leak-**detection** patterns in the audit
+skills legitimately quote the string they search for.
+
 **Storage is selected by configuration, never by code.** SQLite is the local/dev
 and offline default; PostgreSQL is the server default. Switching engines must
 not require editing source.
+
+**Builders must not target the shared database.** Scripts that `CREATE TABLE` their
+own schema (`entries`, `stems`, `*_enhanced`, `pos_gold`) and then
+`os.remove(DB_PATH)` to rebuild it must point at a *scratch* file —
+`db_path(name="dictionary/db/…")` — never at `data/zolai.db`, whose schema is owned
+by `zolai-core` and which holds the platform's 132 tables. `zolai-datasets/scripts/db.py`
+enforces this with `assert_rebuildable()`, which refuses the core path unless
+`ZOLAI_ALLOW_CORE_REBUILD=1` is set. Audit the whole repo with
+`python3 scripts/audit_core_schema.py --strict` (bad columns, missing tables,
+omitted NOT NULL columns, new tables in the core store).
 
 | Repo | Data layer | Engine switch |
 |------|-----------|---------------|
@@ -151,7 +178,8 @@ repo's `AGENTS.md` — do not duplicate this block per repo.
 
 ## Learned Workspace Facts
 
-- Orchestra lives in **pcore-orchestra** at `/home/peter/Documents/Project/pcore/pcore-orchestra` (installs into `~/.cursor` / OpenCode).
+- Orchestra lives in **pcore-orchestra** at `~/Documents/Project/pcore/pcore-orchestra` on this
+  machine (checkout location is machine-local; installs into `~/.cursor` / OpenCode).
 - If Cursor Task rejects `orchestra-*` subagent types, run the loop via **conductor fallback** (parent runs phases) — do not stop the loop.
 - While orchestra is active or the user said **continue until finish**, do **not** pause with Done/Next choice menus — chain phases and handoff goals until the goal is finished or the user says stop.
 

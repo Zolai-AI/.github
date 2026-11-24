@@ -13,7 +13,7 @@ Welcome! This guide covers the container layout, repos, shared data, and AI-agen
 
 ## Container Layout
 
-The workspace root (`/home/peter/Documents/Projects/zolai-ai`) is a **coordinator folder**, not a git repo (P-Core pattern). It contains:
+The workspace root (`$ZOLAI_WORKSPACE`) is a **coordinator folder**, not a git repo (P-Core pattern). It contains:
 
 - **Subfolders** — each an independent git repo (see below)
 - **`data/`** — shared non-git data directory (6.3 GB), referenced via `${ZOLAI_ROOT:-../..}/data`

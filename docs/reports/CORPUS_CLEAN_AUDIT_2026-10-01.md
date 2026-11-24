@@ -1,7 +1,7 @@
 # Corpus Clean Audit — 2026-10-01
 
 - **Status:** PRE-APPLY (read-only defect matrix — committed as evidence before `--apply`)
-- **DB:** `/home/peter/Documents/Projects/zolai-ai/data/zolai.db`
+- **DB:** `$ZOLAI_WORKSPACE/data/zolai.db`
 - **Generated:** 2026-10-01 16:15:09 UTC · scan 227.64s
 - **Spec:** `docs/planning/C1_CORPUS_CLEAN_PLAN.md` · module `zolai/data/corpus_clean.py`
 - **Tables scanned:** 15
@@ -240,7 +240,7 @@
 
 ## Apply results
 
-- **Applied:** 2026-10-01 15:43 UTC · db `/home/peter/Documents/Projects/zolai-ai/data/zolai.db` · batch 5000
+- **Applied:** 2026-10-01 15:43 UTC · db `$ZOLAI_WORKSPACE/data/zolai.db` · batch 5000
 - **Fresh backup before apply:** `data/backups/zolai-2026-10-01_2113.db.gz` (563M · sha256 in `data/backups/backup.log`)
 - **Cells changed:** 5775 · **`data_audit_log` rows added:** 5775 (one per changed cell, `reason="corpus_clean_v1 by cli"`) · log total now 36520
 - **Defect classes among written cells:** html 0 · whitespace 9 · ZVS 2999 · JSON 2767

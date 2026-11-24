@@ -79,7 +79,7 @@ a path **outside `/tmp`** (§3.1). Free space: 55 GB on `/`.
 - [ ] **F1 rotated and verified** (§2.1) — checkbox ticked by the founder, with date/time.
 - [ ] **F2 rotated and verified** (§2.2) — checkbox ticked by the founder, with date/time.
 - [ ] **§3.0 blocking preconditions all ticked** (unpushed-work collision, clean worktrees).
-- [ ] **§3.1 backups written to `/home/peter/zolai-purge-backups/<date>/` and verified**
+- [ ] **§3.1 backups written to `$ZOLAI_BACKUPS/<date>/` and verified**
       (restorable — see §7 test), **outside `/tmp`**.
 
 **Not one purge command in §3 may run until all four boxes above are ticked.**
@@ -178,9 +178,9 @@ The previous `/tmp/opencode/*-pre-rewrite-*.bundle` backups are **gone**. Take f
 
 ```bash
 set -euo pipefail
-BK=/home/peter/zolai-purge-backups/2026-10-27
+BK=$ZOLAI_BACKUPS/2026-10-27
 mkdir -p "$BK"
-W=/home/peter/Documents/Projects/zolai-ai
+W=$ZOLAI_WORKSPACE
 
 # --- root repo (Zolai-AI/.github) — F1 lives in unreachable objects here ---
 git -C "$W" bundle create "$BK/github-dot-github.bundle" --all
@@ -225,11 +225,11 @@ unreachable/reflog objects (§3.5). `filter-repo` is optional and is given for c
 (it also prunes reflogs/old objects, per its own `--help`).
 
 ```bash
-cd /home/peter/Documents/Projects/zolai-ai
+cd $ZOLAI_WORKSPACE
 git status --porcelain        # MUST be empty first (11 dirty + untracked at prep time)
 
 # expressions file: one secret per line, "<old>==><new>" (no other format needed)
-cat > /home/peter/zolai-purge-backups/2026-10-27/replace-f1.txt <<'EOF'
+cat > $ZOLAI_BACKUPS/2026-10-27/replace-f1.txt <<'EOF'
 literal:PASTE_F1_FULL_VALUE_HERE==>[REMOVED:Gmail app password]
 EOF
 # NOTE: this build parses lines as  literal:<old>==><new>  (rsplit on the LAST '==>');
@@ -237,7 +237,7 @@ EOF
 #       Put the real value in the file with a secure editor, chmod 600 the file, and
 #       delete it after the run. NEVER paste it into a shell history or a commit.
 
-git filter-repo --force --replace-text /home/peter/zolai-purge-backups/2026-10-27/replace-f1.txt
+git filter-repo --force --replace-text $ZOLAI_BACKUPS/2026-10-27/replace-f1.txt
 #   --force is required: this is not a fresh clone (filter-repo: "this does not look like a
 #   fresh clone … use --force"). It also implies immediate reflog/old-object pruning.
 #   If 'origin' is missing afterwards: git remote add origin git@github.com:Zolai-AI/.github.git
@@ -248,16 +248,16 @@ Then (as the primary local action for F1) run the unreachable-object purge in **
 ### 3.3 `Zolai-AI/zolai-core` — F2
 
 ```bash
-cd /home/peter/Documents/Projects/zolai-ai/zolai-core
+cd $ZOLAI_WORKSPACE/zolai-core
 git status --porcelain                       # MUST be empty (89 dirty at prep time → B2)
 git stash push -u -m "pre-purge WIP"         # or commit; either satisfies filter-repo
 
-cat > /home/peter/zolai-purge-backups/2026-10-27/replace-f2-core.txt <<'EOF'
+cat > $ZOLAI_BACKUPS/2026-10-27/replace-f2-core.txt <<'EOF'
 literal:PASTE_F2_FULL_VALUE_HERE==>[REMOVED:Kaggle API token]
 EOF
-chmod 600 /home/peter/zolai-purge-backups/2026-10-27/replace-f2-core.txt
+chmod 600 $ZOLAI_BACKUPS/2026-10-27/replace-f2-core.txt
 
-git filter-repo --force --replace-text /home/peter/zolai-purge-backups/2026-10-27/replace-f2-core.txt
+git filter-repo --force --replace-text $ZOLAI_BACKUPS/2026-10-27/replace-f2-core.txt
 
 git remote -v                                 # re-add if filter-repo dropped it:
 git remote add origin git@github.com:Zolai-AI/zolai-core.git   # only if missing
@@ -280,7 +280,7 @@ Purge from a **fresh mirror clone**, keeping `personal-history.git` untouched as
 copy:
 
 ```bash
-BK=/home/peter/zolai-purge-backups/2026-10-27
+BK=$ZOLAI_BACKUPS/2026-10-27
 git clone --mirror git@github.com:peterlianpi/zolai-ai.git "$BK/peterlianpi-zolai-ai.purge.git"
 cd "$BK/peterlianpi-zolai-ai.purge.git"
 
@@ -298,14 +298,14 @@ Equivalent one-liner against the existing local mirror (only if you accept losin
 pristine rollback copy):
 
 ```bash
-git --git-dir=/home/peter/Documents/Projects/zolai-ai/personal-history.git \
+git --git-dir=$ZOLAI_WORKSPACE/personal-history.git \
     filter-repo --force --replace-text "$BK/replace-f2-personal.txt"
 ```
 
 ### 3.5 Dangling / reflog objects (the F1 case — run inside the root repo)
 
 ```bash
-cd /home/peter/Documents/Projects/zolai-ai
+cd $ZOLAI_WORKSPACE
 git reflog expire --expire=now --all
 git gc --prune=now --aggressive
 git fsck --unreachable --no-reflogs | head          # expect: no unreachable objects left
@@ -412,7 +412,7 @@ Coordination requirements:
 ## 6. Verification commands (run AFTER a purge; read-only)
 
 ```bash
-W=/home/peter/Documents/Projects/zolai-ai
+W=$ZOLAI_WORKSPACE
 
 # --- per repo: pickaxe over ALL refs (F1 root, F2 core/personal) ---
 cd "$W"
@@ -471,8 +471,8 @@ git -C "$W/zolai-core" show origin/main:scripts/deploy/kaggle/upload_all.sh \
 If a rewrite or force-push goes wrong, restore from §3.1 (never from `/tmp`):
 
 ```bash
-BK=/home/peter/zolai-purge-backups/2026-10-27
-W=/home/peter/Documents/Projects/zolai-ai
+BK=$ZOLAI_BACKUPS/2026-10-27
+W=$ZOLAI_WORKSPACE
 
 # --- option A: restore refs from the bundle (portable, refs-reachable content) ---
 cd "$W/zolai-core"
@@ -513,7 +513,7 @@ back for a functional reason, and re-run §2 rotation immediately afterwards if 
 | Check | Result |
 |---|---|
 | `/tmp/opencode/` | empty (recreated 2026-10-27 18:51) — old bundles gone |
-| `git-filter-repo` | `/home/peter/.local/bin/git-filter-repo`, module `…/site-packages/git_filter_repo.py` (build `a40bce548d2c`); `--replace-text` parses `literal:<old>==><new>`, default `***REMOVED***`; refuses dirty trees; needs `--force` on non-fresh clones |
+| `git-filter-repo` | `$HOME/.local/bin/git-filter-repo`, module `…/site-packages/git_filter_repo.py` (build `a40bce548d2c`); `--replace-text` parses `literal:<old>==><new>`, default `***REMOVED***`; refuses dirty trees; needs `--force` on non-fresh clones |
 | `git version` | 2.43.0 |
 | F1 dangling SHAs | exist locally (`git cat-file -t` = commit) and on GitHub (`gh api` → 200) |
 | F1 reflog-reachable | 3 commits / **5 blob paths** (listed §0); root repo has 21 unreachable commits |
@@ -552,7 +552,7 @@ No credential value is printed anywhere below (F2 verified by line **counts** on
 `.gitignore` and `.git/info/exclude` untouched; `data/zolai.db` not read; FastAPI not
 imported. Scratch analysis lists were written under `/tmp/opencode/` — **backups were not**.
 
-### A.1 §3.1 backups taken and verified — `/home/peter/zolai-purge-backups/2026-10-27/` (2.3 GB)
+### A.1 §3.1 backups taken and verified — `$ZOLAI_BACKUPS/2026-10-27/` (2.3 GB)
 
 Three forms per repo (bundle / `clone --mirror` / `cp -a .git`), because refs-only forms do
 not carry the dangling F1 objects. Full tables in `…/2026-10-27/VERIFICATION.md`.
@@ -614,8 +614,8 @@ not carry the dangling F1 objects. Full tables in `…/2026-10-27/VERIFICATION.m
 `b37f958`. Exact reapply command (post-rewrite, clean checkout of the **new** `origin/main`):
 
 ```bash
-BK=/home/peter/zolai-purge-backups/2026-10-27
-W=/home/peter/Documents/Projects/zolai-ai
+BK=$ZOLAI_BACKUPS/2026-10-27
+W=$ZOLAI_WORKSPACE
 git -C "$W/zolai-core" fetch origin
 git -C "$W/zolai-core" checkout -B main origin/main     # only after B2 dirty work is parked
 git -C "$W/zolai-core" am --3way "$BK"/patches/zolai-core/*.patch

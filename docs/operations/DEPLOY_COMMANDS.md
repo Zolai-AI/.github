@@ -62,7 +62,7 @@ sudo systemctl restart zolai-core-dev
 ## 4. Studio (manual equivalent)
 
 ```bash
-cd /home/peter/Documents/Projects/zolai-ai/zolai-explorer
+cd $ZOLAI_WORKSPACE/zolai-explorer
 bun run build
 
 ssh pcore-server 'sudo cp -a /var/www/zolai-studio /var/www/zolai-studio.bak-$(date +%Y%m%d-%H%M%S)'

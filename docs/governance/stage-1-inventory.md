@@ -1,7 +1,7 @@
 # Stage 1 Inventory — Zolai RBAC/Scope/Surface (Option A)
 
 **Date:** 2026-11-24  
-**Workspace:** `/home/peter/Documents/Projects/zolai-ai`
+**Workspace:** `$ZOLAI_WORKSPACE`
 
 ## Decision
 
@@ -13,7 +13,7 @@ Option **A**: combine by roles/scopes/contracts.
 
 ## As-Is Inventory
 
-### zolai-core (`/home/peter/Documents/Projects/zolai-ai/zolai-core`)
+### zolai-core (`$ZOLAI_WORKSPACE/zolai-core`)
 - **Roles:** `anonymous, member, admin, superadmin` (`zolai/api/rbac.py`).
 - **Scopes:** 33 frozen `resource:action` values (`zolai/api/auth.py` `VALID_ACTIONS`).
 - **Auth:** API keys (SHA-256 hash), `X-API-Key`; session/OAuth records carry role; `require_scope` strict/dual-accept behavior.
@@ -23,14 +23,14 @@ Option **A**: combine by roles/scopes/contracts.
 - **Cost:** partial Gemini client call/token history (`llm/gemini/client.py`); no unified per-run/per-agent cost ledger/API.
 - **AI SDK/AI Elements:** no Vercel AI SDK/AI Elements integration found.
 
-### zolai-explorer (`/home/peter/Documents/Projects/zolai-ai/zolai-explorer`)
+### zolai-explorer (`$ZOLAI_WORKSPACE/zolai-explorer`)
 - **Stack:** Vite + React 19 + TS + shadcn/Radix + Tailwind + TanStack Query v5 + React Router.
 - **Roles:** `anonymous|member|admin|superadmin` (`src/lib/auth.ts`, `schemas.ts`); `useAuthMe` polls `/api/v1/auth/me`.
 - **Route registry:** one source in `src/lib/routes.ts`; `RequireRole`, sidebar, command palette derive from it.
 - **Current min roles:** agent/review/requests member+; settings admin+; most others anonymous.
 - **Gaps:** no AI SDK/AI Elements; no cost/observer dashboards; no unified capability contract beyond `/auth/me`.
 
-### zolai-web (`/home/peter/Documents/Projects/zolai-ai/zolai-web`)
+### zolai-web (`$ZOLAI_WORKSPACE/zolai-web`)
 - **Stack:** Next.js 16 + React 19 + Better Auth + Prisma + Hono API routes + shadcn/Radix + Tailwind + TanStack Query v5.
 - **Roles:** Better Auth/admin access control defines `USER, VIEWER, CONTRIBUTOR, AUTHOR, EDITOR, MODERATOR, CONTENT_ADMIN, ADMIN, SUPER_ADMIN` (`lib/auth/access-control.ts`).
 - **Gaps:** role model richer than core; no direct alignment to core frozen scopes; no AI SDK/AI Elements; no unified studio/observer/cost contract.

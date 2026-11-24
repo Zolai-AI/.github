@@ -16,7 +16,7 @@ this project from any fresh session. Open this file first.
 
 ## Current state (2026-09-04)
 
-**Workspace:** `/home/peter/Documents/Projects/zolai-ai/` (8 repos, 13GB total)
+**Workspace:** `$ZOLAI_WORKSPACE/` (8 repos, 13GB total)
 **Org:** [github.com/Zolai-AI](https://github.com/Zolai-AI)
 **Monorepo:** DELETED — data distributed to component repos (freed ~14GB)
 **Free disk:** ~18GB
@@ -36,7 +36,7 @@ this project from any fresh session. Open this file first.
 
 ### Quick resume commands
 ```bash
-cd /home/peter/Documents/Projects/zolai-ai/zolai-core
+cd $ZOLAI_WORKSPACE/zolai-core
 source .venv/bin/activate  # or create: python -m venv .venv && pip install -e .
 python -m pytest tests/ -q
 python scripts/kg/smoke_test.py
