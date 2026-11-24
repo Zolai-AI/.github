@@ -76,8 +76,9 @@ Statuses: OPEN · MITIGATING · CLOSED · UNKNOWN
 
 ## Issue tracking
 
-This gap register maps to **`.github` issues #9–#16 only** (the gap-tracking issues
-created 2026-10-30). Repo-specific issues are not duplicated here; their dated
+This gap register maps to **`.github` issues #9–#16 only** (a subset of the
+gap-tracking issues created 2026-10-30 — #1–#16 were all created that day).
+Repo-specific issues are not duplicated here; their dated
 evidence is recorded in [`../OPEN-ISSUES.md`](../OPEN-ISSUES.md) §
 `Full audit evidence — 2026-11-24`.
 

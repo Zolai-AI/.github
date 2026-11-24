@@ -1515,12 +1515,14 @@ no deployment was run, and no database migration was executed. Dates below are t
 |---:|---|---|---|
 | 16 | `2026-10-30T02:50:34Z` | `Gap tracking: define the linguistic core specifications and gold data` | OPEN |
 | 15 | `2026-10-30T02:50:26Z` | `Gap tracking: establish sustainable founder research and communication cadence` | OPEN |
-| 14 | `2026-10-30T02:50:08Z` | `Gap tracking: resolve legal, commercial, and funding readiness gaps` | OPEN |
-| 13 | `2026-10-30T02:50:00Z` | `Gap tracking: validate customer discovery and revenue model` | OPEN |
-| 12 | `2026-10-30T02:49:42Z` | `Gap tracking: complete remaining community research and governance work` | OPEN |
-| 11 | `2026-10-30T02:49:40Z` | `Gap tracking: establish Masakhane community membership` | OPEN |
+| 14 | `2026-10-30T02:50:16Z` | `Gap tracking: resolve legal, commercial, and funding readiness gaps` | OPEN |
+| 13 | `2026-10-30T02:50:08Z` | `Gap tracking: validate customer discovery and revenue model` | OPEN |
+| 12 | `2026-10-30T02:50:00Z` | `Gap tracking: complete remaining community research and governance work` | OPEN |
+| 11 | `2026-10-30T02:49:42Z` | `Gap tracking: establish Masakhane community membership` | OPEN |
 | 10 | `2026-10-30T02:49:40Z` | `Gap tracking: publish benchmark methodology and results` | OPEN |
 | 9 | `2026-10-30T02:49:30Z` | `Gap tracking: publish a reviewed Zolai research literature review` | OPEN |
+
+Re-verified 2026-11-24 with `gh issue list --repo Zolai-AI/.github --state all --json number,createdAt,title,state`; live output confirms the four corrected timestamps above (#14 `2026-10-30T02:50:16Z`, #13 `2026-10-30T02:50:08Z`, #12 `2026-10-30T02:50:00Z`, #11 `2026-10-30T02:49:42Z`). Numbers, titles and states are unchanged.
 
 ### Dated issue evidence — `zolai-core`
 
