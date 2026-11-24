@@ -16,6 +16,20 @@
       "canonical_role": "implemented-v1-alias-of-core-role",
       "scopes": "implemented",
       "capabilities": "implemented-minimal-derived",
+      "capability_flags": {
+        "can_read_public": "implemented",
+        "can_chat_assistant": "implemented",
+        "can_run_agent": "implemented",
+        "can_read_agent": "implemented",
+        "can_read_cost": "implemented-additive-admin-gated-until-scope-vocab-expansion",
+        "can_read_observer": "implemented-additive-admin-gated-until-scope-vocab-expansion",
+        "can_read_learning": "implemented-additive-derived-from-admin-or-agent-read",
+        "can_manage_users": "implemented",
+        "can_manage_api_keys": "implemented",
+        "can_manage_settings": "implemented",
+        "can_manage_roles": "implemented",
+        "can_view_audit": "implemented"
+      },
       "feature_flags": "implemented-minimal-public-safe",
       "auth_source": "implemented",
       "mode": "implemented",
@@ -44,6 +58,11 @@
   "proposed_scope_additions": [
     "cost:read","cost:manage","observer:read","observer:manage","telemetry:read","learning:read","learning:run","learning:manage","contribution:read","contribution:review","contribution:manage"
   ],
+  "deferred": {
+    "scope_vocab_expansion": "Deferred in this pass. Frozen 33 scopes in zolai-core/zolai/api/auth.py unchanged; additive cost/observer/learning capability booleans are derived conservatively from existing roles/scopes.",
+    "ai_sdk_migration": "Deferred",
+    "external_adapter_execution": "Deferred"
+  },
   "role_scope_bundles_draft": {
     "anonymous": [],
     "member": ["agent:read","agent:run","rag:read","catalog:read","dashboard:read"],

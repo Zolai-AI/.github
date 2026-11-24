@@ -19,6 +19,9 @@ export interface AuthCapabilities {
   can_chat_assistant: boolean;
   can_run_agent: boolean;
   can_read_agent: boolean;
+  can_read_cost: boolean;
+  can_read_observer: boolean;
+  can_read_learning: boolean;
   can_manage_users: boolean;
   can_manage_api_keys: boolean;
   can_manage_settings: boolean;

@@ -84,6 +84,7 @@ From `zolai/api/auth.py` `VALID_ACTIONS` (33): `dashboard:read`, `dataset:read/c
 - Contract is server-authoritative and public-safe: no 401, no raw key/token/password/secret leakage.
 - `canonical_role` is a v1 alias of resolved core role (`anonymous|member|admin|superadmin`); web 9-role mapping remains draft in `docs/governance/rbac-capabilities.contract.json`.
 - Frozen 33-scope vocabulary in `zolai/api/auth.py` unchanged.
+- Additive capability booleans now include `can_read_cost`, `can_read_observer`, `can_read_learning` (derived conservatively from existing roles/scopes; no new enforcement/scope vocab expansion).
 
 ## 8. Immediate Next Actions
 
