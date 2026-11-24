@@ -1,7 +1,27 @@
 {
   "version": "1.0.0-draft",
-  "status": "draft",
+  "status": "draft-stage1-implemented",
   "decision": "option-a-combine-by-contracts",
+  "implementation": {
+    "core_auth_capabilities_endpoint": {
+      "path": "/api/v1/auth/capabilities",
+      "method": "GET",
+      "status": "implemented",
+      "public_safe": true,
+      "never_401": true,
+      "server_authoritative": true
+    },
+    "fields": {
+      "role": "implemented",
+      "canonical_role": "implemented-v1-alias-of-core-role",
+      "scopes": "implemented",
+      "capabilities": "implemented-minimal-derived",
+      "feature_flags": "implemented-minimal-public-safe",
+      "auth_source": "implemented",
+      "mode": "implemented",
+      "contract_version": "implemented"
+    }
+  },
   "canonical_roles": [
     {"id": "anonymous", "rank": 0, "label": "Anonymous"},
     {"id": "member", "rank": 1, "label": "Member"},
@@ -61,7 +81,7 @@
     "/settings": "admin"
   },
   "gaps": [
-    "core 4-role model vs web 9-role model",
+    "core 4-role model vs web 9-role model (web mapping remains draft)",
     "no unified cost/observer scopes and endpoints",
     "no AI SDK/AI Elements streaming contract",
     "no executable skills/factor/builder layer contract",

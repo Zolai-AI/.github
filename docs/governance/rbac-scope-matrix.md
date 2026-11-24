@@ -72,11 +72,18 @@ From `zolai/api/auth.py` `VALID_ACTIONS` (33): `dashboard:read`, `dataset:read/c
 ## 7. Stage 1 Deliverables (This Pass)
 
 - [x] Create canonical RBAC/scope matrix draft (this file).
-- [ ] Add machine-readable RBAC contract (JSON/TS/Python) for shared use.
-- [ ] Inventory all core `require_scope`/route classes and export matrix.
-- [ ] Add `/api/v1/auth/capabilities` (or extend `/auth/me`) draft contract.
-- [ ] Map web Better Auth roles to canonical roles/scopes.
-- [ ] Add tests for role/scope mapping and route guard parity.
+- [x] Add machine-readable RBAC contract draft (`docs/governance/rbac-capabilities.contract.json`).
+- [~] Inventory all core `require_scope`/route classes and export matrix (partial; existing RBAC matrix tests cover route classification).
+- [x] Add `/api/v1/auth/capabilities` additive contract endpoint (core, public-safe, never 401).
+- [ ] Map web Better Auth roles to canonical roles/scopes (draft remains in contract; no web runtime wiring in this pass).
+- [~] Add tests for role/scope mapping and route guard parity (core capabilities/public-matrix tests added; cross-repo web mapping tests pending).
+
+## 7.1 Stage 1 Implementation Note (2026-11-24)
+
+- Implemented Option A additive contract endpoint in `zolai-core`: `GET /api/v1/auth/capabilities`.
+- Contract is server-authoritative and public-safe: no 401, no raw key/token/password/secret leakage.
+- `canonical_role` is a v1 alias of resolved core role (`anonymous|member|admin|superadmin`); web 9-role mapping remains draft in `docs/governance/rbac-capabilities.contract.json`.
+- Frozen 33-scope vocabulary in `zolai/api/auth.py` unchanged.
 
 ## 8. Immediate Next Actions
 
