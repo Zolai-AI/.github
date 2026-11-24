@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0-draft",
+  "status": "draft",
+  "decision": "option-a-combine-by-contracts",
+  "canonical_roles": [
+    {"id": "anonymous", "rank": 0, "label": "Anonymous"},
+    {"id": "member", "rank": 1, "label": "Member"},
+    {"id": "contributor", "rank": 2, "label": "Contributor"},
+    {"id": "moderator", "rank": 3, "label": "Moderator"},
+    {"id": "admin", "rank": 4, "label": "Admin"},
+    {"id": "superadmin", "rank": 5, "label": "Superadmin"}
+  ],
+  "compatibility": {
+    "core_current_roles": ["anonymous", "member", "admin", "superadmin"],
+    "web_better_auth_roles": ["USER", "VIEWER", "CONTRIBUTOR", "AUTHOR", "EDITOR", "MODERATOR", "CONTENT_ADMIN", "ADMIN", "SUPER_ADMIN"],
+    "strategy": "v1 aliasing: core enforces 4 roles + frozen scopes; web richer roles map to canonical role bundles; explorer renders canonical role from /auth/me capabilities."
+  },
+  "frozen_scopes": [
+    "agent:read","agent:run","annotation:read","annotation:review","apikey:manage","audit:read","catalog:read","dashboard:read",
+    "dataset:create","dataset:deprecate","dataset:edit","dataset:publish","dataset:read","dataset:run_quality","dataset:validate",
+    "eval:read","eval:run","pipeline:read","pipeline:run","pos:adjudicate","pos:annotate","pos:read","pos:review",
+    "quality:read","quality:run","quality:waive","rag:read","role:manage","settings:read","settings:write","source:read","source:write","user:manage"
+  ],
+  "proposed_scope_additions": [
+    "cost:read","cost:manage","observer:read","observer:manage","telemetry:read","learning:read","learning:run","learning:manage","contribution:read","contribution:review","contribution:manage"
+  ],
+  "role_scope_bundles_draft": {
+    "anonymous": [],
+    "member": ["agent:read","agent:run","rag:read","catalog:read","dashboard:read"],
+    "contributor": ["agent:read","agent:run","rag:read","catalog:read","dashboard:read","dataset:read","annotation:read"],
+    "moderator": ["agent:read","agent:run","rag:read","catalog:read","dashboard:read","dataset:read","annotation:read","annotation:review","quality:read","quality:run"],
+    "admin": ["*"],
+    "superadmin": ["*","role:manage"]
+  },
+  "web_role_mapping_draft": {
+    "USER": "member",
+    "VIEWER": "member",
+    "CONTRIBUTOR": "contributor",
+    "AUTHOR": "contributor",
+    "EDITOR": "moderator",
+    "MODERATOR": "moderator",
+    "CONTENT_ADMIN": "admin",
+    "ADMIN": "admin",
+    "SUPER_ADMIN": "superadmin"
+  },
+  "explorer_route_min_roles_current": {
+    "/": "anonymous",
+    "/login": "anonymous",
+    "/word": "anonymous",
+    "/analyze": "anonymous",
+    "/search": "anonymous",
+    "/rag": "anonymous",
+    "/assistant": "anonymous",
+    "/agent": "member",
+    "/orchestra": "anonymous",
+    "/data": "anonymous",
+    "/links": "anonymous",
+    "/review": "member",
+    "/contribute": "anonymous",
+    "/requests": "member",
+    "/settings": "admin"
+  },
+  "gaps": [
+    "core 4-role model vs web 9-role model",
+    "no unified cost/observer scopes and endpoints",
+    "no AI SDK/AI Elements streaming contract",
+    "no executable skills/factor/builder layer contract",
+    "external side-effect agent adapters mostly manual_action_required"
+  ]
+}
